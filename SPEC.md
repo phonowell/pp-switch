@@ -1,6 +1,6 @@
 # pp-switch specification
 
-Status: v0.1 implementation contract. Changes to behavior start here.
+Status: v0.0.1 implementation contract. Changes to behavior start here.
 
 ## Purpose
 
@@ -56,7 +56,7 @@ cc-switch commit `8845b1ef799aa8810b864b122de6af5f4629de10`:
 
 Only the Provider deep-link subset above is compatible. pp-switch does not share
 cc-switch's database, routing state, full provider settings or OS URL association.
-Links are pasted into the app; v0.1 registers no system URL scheme.
+Links are pasted into the app; v0.0.1 registers no system URL scheme.
 
 ## Verification
 

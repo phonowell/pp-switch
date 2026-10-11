@@ -22,6 +22,12 @@ pp-switch 为这个操作而生：一个窗口，几组 Provider，点一下切�
 你的模型、推理参数、MCP、Skills 和其他客户端配置继续由你管理。
 关闭窗口，应用退出。
 
+## 界面预览
+
+![pp-switch 的真实窗口：客户端选择、Provider 列表、地址与密钥编辑和链接导入](assets/screenshot.png)
+
+截图使用示例地址和测试密钥。图片不随应用分发。
+
 ## 功能边界
 
 | | pp-switch | cc-switch |
@@ -37,8 +43,19 @@ pp-switch 专注于已经配置好客户端、只想快速更换 API 服务的�
 
 ## 安装
 
-首版正在开发。后续安装包发布于 [GitHub Releases](https://github.com/phonowell/pp-switch/releases)。
-当前可按下方说明从源码构建。请以 [验证记录](docs/verification.md) 为准判断平台支持情况。
+当前版本为 **0.0.1 开发预览**。源码和基本功能已实现，内存预算尚未达标。
+构建包可在 [Actions](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml) 对应运行的 Artifacts 中下载；
+正式发布会出现在 [GitHub Releases](https://github.com/phonowell/pp-switch/releases)。
+
+| 系统 | 构建包 | 使用方式 |
+| --- | --- | --- |
+| macOS Apple Silicon | `aarch64-apple-darwin.zip` | 解压，将 `.app` 移入 Applications |
+| macOS Intel | `x86_64-apple-darwin.zip` | 同上 |
+| Windows x64 | `x86_64-pc-windows-msvc.zip` | 解压，运行 `pp-switch.exe` |
+| Linux x64 | `x86_64-unknown-linux-gnu.tar.gz` | 解压，在桌面环境运行 `pp-switch` |
+
+macOS 构建未使用 Apple Developer 签名或公证。Linux 需要 X11／XWayland 和系统 X11、fontconfig 库。
+具体平台是否已经通过构建与 GUI 验收，请以 [验证记录](docs/verification.md) 和对应 CI 运行结果为准。
 
 ## 使用
 
@@ -48,6 +65,18 @@ pp-switch 专注于已经配置好客户端、只想快速更换 API 服务的�
 
 客户端需要已配置为支持的 API Key 模式。OAuth 切换、协议转换和客户端首次初始化
 不在范围内；不支持的配置会提示原因。正在运行的客户端可能需要重启以读取新配置。
+只操作用户级配置；项目配置、启动参数和另一个终端的环境变量仍可能覆盖它。
+
+| 客户端 | 操作位置 | 前提 |
+| --- | --- | --- |
+| Claude Code | `~/.claude/settings.json` 的两个 env 字段 | 无外部 Key helper、云平台模式或冲突凭据 |
+| Codex | 当前 Provider 的 `base_url`，以及既有 Key 位置 | 已选中自定义 Provider，并配置为 API Key 模式 |
+| Gemini CLI | `~/.gemini/.env` 的地址和 Key | 已通过 `/auth` 选择 API Key 模式 |
+
+支持 `CLAUDE_CONFIG_DIR`、`CODEX_HOME` 目录覆盖；不会更改这些环境变量。
+本地 Provider 列表位于系统的 pp-switch 用户数据目录：macOS 为
+`~/Library/Application Support/pp-switch`，Windows 为 `%LOCALAPPDATA%\pp-switch`，
+Linux 为 `${XDG_DATA_HOME:-~/.local/share}/pp-switch`。
 
 ## 兼容范围
 
@@ -74,15 +103,30 @@ ccswitch://v1/import?resource=provider&app=claude&name=Example&endpoint=https%3A
 | 冷启动到可操作 | ≤ 300 ms |
 | 关闭窗口后 | 进程退出，驻留为 0 |
 
-**以上是预算，尚不是实测成绩。** 数值包含随应用分发的库和资源，内存包含子进程。
-发布构建的硬件、测量方式和实际结果记录在 [验证记录](docs/verification.md)。
+**以上是预算，不是宣传承诺。** 数值包含随应用分发的库和资源，内存包含子进程。
+首轮 macOS ARM64 实测：安装后约 **1.12 MiB**；空闲总 RSS 约 **121 MiB**，内存预算未达标。
+发布构建的硬件、测量方式、失败记录和实际结果见 [验证记录](docs/verification.md)。
 
 ## 开发
 
 项目采用 spec 驱动开发：先明确 [SPEC.md](SPEC.md) 中的行为，再实现和验证。
 
-候选技术栈：Rust + FLTK。需要 Rust 稳定版、CMake 和平台 C++ 编译工具链。
-Linux 还需要 X11 开发库；最终构建命令随首个可运行版本补齐。
+技术栈：Rust + FLTK。需要 Rust ≥ 1.89、CMake 和平台 C++ 编译工具链。
+Linux 的构建依赖见 [CI 工作流](.github/workflows/ci.yml)。
+
+```sh
+cargo run --locked
+cargo fmt --check
+cargo clippy --locked --all-targets -- -D warnings
+cargo test --locked
+cargo build --locked --release --bins --examples
+cargo run --locked --example ui_smoke
+python3 scripts/measure.py target/release/examples/measure_ui --output target/metrics.json --enforce
+```
+
+Linux GUI 测试可使用 `xvfb-run -a`；Windows 示例二进制后缀为 `.exe`。
+性能脚本运行独立临时配置，使用同一个窗口与事件循环，不修改你的客户端配置。
+CI 保留未达标的测量结果，并把预算失败标记为失败。
 
 ## 致谢与许可
 
