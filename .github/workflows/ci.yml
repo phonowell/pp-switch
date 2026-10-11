@@ -51,19 +51,19 @@ jobs:
         if: runner.os == 'Linux'
         shell: bash
         run: |
-          xvfb-run -a target/${{ matrix.target }}/release/examples/ui_smoke
+          xvfb-run -a python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke
           xvfb-run -a python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --output target/metrics.json --enforce
       - name: GUI smoke and metrics (macOS)
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          target/${{ matrix.target }}/release/examples/ui_smoke
+          python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke
           python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --output target/metrics.json --enforce
       - name: GUI smoke and metrics (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          & target/${{ matrix.target }}/release/examples/ui_smoke.exe
+          python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke.exe
           if ($LASTEXITCODE) { exit $LASTEXITCODE }
           python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui.exe --output target/metrics.json --enforce
       - name: Upload packages and measurements
@@ -76,4 +76,5 @@ jobs:
             target/package/*.tar.gz
             target/package/*.json
             target/metrics.json
+            target/gui-hang.txt
           if-no-files-found: ignore

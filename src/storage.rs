@@ -154,6 +154,7 @@ fn current_user_sid() -> Result<String> {
 }
 
 fn write_atomic(path: &Path, text: &str) -> Result<()> {
+    writable_destination(path)?;
     let parent = path
         .parent()
         .ok_or("Configuration path has no parent directory.")?;
@@ -171,6 +172,16 @@ fn write_atomic(path: &Path, text: &str) -> Result<()> {
         .and_then(|file| file.sync_all())
         .map_err(|_| "Cannot flush configuration directory.")?;
     Ok(())
+}
+
+fn writable_destination(path: &Path) -> Result<()> {
+    match fs::symlink_metadata(path) {
+        Ok(meta) if meta.file_type().is_symlink() => Err("Configuration file is a symbolic link. pp-switch will not replace the link; point the client config directory at real files.".into()),
+        Ok(meta) if !meta.is_file() => Err("Configuration destination is not a regular file.".into()),
+        Ok(_) => Ok(()),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(()),
+        Err(_) => Err("Cannot inspect configuration destination.".into()),
+    }
 }
 
 impl Store {
@@ -214,6 +225,7 @@ impl Store {
             return Err("Recovery journal contains too many files.".into());
         }
         for change in &journal.changes {
+            writable_destination(&change.path)?;
             let current = read(&change.path)?;
             if current != change.before && current.as_deref() != Some(&change.after) {
                 return Err("A file changed outside pp-switch during recovery. No files were overwritten; preserve pending.json and resolve the conflict.".into());
@@ -251,6 +263,7 @@ impl Store {
             return Err("Too many files in one operation.".into());
         }
         for change in &changes {
+            writable_destination(&change.path)?;
             if read(&change.path)? != change.before {
                 return Err(
                     "Configuration changed while preparing this operation. Reload and try again."

@@ -37,11 +37,13 @@ if macos:
 else:
     shutil.copy2(binary, stage / binary.name)
 shutil.copy2(root / "LICENSE", stage / "LICENSE")
+shutil.copy2(root / "THIRD_PARTY_NOTICES.txt", stage / "THIRD_PARTY_NOTICES.txt")
 (stage / "README.txt").write_text(f"pp-switch {version} — Pure Provider\n\n"
     "Switch only API base URLs and keys. Close the window to exit.\n"
     "Clients must already use a supported API-key configuration.\n"
     "Source, setup and limits: https://github.com/phonowell/pp-switch\n"
     "Secrets are stored in local user-only files; they are not encrypted.\n"
+    "Based in part on the work of the FLTK project (https://www.fltk.org).\n"
     "macOS builds are not Apple Developer-signed or notarized.\n", encoding="utf-8")
 files = [path for path in stage.rglob("*") if path.is_file()]
 installed = sum(path.stat().st_size for path in files)

@@ -133,4 +133,6 @@ CI 保留未达标的测量结果，并把预算失败标记为失败。
 感谢 [cc-switch](https://github.com/farion1231/cc-switch) 的开源协议与实现参考。
 pp-switch 是独立项目，与 cc-switch 无隶属关系。
 
+界面基于 [fltk-rs](https://github.com/fltk-rs/fltk-rs) 与 [FLTK](https://www.fltk.org) 项目的工作。
+
 [MIT](LICENSE)。第三方依赖保留各自许可证。

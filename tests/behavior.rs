@@ -471,3 +471,19 @@ fn pp09_every_input_is_validated_before_the_first_write() {
     );
     assert_eq!(fs::read_to_string(first).unwrap(), "old");
 }
+
+#[test]
+#[cfg(unix)]
+fn pp09_symlink_destinations_are_preserved_without_writing_the_target() {
+    use std::os::unix::fs::symlink;
+    let (dir, paths, store) = setup();
+    let real = dir.path().join("real-settings.json");
+    let config = "{\"env\":{\"ANTHROPIC_AUTH_TOKEN\":\"old\"}}";
+    put(&real, config);
+    let link = paths.settings(Client::Claude);
+    fs::create_dir_all(link.parent().unwrap()).unwrap();
+    symlink(&real, &link).unwrap();
+    assert!(paths.apply(&store, &provider(Client::Claude)).is_err());
+    assert!(fs::symlink_metadata(link).unwrap().file_type().is_symlink());
+    assert_eq!(fs::read_to_string(real).unwrap(), config);
+}

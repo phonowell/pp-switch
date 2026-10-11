@@ -5,8 +5,10 @@ import json
 import os
 from pathlib import Path
 import platform
+import queue
 import statistics
 import subprocess
+import threading
 import time
 
 parser = argparse.ArgumentParser()
@@ -43,18 +45,33 @@ samples = []
 for _ in range(args.runs):
     start = time.perf_counter()
     process = subprocess.Popen([str(args.binary.resolve())], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    if process.stdout.readline().strip() != "READY":
+    ready = queue.Queue()
+    threading.Thread(target=lambda: ready.put(process.stdout.readline().strip()), daemon=True).start()
+    try:
+        marker = ready.get(timeout=15)
+    except queue.Empty:
+        process.kill()
+        process.wait()
+        raise SystemExit("Window did not enter its event loop within 15 seconds")
+    if marker != "READY":
         process.kill()
         raise SystemExit("Window did not enter its event loop")
     startup = (time.perf_counter() - start) * 1000
     idle = []; peak = 0; returncode = None
     while True:
+        if time.perf_counter() - start > 15:
+            process.kill()
+            process.wait()
+            raise SystemExit("Measurement window did not exit within 15 seconds")
         try:
             rss, high = memory(process); peak = max(peak, high)
             if time.perf_counter() - start >= 1:
                 idle.append(rss)
-        except (FileNotFoundError, ProcessLookupError, KeyError, subprocess.CalledProcessError):
+        except (FileNotFoundError, ProcessLookupError, KeyError, ValueError, subprocess.CalledProcessError):
             pass
+        except RuntimeError:
+            if not windows or process.poll() is None:
+                raise
         if windows:
             returncode = process.poll()
             if returncode is not None:
