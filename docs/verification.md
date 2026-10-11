@@ -2,12 +2,12 @@
 
 ## Local macOS evidence — 2026-10-12
 
-Host: Apple Silicon ARM64, macOS 27.0.1. Rust 1.99.0, Apple clang 17.0.0,
+Host: Apple M4 (Mac16,1), 16 GiB RAM, ARM64, macOS 27.0.1. Rust 1.99.0, Apple clang 17.0.0,
 CMake 4.4.4. Release flags: size optimization, LTO, one codegen unit, stripped
 symbols, panic abort. No bundled fonts/images, browser, database or async runtime.
 
-- Behavioral suite initially passed 19 tests; a subsequent regression covers
-  Codex API-key auth files with null OAuth placeholders.
+- Behavioral suite passed 21 tests, including Codex API-key auth files with null
+  OAuth placeholders and refusal to replace symbolic-link destinations.
 - Formatting and Clippy (all targets, warnings denied) passed.
 - Native GUI harness passed save, switch, new, import preview, list selection
   and close using isolated temporary client files. All normal callbacks ran.
@@ -42,12 +42,70 @@ CI enforces the original RSS/startup thresholds and publishes the raw JSON even
 when they fail. Package creation precedes memory checks so failures remain
 reviewable without presenting a passing performance result.
 
+### Final local preview validation
+
+Implementation commit `b4ccb7f3f3c3792052399bedf6607afa1a718a8b`:
+format, Clippy, 21 behavioral tests, release build and GUI smoke passed.
+The installed package includes all third-party notices: 1,382,503 bytes (1.32 MiB).
+Final local measurement: idle maximum 126,812,160 bytes (120.94 MiB), peak
+126,844,928 bytes (120.97 MiB), readiness 524.42 / 153.54 / 136.31 ms.
+Memory and maximum-startup budgets **fail**. The median alone is not used to
+declare startup success.
+
+A measurement-only Cocoa timer close could leave FLTK waiting for a native
+event after hiding the final window. The harness now bounds that final wait;
+this does not add polling or background work to the production app. GUI smoke
+uses the regular close path and passed both locally and in macOS CI.
+
 ## Cross-platform status
 
-CI is configured for native macOS ARM64, macOS Intel, Windows x64 and Linux x64:
-format, lint, behavior tests, release build, GUI smoke, size check and RSS/startup
-measurement. Successful runtime verification will be recorded after the actual
-runs. Windows/Linux/Intel macOS have not been verified locally.
+Native GitHub-hosted runners cover macOS ARM64 (`macos-15`), macOS Intel
+(`macos-15-intel`), Windows x64 (`windows-2022`) and Linux x64 (`ubuntu-22.04`, Xvfb).
+Each runs formatting, Clippy, behavioral tests, release build, GUI smoke,
+installed-size enforcement and a separate memory/startup check. Windows, Linux
+and Intel macOS have not been run locally.
+
+Final implementation [CI run 38155786150](https://github.com/phonowell/pp-switch/actions/runs/38155786150)
+at `b4ccb7f3f3c3792052399bedf6607afa1a718a8b`:
+
+| Native runner | Format / lint / behavior / build / GUI | Installed bytes | Idle RSS MiB | Peak RSS MiB | Startup median / max ms | Measurement budget |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| macOS 15.7.9 ARM64 | Pass, 21 behavioral tests | 1,382,535 | 68.08 | 68.09 | 91.02 / 100.58 | Memory fail |
+| macOS 15.7.9 Intel | Pass, 21 behavioral tests | 1,404,543 | 40.24 | 40.25 | 218.78 / 222.67 | Memory fail |
+| Windows Server 2022 x64 | Pass, 20 behavioral tests | 1,457,860 | 15.10 | 15.48 | 42.39 / 43.22 | Pass |
+| Ubuntu 22.04 x64, Xvfb | Pass, 21 behavioral tests | 1,595,555 | 8.77 | 19.10 | 17.00 / 17.31 | Pass |
+
+Installed size includes the executable, package metadata and all distributed
+licenses/notices. Memory includes shared resident pages; it is not heap usage.
+CI machines are shared GitHub-hosted VMs, not a controlled hardware comparison.
+Windows and Linux results do not stand in for the unmeasured client-desktop setups.
+
+Raw three-process results: [ARM64 macOS](measurements/v0.0.1/aarch64-apple-darwin.json),
+[Intel macOS](measurements/v0.0.1/x86_64-apple-darwin.json),
+[Windows](measurements/v0.0.1/x86_64-pc-windows-msvc.json),
+[Linux](measurements/v0.0.1/x86_64-unknown-linux-gnu.json) and
+[local M4](measurements/v0.0.1/macos-m4-local.json).
+Release attachments include archive SHA-256 sums and a consolidated verification
+JSON with the package sizes, hashes, raw metrics and implementation commit.
+
+The final Windows executable's PE import directory contains system DLLs only;
+it imports no `VCRUNTIME`, `MSVCP` or `MSVCR` DLL. Rust and the nested FLTK CMake
+project both use the static CRT. macOS packages declare macOS 11 as their minimum;
+actual native runtime evidence covers macOS 15 CI and macOS 27 on the local M4,
+not every intervening OS version.
+
+The preview keeps budget failures visible in CI; a red overall workflow can
+mean a performance failure after all functional checks passed. It does not
+mean the memory threshold was waived. The complete PP-11 budget is not certified.
+
+## Next performance work
+
+Keep PP-11 unchanged. Measure an empty Cocoa window and pp-switch under identical
+conditions before changing the UI backend; the initial local Cocoa baseline was
+about 79.8 MiB RSS. Attribute the additional resident pages and backing surfaces,
+then retain only changes that improve repeated measurements without changing
+the provider-only scope. Extend the harness to import/load stress and true
+interactive readiness before claiming those budgets pass.
 
 ## Limits of evidence
 
@@ -59,3 +117,6 @@ runs. Windows/Linux/Intel macOS have not been verified locally.
   them; comparing immediately before writes cannot eliminate all external races.
 - Multi-file writes have journal recovery, not an atomic filesystem transaction
   spanning both Codex files.
+- The memory benchmark covers launch and idle with an empty isolated provider
+  store. Import/load stress peaks and truly cold interactive startup remain
+  unverified; passing this script does not prove the whole PP-11 requirement.

@@ -43,18 +43,19 @@ pp-switch 专注于已经配置好客户端、只想快速更换 API 服务的�
 
 ## 安装
 
-当前版本为 **0.0.1 开发预览**。源码和基本功能已实现，内存预算尚未达标。
-构建包可在 [Actions](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml) 对应运行的 Artifacts 中下载；
-正式发布会出现在 [GitHub Releases](https://github.com/phonowell/pp-switch/releases)。
+当前版本为 **[0.0.1 功能预览](https://github.com/phonowell/pp-switch/releases/tag/v0.0.1)**。
+支持的功能已实现；macOS 内存预算尚未达标，实测结果公开在下方和验证记录中。
+从 Release 下载对应系统的压缩包，无需安装 Node.js、Rust 或浏览器运行时。
 
 | 系统 | 构建包 | 使用方式 |
 | --- | --- | --- |
-| macOS Apple Silicon | `aarch64-apple-darwin.zip` | 解压，将 `.app` 移入 Applications |
-| macOS Intel | `x86_64-apple-darwin.zip` | 同上 |
-| Windows x64 | `x86_64-pc-windows-msvc.zip` | 解压，运行 `pp-switch.exe` |
-| Linux x64 | `x86_64-unknown-linux-gnu.tar.gz` | 解压，在桌面环境运行 `pp-switch` |
+| macOS Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.1/pp-switch-v0.0.1-aarch64-apple-darwin.zip) | 解压，将 `.app` 移入 Applications |
+| macOS Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.1/pp-switch-v0.0.1-x86_64-apple-darwin.zip) | 同上 |
+| Windows x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.1/pp-switch-v0.0.1-x86_64-pc-windows-msvc.zip) | 解压，运行 `pp-switch.exe` |
+| Linux x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.1/pp-switch-v0.0.1-x86_64-unknown-linux-gnu.tar.gz) | 解压，在桌面环境运行 `pp-switch` |
 
 macOS 构建未使用 Apple Developer 签名或公证。Linux 需要 X11／XWayland 和系统 X11、fontconfig 库。
+macOS 包声明最低 macOS 11；Windows 要求 Windows 10 或更新版本。
 具体平台是否已经通过构建与 GUI 验收，请以 [验证记录](docs/verification.md) 和对应 CI 运行结果为准。
 
 ## 使用
@@ -104,7 +105,20 @@ ccswitch://v1/import?resource=provider&app=claude&name=Example&endpoint=https%3A
 | 关闭窗口后 | 进程退出，驻留为 0 |
 
 **以上是预算，不是宣传承诺。** 数值包含随应用分发的库和资源，内存包含子进程。
-首轮 macOS ARM64 实测：安装后约 **1.12 MiB**；空闲总 RSS 约 **121 MiB**，内存预算未达标。
+本机 macOS ARM64（Apple M4、16 GiB、macOS 27.0.1）实测：安装后约 **1.32 MiB**，
+含许可证；空闲总 RSS 约 **121 MiB**，内存预算未达标。
+
+0.0.1 的四个平台均通过原生 CI 的构建、行为测试和 GUI smoke。下面是 CI 的实际结果：
+
+| CI 环境 | 安装大小 | 空闲总 RSS | 启动峰值 RSS | 最慢启动就绪 | 脚本预算 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| macOS 15 · Apple Silicon | 1.32 MiB | 68.08 MiB | 68.09 MiB | 100.58 ms | 内存失败 |
+| macOS 15 · Intel | 1.34 MiB | 40.24 MiB | 40.25 MiB | 222.67 ms | 内存失败 |
+| Windows Server 2022 · x64 | 1.39 MiB | 15.10 MiB | 15.48 MiB | 43.22 ms | 通过 |
+| Ubuntu 22.04 · x64 · Xvfb | 1.52 MiB | 8.77 MiB | 19.10 MiB | 17.31 ms | 通过 |
+
+每个平台启动三个新进程；未清理系统缓存，以事件循环首次定时回调为就绪标记。
+这不代表严格冷启动、输入延迟或导入压力峰值已验证。macOS 预算失败使整体 CI 保持红色。
 发布构建的硬件、测量方式、失败记录和实际结果见 [验证记录](docs/verification.md)。
 
 ## 开发

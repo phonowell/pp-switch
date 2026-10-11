@@ -1,0 +1,27 @@
+{
+  "os": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+  "machine": "x86_64",
+  "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+  "samples": [
+    {
+      "startup_ms": 222.67,
+      "idle_rss_bytes": 41857024,
+      "peak_rss_bytes": 41869312
+    },
+    {
+      "startup_ms": 218.78,
+      "idle_rss_bytes": 42192896,
+      "peak_rss_bytes": 42205184
+    },
+    {
+      "startup_ms": 218.34,
+      "idle_rss_bytes": 41836544,
+      "peak_rss_bytes": 41844736
+    }
+  ],
+  "startup_median_ms": 218.78,
+  "startup_max_ms": 222.67,
+  "idle_max_bytes": 42192896,
+  "peak_max_bytes": 42205184,
+  "budget_pass": false
+}

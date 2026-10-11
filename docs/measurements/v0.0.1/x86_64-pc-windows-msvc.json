@@ -1,0 +1,27 @@
+{
+  "os": "Windows-2022Server-10.0.20348-SP0",
+  "machine": "AMD64",
+  "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+  "samples": [
+    {
+      "startup_ms": 43.22,
+      "idle_rss_bytes": 15835136,
+      "peak_rss_bytes": 16232448
+    },
+    {
+      "startup_ms": 42.39,
+      "idle_rss_bytes": 15241216,
+      "peak_rss_bytes": 15634432
+    },
+    {
+      "startup_ms": 41.82,
+      "idle_rss_bytes": 15216640,
+      "peak_rss_bytes": 15462400
+    }
+  ],
+  "startup_median_ms": 42.39,
+  "startup_max_ms": 43.22,
+  "idle_max_bytes": 15835136,
+  "peak_max_bytes": 16232448,
+  "budget_pass": true
+}

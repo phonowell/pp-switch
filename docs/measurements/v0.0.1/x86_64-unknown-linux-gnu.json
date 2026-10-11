@@ -1,0 +1,27 @@
+{
+  "os": "Linux-6.8.0-1064-azure-x86_64-with-glibc2.35",
+  "machine": "x86_64",
+  "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+  "samples": [
+    {
+      "startup_ms": 17.31,
+      "idle_rss_bytes": 9068544,
+      "peak_rss_bytes": 19763200
+    },
+    {
+      "startup_ms": 17.0,
+      "idle_rss_bytes": 9183232,
+      "peak_rss_bytes": 20025344
+    },
+    {
+      "startup_ms": 16.23,
+      "idle_rss_bytes": 9195520,
+      "peak_rss_bytes": 20025344
+    }
+  ],
+  "startup_median_ms": 17.0,
+  "startup_max_ms": 17.31,
+  "idle_max_bytes": 9195520,
+  "peak_max_bytes": 20025344,
+  "budget_pass": true
+}
