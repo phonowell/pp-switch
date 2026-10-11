@@ -12,7 +12,12 @@ fn main() {
     app::add_timeout3(0.0, |_| {
         println!("READY");
         std::io::stdout().flush().unwrap();
-        app::add_timeout3(3.0, |_| app::quit());
+        app::add_timeout3(3.0, |_| {
+            // Cocoa's wait() processes timers before waiting for native events.
+            // After hiding the last window, bound that final native wait too.
+            app::add_timeout3(0.0, |_| {});
+            app::quit();
+        });
     });
     pp_switch::ui::run_with(store, paths).expect("measurement window");
 }
