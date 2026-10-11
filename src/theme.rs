@@ -112,6 +112,22 @@ fn inset(x: i32, y: i32, w: i32, h: i32, color: Color) {
 }
 
 pub fn init() {
+    #[cfg(target_os = "linux")]
+    {
+        // Xft selects one face, unlike Cocoa/GDI's glyph fallback. Use installed
+        // CJK faces (also covering Latin) without scanning or bundling fonts.
+        static FONTS: std::sync::Once = std::sync::Once::new();
+        FONTS.call_once(|| {
+            fltk::enums::Font::set_font(
+                fltk::enums::Font::Helvetica,
+                " Noto Sans CJK SC,Noto Sans CJK TC,Noto Sans CJK JP,WenQuanYi Zen Hei,sans",
+            );
+            fltk::enums::Font::set_font(
+                fltk::enums::Font::HelveticaBold,
+                "BNoto Sans CJK SC,Noto Sans CJK TC,Noto Sans CJK JP,WenQuanYi Zen Hei,sans",
+            );
+        });
+    }
     fltk::dialog::message_title_default("pp-switch");
     app::background(232, 237, 242);
     app::foreground(37, 51, 73);

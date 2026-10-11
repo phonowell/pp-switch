@@ -66,6 +66,8 @@ ccswitch://v1/import?resource=provider&app=claude&name=Example&endpoint=https%3A
 
 ## 语言与本地数据
 
+Linux 请安装 Noto Sans CJK（Debian/Ubuntu：`sudo apt install fonts-noto-cjk`）或 WenQuanYi Zen Hei。Xft 不会自动为缺失字形回退，必须有已安装的中日韩字体。应用不分发字体文件。
+
 界面支持英文、简体中文、繁体中文、日语。首次跟随系统语言，不支持的语言回退英文。
 右上角可即时更换标签、对话框和状态语言，保留草稿与当前选择。
 

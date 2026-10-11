@@ -46,6 +46,8 @@ ccswitch://v1/import?resource=provider&app=claude&name=Example&endpoint=https%3A
 
 ## 言語とデータ保存
 
+Linux は Noto Sans CJK（Debian/Ubuntu: `sudo apt install fonts-noto-cjk`）または WenQuanYi Zen Hei をインストールしてください。Xft は欠落した字形を自動補完しないため、CJK を含むシステムフォントが必要です。フォントファイルは同梱しません。
+
 英語・簡体字中国語・繁体字中国語・日本語に対応。初回はシステム言語、非対応なら英語。右上の選択でラベル・ダイアログ・状態を即時変更し、下書きと選択を保持します。
 
 | OS | データディレクトリ |

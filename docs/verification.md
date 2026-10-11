@@ -13,7 +13,9 @@ fonts/images, database, async runtime, tray or startup updater.
   callbacks, persisted language changes and preservation of unsaved drafts.
 - Reviewed actual English, Simplified/Traditional Chinese and Japanese windows.
   Native dropdowns initially left square-border artifacts; custom vector drawing
-  and an opaque background corrected them. Screenshots contain dummy data only.
+  and an opaque background corrected them. Linux CI screenshots revealed missing
+  CJK glyphs despite installed fonts; explicitly selecting installed CJK faces
+  fixes Xft's lack of per-glyph fallback. Screenshots contain dummy data only.
 - Real temporary installer/helper smoke waited for the old process, replaced
   package resources and automatically reopened the updated fixture. It does not
   load the real user store or client files. A separate explicit read-only GitHub
