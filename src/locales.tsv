@@ -169,3 +169,4 @@ Update installed. Please reopen pp-switch manually.	更新已安装，请手动�
 Update package contains a link or special file.	更新包含链接或特殊文件。	更新包含連結或特殊檔案。	更新パッケージにリンクまたは特殊ファイルがあります。
 Update package is missing required files.	更新包缺少必需文件。	更新包缺少必需檔案。	更新パッケージに必要なファイルがありません。
 Update rollback conflicted with external changes. Backup files were preserved.	更新回滚与外部修改冲突，已保留备份文件。	更新回滾與外部修改衝突，已保留備份檔案。	更新の復元が外部の変更と競合しました。バックアップファイルは保持しています。
+Close	关闭	關閉	閉じる

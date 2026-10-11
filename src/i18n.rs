@@ -152,3 +152,10 @@ pub fn message(language: Language, english: &str) -> String {
     }
     english.to_owned()
 }
+
+/// Explicit labels avoid FLTK's untranslated default Close button.
+pub fn alert(language: Language, english: &str) {
+    fltk::dialog::message_title("pp-switch");
+    let _ =
+        fltk::dialog::choice2_default(&message(language, english), tr(language, "Close"), "", "");
+}

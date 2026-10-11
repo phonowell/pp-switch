@@ -775,7 +775,7 @@ pub fn helper(manifest: &Path) -> Result<()> {
     let result = wait_for_exit(plan.parent_pid, Duration::from_secs(30))
         .and_then(|_| install(&plan, &stage));
     let restart_result = if let Err(error) = &result {
-        fltk::dialog::alert_default(&i18n::message(plan.language, error));
+        i18n::alert(plan.language, error);
         let exe = *owned_files(&plan.target).last().unwrap();
         if file_hash(&plan.root.join(exe)).ok().as_ref() == plan.before.get(exe) {
             restart(&plan, &stage)
@@ -786,7 +786,7 @@ pub fn helper(manifest: &Path) -> Result<()> {
         restart(&plan, &stage)
     };
     if let Err(error) = &restart_result {
-        fltk::dialog::alert_default(&i18n::message(plan.language, error));
+        i18n::alert(plan.language, error);
     }
     #[cfg(not(windows))]
     {

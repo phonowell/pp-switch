@@ -19,7 +19,7 @@ fn main() {
         let language = pp_switch::storage::Store::system()
             .and_then(|s| s.language())
             .unwrap_or_else(|_| pp_switch::i18n::Language::system());
-        fltk::dialog::alert_default(&pp_switch::i18n::message(language, &error));
+        pp_switch::i18n::alert(language, &error);
         std::process::exit(1);
     }
 }

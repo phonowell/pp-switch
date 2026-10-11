@@ -112,6 +112,7 @@ fn inset(x: i32, y: i32, w: i32, h: i32, color: Color) {
 }
 
 pub fn init() {
+    fltk::dialog::message_title_default("pp-switch");
     app::background(232, 237, 242);
     app::foreground(37, 51, 73);
     app::set_frame_type_cb(FrameType::RShadowBox, raised, 7, 7, 14, 14);
