@@ -12,7 +12,7 @@ fn main() {
     app::add_timeout3(0.0, |_| {
         println!("READY");
         std::io::stdout().flush().unwrap();
+        app::add_timeout3(3.0, |_| app::quit());
     });
-    app::add_timeout3(3.0, |_| app::quit());
     pp_switch::ui::run_with(store, paths).expect("measurement window");
 }

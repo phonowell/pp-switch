@@ -38,8 +38,18 @@ def memory(process):
     if platform.system() == "Linux":
         fields = dict(line.split(":", 1) for line in Path(f"/proc/{process.pid}/status").read_text().splitlines() if ":" in line)
         return int(fields["VmRSS"].split()[0]) * 1024, int(fields["VmHWM"].split()[0]) * 1024
-    rss = int(subprocess.check_output(["ps", "-o", "rss=", "-p", str(process.pid)]).strip()) * 1024
+    rss = int(subprocess.check_output(["ps", "-o", "rss=", "-p", str(process.pid)], timeout=3).strip()) * 1024
     return rss, rss
+
+def terminate(process):
+    if platform.system() == "Darwin":
+        Path("target").mkdir(exist_ok=True)
+        try:
+            subprocess.run(["sample", str(process.pid), "1", "-file", "target/measure-hang.txt"], timeout=5, check=False)
+        except subprocess.TimeoutExpired:
+            pass
+    process.kill()
+    process.wait()
 
 samples = []
 for _ in range(args.runs):
@@ -50,8 +60,7 @@ for _ in range(args.runs):
     try:
         marker = ready.get(timeout=15)
     except queue.Empty:
-        process.kill()
-        process.wait()
+        terminate(process)
         raise SystemExit("Window did not enter its event loop within 15 seconds")
     if marker != "READY":
         process.kill()
@@ -60,8 +69,7 @@ for _ in range(args.runs):
     idle = []; peak = 0; returncode = None
     while True:
         if time.perf_counter() - start > 15:
-            process.kill()
-            process.wait()
+            terminate(process)
             raise SystemExit("Measurement window did not exit within 15 seconds")
         try:
             rss, high = memory(process); peak = max(peak, high)

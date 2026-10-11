@@ -47,24 +47,30 @@ jobs:
         run: cargo build --locked --release --target ${{ matrix.target }} --bins --examples
       - name: Package and enforce installed-size budget
         run: python scripts/package.py ${{ matrix.target }}
-      - name: GUI smoke and metrics (Linux)
+      - name: GUI smoke (Linux)
         if: runner.os == 'Linux'
         shell: bash
         run: |
           xvfb-run -a python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke
-          xvfb-run -a python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --output target/metrics.json --enforce
-      - name: GUI smoke and metrics (macOS)
+      - name: GUI smoke (macOS)
         if: runner.os == 'macOS'
         shell: bash
         run: |
           python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke
-          python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --output target/metrics.json --enforce
-      - name: GUI smoke and metrics (Windows)
+      - name: GUI smoke (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
           python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke.exe
-          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Memory and startup budget (Linux)
+        if: runner.os == 'Linux'
+        run: xvfb-run -a python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --output target/metrics.json --enforce
+      - name: Memory and startup budget (macOS)
+        if: runner.os == 'macOS'
+        run: python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --output target/metrics.json --enforce
+      - name: Memory and startup budget (Windows)
+        if: runner.os == 'Windows'
+        run: |
           python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui.exe --output target/metrics.json --enforce
       - name: Upload packages and measurements
         if: always()
@@ -77,4 +83,5 @@ jobs:
             target/package/*.json
             target/metrics.json
             target/gui-hang.txt
+            target/measure-hang.txt
           if-no-files-found: ignore

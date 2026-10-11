@@ -1,2 +1,6 @@
+[env]
+# FLTK 1.5's nested CMake project otherwise overrides static-msvcrt with /MD.
+CFLTK_TOOLCHAIN = { value = "cmake/static-crt.cmake", relative = true }
+
 [target.x86_64-pc-windows-msvc]
 rustflags = ["-C", "target-feature=+crt-static"]
