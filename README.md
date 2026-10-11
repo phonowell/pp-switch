@@ -2,131 +2,101 @@
 
 # pp-switch
 
-**Pure Provider. 只切地址和 Key。**
+**Pure Provider. Your setup stays yours.**
 
-为 Claude Code、Codex 和 Gemini CLI 准备的极简 Provider 切换器。
+Switch API base URLs and keys for Claude Code, Codex and Gemini CLI.
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/license-MIT-black.svg)](LICENSE)
-![Platforms](https://img.shields.io/badge/platforms-macOS%20%7C%20Windows%20%7C%20Linux-black)
+[![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
+![Platforms](https://img.shields.io/badge/macOS%20%7C%20Windows%20%7C%20Linux-native-465bab)
 
-[安装](#安装) · [使用](#使用) · [兼容范围](#兼容范围) · [开发](#开发)
+**English · [简体中文](README_ZH.md) · [日本語](README_JA.md) · [Deutsch](README_DE.md)**
+
+[Download](https://github.com/phonowell/pp-switch/releases) · [Guide](docs/user-guide.md) · [Measured performance](docs/verification.md) · [Spec](SPEC.md)
 
 </div>
 
-## 为什么做 pp-switch
+![pp-switch: a native neumorphic window, with providers on the left and connection details on the right](assets/screenshot.png)
 
-你已经配好了模型、权限和工具。换一家 API 服务时，只想换地址和 Key。
+## Why pp-switch?
 
-pp-switch 为这个操作而生：一个窗口，几组 Provider，点一下切换。
-你的模型、推理参数、MCP、Skills 和其他客户端配置继续由你管理。
-关闭窗口，应用退出。
+**You spent time getting your client right. Changing API services should not make you do it again.**
 
-## 界面预览
+Your models, reasoning settings, project permissions, MCP and skills already work. You just need a different endpoint and key. pp-switch saves those connections and patches exactly those two values, preserving unrelated configuration bytes—including comments and formatting. It refuses unsupported setups instead of silently rebuilding them.
 
-![pp-switch 的真实窗口：客户端选择、Provider 列表、地址与密钥编辑和链接导入](assets/screenshot.png)
+**A switcher should finish when you do.** One window, no tray, no startup agent, no provider probes or usage polling. Close it and the process exits. Updates happen only when you click **Check for updates** and confirm installation. Rust + FLTK, native vector drawing, system fonts; no bundled WebView, database or JavaScript runtime.
 
-截图使用示例地址和测试密钥。图片不随应用分发。
+**Keep the links you already have.** Paste a supported `ccswitch://` Provider link, review its URL/key, save and switch. Extra model and tool settings stay out of your client files.
 
-## 功能边界
+This need is visible in the community: [cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) asks for a Pure/Lite mode and says “CC Switch only manages fields it owns. Everything else belongs to the target application/user.” pp-switch takes that ownership principle and narrows it to URL + key. The discussion is motivation, not an endorsement. [Research notes](docs/community.md) record the sources and their limits.
+
+## Small scope, clear differences
 
 | | pp-switch | cc-switch |
 | --- | --- | --- |
-| 定位 | 地址和 API Key 切换器 | 多客户端综合管理工具 |
-| Provider 链接 | 导入受支持的 `ccswitch://` Provider 链接 | 完整深链及综合管理能力 |
-| 修改客户端配置 | 仅当前生效的地址和 Key | 按功能管理更多 Provider／客户端字段 |
-| 模型、代理、用量、MCP、Skills | 不提供 | 提供对应管理能力 |
-| 运行方式 | 单窗口，关闭即退出 | 更多窗口、托盘及代理等工作流 |
+| Purpose | URL/key switching for an already configured client | Broader provider and client management |
+| Writes | Only the effective base URL and API key | More configuration, according to enabled features |
+| Provider links | Paste/import the supported subset | Full deep-link workflows |
+| Models, routing, usage, MCP, prompts, skills | Outside the product boundary | Offers corresponding management features |
+| Lifecycle | Close window → process exits | Supports tray and broader workflows |
+| Updates | Explicit check → confirm → download, install, restart | Its own update workflow |
 
-需要综合管理时，[cc-switch](https://github.com/farion1231/cc-switch) 是更完整的选择。
-pp-switch 专注于已经配置好客户端、只想快速更换 API 服务的人。
+[cc-switch](https://github.com/farion1231/cc-switch) is a better fit when you want a full management dashboard. pp-switch is an independent project for people who have already configured their clients and want a small, predictable switching tool.
 
-## 安装
+## Download
 
-当前版本为 **[0.0.1 功能预览](https://github.com/phonowell/pp-switch/releases/tag/v0.0.1)**。
-支持的功能已实现；macOS 内存预算尚未达标，实测结果公开在下方和验证记录中。
-从 Release 下载对应系统的压缩包，无需安装 Node.js、Rust 或浏览器运行时。
+**[v0.0.2 functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.2)** — four interface languages, a redesigned native window and manual updates. Preview status remains: macOS has exceeded the original memory budget. Read the [actual evidence](docs/verification.md), not a “20 MiB” promise.
 
-| 系统 | 构建包 | 使用方式 |
+| Platform | Package | Run |
 | --- | --- | --- |
-| macOS Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.1/pp-switch-v0.0.1-aarch64-apple-darwin.zip) | 解压，将 `.app` 移入 Applications |
-| macOS Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.1/pp-switch-v0.0.1-x86_64-apple-darwin.zip) | 同上 |
-| Windows x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.1/pp-switch-v0.0.1-x86_64-pc-windows-msvc.zip) | 解压，运行 `pp-switch.exe` |
-| Linux x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.1/pp-switch-v0.0.1-x86_64-unknown-linux-gnu.tar.gz) | 解压，在桌面环境运行 `pp-switch` |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-aarch64-apple-darwin.zip) | Extract; move `.app` to Applications |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-apple-darwin.zip) | Same |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-pc-windows-msvc.zip) | Extract; run `pp-switch.exe` |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-unknown-linux-gnu.tar.gz) | Extract; run `pp-switch` on a desktop |
 
-macOS 构建未使用 Apple Developer 签名或公证。Linux 需要 X11／XWayland 和系统 X11、fontconfig 库。
-macOS 包声明最低 macOS 11；Windows 要求 Windows 10 或更新版本。
-具体平台是否已经通过构建与 GUI 验收，请以 [验证记录](docs/verification.md) 和对应 CI 运行结果为准。
+No Rust or Node.js installation required. macOS packages declare macOS 11+ and are **not Apple Developer-signed or notarized**. Windows requires Windows 10+. Linux requires X11/XWayland, X11/fontconfig libraries and a system font covering your selected language. Native test environments are listed in [verification](docs/verification.md); a declared minimum is not evidence of testing every OS version.
 
-## 使用
+## Use
 
-1. 选择 Claude Code、Codex 或 Gemini CLI。
-2. 新增 Provider，填写名称、Base URL 和 API Key；也可以粘贴 cc-switch Provider 链接。
-3. 点击切换。客户端会使用原来的模型、协议和其他配置。
+1. Choose Claude Code, Codex or Gemini CLI.
+2. Click **New**, enter name/base URL/key, or import a Provider link.
+3. **Save**, then **Switch provider**. Restart the client if it does not reload configuration.
 
-客户端需要已配置为支持的 API Key 模式。OAuth 切换、协议转换和客户端首次初始化
-不在范围内；不支持的配置会提示原因。正在运行的客户端可能需要重启以读取新配置。
-只操作用户级配置；项目配置、启动参数和另一个终端的环境变量仍可能覆盖它。
+Saving changes only pp-switch's local store. Switching changes client URL/key values. The interface supports **English, 简体中文, 繁體中文 and 日本語**, detects the system language on first launch and allows instant switching without losing edits.
 
-| 客户端 | 操作位置 | 前提 |
+| Client | Existing setup required | Fields changed |
 | --- | --- | --- |
-| Claude Code | `~/.claude/settings.json` 的两个 env 字段 | 无外部 Key helper、云平台模式或冲突凭据 |
-| Codex | 当前 Provider 的 `base_url`，以及既有 Key 位置 | 已选中自定义 Provider，并配置为 API Key 模式 |
-| Gemini CLI | `~/.gemini/.env` 的地址和 Key | 已通过 `/auth` 选择 API Key 模式 |
+| Claude Code | API-key setup without external key helper, cloud-provider mode or ambiguous credentials | `ANTHROPIC_BASE_URL` + existing key/token field in `settings.json` |
+| Codex | Selected custom provider, initialized API-key auth | Selected provider's `base_url` + existing bearer token or `auth.json.OPENAI_API_KEY` |
+| Gemini CLI | API-key mode already selected through `/auth` | `GOOGLE_GEMINI_BASE_URL` + `GEMINI_API_KEY` in `.env` |
 
-支持 `CLAUDE_CONFIG_DIR`、`CODEX_HOME` 目录覆盖；不会更改这些环境变量。
-本地 Provider 列表位于系统的 pp-switch 用户数据目录：macOS 为
-`~/Library/Application Support/pp-switch`，Windows 为 `%LOCALAPPDATA%\pp-switch`，
-Linux 为 `${XDG_DATA_HOME:-~/.local/share}/pp-switch`。
+No model/auth-mode/protocol changes or first-time client setup. User-level files only; project config, launch arguments and another terminal's environment may override them. `CLAUDE_CONFIG_DIR` and `CODEX_HOME` are respected. [Setup and troubleshooting →](docs/user-guide.md)
 
-## 兼容范围
+## Compatibility and trust
 
-```text
-ccswitch://v1/import?resource=provider&app=claude&name=Example&endpoint=https%3A%2F%2Fapi.example.com&apiKey=sk-example
-```
+- Compatible with the **Provider import subset** of `ccswitch://v1/import?resource=provider` and equivalent `ppswitch://` links: claude/codex/gemini, direct parameters and inline Base64 JSON/TOML. First endpoint wins; unsupported resources and remote-only configs are rejected.
+- Links are pasted into the window. No shared cc-switch database or OS URL association.
+- Secrets stay in local user-only files (Unix 0600 / Windows current-user ACL). Masking is **not encryption**. No automatic clipboard reads, secret diagnostics or provider requests.
+- Manual updates contact this repository's GitHub Releases only. You confirm the version before download/install/restart. Archives are size-bounded, SHA-256 checked against GitHub asset metadata and restricted to app-owned files; failures roll back unless external edits conflict. Release packages are unsigned: this digest checks integrity, not an independent publisher signature. Updates require a writable installation. Providers and client files are not updated.
+- Full behavior contract: [SPEC.md](SPEC.md). Exact write locations and storage paths: [guide](docs/user-guide.md).
 
-- 支持 `claude`、`codex`、`gemini` 的 Provider 链接。
-- 支持直接参数，以及 Base64 内嵌 JSON／TOML 配置中的地址、Key 提取。
-- 多地址取第一个；模型、脚本和其他附加配置不应用。
-- 不导入 MCP、Prompt、Skill，不共享 cc-switch 数据库，不注册系统链接关联。
-- 不自动更改认证方式，不清理已有配置，也不修改 shell 环境。
-- Key 保存在本地用户专属文件中；界面遮罩不是加密。
+## Performance, with evidence
 
-完整行为约定见 [SPEC.md](SPEC.md)。
+| Budget | Target |
+| --- | ---: |
+| Installed application-owned files | ≤5 MiB |
+| Idle total RSS | ≤20 MiB |
+| Startup/import peak total RSS | ≤30 MiB |
+| Cold interactive startup | ≤300 ms |
+| After closing | Process exits |
 
-## 性能预算
+**Budgets are goals, not verified marketing claims.** The original 0.0.1 CI baseline was 1.32–1.52 MiB installed, with idle RSS of 68.08 MiB (macOS ARM64), 40.24 MiB (macOS Intel), 15.10 MiB (Windows) and 8.77 MiB (Linux/Xvfb). The local M4/macOS 27 result was about 121 MiB RSS. These are historical baseline figures, not measurements of 0.0.2 or controlled platform comparisons.
 
-| 指标 | 目标 |
-| --- | --- |
-| 安装后应用自身总大小 | ≤ 5 MiB |
-| 打开窗口时空闲总 RSS | ≤ 20 MiB |
-| 启动／导入峰值总 RSS | ≤ 30 MiB |
-| 冷启动到可操作 | ≤ 300 ms |
-| 关闭窗口后 | 进程退出，驻留为 0 |
+[Current release results, raw measurements and methods](docs/verification.md) are public. Fresh-process event-loop readiness with caches intact does not establish disk-cold startup, input latency or import-stress peaks. Performance failures remain visible in CI; the thresholds have not been relaxed.
 
-**以上是预算，不是宣传承诺。** 数值包含随应用分发的库和资源，内存包含子进程。
-本机 macOS ARM64（Apple M4、16 GiB、macOS 27.0.1）实测：安装后约 **1.32 MiB**，
-含许可证；空闲总 RSS 约 **121 MiB**，内存预算未达标。
+## Development
 
-0.0.1 的四个平台均通过原生 CI 的构建、行为测试和 GUI smoke。下面是 CI 的实际结果：
-
-| CI 环境 | 安装大小 | 空闲总 RSS | 启动峰值 RSS | 最慢启动就绪 | 脚本预算 |
-| --- | ---: | ---: | ---: | ---: | --- |
-| macOS 15 · Apple Silicon | 1.32 MiB | 68.08 MiB | 68.09 MiB | 100.58 ms | 内存失败 |
-| macOS 15 · Intel | 1.34 MiB | 40.24 MiB | 40.25 MiB | 222.67 ms | 内存失败 |
-| Windows Server 2022 · x64 | 1.39 MiB | 15.10 MiB | 15.48 MiB | 43.22 ms | 通过 |
-| Ubuntu 22.04 · x64 · Xvfb | 1.52 MiB | 8.77 MiB | 19.10 MiB | 17.31 ms | 通过 |
-
-每个平台启动三个新进程；未清理系统缓存，以事件循环首次定时回调为就绪标记。
-这不代表严格冷启动、输入延迟或导入压力峰值已验证。macOS 预算失败使整体 CI 保持红色。
-发布构建的硬件、测量方式、失败记录和实际结果见 [验证记录](docs/verification.md)。
-
-## 开发
-
-项目采用 spec 驱动开发：先明确 [SPEC.md](SPEC.md) 中的行为，再实现和验证。
-
-技术栈：Rust + FLTK。需要 Rust ≥ 1.89、CMake 和平台 C++ 编译工具链。
-Linux 的构建依赖见 [CI 工作流](.github/workflows/ci.yml)。
+Spec first: update [SPEC.md](SPEC.md), implement the smallest change, verify its observable behavior. Rust ≥1.89, CMake and the platform C++ toolchain are required. Linux build libraries are in [CI](.github/workflows/ci.yml).
 
 ```sh
 cargo run --locked
@@ -135,18 +105,14 @@ cargo clippy --locked --all-targets -- -D warnings
 cargo test --locked
 cargo build --locked --release --bins --examples
 cargo run --locked --example ui_smoke
+cargo run --locked --example update_smoke
 python3 scripts/measure.py target/release/examples/measure_ui --output target/metrics.json --enforce
 ```
 
-Linux GUI 测试可使用 `xvfb-run -a`；Windows 示例二进制后缀为 `.exe`。
-性能脚本运行独立临时配置，使用同一个窗口与事件循环，不修改你的客户端配置。
-CI 保留未达标的测量结果，并把预算失败标记为失败。
+GUI/update harnesses use disposable files, never your real client configuration. On Linux use `xvfb-run -a`; Windows example binaries have an `.exe` suffix. Screenshots contain sample data and are not bundled with the application.
 
-## 致谢与许可
+## Acknowledgments and license
 
-感谢 [cc-switch](https://github.com/farion1231/cc-switch) 的开源协议与实现参考。
-pp-switch 是独立项目，与 cc-switch 无隶属关系。
+Thanks to [cc-switch](https://github.com/farion1231/cc-switch) for its open-source protocol and implementation references, and to [fltk-rs](https://github.com/fltk-rs/fltk-rs) / [FLTK](https://www.fltk.org) for the native UI toolkit. pp-switch is not affiliated with cc-switch.
 
-界面基于 [fltk-rs](https://github.com/fltk-rs/fltk-rs) 与 [FLTK](https://www.fltk.org) 项目的工作。
-
-[MIT](LICENSE)。第三方依赖保留各自许可证。
+[MIT](LICENSE). Dependencies retain their own [licenses and notices](THIRD_PARTY_NOTICES.txt).

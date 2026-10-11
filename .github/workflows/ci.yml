@@ -36,7 +36,7 @@ jobs:
           python-version: '3.x'
       - name: Linux build dependencies
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y cmake libx11-dev libxext-dev libxft-dev libxinerama-dev libxcursor-dev libxrender-dev libxfixes-dev libfontconfig1-dev xvfb
+        run: sudo apt-get update && sudo apt-get install -y cmake libx11-dev libxext-dev libxft-dev libxinerama-dev libxcursor-dev libxrender-dev libxfixes-dev libfontconfig1-dev fonts-noto-cjk xvfb
       - name: Format
         run: cargo fmt --check
       - name: Lint
@@ -51,17 +51,32 @@ jobs:
         if: runner.os == 'Linux'
         shell: bash
         run: |
-          xvfb-run -a python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke
+          xvfb-run -a python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke target/gui.ppm
       - name: GUI smoke (macOS)
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke
+          python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke target/gui.ppm
       - name: GUI smoke (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke.exe
+          python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke.exe target/gui.ppm
+      - name: Update helper / installation / restart (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          xvfb-run -a target/${{ matrix.target }}/release/examples/update_smoke
+          target/${{ matrix.target }}/release/examples/update_smoke --archive target/package/pp-switch-v0.0.2-${{ matrix.target }}.tar.gz
+      - name: Update helper / installation / restart (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          target/${{ matrix.target }}/release/examples/update_smoke
+          target/${{ matrix.target }}/release/examples/update_smoke --archive target/package/pp-switch-v0.0.2-${{ matrix.target }}.zip
+      - name: Update helper / installation / restart (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          target/${{ matrix.target }}/release/examples/update_smoke.exe
+          target/${{ matrix.target }}/release/examples/update_smoke.exe --archive target/package/pp-switch-v0.0.2-${{ matrix.target }}.zip
       - name: Memory and startup budget (Linux)
         if: runner.os == 'Linux'
         run: xvfb-run -a python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --output target/metrics.json --enforce
@@ -82,6 +97,7 @@ jobs:
             target/package/*.tar.gz
             target/package/*.json
             target/metrics.json
+            target/gui*.ppm
             target/gui-hang.txt
             target/measure-hang.txt
           if-no-files-found: ignore

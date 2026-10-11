@@ -1,0 +1,171 @@
+Pure Provider. Just your base URL and API key.	Pure Provider. 只切地址和 Key。	Pure Provider. 只切地址和 Key。	Pure Provider. URL とキーだけ。
+Your providers	我的服务商	我的服務商	プロバイダー
+Connection details	连接信息	連線資訊	接続情報
+Client	客户端	客戶端	クライアント
+Language	语言	語言	言語
+Provider name	服务商名称	服務商名稱	プロバイダー名
+Base URL	Base URL	Base URL	Base URL
+API key	API Key	API Key	API キー
++ New	+ 新增	+ 新增	+ 新規
+Save	保存	儲存	保存
+Switch provider	切换服务商	切換服務商	切り替え
+Delete	删除	刪除	削除
+Cancel	取消	取消	キャンセル
+Import	导入	匯入	取り込み
+Import a cc-switch Provider link	导入 cc-switch 服务商链接	匯入 cc-switch 服務商連結	cc-switch のリンクを取り込む
+Saving keeps client files unchanged. Switching updates URL + key.	保存不改客户端配置，切换只改地址和 Key。	儲存不改客戶端配置，切換隻改地址和 Key。	保存はアプリ内のみ。切り替えは URL とキーのみ。
+Check for updates	检查更新	檢查更新	更新を確認
+Checking for updates…	正在检查更新…	正在檢查更新…	更新を確認中…
+Installing update…	正在安装更新…	正在安裝更新…	更新をインストール中…
+New provider. Save first, then switch.	新服务商：填写后先保存，再切换。	新服務商：填寫後先儲存，再切換。	新しいプロバイダー。保存してから切り替えてください。
+Add a provider or paste a link. Only URL and key will be changed.	新增服务商或粘贴链接；只会修改地址和 Key。	新增服務商或貼上連結；只會修改地址和 Key。	プロバイダーを追加するかリンクを貼り付けてください。変更は URL とキーのみです。
+Current: {url}  ·  * marks a matching provider	当前：{url}  ·  * 表示与当前配置匹配	當前：{url}  ·  * 表示與當前配置匹配	現在：{url}  ·  * は現在の設定と一致
+Imported URL + key only. Review and save; client files are unchanged.	已导入地址和 Key。检查后保存，客户端配置尚未修改。	已匯入地址和 Key。檢查後儲存，客戶端配置尚未修改。	URL とキーを取り込みました。確認して保存してください。クライアント設定は未変更です。
+Saved locally. Client files are unchanged.	已保存到本地，客户端配置未修改。	已儲存到本地，客戶端配置未修改。	アプリ内に保存しました。クライアント設定は未変更です。
+Switched URL + key. Restart the client if it does not reload its configuration.	已切换地址和 Key。客户端若未自动读取配置，请重启客户端。	已切換地址和 Key。客戶端若未自動讀取配置，請重啟客戶端。	URL とキーを切り替えました。設定が反映されない場合はクライアントを再起動してください。
+Delete this saved provider? Client configuration will stay as it is.	删除已保存的服务商？客户端配置会保持原样。	刪除已儲存的服務商？客戶端配置會保持原樣。	保存したプロバイダーを削除しますか？クライアント設定は変更されません。
+Provider deleted. Client configuration is unchanged.	已删除服务商，客户端配置未修改。	已刪除服務商，客戶端配置未修改。	プロバイダーを削除しました。クライアント設定は未変更です。
+Save a provider before switching.	请先保存服务商，再切换。	請先儲存服務商，再切換。	切り替える前にプロバイダーを保存してください。
+Save your edits before switching this provider.	请先保存当前编辑，再切换服务商。	請先儲存當前編輯，再切換服務商。	変更を保存してから切り替えてください。
+Select a saved provider first.	请先选择已保存的服务商。	請先選擇已儲存的服務商。	保存済みのプロバイダーを選択してください。
+This client is not supported. Choose Claude, Codex or Gemini.	不支持此客户端。请选择 Claude、Codex 或 Gemini。	不支援此客戶端。請選擇 Claude、Codex 或 Gemini。	このクライアントは未対応です。Claude、Codex、Gemini のいずれかを選択してください。
+System clock is before the Unix epoch.	系统时间早于 Unix 起点，请检查系统时钟。	系統時間早於 Unix 起點，請檢查系統時鐘。	システム時刻が Unix エポックより前です。時計を確認してください。
+Name must contain 1–128 bytes without control characters.	名称须为 1–128 字节，且不能含控制字符。	名稱須為 1–128 位元組，且不能含控制字元。	名前は 1～128 バイトで、制御文字は使用できません。
+API key is required and must not contain control characters.	API Key 不能为空，也不能含控制字符。	API Key 不能為空，也不能含控制字元。	API キーは必須です。制御文字は使用できません。
+Base URL must be a valid HTTP(S) URL.	Base URL 必须是有效的 HTTP(S) 地址。	Base URL 必須是有效的 HTTP(S) 地址。	Base URL には有効な HTTP(S) URL を指定してください。
+Base URL must use HTTP(S), with a host and no embedded credentials or fragment.	Base URL 须使用 HTTP(S)、包含主机，且不能内嵌凭据或片段。	Base URL 須使用 HTTP(S)、包含主機，且不能內嵌憑據或片段。	Base URL は HTTP(S) とホストが必要です。認証情報やフラグメントは埋め込めません。
+Inline config must be UTF-8.	内嵌配置须使用 UTF-8 编码。	內嵌配置須使用 UTF-8 編碼。	埋め込み設定は UTF-8 である必要があります。
+Inline config is not valid Base64.	内嵌配置不是有效的 Base64。	內嵌配置不是有效的 Base64。	埋め込み設定の Base64 が不正です。
+Import link is too large (maximum 256 KiB).	导入链接过大，最大为 256 KiB。	匯入連結過大，最大為 256 KiB。	リンクが大きすぎます。上限は 256 KiB です。
+Invalid provider link.	服务商链接无效。	服務商連結無效。	プロバイダーリンクが無効です。
+Expected ccswitch://v1/import or ppswitch://v1/import.	链接须为 ccswitch://v1/import 或 ppswitch://v1/import。	連結須為 ccswitch://v1/import 或 ppswitch://v1/import。	ccswitch://v1/import または ppswitch://v1/import が必要です。
+Only Provider links are supported; MCP, prompts and skills are outside scope.	仅支持服务商链接，不导入 MCP、提示词或 Skills。	僅支援服務商連結，不匯入 MCP、提示詞或 Skills。	プロバイダーリンクのみ対応しています。MCP、プロンプト、Skills は取り込みません。
+Link is missing app.	链接缺少 app 字段。	連結缺少 app 欄位。	リンクに app がありません。
+Link is missing name.	链接缺少 name 字段。	連結缺少 name 欄位。	リンクに name がありません。
+Inline config is not valid JSON.	内嵌配置不是有效的 JSON。	內嵌配置不是有效的 JSON。	埋め込み設定の JSON が不正です。
+Inline config is not valid TOML.	内嵌配置不是有效的 TOML。	內嵌配置不是有效的 TOML。	埋め込み設定の TOML が不正です。
+Inline configFormat must be json or toml.	内嵌配置的 configFormat 须为 json 或 toml。	內嵌配置的 configFormat 須為 json 或 toml。	configFormat は json または toml を指定してください。
+Remote config URLs are not supported. Use endpoint/apiKey or inline config.	不支持远程配置地址，请使用 endpoint/apiKey 或内嵌配置。	不支援遠端配置地址，請使用 endpoint/apiKey 或內嵌配置。	リモート設定 URL は未対応です。endpoint/apiKey または埋め込み設定を使用してください。
+Link is missing the base URL.	链接缺少 Base URL。	連結缺少 Base URL。	リンクに Base URL がありません。
+Link has no endpoint.	链接没有可用的 endpoint。	連結沒有可用的 endpoint。	リンクに有効な endpoint がありません。
+Link is missing the API key.	链接缺少 API Key。	連結缺少 API Key。	リンクに API キーがありません。
+Inline Codex config is not valid TOML.	内嵌的 Codex 配置不是有效的 TOML。	內嵌的 Codex 配置不是有效的 TOML。	埋め込み Codex 設定の TOML が不正です。
+Cannot locate home directory.	无法定位用户主目录。	無法定位使用者主目錄。	ホームディレクトリが見つかりません。
+Codex config is not valid TOML.	Codex 配置不是有效的 TOML。	Codex 配置不是有效的 TOML。	Codex 設定の TOML が不正です。
+Set Gemini /auth to API key first; pp-switch does not change auth mode.	请先通过 Gemini /auth 选择 API Key；pp-switch 不更改认证方式。	請先透過 Gemini /auth 選擇 API Key；pp-switch 不更改認證方式。	先に Gemini の /auth で API キーを選択してください。認証方式は変更しません。
+Initialize Codex API-key auth first; auth.json is missing.	请先配置 Codex API Key 认证；auth.json 不存在。	請先配置 Codex API Key 認證；auth.json 不存在。	先に Codex の API キー認証を設定してください。auth.json がありません。
+Claude uses apiKeyHelper; pp-switch does not change external key sources.	Claude 使用 apiKeyHelper；pp-switch 不更改外部密钥来源。	Claude 使用 apiKeyHelper；pp-switch 不更改外部金鑰來源。	Claude は apiKeyHelper を使用しています。外部のキー取得元は変更しません。
+Invalid Claude cloud-provider flag.	Claude 云服务商标记无效。	Claude 雲服務商標記無效。	Claude のクラウドプロバイダーフラグが不正です。
+Claude cloud-provider mode is outside scope. Use an existing direct API setup.	不支持 Claude 云服务商模式，请使用已配置的直连 API。	不支援 Claude 雲服務商模式，請使用已配置的直連 API。	Claude のクラウドプロバイダーモードは未対応です。設定済みの直接 API 接続を使用してください。
+Claude has both AUTH_TOKEN and API_KEY. Resolve the credential source first.	Claude 同时配置了 AUTH_TOKEN 和 API_KEY，请先确定凭据来源。	Claude 同時配置了 AUTH_TOKEN 和 API_KEY，請先確定憑據來源。	Claude に AUTH_TOKEN と API_KEY の両方があります。先に認証情報を整理してください。
+Initialize a custom Codex provider first; pp-switch never changes model_provider.	请先配置 Codex 自定义服务商；pp-switch 不修改 model_provider。	請先配置 Codex 自定義服務商；pp-switch 不修改 model_provider。	先に Codex のカスタムプロバイダーを設定してください。model_provider は変更しません。
+Selected Codex provider has no custom configuration.	当前 Codex 服务商没有自定义配置。	當前 Codex 服務商沒有自定義配置。	選択中の Codex プロバイダーにカスタム設定がありません。
+Codex uses env_key; pp-switch does not change environment credentials.	Codex 使用 env_key；pp-switch 不更改环境变量凭据。	Codex 使用 env_key；pp-switch 不更改環境變數憑據。	Codex は env_key を使用しています。環境変数の認証情報は変更しません。
+Selected Codex provider is not configured to use file-based API-key auth. pp-switch does not change auth mode.	当前 Codex 服务商未配置为文件式 API Key 认证；pp-switch 不更改认证方式。	當前 Codex 服務商未配置為檔案式 API Key 認證；pp-switch 不更改認證方式。	選択中の Codex プロバイダーはファイル式 API キー認証ではありません。認証方式は変更しません。
+Codex uses an external/keyring credential store. Only existing file-based API-key auth is supported.	Codex 使用外部或密钥环存储；仅支持已配置的文件式 API Key 认证。	Codex 使用外部或金鑰環儲存；僅支援已配置的檔案式 API Key 認證。	Codex は外部ストアまたはキーリングを使用しています。設定済みのファイル式 API キー認証のみ対応します。
+Invalid Codex auth JSON.	Codex 认证 JSON 无效。	Codex 認證 JSON 無效。	Codex 認証の JSON が不正です。
+Codex auth.json contains OAuth credentials. pp-switch does not switch auth modes.	Codex auth.json 含 OAuth 凭据；pp-switch 不切换认证方式。	Codex auth.json 含 OAuth 憑據；pp-switch 不切換認證方式。	Codex の auth.json に OAuth 認証情報があります。認証方式は切り替えません。
+Initialize Codex API-key auth first; OPENAI_API_KEY is missing.	请先配置 Codex API Key 认证；OPENAI_API_KEY 缺失。	請先配置 Codex API Key 認證；OPENAI_API_KEY 缺失。	先に Codex の API キー認証を設定してください。OPENAI_API_KEY がありません。
+Codex auth mode is outside the supported API-key setup.	当前 Codex 认证方式不属于受支持的 API Key 配置。	當前 Codex 認證方式不屬於受支援的 API Key 配置。	現在の Codex 認証方式は、対応する API キー設定ではありません。
+Codex bearer token setup is incompatible with requires_openai_auth=true. pp-switch does not change auth mode.	Codex bearer token 与 requires_openai_auth=true 冲突；pp-switch 不更改认证方式。	Codex bearer token 與 requires_openai_auth=true 衝突；pp-switch 不更改認證方式。	Codex の bearer token と requires_openai_auth=true は併用できません。認証方式は変更しません。
+{name} is set in this process's environment. File edits may be overridden; launch pp-switch without this override.	当前进程环境已设置 {name}，可能覆盖文件修改。请移除此覆盖后启动 pp-switch。	當前程序環境已設定 {name}，可能覆蓋檔案修改。請移除此覆蓋後啟動 pp-switch。	このプロセスの環境に {name} があります。ファイルの変更より優先される可能性があります。この指定なしで pp-switch を起動してください。
+Cannot read {path}.	无法读取 {path}。	無法讀取 {path}。	{path} を読み取れません。
+Cannot inspect configuration file.	无法检查配置文件。	無法檢查配置檔案。	設定ファイルを確認できません。
+Configuration file exceeds the 1 MiB limit.	配置文件超过 1 MiB 上限。	配置檔案超過 1 MiB 上限。	設定ファイルが 1 MiB の上限を超えています。
+Cannot read UTF-8 configuration.	无法读取 UTF-8 配置。	無法讀取 UTF-8 配置。	UTF-8 の設定を読み取れません。
+Cannot restrict credential-file permissions.	无法限制凭据文件权限。	無法限制憑據檔案許可權。	認証情報ファイルのアクセス権を制限できません。
+Cannot create a current-user credential ACL.	无法创建当前用户专属的凭据 ACL。	無法建立當前使用者專屬的憑據 ACL。	現在のユーザー専用の認証情報 ACL を作成できません。
+Cannot restrict credential-file ACL to the current user.	无法将凭据文件 ACL 限制为当前用户。	無法將憑據檔案 ACL 限制為當前使用者。	認証情報ファイルの ACL を現在のユーザーに限定できません。
+Cannot identify the current user for credential permissions.	无法识别当前用户以设置凭据权限。	無法識別當前使用者以設定憑據許可權。	認証情報のアクセス権設定に必要な現在のユーザーを識別できません。
+Cannot read current-user security information.	无法读取当前用户安全信息。	無法讀取當前使用者安全資訊。	現在のユーザーのセキュリティ情報を読み取れません。
+Cannot encode current-user security identifier.	无法编码当前用户安全标识。	無法編碼當前使用者安全標識。	現在のユーザーのセキュリティ識別子を変換できません。
+Invalid current-user security identifier.	当前用户安全标识无效。	當前使用者安全標識無效。	現在のユーザーのセキュリティ識別子が不正です。
+Configuration path has no parent directory.	配置路径没有父目录。	配置路徑沒有父目錄。	設定パスに親ディレクトリがありません。
+Cannot create configuration directory.	无法创建配置目录。	無法建立配置目錄。	設定ディレクトリを作成できません。
+Cannot create temporary configuration file.	无法创建临时配置文件。	無法建立臨時配置檔案。	一時設定ファイルを作成できません。
+Cannot flush configuration file.	无法将配置文件写入磁盘。	無法將配置檔案寫入磁碟。	設定ファイルをディスクに書き出せません。
+Cannot replace configuration file.	无法替换配置文件。	無法替換配置檔案。	設定ファイルを置き換えられません。
+Cannot flush configuration directory.	无法将配置目录写入磁盘。	無法將配置目錄寫入磁碟。	設定ディレクトリをディスクに書き出せません。
+Configuration file is a symbolic link. pp-switch will not replace the link; point the client config directory at real files.	配置文件是符号链接。pp-switch 不会替换链接；请将客户端配置目录指向真实文件。	配置檔案是符號連結。pp-switch 不會替換連結；請將客戶端配置目錄指向真實檔案。	設定ファイルはシンボリックリンクです。リンクは置き換えません。実ファイルのあるディレクトリを指定してください。
+Configuration destination is not a regular file.	配置目标不是普通文件。	配置目標不是普通檔案。	設定の書き込み先が通常のファイルではありません。
+Cannot inspect configuration destination.	无法检查配置目标。	無法檢查配置目標。	設定の書き込み先を確認できません。
+Cannot locate user application-data directory.	无法定位用户应用数据目录。	無法定位使用者應用資料目錄。	ユーザーのアプリデータディレクトリが見つかりません。
+Cannot create pp-switch data directory.	无法创建 pp-switch 数据目录。	無法建立 pp-switch 資料目錄。	pp-switch のデータディレクトリを作成できません。
+Cannot restrict data-directory permissions.	无法限制数据目录权限。	無法限制資料目錄許可權。	データディレクトリのアクセス権を制限できません。
+Cannot open pp-switch write lock.	无法打开 pp-switch 写入锁。	無法開啟 pp-switch 寫入鎖。	pp-switch の書き込みロックを開けません。
+Another pp-switch operation is writing. Try again.	另一个 pp-switch 操作正在写入，请稍后重试。	另一個 pp-switch 操作正在寫入，請稍後重試。	別の pp-switch 操作が書き込み中です。もう一度お試しください。
+Recovery journal is invalid. Preserve it and inspect the data directory.	恢复日志无效。请保留日志并检查数据目录。	恢復日誌無效。請保留日誌並檢查資料目錄。	復旧ジャーナルが不正です。削除せず、データディレクトリを確認してください。
+Recovery journal contains too many files.	恢复日志包含过多文件。	恢復日誌包含過多檔案。	復旧ジャーナルのファイル数が多すぎます。
+A file changed outside pp-switch during recovery. No files were overwritten; preserve pending.json and resolve the conflict.	恢复期间文件被其他程序修改。未覆盖任何文件，请保留 pending.json 并解决冲突。	恢復期間檔案被其他程式修改。未覆蓋任何檔案，請保留 pending.json 並解決衝突。	復旧中に外部でファイルが変更されました。上書きはしていません。pending.json を保持して競合を解決してください。
+Cannot restore a previously absent file.	无法恢复原本不存在的文件状态。	無法恢復原本不存在的檔案狀態。	以前存在しなかったファイルの状態に戻せません。
+Cannot clear recovery journal.	无法清除恢复日志。	無法清除恢復日誌。	復旧ジャーナルを削除できません。
+Too many files in one operation.	一次操作包含过多文件。	一次操作包含過多檔案。	一度の操作のファイル数が多すぎます。
+Configuration changed while preparing this operation. Reload and try again.	准备操作时配置已被修改，请重新加载后重试。	準備操作時配置已被修改，請重新載入後重試。	操作の準備中に設定が変更されました。再読み込みしてやり直してください。
+Cannot encode recovery journal.	无法编码恢复日志。	無法編碼恢復日誌。	復旧ジャーナルを変換できません。
+Operation exceeds the recovery journal size limit.	操作超过恢复日志的大小上限。	操作超過恢復日誌的大小上限。	操作が復旧ジャーナルのサイズ上限を超えています。
+Configuration changed during this operation.	操作期间配置已被修改。	操作期間配置已被修改。	操作中に設定が変更されました。
+Configuration changed before verification finished.	验证完成前配置已被修改。	驗證完成前配置已被修改。	検証が終わる前に設定が変更されました。
+Cannot finish the recovery journal.	无法完成恢复日志。	無法完成恢復日誌。	復旧ジャーナルを完了できません。
+Write failed. Previous configuration was restored.	写入失败，已恢复先前配置。	寫入失敗，已恢復先前配置。	書き込みに失敗しました。以前の設定に戻しました。
+Provider store is invalid; it was not overwritten.	服务商存储无效，未覆盖原文件。	服務商儲存無效，未覆蓋原檔案。	プロバイダーストアが不正です。元のファイルは上書きしていません。
+Provider store exceeds the 128-provider limit.	服务商存储超过 128 项上限。	服務商儲存超過 128 項上限。	プロバイダーストアが 128 件の上限を超えています。
+Provider store contains invalid or duplicate IDs.	服务商存储含无效或重复 ID。	服務商儲存含無效或重複 ID。	プロバイダーストアに無効または重複した ID があります。
+Maximum 128 saved providers.	最多保存 128 个服务商。	最多儲存 128 個服務商。	保存できるプロバイダーは最大 128 件です。
+Cannot encode provider store.	无法编码服务商存储。	無法編碼服務商儲存。	プロバイダーストアを変換できません。
+Empty JSON property path.	JSON 属性路径为空。	JSON 屬性路徑為空。	JSON プロパティのパスが空です。
+Configuration must be a JSON object without duplicate properties.	配置须为 JSON 对象，且不能含重复属性。	配置須為 JSON 物件，且不能含重複屬性。	設定は、重複したプロパティのない JSON オブジェクトである必要があります。
+Configured URL/key must be a string.	配置中的地址和 Key 须为字符串。	配置中的地址和 Key 須為字串。	設定の URL とキーは文字列である必要があります。
+Cannot encode configuration value.	无法编码配置值。	無法編碼配置值。	設定値を変換できません。
+Configuration must be a JSON object.	配置须为 JSON 对象。	配置須為 JSON 物件。	設定は JSON オブジェクトである必要があります。
+Invalid JSON object.	JSON 对象无效。	JSON 物件無效。	JSON オブジェクトが不正です。
+Configuration is not valid TOML.	配置不是有效的 TOML。	配置不是有效的 TOML。	設定の TOML が不正です。
+Required active provider field is missing; initialize the client first.	当前服务商缺少必需字段，请先完成客户端配置。	當前服務商缺少必需欄位，請先完成客戶端配置。	現在のプロバイダーに必須の項目がありません。先にクライアントを設定してください。
+Cannot locate TOML value.	无法定位 TOML 配置值。	無法定位 TOML 配置值。	TOML の設定値を特定できません。
+Invalid configuration value range.	配置值范围无效。	配置值範圍無效。	設定値の範囲が不正です。
+Duplicate URL/key assignments in .env; resolve them first.	.env 中地址或 Key 重复赋值，请先解决冲突。	.env 中地址或 Key 重複賦值，請先解決衝突。	.env に URL またはキーの重複した指定があります。先に整理してください。
+Multiline or unterminated URL/key in .env is not supported.	不支持 .env 中的多行或未闭合地址、Key。	不支援 .env 中的多行或未閉合地址、Key。	.env の複数行または引用符が閉じていない URL/キーは未対応です。
+Unsupported escaping in .env URL/key.	.env 中地址或 Key 的转义方式不受支持。	.env 中地址或 Key 的轉義方式不受支援。	.env の URL/キーに未対応のエスケープがあります。
+Cannot encode .env value.	无法编码 .env 配置值。	無法編碼 .env 配置值。	.env の値を変換できません。
+Language preferences are invalid; they were not overwritten.	语言偏好文件无效，未覆盖原文件。	語言偏好檔案無效，未覆蓋原檔案。	言語設定ファイルが不正です。上書きしていません。
+Cannot encode language preferences.	无法编码语言偏好。	無法編碼語言偏好。	言語設定を変換できません。
+Nothing here yet.	还没有服务商。	還沒有服務商。	まだ登録されていません。
+Updating…	更新中…	更新中…	更新中…
+Downloading and verifying update…	正在下载并验证更新…	正在下載並驗證更新…	更新をダウンロード・検証中…
+Install and restart	安装并重启	安裝並重啟	インストールして再起動
+Install version {version} and restart? Unsaved edits will be lost.	安装 {version} 并重启？未保存的编辑将丢失。	安裝 {version} 並重啟？未儲存的編輯將丟失。	バージョン {version} をインストールして再起動しますか？未保存の編集内容は失われます。
+Update cancelled. Nothing was installed.	已取消更新，未安装任何内容。	已取消更新，未安裝任何內容。	更新をキャンセルしました。何もインストールしていません。
+Update request timed out. Try again.	更新请求超时，请重试。	更新請求超時，請重試。	更新の要求がタイムアウトしました。もう一度お試しください。
+Update worker stopped. Try again.	更新任务已停止，请重试。	更新任務已停止，請重試。	更新処理が停止しました。もう一度お試しください。
+You are using the latest available version.	当前已是可用的最新版本。	當前已是可用的最新版本。	利用可能な最新バージョンを使用しています。
+Application directory is not writable. Move it to a user-writable location and try again.	应用目录不可写，请将应用移至当前用户可写的位置后重试。	應用目錄不可寫，請將應用移至當前使用者可寫的位置後重試。	アプリのディレクトリに書き込めません。ユーザーが書き込める場所に移動して再試行してください。
+Application files changed during the update. Nothing was installed.	更新期间应用文件已被修改，未安装任何内容。	更新期間應用檔案已被修改，未安裝任何內容。	更新中にアプリのファイルが変更されました。何もインストールしていません。
+Cannot back up application files.	无法备份应用文件。	無法備份應用檔案。	アプリのファイルをバックアップできません。
+Cannot contact GitHub. Check your connection or try later.	无法连接 GitHub，请检查网络或稍后重试。	無法連線 GitHub，請檢查網路或稍後重試。	GitHub に接続できません。接続を確認するか、後でもう一度お試しください。
+Cannot create update staging directory.	无法创建更新暂存目录。	無法建立更新暫存目錄。	更新の一時ディレクトリを作成できません。
+Cannot install update files.	无法安装更新文件。	無法安裝更新檔案。	更新ファイルをインストールできません。
+Cannot locate the installed application.	无法定位已安装的应用。	無法定位已安裝的應用。	インストール済みのアプリが見つかりません。
+Cannot read installed application files.	无法读取已安装的应用文件。	無法讀取已安裝的應用檔案。	インストール済みのアプリファイルを読み取れません。
+Cannot read update data.	无法读取更新数据。	無法讀取更新資料。	更新データを読み取れません。
+Cannot stage update files.	无法暂存更新文件。	無法暫存更新檔案。	更新ファイルを一時保存できません。
+Cannot start update installer.	无法启动更新安装程序。	無法啟動更新安裝程式。	更新インストーラーを起動できません。
+Close other pp-switch windows and try updating again.	请关闭其他 pp-switch 窗口后重试更新。	請關閉其他 pp-switch 視窗後重試更新。	他の pp-switch ウィンドウを閉じてから更新を再試行してください。
+Duplicate file in update package.	更新包内含重复文件。	更新包內含重複檔案。	更新パッケージに重複するファイルがあります。
+Invalid update URL.	更新地址无效。	更新地址無效。	更新 URL が無効です。
+Invalid update archive.	更新压缩包无效。	更新壓縮包無效。	更新アーカイブが不正です。
+Invalid update installation plan.	更新安装信息无效。	更新安裝資訊無效。	更新のインストール情報が不正です。
+Invalid update metadata.	更新元数据无效。	更新後設資料無效。	更新メタデータが不正です。
+Run pp-switch from its installed package to update it.	请从完整的已安装包运行 pp-switch 后再更新。	請從完整的已安裝包執行 pp-switch 後再更新。	完全なインストールパッケージから pp-switch を起動して更新してください。
+Too many update redirects.	更新地址重定向过多。	更新地址重定向過多。	更新 URL のリダイレクトが多すぎます。
+Unsafe update archive path.	更新包包含不安全的路径。	更新包包含不安全的路徑。	更新アーカイブに安全でないパスがあります。
+Unsupported update package layout.	不支持此更新包的文件结构。	不支援此更新包的檔案結構。	この更新パッケージの構成には対応していません。
+Update checksum mismatch. Nothing was installed.	更新校验值不匹配，未安装任何内容。	更新校驗值不匹配，未安裝任何內容。	更新のチェックサムが一致しません。何もインストールしていません。
+Update data exceeds the size limit.	更新数据超过大小上限。	更新資料超過大小上限。	更新データがサイズ上限を超えています。
+Update destination contains a symbolic link.	更新目标含符号链接。	更新目標含符號連結。	更新先にシンボリックリンクがあります。
+Update destination is not a regular application file.	更新目标不是普通应用文件。	更新目標不是普通應用檔案。	更新先が通常のアプリファイルではありません。
+Update executable does not match this platform.	更新可执行文件与当前平台不匹配。	更新可執行檔案與當前平臺不匹配。	更新の実行ファイルがこのプラットフォームに対応していません。
+Update has no valid SHA-256 digest.	更新缺少有效的 SHA-256 摘要。	更新缺少有效的 SHA-256 摘要。	更新に有効な SHA-256 ダイジェストがありません。
+Update installation failed. Previous version was restored.	更新安装失败，已恢复先前版本。	更新安裝失敗，已恢復先前版本。	更新のインストールに失敗しました。以前のバージョンに戻しました。
+Update installed. Please reopen pp-switch manually.	更新已安装，请手动重新打开 pp-switch。	更新已安裝，請手動重新開啟 pp-switch。	更新をインストールしました。pp-switch を手動で開き直してください。
+Update package contains a link or special file.	更新包含链接或特殊文件。	更新包含連結或特殊檔案。	更新パッケージにリンクまたは特殊ファイルがあります。
+Update package is missing required files.	更新包缺少必需文件。	更新包缺少必需檔案。	更新パッケージに必要なファイルがありません。
+Update rollback conflicted with external changes. Backup files were preserved.	更新回滚与外部修改冲突，已保留备份文件。	更新回滾與外部修改衝突，已保留備份檔案。	更新の復元が外部の変更と競合しました。バックアップファイルは保持しています。

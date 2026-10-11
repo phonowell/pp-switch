@@ -36,9 +36,11 @@ if macos:
                       "NSHighResolutionCapable": True}, file)
 else:
     shutil.copy2(binary, stage / binary.name)
-shutil.copy2(root / "LICENSE", stage / "LICENSE")
-shutil.copy2(root / "THIRD_PARTY_NOTICES.txt", stage / "THIRD_PARTY_NOTICES.txt")
-(stage / "README.txt").write_text(f"pp-switch {version} — Pure Provider\n\n"
+resources = app / "Resources" if macos else stage
+resources.mkdir(exist_ok=True)
+shutil.copy2(root / "LICENSE", resources / "LICENSE")
+shutil.copy2(root / "THIRD_PARTY_NOTICES.txt", resources / "THIRD_PARTY_NOTICES.txt")
+(resources / "README.txt").write_text(f"pp-switch {version} — Pure Provider\n\n"
     "Switch only API base URLs and keys. Close the window to exit.\n"
     "Clients must already use a supported API-key configuration.\n"
     "Source, setup and limits: https://github.com/phonowell/pp-switch\n"

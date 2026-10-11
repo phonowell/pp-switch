@@ -1,5 +1,5 @@
 //! Bounded local storage and a recoverable, cooperative file transaction.
-use crate::{Result, provider::Provider};
+use crate::{Result, i18n::Language, provider::Provider};
 use serde::{Deserialize, Serialize};
 use std::fs::{self, File, OpenOptions};
 use std::io::{Read, Write};
@@ -22,6 +22,12 @@ pub struct Change {
 #[derive(Deserialize, Serialize)]
 struct Journal {
     changes: Vec<Change>,
+}
+
+#[derive(Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+struct Preferences {
+    language: Language,
 }
 
 pub fn read(path: &Path) -> Result<Option<String>> {
@@ -185,6 +191,35 @@ fn writable_destination(path: &Path) -> Result<()> {
 }
 
 impl Store {
+    pub fn language(&self) -> Result<Language> {
+        let _lock = self.lock()?;
+        self.recover_locked()?;
+        match read(&self.root.join("ui.json"))? {
+            None => Ok(Language::system()),
+            Some(text) => serde_json::from_str::<Preferences>(&text)
+                .map(|prefs| prefs.language)
+                .map_err(|_| "Language preferences are invalid; they were not overwritten.".into()),
+        }
+    }
+
+    pub fn save_language(&self, language: Language) -> Result<()> {
+        let _lock = self.lock()?;
+        self.recover_locked()?;
+        let path = self.root.join("ui.json");
+        let before = read(&path)?;
+        if let Some(text) = &before {
+            serde_json::from_str::<Preferences>(text)
+                .map_err(|_| "Language preferences are invalid; they were not overwritten.")?;
+        }
+        let after = serde_json::to_string(&Preferences { language })
+            .map_err(|_| "Cannot encode language preferences.")?;
+        self.commit_locked(vec![Change {
+            path,
+            before,
+            after,
+        }])
+    }
+
     pub fn system() -> Result<Self> {
         Ok(Self {
             root: dirs::data_local_dir()

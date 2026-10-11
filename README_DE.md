@@ -1,0 +1,114 @@
+<div align="center">
+
+# pp-switch
+
+**Pure Provider. Deine Konfiguration bleibt deine.**
+
+API-URL und Schlüssel für Claude Code, Codex und Gemini CLI wechseln.
+
+[![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
+[![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
+![Platforms](https://img.shields.io/badge/macOS%20%7C%20Windows%20%7C%20Linux-native-465bab)
+
+**[English](README.md) · [简体中文](README_ZH.md) · [日本語](README_JA.md) · Deutsch**
+
+[Download](https://github.com/phonowell/pp-switch/releases) · [Anleitung (Englisch)](docs/user-guide.md) · [Messwerte](docs/verification.md) · [Spezifikation](SPEC.md)
+
+</div>
+
+![Natives Fenster mit Anbieterliste und Verbindungsdaten; englische Oberfläche](assets/screenshot.png)
+
+## Warum pp-switch?
+
+**Ein anderer API-Anbieter sollte keine neue Einrichtung deines Clients erfordern.**
+
+Modelle, Denkparameter, Projektberechtigungen, MCP und Skills sind bereits eingerichtet. Du möchtest nur eine andere URL und einen anderen Schlüssel. pp-switch speichert diese Verbindungen und ändert beim Wechsel genau diese beiden Werte. Alle anderen Konfigurationsbytes, Kommentare und Formatierungen bleiben erhalten. Nicht unterstützte Konfigurationen werden ausdrücklich abgelehnt, statt sie stillschweigend neu aufzubauen.
+
+**Fertig mit dem Wechsel? Fertig mit der App.** Ein Fenster, kein Tray, kein Autostart, keine Anbieterabfragen oder regelmäßigen Nutzungsabfragen. Beim Schließen endet der Prozess. Updates erfolgen nur nach einem Klick auf „Check for updates“ und deiner Bestätigung. Rust + FLTK, native Vektorzeichnung und Systemschriften; kein mitgeliefertes WebView, keine Datenbank und keine JavaScript-Laufzeit.
+
+**Vorhandene Links weiterverwenden.** Unterstützten `ccswitch://`-Anbieterlink einfügen, URL und Schlüssel prüfen, speichern und wechseln. Zusätzliche Modell- und Werkzeugeinstellungen werden nicht angewendet.
+
+[cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) fordert einen Pure-/Lite-Modus: „CC Switch only manages fields it owns. Everything else belongs to the target application/user.“ pp-switch setzt dieses Prinzip mit einem noch engeren Umfang um: URL und Schlüssel. Die Diskussion begründet den Bedarf, ist aber keine Empfehlung für dieses Projekt. [Quellen und Grenzen](docs/community.md).
+
+## Kleiner Umfang, klare Unterschiede
+
+| | pp-switch | cc-switch |
+| --- | --- | --- |
+| Zweck | URL-/Schlüsselwechsel für bereits eingerichtete Clients | Umfassendere Anbieter- und Clientverwaltung |
+| Schreibzugriffe | Nur wirksame Base URL und API-Schlüssel | Weitere Einstellungen je nach aktivierter Funktion |
+| Anbieterlinks | Unterstützte Importteilmenge einfügen | Vollständige Deep-Link-Abläufe |
+| Modelle, Routing, Nutzung, MCP, Prompts, Skills | Außerhalb des Produktumfangs | Entsprechende Verwaltungsfunktionen |
+| Lebenszyklus | Fenster schließen → Prozess endet | Tray und weitere Arbeitsabläufe |
+| Updates | Manuell prüfen → bestätigen → herunterladen, installieren, neu starten | Eigener Updateablauf |
+
+Für eine umfassende Verwaltungsoberfläche eignet sich [cc-switch](https://github.com/farion1231/cc-switch) besser. pp-switch ist unabhängig und richtet sich an Menschen, deren Clients bereits eingerichtet sind und die einen kleinen, vorhersehbaren Wechsel wünschen.
+
+## Download
+
+**[v0.0.2 Funktionsvorschau](https://github.com/phonowell/pp-switch/releases/tag/v0.0.2)**: vier Oberflächensprachen, neu gestaltetes natives Fenster und manuelle Updates. Es bleibt eine Vorschau: macOS hat das ursprüngliche Speicherbudget überschritten. Wir veröffentlichen [Messwerte](docs/verification.md) statt eines „20 MiB“-Versprechens.
+
+| Plattform | Paket | Start |
+| --- | --- | --- |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-aarch64-apple-darwin.zip) | Entpacken, `.app` nach Applications verschieben |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-apple-darwin.zip) | Ebenso |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-pc-windows-msvc.zip) | Entpacken, `pp-switch.exe` starten |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-unknown-linux-gnu.tar.gz) | Entpacken, `pp-switch` auf einem Desktop starten |
+
+Rust oder Node.js werden zum Ausführen nicht benötigt. macOS-Pakete deklarieren macOS 11+, sind aber **nicht mit Apple Developer signiert oder notarisiert**. Windows benötigt Windows 10+. Linux benötigt X11/XWayland, X11-/fontconfig-Bibliotheken und Systemschriften für die gewählte Sprache. Mindestversionen bedeuten nicht, dass jede OS-Version getestet wurde; siehe [Testumgebungen](docs/verification.md).
+
+## Verwendung
+
+1. Claude Code, Codex oder Gemini CLI auswählen.
+2. „New“ wählen und Name, Base URL und API-Schlüssel eingeben oder einen Anbieterlink importieren.
+3. „Save“, dann „Switch provider“. Den Client neu starten, falls er die Konfiguration nicht neu lädt.
+
+Speichern betrifft nur pp-switch. Wechseln ändert URL und Schlüssel im Client. Die Oberfläche unterstützt **English, 简体中文, 繁體中文 und 日本語**; Deutsch ist eine Dokumentationssprache. Beim ersten Start wird die Systemsprache erkannt. Die Sprache lässt sich sofort wechseln, ohne ungespeicherte Eingaben zu verlieren.
+
+| Client | Erforderliche bestehende Einrichtung | Geänderte Werte |
+| --- | --- | --- |
+| Claude Code | API-Schlüssel ohne externen Key-Helper, Cloudmodus oder mehrdeutige Zugangsdaten | `ANTHROPIC_BASE_URL` und vorhandenes Schlüssel-/Tokenfeld in `settings.json` |
+| Codex | Benutzerdefinierter Anbieter ausgewählt, API-Schlüsselauthentifizierung eingerichtet | Aktueller `base_url` und vorhandenes Bearer-Token oder `auth.json.OPENAI_API_KEY` |
+| Gemini CLI | API-Schlüsselmodus bereits über `/auth` gewählt | `GOOGLE_GEMINI_BASE_URL` und `GEMINI_API_KEY` in `.env` |
+
+Keine Änderungen an Modellen, Authentifizierungsart oder Protokoll, keine Ersteinrichtung. Nur Benutzerdateien; Projektkonfiguration, Startargumente und Umgebungsvariablen eines anderen Terminals können Vorrang haben. `CLAUDE_CONFIG_DIR` und `CODEX_HOME` werden berücksichtigt. [Einrichtung und Fehlerhilfe (Englisch) →](docs/user-guide.md)
+
+## Kompatibilität und Vertrauen
+
+- Unterstützt die **Provider-Importteilmenge** von `ccswitch://v1/import?resource=provider` und entsprechenden `ppswitch://`-Links: claude/codex/gemini, direkte Parameter und Base64-JSON/TOML. Die erste URL wird verwendet. Andere Ressourcen und ausschließlich entfernte Konfigurationen werden abgelehnt.
+- Links werden ins Fenster eingefügt. Keine gemeinsame cc-switch-Datenbank, keine URL-Zuordnung im Betriebssystem.
+- Geheimnisse bleiben in lokalen Benutzerdateien (Unix 0600 / Windows-ACL für den aktuellen Benutzer). Maskierung ist **keine Verschlüsselung**. Keine automatischen Zwischenablagezugriffe, Geheimnisse in Diagnosen oder Anfragen an Anbieter.
+- Updates kontaktieren ausschließlich GitHub Releases dieses Repositorys. Versionsbestätigung vor Download, Installation und Neustart. Größen- und Dateibeschränkungen sowie SHA-256-Prüfung anhand des GitHub-Asset-Digests. Fehler führen zur Wiederherstellung; bei Konflikten mit externen Änderungen bleiben Sicherungen erhalten. Pakete sind unsigniert: der Digest prüft Downloadintegrität, keine unabhängige Herausgebersignatur. Das Installationsverzeichnis muss beschreibbar sein. Anbieter- und Clientdateien werden nicht aktualisiert.
+- Vollständiger Vertrag: [SPEC.md](SPEC.md); Datei- und Datenpfade: [Anleitung](docs/user-guide.md).
+
+## Leistung mit Belegen
+
+| Budget | Ziel |
+| --- | ---: |
+| Installierte app-eigene Dateien | ≤5 MiB |
+| Gesamter RSS im Leerlauf | ≤20 MiB |
+| Gesamter Spitzen-RSS bei Start / Import | ≤30 MiB |
+| Kaltstart bis bedienbar | ≤300 ms |
+| Nach dem Schließen | Prozess beendet |
+
+**Ziele, keine bereits bestätigten Werbeaussagen.** Die 0.0.1-CI-Basis hatte 1.32–1.52 MiB installierte Größe. Leerlauf-RSS: macOS ARM64 68.08 MiB, macOS Intel 40.24 MiB, Windows 15.10 MiB, Linux/Xvfb 8.77 MiB. Lokal auf M4 / macOS 27 etwa 121 MiB. Historische Werte, keine 0.0.2-Messungen oder kontrollierten Plattformvergleiche.
+
+[Aktuelle Ergebnisse, Rohdaten und Methoden](docs/verification.md) sind öffentlich. Ein neuer Prozess mit warmen OS-Caches und einer Eventloop-Markierung belegt keinen echten Kaltstart, keine Eingabelatenz und keine Importlastspitzen. Budgetfehler bleiben in CI sichtbar; die Grenzwerte wurden nicht gelockert.
+
+## Entwicklung und Lizenz
+
+Spec zuerst: [SPEC.md](SPEC.md) aktualisieren, minimal implementieren, beobachtbares Verhalten prüfen. Rust ≥1.89, CMake und die C++-Toolchain der Plattform sind erforderlich. Linux-Abhängigkeiten stehen in [CI](.github/workflows/ci.yml).
+
+```sh
+cargo run --locked
+cargo fmt --check
+cargo clippy --locked --all-targets -- -D warnings
+cargo test --locked
+cargo build --locked --release --bins --examples
+cargo run --locked --example ui_smoke
+cargo run --locked --example update_smoke
+python3 scripts/measure.py target/release/examples/measure_ui --output target/metrics.json --enforce
+```
+
+GUI-/Update-Prüfungen verwenden temporäre Dateien statt deiner Clientkonfiguration. Linux: `xvfb-run -a`; Windows-Beispiele: `.exe`. Screenshots enthalten Beispieldaten und werden nicht mitgeliefert.
+
+Danke an [cc-switch](https://github.com/farion1231/cc-switch) für offene Protokoll- und Implementierungsreferenzen und an [fltk-rs](https://github.com/fltk-rs/fltk-rs) / [FLTK](https://www.fltk.org). pp-switch ist nicht mit cc-switch verbunden. [MIT](LICENSE). Abhängigkeiten behalten ihre [Lizenzen und Hinweise](THIRD_PARTY_NOTICES.txt).

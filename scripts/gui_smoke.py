@@ -4,7 +4,7 @@ from pathlib import Path
 import subprocess
 import sys
 
-process = subprocess.Popen([sys.argv[1]])
+process = subprocess.Popen(sys.argv[1:])
 try:
     raise SystemExit(process.wait(timeout=30))
 except subprocess.TimeoutExpired:

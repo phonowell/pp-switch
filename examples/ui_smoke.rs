@@ -6,5 +6,7 @@ fn main() {
     };
     let screenshot = std::env::args_os().nth(1).map(std::path::PathBuf::from);
     pp_switch::ui::smoke(store, paths, screenshot).expect("GUI behavior smoke test");
-    println!("PP-01/02/06/10: GUI save, switch, new, import preview, selection and close passed.");
+    println!(
+        "PP-01/02/06/10/13/14: four-language GUI save, switch, new, import preview, selection, draft preservation and close passed."
+    );
 }

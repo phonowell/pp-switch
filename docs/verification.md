@@ -1,5 +1,55 @@
 # Verification evidence
 
+## 0.0.2 local validation — 2026-10-12
+
+Apple M4 (Mac16,1), 16 GiB, macOS 27.0.1, Rust 1.99.0 / Apple clang 17 / CMake 4.4.4.
+The new native window and four compiled locale catalogs keep the FLTK backend;
+manual updates add HTTPS/TLS, hashing and archive parsing. No WebView, bundled
+fonts/images, database, async runtime, tray or startup updater.
+
+- Formatting, all-target Clippy with warnings denied, 21 core behavior tests,
+  2 locale/preference tests and 7 update tests (6 on Windows) passed locally.
+- Four-language GUI smoke passed the real save/switch/import/selection/close
+  callbacks, persisted language changes and preservation of unsaved drafts.
+- Reviewed actual English, Simplified/Traditional Chinese and Japanese windows.
+  Native dropdowns initially left square-border artifacts; custom vector drawing
+  and an opaque background corrected them. Screenshots contain dummy data only.
+- Real temporary installer/helper smoke waited for the old process, replaced
+  package resources and automatically reopened the updated fixture. It does not
+  load the real user store or client files. A separate explicit read-only GitHub
+  HTTPS check succeeded (no newer release at the time).
+- Update tests cover release ordering/platform selection, invalid digests/URLs,
+  archive layout/traversal/links/architecture, successful filesystem installation,
+  a failure after the first replacement, rollback conflict preserving external
+  edits/backups and refusal of tampered staged data or changed destinations.
+- Regenerated third-party notices from locked dependency sources, including TLS
+  and archive libraries. No user client configuration was changed.
+
+Local measurement of the final visual layout (cached OS pages, system locale):
+
+| Metric | Observed | Original budget |
+| --- | ---: | --- |
+| Installed app-owned bytes including notices | approximately 2.39 MiB | ≤5 MiB: pass |
+| Idle maximum total RSS | 132.69 MiB | ≤20 MiB: **fail** |
+| Peak total RSS | 133.06 MiB | ≤30 MiB: **fail** |
+| Fresh-process event-loop readiness | 411.34 / 110.55 / 113.45 ms | ≤300 ms: maximum **fail** |
+
+[Raw local data](measurements/v0.0.2/macos-m4-local.json). RSS increased from
+approximately 121 MiB in 0.0.1; this iteration does not establish a macOS memory
+improvement. The UI grew and now displays the system-selected language; no
+controlled attribution of the additional residency has been made. Keep the
+original budgets and optimize from measured evidence.
+
+The local measurement predates final updater-only archive hardening; the
+production window/idle path is identical. Release CI measurements below apply
+to the exact published build. Update-download/extraction peak RSS is not part
+of this idle benchmark and has not been separately certified.
+
+<!-- PP002_CI_RESULTS -->
+
+## 0.0.1 historical evidence
+
+
 ## Local macOS evidence — 2026-10-12
 
 Host: Apple M4 (Mac16,1), 16 GiB RAM, ARM64, macOS 27.0.1. Rust 1.99.0, Apple clang 17.0.0,
