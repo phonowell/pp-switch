@@ -10,7 +10,7 @@ repository = "https://github.com/phonowell/pp-switch"
 [dependencies]
 base64 = "0.22"
 dirs = "6"
-fltk = { version = "=1.5.23", features = ["no-images", "no-pango", "single-threaded"] }
+fltk = { version = "=1.5.23", features = ["no-images", "no-pango", "single-threaded", "static-msvcrt"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["raw_value"] }
 tempfile = "3"

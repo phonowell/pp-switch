@@ -2,6 +2,12 @@
 
 Status: v0.0.1 implementation contract. Changes to behavior start here.
 
+Release policy: 0.0.1 is a functional preview. The user authorized preview
+delivery with disclosed performance failures on 2026-10-12. PP-11 remains the
+optimization budget, not a condition for this preview to exist. Functional
+checks and performance checks must report separate outcomes. Later optimization
+must not silently relax the original thresholds or expand the product scope.
+
 ## Purpose
 
 A small desktop application that saves API providers and switches only a
