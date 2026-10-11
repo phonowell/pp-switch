@@ -47,7 +47,38 @@ production window/idle path is identical. Release CI measurements below apply
 to the exact published build. Update-download/extraction peak RSS is not part
 of this idle benchmark and has not been separately certified.
 
-<!-- PP002_CI_RESULTS -->
+## 0.0.2 cross-platform release evidence
+
+Implementation `3e271b0012b160b320f4117dddc3e54cbcad861d`, [CI run 38161367066](https://github.com/phonowell/pp-switch/actions/runs/38161367066).
+All four native runners passed format, Clippy, behavior, release build, four-language
+GUI, real installer/helper/restart and actual archive round-trip checks.
+
+| Native runner | Functional checks | Installed bytes | Idle RSS MiB | Peak RSS MiB | Startup median / max ms | Script budget |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| macOS 15 · ARM64 | Pass, 30 tests | 2,508,446 | 70.88 | 70.94 | 113.83 / 139.72 | Memory fail |
+| macOS 15 · Intel | Pass, 30 tests | 2,742,766 | 42.76 | 42.84 | 165.68 / 169.85 | Memory fail |
+| Windows Server 2022 · x64 | Pass, 28 tests | 2,888,618 | 16.03 | 16.57 | 42.36 / 44.61 | Pass |
+| Ubuntu 22.04 · x64 · Xvfb | Pass, 30 tests | 3,145,146 | 20.99 | 21.00 | 8.99 / 9.49 | Idle RSS fail |
+
+Installed size includes metadata and all notices. Windows passes this benchmark;
+macOS exceeds idle/peak budgets, and Linux exceeds the 20 MiB idle threshold by
+about 1 MiB after using an installed CJK face. The budget was not rounded up or
+relaxed. System fonts are not bundled, but their resident memory is included.
+The overall CI remains red for these disclosed performance failures.
+
+Raw results: [ARM64 macOS](measurements/v0.0.2/aarch64-apple-darwin.json),
+[Intel macOS](measurements/v0.0.2/x86_64-apple-darwin.json),
+[Windows](measurements/v0.0.2/x86_64-pc-windows-msvc.json),
+[Linux](measurements/v0.0.2/x86_64-unknown-linux-gnu.json).
+Reviewed the CJK rendering in the real CI screenshots; additional [Linux](../assets/screenshot-linux-zh.png)
+and [Windows](../assets/screenshot-windows-zh.png) views are retained in the repo.
+CI artifacts retain all four interface languages for each platform.
+
+Archive SHA-256 sums and a consolidated verification JSON are release attachments.
+These builds are unsigned, and no independent publisher signature is claimed.
+This benchmark does not certify full PP-11: cold/input readiness, import stress
+and update download/install peak memory remain unverified.
+
 
 ## 0.0.1 historical evidence
 

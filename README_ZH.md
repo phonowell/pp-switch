@@ -45,7 +45,7 @@
 
 ## 下载
 
-当前为 **[v0.0.2 功能预览](https://github.com/phonowell/pp-switch/releases/tag/v0.0.2)**：四种界面语言、新拟物原生界面、手动更新。仍是预览版，macOS 曾超出原定内存预算；请看[真实验证记录](docs/verification.md)，我们不宣称「只占 20 MiB」。
+当前为 **[v0.0.2 功能预览](https://github.com/phonowell/pp-switch/releases/tag/v0.0.2)**：四种界面语言、新拟物原生界面、手动更新。仍是预览版，macOS 和 Linux 空闲内存仍超出原定预算；请看[真实验证记录](docs/verification.md)，我们不宣称「只占 20 MiB」。
 
 | 平台 | 下载 | 使用 |
 | --- | --- | --- |
@@ -91,6 +91,15 @@
 | 关闭窗口后 | 进程退出 |
 
 **这是优化目标，不是已经达成的宣传承诺。** 0.0.1 原生 CI 基线：安装大小 1.32–1.52 MiB；空闲 RSS 为 macOS ARM64 68.08 MiB、macOS Intel 40.24 MiB、Windows 15.10 MiB、Linux/Xvfb 8.77 MiB。本机 M4 / macOS 27 约 121 MiB RSS。这些是历史基线，不能当作 0.0.2 数据，也不是受控的跨平台性能对比。
+
+**0.0.2 原生 CI 实测：**
+
+| 原生 CI | 安装大小 MiB | 空闲 RSS MiB | 脚本预算 |
+| --- | ---: | ---: | --- |
+| macOS 15 · ARM64 | 2.39 | 70.88 | 失败 |
+| macOS 15 · Intel | 2.62 | 42.76 | 失败 |
+| Windows Server 2022 · x64 | 2.75 | 16.03 | 通过 |
+| Ubuntu 22.04 · x64 · Xvfb | 3.00 | 20.99 | 失败 |
 
 [当前版本结果、原始数据和测量方法](docs/verification.md) 全部公开。保留系统缓存的新进程事件循环就绪时间，不等于严格冷启动、输入延迟或导入压力峰值。预算失败继续在 CI 显示，原阈值未放宽。
 
