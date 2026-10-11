@@ -74,6 +74,12 @@ Reviewed the CJK rendering in the real CI screenshots; additional [Linux](../ass
 and [Windows](../assets/screenshot-windows-zh.png) views are retained in the repo.
 CI artifacts retain all four interface languages for each platform.
 
+After publication, the production HTTPS download/checksum/extraction/staging flow
+was exercised anonymously against the real 0.0.2 macOS ARM64 GitHub asset from
+a disposable app fixture. It passed; the fixture installation and all user/client
+files remained unchanged. This complements the native helper/install/restart
+tests on all four runners; it is not a physical-click or live-service audit.
+
 Archive SHA-256 sums and a consolidated verification JSON are release attachments.
 These builds are unsigned, and no independent publisher signature is claimed.
 This benchmark does not certify full PP-11: cold/input readiness, import stress
