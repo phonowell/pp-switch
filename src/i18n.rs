@@ -155,6 +155,8 @@ pub fn message(language: Language, english: &str) -> String {
 
 /// Explicit labels avoid FLTK's untranslated default Close button.
 pub fn alert(language: Language, english: &str) {
+    let _app = fltk::app::App::default();
+    crate::theme::init();
     fltk::dialog::message_title("pp-switch");
     let _ =
         fltk::dialog::choice2_default(&message(language, english), tr(language, "Close"), "", "");
