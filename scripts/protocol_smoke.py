@@ -1,7 +1,5 @@
 """Real macOS cold/warm Apple URL events, explicitly targeting an isolated app."""
 from pathlib import Path
-import ctypes
-import json
 import os
 import plistlib
 import signal
@@ -11,39 +9,19 @@ import sys
 import tempfile
 import time
 
-def query_handlers():
-    cf = ctypes.CDLL("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")
-    ls = ctypes.CDLL("/System/Library/Frameworks/CoreServices.framework/CoreServices")
-    cf.CFStringCreateWithCString.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_uint32]
-    cf.CFStringCreateWithCString.restype = ctypes.c_void_p
-    cf.CFStringGetCString.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_long, ctypes.c_uint32]
-    cf.CFRelease.argtypes = [ctypes.c_void_p]
-    ls.LSCopyDefaultHandlerForURLScheme.argtypes = [ctypes.c_void_p]
-    ls.LSCopyDefaultHandlerForURLScheme.restype = ctypes.c_void_p
+def handlers():
+    # NSWorkspace resolves the installed app used by a real OS open, including
+    # an association inferred from its bundle rather than an explicit LS preference.
     result = {}
     for scheme in ("ccswitch", "ppswitch"):
-        name = cf.CFStringCreateWithCString(None, scheme.encode(), 0x08000100)
-        value = ls.LSCopyDefaultHandlerForURLScheme(name)
-        cf.CFRelease(name)
-        result[scheme] = None
-        if value:
-            buffer = ctypes.create_string_buffer(4096)
-            try:
-                if not cf.CFStringGetCString(value, buffer, len(buffer), 0x08000100):
-                    raise RuntimeError("Cannot inspect CI URL association")
-                result[scheme] = buffer.value.decode()
-            finally:
-                cf.CFRelease(value)
+        source = ('ObjC.import("AppKit"); var app = '
+                  '$.NSWorkspace.sharedWorkspace.URLForApplicationToOpenURL('
+                  f'$.NSURL.URLWithString("{scheme}://v1/import")); '
+                  'app.isNil() ? "" : ObjC.unwrap(app.path);')
+        value = subprocess.check_output(["osascript", "-l", "JavaScript", "-e", source],
+                                        text=True, timeout=10).strip()
+        result[scheme] = str(Path(value).resolve()) if value else None
     return result
-
-if sys.argv[1:] == ["--query-handlers"]:
-    print(json.dumps(query_handlers()))
-    raise SystemExit(0)
-
-def handlers():
-    # Launch Services caches preferences per client. Query in a fresh process
-    # after a different app registers, rather than reading our pre-registration cache.
-    return json.loads(subprocess.check_output([sys.executable, __file__, "--query-handlers"], timeout=10))
 
 binary = Path(sys.argv[1]).resolve()
 register = "--register-in-ci" in sys.argv[3:]
@@ -73,13 +51,13 @@ with tempfile.TemporaryDirectory(prefix="pp-protocol-") as temp:
             subprocess.run(["open", "-W", "-n", "-a", str(bundle)], check=True, timeout=30, capture_output=True)
             if not (root / "registered.txt").exists():
                 raise RuntimeError("Registration fixture did not finish")
-            expected = plist["CFBundleIdentifier"]
+            expected = str(bundle.resolve())
             actual = handlers()
             if any(value != expected for value in actual.values()):
                 raise RuntimeError(f"Absent cc-switch handler was not registered: {actual}")
             alternate = root / "AlternateFixture.app"
             shutil.copytree(bundle, alternate)
-            alternate_plist = dict(plist, CFBundleIdentifier=expected+".alternate")
+            alternate_plist = dict(plist, CFBundleIdentifier=plist["CFBundleIdentifier"]+".alternate")
             (alternate / "Contents" / "Info.plist").write_bytes(plistlib.dumps(alternate_plist))
             (root / "registered.txt").unlink()
             subprocess.run(["open", "-W", "-n", "-a", str(alternate)], check=True, timeout=30, capture_output=True)
