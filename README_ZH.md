@@ -18,7 +18,7 @@
 
 </div>
 
-![pp-switch 的真实中文窗口：左侧选择服务商，右侧编辑连接信息](assets/screenshot-zh.png)
+![pp-switch 的真实中文窗口：顶部选择客户端，列表选择服务商，一键切换](assets/screenshot-zh.png)
 
 ## 为什么选 pp-switch？
 
@@ -30,7 +30,7 @@
 
 **已经拿到的链接，继续用。** 粘贴受支持的 `ccswitch://` 服务商链接，核对地址和 Key，保存、切换。链接里的模型和工具配置不会写进客户端。
 
-这不是凭空想象的需求：[cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) 明确希望提供「纯净版 / Lite 模式」，提出「CC Switch 只负责‘切换’，其他配置完全交给对应 CLI / IDE / 用户自己管理」。pp-switch 采用这个配置归属原则，并进一步收窄到地址和 Key。该讨论是需求来源，不代表社区背书；具体来源和限制见[调研记录](docs/community.md)。
+这不是凭空想象的需求：[cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) 明确希望提供「纯净版 / Lite 模式」，提出「CC Switch 只负责‘切换’，其他配置完全交给对应 CLI / IDE / 用户自己管理」。pp-switch 采用这个配置归属原则，并进一步收窄到地址和 Key。该讨论是需求来源，不代表社区背书；具体来源和限制见[调研记录](docs/verification.md#community-sources)。
 
 ## 边界小，差异明确
 
@@ -47,7 +47,7 @@
 
 ## 下载
 
-当前为 **[v0.0.3 功能预览](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**：极简平面原生界面、PPC 应用图标、四种界面语言、手动更新。仍是预览版，macOS 空闲内存仍超预算，Windows 和 Linux 通过当前测量脚本；请看[真实验证记录](docs/verification.md)，我们不宣称「只占 20 MiB」。
+**[v0.0.3 功能预览](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**。macOS 内存仍超预算，[完整实测](docs/verification.md)公开可查。
 
 | 平台 | 下载 | 使用 |
 | --- | --- | --- |
@@ -81,20 +81,10 @@ macOS 0.0.2 用户需手动下载这次更新：旧版更新器会拒绝新增�
 - 兼容 `ccswitch://v1/import?resource=provider` 及等价 `ppswitch://` 链接的 **Provider 导入子集**：claude/codex/gemini、直接参数、Base64 内嵌 JSON/TOML。取第一个地址；拒绝其他资源和仅远程配置。
 - 链接粘贴到窗口，不共享 cc-switch 数据库，不注册系统链接关联。
 - 密钥保存在本地用户专属文件中（Unix 0600 / Windows 当前用户 ACL）。界面遮罩**不是加密**。不自动读取剪贴板、不输出密钥诊断、不请求服务商接口。
-- 手动更新仅访问本仓库 GitHub Releases。先确认版本，再下载、安装并重启。限制包大小与写入文件，按 GitHub 资源摘要校验 SHA-256；安装失败会回滚，外部修改冲突时保留备份。包未签名，摘要验证下载完整性，不是独立发布者签名。安装目录须可写；更新不修改服务商和客户端配置。
+- 更新须手动确认，安装目录须可写。只下载本仓库发布包并校验 SHA-256；包未签名，更新不修改服务商和客户端配置。[更新详情](docs/user-guide-zh.md#手动更新)。
 - 完整行为见 [SPEC.md](SPEC.md)；文件位置与数据目录见[指南](docs/user-guide-zh.md)。
 
 ## 性能：预算与实测分开
-
-| 预算 | 目标 |
-| --- | ---: |
-| 安装后应用自有文件总大小 | ≤5 MiB |
-| 空闲总 RSS | ≤20 MiB |
-| 启动 / 导入峰值总 RSS | ≤30 MiB |
-| 冷启动到可操作 | ≤300 ms |
-| 关闭窗口后 | 进程退出 |
-
-**这是优化目标，不是已经达成的宣传承诺。** 0.0.1 原生 CI 基线：安装大小 1.32–1.52 MiB；空闲 RSS 为 macOS ARM64 68.08 MiB、macOS Intel 40.24 MiB、Windows 15.10 MiB、Linux/Xvfb 8.77 MiB。本机 M4 / macOS 27 约 121 MiB RSS。这些是历史基线，不能当作 0.0.3 数据，也不是受控的跨平台性能对比。
 
 **0.0.3 原生 CI 实测：**
 
@@ -105,24 +95,14 @@ macOS 0.0.2 用户需手动下载这次更新：旧版更新器会拒绝新增�
 | Windows Server 2022 · x64 | 2.81 | 15.00 | 通过 |
 | Ubuntu 22.04 · x64 · Xvfb | 3.02 | 17.19 | 通过 |
 
-[当前版本结果、原始数据和测量方法](docs/verification.md) 全部公开。保留系统缓存的新进程事件循环就绪时间，不等于严格冷启动、输入延迟或导入压力峰值。预算失败继续在 CI 显示，原阈值未放宽。
+完整预算定义在 [SPEC PP-11](SPEC.md#acceptance-contract)。Windows / Linux
+通过当前脚本，macOS 内存仍超预算；严格冷启动、导入和更新峰值尚未验证。
+[测量方法、原始数据与历史结果](docs/verification.md)。
 
-## 开发
+## 参与开发
 
-Spec 驱动：先更新 [SPEC.md](SPEC.md)，再做最小实现和可观察行为验证。需要 Rust ≥1.89、CMake 与平台 C++ 工具链；Linux 构建依赖见 [CI](.github/workflows/ci.yml)。
-
-```sh
-cargo run --locked
-cargo fmt --check
-cargo clippy --locked --all-targets -- -D warnings
-cargo test --locked
-cargo build --locked --release --bins --examples
-cargo run --locked --example ui_smoke
-cargo run --locked --example update_smoke
-python3 scripts/measure.py target/release/examples/measure_ui --output target/metrics.json --enforce
-```
-
-GUI / 更新验收使用临时文件，不操作真实客户端配置。Linux 用 `xvfb-run -a`；Windows 示例二进制带 `.exe` 后缀。截图为示例数据，不随应用分发。
+先从 [SPEC.md](SPEC.md) 开始；构建、验证和发布流程统一见
+[贡献指南（英文）](CONTRIBUTING.md)。
 
 ## 致谢与许可
 

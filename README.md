@@ -30,7 +30,7 @@ Your models, reasoning settings, project permissions, MCP and skills already wor
 
 **Keep the links you already have.** Paste a supported `ccswitch://` Provider link, review its URL/key, save and switch. Extra model and tool settings stay out of your client files.
 
-This need is visible in the community: [cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) asks for a Pure/Lite mode and says “CC Switch only manages fields it owns. Everything else belongs to the target application/user.” pp-switch takes that ownership principle and narrows it to URL + key. The discussion is motivation, not an endorsement. [Research notes](docs/community.md) record the sources and their limits.
+This need is visible in the community: [cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) asks for a Pure/Lite mode and says “CC Switch only manages fields it owns. Everything else belongs to the target application/user.” pp-switch takes that ownership principle and narrows it to URL + key. The discussion is motivation, not an endorsement. [Research notes](docs/verification.md#community-sources) record the sources and their limits.
 
 ## Small scope, clear differences
 
@@ -47,7 +47,7 @@ This need is visible in the community: [cc-switch #7649](https://github.com/fari
 
 ## Download
 
-**[v0.0.3 functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)** — a compact flat native window, a PPC app icon, four interface languages and manual updates. Preview status remains: macOS exceeds the original idle-memory budget; Windows and Linux pass the current benchmark. Read the [actual evidence](docs/verification.md), not a “20 MiB” promise.
+**[v0.0.3 functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**. macOS memory remains over budget; [actual measurements](docs/verification.md) are public.
 
 | Platform | Package | Run |
 | --- | --- | --- |
@@ -81,20 +81,10 @@ No model/auth-mode/protocol changes or first-time client setup. User-level files
 - Compatible with the **Provider import subset** of `ccswitch://v1/import?resource=provider` and equivalent `ppswitch://` links: claude/codex/gemini, direct parameters and inline Base64 JSON/TOML. First endpoint wins; unsupported resources and remote-only configs are rejected.
 - Links are pasted into the window. No shared cc-switch database or OS URL association.
 - Secrets stay in local user-only files (Unix 0600 / Windows current-user ACL). Masking is **not encryption**. No automatic clipboard reads, secret diagnostics or provider requests.
-- Manual updates contact this repository's GitHub Releases only. You confirm the version before download/install/restart. Archives are size-bounded, SHA-256 checked against GitHub asset metadata and restricted to app-owned files; failures roll back unless external edits conflict. Release packages are unsigned: this digest checks integrity, not an independent publisher signature. Updates require a writable installation. Providers and client files are not updated.
+- Updates require your confirmation and a writable installation. Only this repository's release packages are downloaded and SHA-256 checked. Packages are unsigned; provider/client files are outside the updater. [Update details](docs/user-guide.md#manual-update).
 - Full behavior contract: [SPEC.md](SPEC.md). Exact write locations and storage paths: [guide](docs/user-guide.md).
 
 ## Performance, with evidence
-
-| Budget | Target |
-| --- | ---: |
-| Installed application-owned files | ≤5 MiB |
-| Idle total RSS | ≤20 MiB |
-| Startup/import peak total RSS | ≤30 MiB |
-| Cold interactive startup | ≤300 ms |
-| After closing | Process exits |
-
-**Budgets are goals, not verified marketing claims.** The original 0.0.1 CI baseline was 1.32–1.52 MiB installed, with idle RSS of 68.08 MiB (macOS ARM64), 40.24 MiB (macOS Intel), 15.10 MiB (Windows) and 8.77 MiB (Linux/Xvfb). The local M4/macOS 27 result was about 121 MiB RSS. These are historical baseline figures, not measurements of 0.0.3 or controlled platform comparisons.
 
 **0.0.3 native CI measurements:**
 
@@ -105,24 +95,14 @@ No model/auth-mode/protocol changes or first-time client setup. User-level files
 | Windows Server 2022 · x64 | 2.81 | 15.00 | Pass |
 | Ubuntu 22.04 · x64 · Xvfb | 3.02 | 17.19 | Pass |
 
-[Current release results, raw measurements and methods](docs/verification.md) are public. Fresh-process event-loop readiness with caches intact does not establish disk-cold startup, input latency or import-stress peaks. Performance failures remain visible in CI; the thresholds have not been relaxed.
+The full budgets are defined in [SPEC PP-11](SPEC.md#acceptance-contract).
+Windows/Linux pass this script; macOS memory exceeds budget. Cold interactive
+startup and import/update peaks remain unverified. [Method, raw data and historical results](docs/verification.md).
 
-## Development
+## Contribute
 
-Spec first: update [SPEC.md](SPEC.md), implement the smallest change, verify its observable behavior. Rust ≥1.89, CMake and the platform C++ toolchain are required. Linux build libraries are in [CI](.github/workflows/ci.yml).
-
-```sh
-cargo run --locked
-cargo fmt --check
-cargo clippy --locked --all-targets -- -D warnings
-cargo test --locked
-cargo build --locked --release --bins --examples
-cargo run --locked --example ui_smoke
-cargo run --locked --example update_smoke
-python3 scripts/measure.py target/release/examples/measure_ui --output target/metrics.json --enforce
-```
-
-GUI/update harnesses use disposable files, never your real client configuration. On Linux use `xvfb-run -a`; Windows example binaries have an `.exe` suffix. Screenshots contain sample data and are not bundled with the application.
+Start with [SPEC.md](SPEC.md); build, validation and release instructions live in
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Acknowledgments and license
 

@@ -18,7 +18,7 @@ Claude Code・Codex・Gemini CLI の API URL とキーを切り替える小さ�
 
 </div>
 
-![プロバイダー一覧と接続情報を表示する、日本語のネイティブ UI](assets/screenshot-ja.png)
+![クライアントタブ、プロバイダー一覧、切り替えボタンを表示する日本語のネイティブ UI](assets/screenshot-ja.png)
 
 ## pp-switch を選ぶ理由
 
@@ -30,7 +30,7 @@ Claude Code・Codex・Gemini CLI の API URL とキーを切り替える小さ�
 
 **今あるリンクを使える。** 対応する `ccswitch://` プロバイダーリンクを貼り付け、URL とキーを確認して保存・切り替え。モデルやツールの追加設定はクライアントに書き込みません。
 
-[cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) でも Pure/Lite モードと「管理対象以外の設定はアプリやユーザーに任せる」ことが求められています。pp-switch はこの設定の所有原則を URL とキーに限定して実装します。議論は着想の根拠であり、推薦を意味しません。[調査資料と留意点](docs/community.md)。
+[cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) でも Pure/Lite モードと「管理対象以外の設定はアプリやユーザーに任せる」ことが求められています。pp-switch はこの設定の所有原則を URL とキーに限定して実装します。議論は着想の根拠であり、推薦を意味しません。[調査資料と留意点](docs/verification.md#community-sources)。
 
 ## 小さな範囲、明確な違い
 
@@ -47,7 +47,7 @@ Claude Code・Codex・Gemini CLI の API URL とキーを切り替える小さ�
 
 ## ダウンロード
 
-**[v0.0.3 機能プレビュー](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**：小さなフラット UI、PPC アプリアイコン、4 言語、手動更新。macOS のアイドルメモリは予算を超えています。Windows と Linux は現在の測定スクリプトに合格。「20 MiB」と宣伝せず、[実際の検証記録](docs/verification.md) を公開します。
+**[v0.0.3 機能プレビュー](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**。macOS のメモリは予算超過です。[実測結果](docs/verification.md) を公開しています。
 
 | OS | パッケージ | 実行 |
 | --- | --- | --- |
@@ -81,20 +81,10 @@ macOS 0.0.2 からは今回だけ手動ダウンロードが必要です。旧�
 - `ccswitch://v1/import?resource=provider` / `ppswitch://` の **Provider インポート部分**に対応。claude/codex/gemini、直接パラメーター、Base64 内の JSON/TOML。最初の URL を使用。別リソースやリモート設定のみのリンクは拒否。
 - ウィンドウへ貼り付けて使用。cc-switch の DB 共有や OS の URL 関連付けはありません。
 - 秘密はローカルのユーザー専用ファイル（Unix 0600 / Windows 現在ユーザー ACL）に保存。マスク表示は**暗号化ではありません**。自動クリップボード読取、秘密の診断出力、プロバイダーへの通信はありません。
-- 更新通信は本リポジトリの GitHub Releases のみ。バージョンに同意してからダウンロード・インストール・再起動。サイズと対象ファイルを制限し、GitHub の SHA-256 摘要で検証。失敗時は復元し、外部編集と競合すればバックアップを保持。未署名のため摘要は転送の完全性確認であり、独立した発行者署名ではありません。書き込み可能な設置先が必要。プロバイダーやクライアント設定は更新しません。
+- 更新は手動確認と書き込み可能な設置先が必要です。本リポジトリのパッケージだけを取得し、SHA-256 を検証します。パッケージは未署名。プロバイダー・クライアント設定は対象外です。[更新の詳細](docs/user-guide-ja.md#手動更新)。
 - 完全な動作契約は [SPEC.md](SPEC.md)、保存先は[ガイド](docs/user-guide-ja.md)。
 
 ## 性能を公開する
-
-| 予算 | 目標 |
-| --- | ---: |
-| アプリ所有ファイルのインストール容量 | ≤5 MiB |
-| アイドル時の総 RSS | ≤20 MiB |
-| 起動 / インポート時のピーク総 RSS | ≤30 MiB |
-| コールド起動から操作可能まで | ≤300 ms |
-| 閉じた後 | プロセス終了 |
-
-**目標であり、達成済みの宣伝文句ではありません。** 0.0.1 の CI 基準値は容量 1.32–1.52 MiB、アイドル RSS は macOS ARM64 68.08 MiB、macOS Intel 40.24 MiB、Windows 15.10 MiB、Linux/Xvfb 8.77 MiB。ローカル M4 / macOS 27 では約 121 MiB。過去の基準値であり、0.0.3 の測定値や制御された OS 比較ではありません。
 
 **0.0.3 ネイティブ CI 実測：**
 
@@ -105,23 +95,15 @@ macOS 0.0.2 からは今回だけ手動ダウンロードが必要です。旧�
 | Windows Server 2022 · x64 | 2.81 | 15.00 | 合格 |
 | Ubuntu 22.04 · x64 · Xvfb | 3.02 | 17.19 | 合格 |
 
-[現行版の結果・生データ・測定方法](docs/verification.md) を公開しています。キャッシュを保持した新規プロセスのイベントループ準備時間は、厳密なコールド起動・入力遅延・大量インポートのピークを保証しません。予算違反は CI に残し、閾値は緩和していません。
+予算の定義は [SPEC PP-11](SPEC.md#acceptance-contract)。Windows / Linux は
+このスクリプトに合格し、macOS のメモリは予算超過です。厳密なコールド起動、
+インポート・更新のピークは未検証です。[測定方法・生データ・過去の結果](docs/verification.md)。
 
-## 開発とライセンス
+## 開発
 
-[SPEC.md](SPEC.md) を先に更新し、最小の実装と観測可能な動作を検証します。Rust ≥1.89、CMake、C++ ツールチェーンが必要。Linux 依存は [CI](.github/workflows/ci.yml) に記載。
+[SPEC.md](SPEC.md) を先に確認してください。ビルド・検証・リリース手順は
+[貢献ガイド（英語）](CONTRIBUTING.md) にまとめています。
 
-```sh
-cargo run --locked
-cargo fmt --check
-cargo clippy --locked --all-targets -- -D warnings
-cargo test --locked
-cargo build --locked --release --bins --examples
-cargo run --locked --example ui_smoke
-cargo run --locked --example update_smoke
-python3 scripts/measure.py target/release/examples/measure_ui --output target/metrics.json --enforce
-```
-
-GUI / 更新検証は一時ファイルのみを使用。Linux は `xvfb-run -a`、Windows の実行例は `.exe` 付き。スクリーンショットはサンプルデータで、アプリには同梱しません。
+## 謝辞とライセンス
 
 [cc-switch](https://github.com/farion1231/cc-switch) の公開プロトコル・実装資料、[fltk-rs](https://github.com/fltk-rs/fltk-rs) / [FLTK](https://www.fltk.org) に感謝します。cc-switch とは独立したプロジェクトです。[MIT](LICENSE)。依存の[ライセンスと通知](THIRD_PARTY_NOTICES.txt) を保持します。

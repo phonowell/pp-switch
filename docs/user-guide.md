@@ -12,7 +12,7 @@ model and protocol. [Downloads](https://github.com/phonowell/pp-switch/releases)
 1. Configure your client for a supported API-key setup using the client itself.
 2. Open pp-switch and choose a client tab at the top.
 3. Click **Add**, enter a name, HTTP(S) base URL and nonempty key; click **Save**.
-4. Click **Switch**. Restart the client if it does not reload its files.
+4. Select a provider, then click **Switch**. Restart the client if it does not reload its files.
 
 Save only changes the local provider list. The **In use** label means that the current
 client URL **and key** match that saved provider. Status is read from client
@@ -63,8 +63,8 @@ ccswitch://v1/import?resource=provider&app=claude&name=Example&endpoint=https%3A
 `ppswitch://` also works. Supported app values are `claude`, `codex`, `gemini`.
 Direct fields and Base64 inline JSON/TOML are supported (standard/URL-safe,
 padded/unpadded). Explicit nonempty parameters take precedence; use the first
-endpoint. Only name/client/URL/key enter the editor. Models, scripts, tools and
-other fields are discarded. Review, **Save**, then **Switch**.
+endpoint. The imported client tab is selected; the editor contains only name/URL/key.
+Models, scripts, tools and other fields are discarded. Review, **Save**, then **Switch**.
 
 Importing is a preview: no client files change and no provider is saved yet.
 Remote-only configs, other resources, unsupported app/version and incomplete
@@ -106,11 +106,9 @@ macOS 0.0.2 users must download 0.0.3 manually once: the old strict file whiteli
    verifies its GitHub SHA-256 digest, stages owned files and starts a temporary
    helper. The helper waits for exit, installs with backups and restarts.
 
-No provider/key data is sent. Archives are capped at 10 MiB, installed owned files
-at 5 MiB. Traversal, links, unexpected files and mismatched executables are
-rejected. Provider/client files are outside the installer. On installation
-failure, previous files are restored unless an external change conflicts; in
-that case backups are preserved and a message is shown.
+Updates send no provider/key data and replace only application-owned files.
+On installation failure, previous files are restored unless an external change
+conflicts; in that case backups are preserved and a message is shown.
 
 Run from the extracted package, not a lone copied binary. The installation must
 be writable. Close other app windows and avoid editing its files while updating.
@@ -120,22 +118,21 @@ fails, reopen the app yourself. Packages are unsigned: GitHub digest verificatio
 provides download integrity, not an independent publisher signature. macOS builds
 are not Apple Developer-signed or notarized.
 
-## Limits, recovery and performance
+## Troubleshooting
 
-A refused setup remains unchanged. Fix the underlying client setup through the
-client, then retry. Stale-file or symlink errors require checking the destination;
-pp-switch refuses to overwrite links/external changes. Multi-file Codex writes
-are recoverable, not globally atomic. Recovery runs on the next app operation;
-a conflict keeps the journal rather than overwriting someone else's edits.
+| Symptom | Action |
+| --- | --- |
+| Unsupported or incomplete setup | Check the client prerequisites above and initialize through the client itself. A refused setup is left unchanged. |
+| Client keeps using the previous provider | Restart the client; check project settings, launch arguments and environment overrides. |
+| File changed or symlink refused | Inspect the destination before retrying. The app refuses to overwrite links or external edits. |
+| Update check cannot contact GitHub / HTTP 403 | Retry manually later; an outbound address can exhaust GitHub's anonymous API quota. No GitHub login is required by the app. |
+| Update install/restart fails | Keep any reported backups. Check package completeness and write access; reopen the app or download manually. |
+| CJK text is missing on Linux | Install one of the CJK fonts listed above. |
 
-Closing the window exits the process. There is no tray or persistent helper.
-Original budgets: installed ≤5 MiB, idle RSS ≤20 MiB, startup/import peak ≤30 MiB,
-cold interactive ≤300 ms. **These are targets. macOS memory has exceeded them.**
-[Measurements](verification.md) document platform/version results, hardware and
-raw data. Fresh-process event-loop readiness is not a cold-start or input-latency
-measurement; import-stress peaks remain unverified. Do not infer current release
-performance from historical figures or another OS.
-
-0.0.3 uses the compact flat UI and app icon. Windows/Linux pass the current CI benchmark; macOS RSS remains above budget. See [current raw results](verification.md).
+Codex multi-file changes are recoverable, not globally atomic. Recovery runs on
+next use; a conflict keeps the journal instead of overwriting external changes.
+Closing the main window exits the process, including dialogs; no helper remains
+resident. Current performance results and limitations live in
+[verification](verification.md), and budget definitions in [SPEC PP-11](../SPEC.md#acceptance-contract).
 
 [README](../README.md) · [Canonical English spec](../SPEC.md)

@@ -30,7 +30,7 @@ Modelle, Denkparameter, Projektberechtigungen, MCP und Skills sind bereits einge
 
 **Vorhandene Links weiterverwenden.** Unterstützten `ccswitch://`-Anbieterlink einfügen, URL und Schlüssel prüfen, speichern und wechseln. Zusätzliche Modell- und Werkzeugeinstellungen werden nicht angewendet.
 
-[cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) fordert einen Pure-/Lite-Modus: „CC Switch only manages fields it owns. Everything else belongs to the target application/user.“ pp-switch setzt dieses Prinzip mit einem noch engeren Umfang um: URL und Schlüssel. Die Diskussion begründet den Bedarf, ist aber keine Empfehlung für dieses Projekt. [Quellen und Grenzen](docs/community.md).
+[cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) fordert einen Pure-/Lite-Modus: „CC Switch only manages fields it owns. Everything else belongs to the target application/user.“ pp-switch setzt dieses Prinzip mit einem noch engeren Umfang um: URL und Schlüssel. Die Diskussion begründet den Bedarf, ist aber keine Empfehlung für dieses Projekt. [Quellen und Grenzen](docs/verification.md#community-sources).
 
 ## Kleiner Umfang, klare Unterschiede
 
@@ -47,7 +47,7 @@ Für eine umfassende Verwaltungsoberfläche eignet sich [cc-switch](https://gith
 
 ## Download
 
-**[v0.0.3 Funktionsvorschau](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**: ein kompaktes flaches natives Fenster, ein PPC-App-Icon, vier Oberflächensprachen und manuelle Updates. Es bleibt eine Vorschau: macOS überschreitet das Leerlauf-Speicherbudget; Windows und Linux bestehen den aktuellen Benchmark. Wir veröffentlichen [Messwerte](docs/verification.md) statt eines „20 MiB“-Versprechens.
+**[v0.0.3 Funktionsvorschau](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**. macOS überschreitet das Speicherbudget; [Messwerte](docs/verification.md) sind öffentlich.
 
 | Plattform | Paket | Start |
 | --- | --- | --- |
@@ -81,20 +81,10 @@ Keine Änderungen an Modellen, Authentifizierungsart oder Protokoll, keine Erste
 - Unterstützt die **Provider-Importteilmenge** von `ccswitch://v1/import?resource=provider` und entsprechenden `ppswitch://`-Links: claude/codex/gemini, direkte Parameter und Base64-JSON/TOML. Die erste URL wird verwendet. Andere Ressourcen und ausschließlich entfernte Konfigurationen werden abgelehnt.
 - Links werden ins Fenster eingefügt. Keine gemeinsame cc-switch-Datenbank, keine URL-Zuordnung im Betriebssystem.
 - Geheimnisse bleiben in lokalen Benutzerdateien (Unix 0600 / Windows-ACL für den aktuellen Benutzer). Maskierung ist **keine Verschlüsselung**. Keine automatischen Zwischenablagezugriffe, Geheimnisse in Diagnosen oder Anfragen an Anbieter.
-- Updates kontaktieren ausschließlich GitHub Releases dieses Repositorys. Versionsbestätigung vor Download, Installation und Neustart. Größen- und Dateibeschränkungen sowie SHA-256-Prüfung anhand des GitHub-Asset-Digests. Fehler führen zur Wiederherstellung; bei Konflikten mit externen Änderungen bleiben Sicherungen erhalten. Pakete sind unsigniert: der Digest prüft Downloadintegrität, keine unabhängige Herausgebersignatur. Das Installationsverzeichnis muss beschreibbar sein. Anbieter- und Clientdateien werden nicht aktualisiert.
+- Updates benötigen deine Bestätigung und einen beschreibbaren Installationsort. Nur Pakete dieses Repositorys werden heruntergeladen und per SHA-256 geprüft. Sie sind unsigniert; Anbieter- und Clientdateien bleiben außerhalb des Updaters. [Updatedetails (Englisch)](docs/user-guide.md#manual-update).
 - Vollständiger Vertrag: [SPEC.md](SPEC.md); Datei- und Datenpfade: [Anleitung](docs/user-guide.md).
 
 ## Leistung mit Belegen
-
-| Budget | Ziel |
-| --- | ---: |
-| Installierte app-eigene Dateien | ≤5 MiB |
-| Gesamter RSS im Leerlauf | ≤20 MiB |
-| Gesamter Spitzen-RSS bei Start / Import | ≤30 MiB |
-| Kaltstart bis bedienbar | ≤300 ms |
-| Nach dem Schließen | Prozess beendet |
-
-**Ziele, keine bereits bestätigten Werbeaussagen.** Die 0.0.1-CI-Basis hatte 1.32–1.52 MiB installierte Größe. Leerlauf-RSS: macOS ARM64 68.08 MiB, macOS Intel 40.24 MiB, Windows 15.10 MiB, Linux/Xvfb 8.77 MiB. Lokal auf M4 / macOS 27 etwa 121 MiB. Historische Werte, keine 0.0.3-Messungen oder kontrollierten Plattformvergleiche.
 
 **Native CI-Messungen für 0.0.3:**
 
@@ -105,23 +95,15 @@ Keine Änderungen an Modellen, Authentifizierungsart oder Protokoll, keine Erste
 | Windows Server 2022 · x64 | 2.81 | 15.00 | Bestanden |
 | Ubuntu 22.04 · x64 · Xvfb | 3.02 | 17.19 | Bestanden |
 
-[Aktuelle Ergebnisse, Rohdaten und Methoden](docs/verification.md) sind öffentlich. Ein neuer Prozess mit warmen OS-Caches und einer Eventloop-Markierung belegt keinen echten Kaltstart, keine Eingabelatenz und keine Importlastspitzen. Budgetfehler bleiben in CI sichtbar; die Grenzwerte wurden nicht gelockert.
+Die Budgets stehen in [SPEC PP-11](SPEC.md#acceptance-contract). Windows/Linux
+bestehen dieses Skript; macOS überschreitet das Speicherbudget. Echter Kaltstart
+sowie Import-/Updatespitzen sind nicht bestätigt. [Methode, Rohdaten und frühere Ergebnisse](docs/verification.md).
 
-## Entwicklung und Lizenz
+## Mitwirken
 
-Spec zuerst: [SPEC.md](SPEC.md) aktualisieren, minimal implementieren, beobachtbares Verhalten prüfen. Rust ≥1.89, CMake und die C++-Toolchain der Plattform sind erforderlich. Linux-Abhängigkeiten stehen in [CI](.github/workflows/ci.yml).
+Beginne mit [SPEC.md](SPEC.md). Build-, Prüf- und Releaseanweisungen stehen im
+[Beitragsleitfaden (Englisch)](CONTRIBUTING.md).
 
-```sh
-cargo run --locked
-cargo fmt --check
-cargo clippy --locked --all-targets -- -D warnings
-cargo test --locked
-cargo build --locked --release --bins --examples
-cargo run --locked --example ui_smoke
-cargo run --locked --example update_smoke
-python3 scripts/measure.py target/release/examples/measure_ui --output target/metrics.json --enforce
-```
-
-GUI-/Update-Prüfungen verwenden temporäre Dateien statt deiner Clientkonfiguration. Linux: `xvfb-run -a`; Windows-Beispiele: `.exe`. Screenshots enthalten Beispieldaten und werden nicht mitgeliefert.
+## Dank und Lizenz
 
 Danke an [cc-switch](https://github.com/farion1231/cc-switch) für offene Protokoll- und Implementierungsreferenzen und an [fltk-rs](https://github.com/fltk-rs/fltk-rs) / [FLTK](https://www.fltk.org). pp-switch ist nicht mit cc-switch verbunden. [MIT](LICENSE). Abhängigkeiten behalten ihre [Lizenzen und Hinweise](THIRD_PARTY_NOTICES.txt).
