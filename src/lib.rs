@@ -1,6 +1,7 @@
 pub mod client;
 pub mod config;
 pub mod i18n;
+pub mod protocol;
 pub mod provider;
 pub mod storage;
 mod theme;

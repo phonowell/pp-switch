@@ -2,6 +2,15 @@
 use std::{env, fs, path::PathBuf, process::Command};
 
 fn main() {
+    #[cfg(target_os = "macos")]
+    if env::var("CARGO_CFG_TARGET_OS").as_deref() == Ok("macos") {
+        println!("cargo:rerun-if-changed=src/macos.m");
+        cc::Build::new()
+            .file("src/macos.m")
+            .flag("-fobjc-arc")
+            .compile("pp_native");
+        println!("cargo:rustc-link-lib=framework=CoreServices");
+    }
     println!("cargo:rerun-if-changed=assets/icon.ico");
     if env::var("CARGO_CFG_TARGET_OS").as_deref() != Ok("windows") {
         return;

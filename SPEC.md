@@ -1,6 +1,6 @@
 # Pure Provider Switch (pp-switch) specification
 
-Status: v0.0.3 implementation contract. Changes to behavior start here.
+Status: v0.0.4 implementation contract. Changes to behavior start here.
 
 Release policy: functional previews may be published with disclosed performance
 failures. Report functional and performance checks separately. PP-11 remains
@@ -52,6 +52,15 @@ Gemini: patch only `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` in `.env`. Requ
 
 Import `ccswitch://v1/import?resource=provider` and equivalent `ppswitch://` text. Support claude/codex/gemini, URL decoding, inline Base64 config (standard/URL-safe, padded/unpadded), JSON/TOML and explicit nonempty parameter precedence. Use the first endpoint. Extract only name/client/address/key; never apply imported extra fields. Reject other resources/apps, unsupported versions, remote-only config and malformed/incomplete input. Import selects the imported client and previews name/address/key in the editor; it neither saves nor applies.
 
+Installed packages handle OS-opened links as well as pasted text. More → Register
+import links registers user-level associations; claim `ccswitch` only when no
+installed handler exists, preserving cc-switch or another existing handler.
+macOS bundles declare both schemes and receive Apple URL events, including on
+cold launch. Windows/Linux receive one URL argument, without shell interpretation.
+Registration needs no administrator, daemon, startup agent or cc-switch install.
+An incoming link must not replace an open editor's unsaved draft; report that
+the user should finish or cancel it and retry. Never log the link or key.
+
 ### PP-07: Directories and overrides
 
 Use client configuration-directory overrides where supported. Use platform-specific application-data storage for pp-switch. Do not modify shell profiles or system environment. Detect overrides visible to pp-switch; state that a separately launched client's environment may differ.
@@ -75,6 +84,12 @@ Installed application-owned files ≤5 MiB; steady idle total RSS ≤20 MiB; sta
 ### PP-12: Public evidence and CI
 
 Publish source, license, build instructions, compatibility limits and actual verification evidence. CI runs formatting, lint, behavioral tests and release builds on all three OSes. No platform is described as tested before evidence exists.
+
+Pushing a version tag matching Cargo.toml automatically validates and builds all
+four native packages and publishes a GitHub preview release, checksums and
+verification.json from that same commit. Functional/size failures block publishing;
+RSS/startup budget failures remain visible in raw evidence and release notes.
+Publishing must not use partial or stale artifacts or replace an existing release.
 
 ### PP-13: Languages
 
@@ -112,8 +127,9 @@ cc-switch commit `8845b1ef799aa8810b864b122de6af5f4629de10`:
 - [Gemini projection](https://github.com/farion1231/cc-switch/blob/8845b1ef799aa8810b864b122de6af5f4629de10/src-tauri/src/live/project/gemini.rs)
 
 Only the Provider deep-link subset above is compatible. pp-switch does not share
-cc-switch's database, routing state, full provider settings or OS URL association.
-Links are pasted into the app; pp-switch registers no system URL scheme.
+cc-switch's database, routing state or full provider settings. It handles only
+Provider import links and preserves an existing `ccswitch` handler during explicit
+registration; pasted links remain available regardless of OS association.
 
 ## Verification
 

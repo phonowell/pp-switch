@@ -28,7 +28,7 @@ Modelle, Denkparameter, Projektberechtigungen, MCP und Skills sind bereits einge
 
 **Fertig mit dem Wechsel? Fertig mit der App.** Ein Fenster, kein Tray, kein Autostart, keine Anbieterabfragen oder regelmäßigen Nutzungsabfragen. Beim Schließen endet der Prozess. Updates erfolgen nur nach einem Klick auf „Check for updates“ und deiner Bestätigung. Rust + FLTK, native Vektorzeichnung und Systemschriften; kein mitgeliefertes WebView, keine Datenbank und keine JavaScript-Laufzeit.
 
-**Vorhandene Links weiterverwenden.** Unterstützten `ccswitch://`-Anbieterlink einfügen, URL und Schlüssel prüfen, speichern und wechseln. Zusätzliche Modell- und Werkzeugeinstellungen werden nicht angewendet.
+**Vorhandene Links weiterverwenden.** Unterstützten `ccswitch://`-Anbieterlink öffnen oder einfügen, URL und Schlüssel prüfen, speichern und wechseln. Zusätzliche Modell- und Werkzeugeinstellungen werden nicht angewendet.
 
 [cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) fordert einen Pure-/Lite-Modus: „CC Switch only manages fields it owns. Everything else belongs to the target application/user.“ pp-switch setzt dieses Prinzip mit einem noch engeren Umfang um: URL und Schlüssel. Die Diskussion begründet den Bedarf, ist aber keine Empfehlung für dieses Projekt. [Quellen und Grenzen](docs/verification.md#community-sources).
 
@@ -79,7 +79,7 @@ Keine Änderungen an Modellen, Authentifizierungsart oder Protokoll, keine Erste
 ## Kompatibilität und Vertrauen
 
 - Unterstützt die **Provider-Importteilmenge** von `ccswitch://v1/import?resource=provider` und entsprechenden `ppswitch://`-Links: claude/codex/gemini, direkte Parameter und Base64-JSON/TOML. Die erste URL wird verwendet. Andere Ressourcen und ausschließlich entfernte Konfigurationen werden abgelehnt.
-- Links werden ins Fenster eingefügt. Keine gemeinsame cc-switch-Datenbank, keine URL-Zuordnung im Betriebssystem.
+- Links lassen sich über das Betriebssystem öffnen oder einfügen. „More → Register import links“ übernimmt `ccswitch` nur ohne installierten Handler und erhält cc-switch-Zuordnungen. Keine gemeinsame Datenbank. Entwürfe vor dem Öffnen eines weiteren Links abschließen oder verwerfen.
 - Geheimnisse bleiben in lokalen Benutzerdateien (Unix 0600 / Windows-ACL für den aktuellen Benutzer). Maskierung ist **keine Verschlüsselung**. Keine automatischen Zwischenablagezugriffe, Geheimnisse in Diagnosen oder Anfragen an Anbieter.
 - Updates benötigen deine Bestätigung und einen beschreibbaren Installationsort. Nur Pakete dieses Repositorys werden heruntergeladen und per SHA-256 geprüft. Sie sind unsigniert; Anbieter- und Clientdateien bleiben außerhalb des Updaters. [Updatedetails (Englisch)](docs/user-guide.md#manual-update).
 - Vollständiger Vertrag: [SPEC.md](SPEC.md); Datei- und Datenpfade: [Anleitung](docs/user-guide.md).

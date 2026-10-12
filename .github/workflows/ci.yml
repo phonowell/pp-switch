@@ -24,7 +24,7 @@ jobs:
           - os: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
@@ -34,15 +34,23 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
+      - name: Validate release tag
+        shell: bash
+        run: python scripts/release.py --check-tag "${GITHUB_REF_NAME}" --event "${GITHUB_REF_TYPE}"
       - name: Linux build dependencies
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y cmake libx11-dev libxext-dev libxft-dev libxinerama-dev libxcursor-dev libxrender-dev libxfixes-dev libfontconfig1-dev fonts-noto-cjk xvfb
+      - name: Package version
+        shell: bash
+        run: python -c 'import os; v=next(l.split(chr(34))[1] for l in open("Cargo.toml") if l.startswith("version =")); open(os.environ["GITHUB_ENV"],"a").write("PP_VERSION="+v+"\n")'
       - name: Format
         run: cargo fmt --check
       - name: Lint
         run: cargo clippy --locked --all-targets -- -D warnings
       - name: Behavior tests
         run: cargo test --locked
+      - name: Release automation tests
+        run: python -m unittest discover -s scripts -p '*_test.py'
       - name: Release application and measurement harness
         run: cargo build --locked --release --target ${{ matrix.target }} --bins --examples
       - name: Package and enforce installed-size budget
@@ -57,6 +65,9 @@ jobs:
         shell: bash
         run: |
           python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke target/gui.ppm
+      - name: Native URL events (macOS)
+        if: runner.os == 'macOS'
+        run: python scripts/protocol_smoke.py target/${{ matrix.target }}/release/examples/protocol_smoke target/native-url
       - name: GUI smoke (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
@@ -66,27 +77,45 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           xvfb-run -a target/${{ matrix.target }}/release/examples/update_smoke
-          target/${{ matrix.target }}/release/examples/update_smoke --archive target/package/pp-switch-v0.0.3-${{ matrix.target }}.tar.gz
+          target/${{ matrix.target }}/release/examples/update_smoke --archive target/package/pp-switch-v${{ env.PP_VERSION }}-${{ matrix.target }}.tar.gz
       - name: Update helper / installation / restart (macOS)
         if: runner.os == 'macOS'
         run: |
           target/${{ matrix.target }}/release/examples/update_smoke
-          target/${{ matrix.target }}/release/examples/update_smoke --archive target/package/pp-switch-v0.0.3-${{ matrix.target }}.zip
+          target/${{ matrix.target }}/release/examples/update_smoke --archive target/package/pp-switch-v${{ env.PP_VERSION }}-${{ matrix.target }}.zip
       - name: Update helper / installation / restart (Windows)
         if: runner.os == 'Windows'
         run: |
           target/${{ matrix.target }}/release/examples/update_smoke.exe
-          target/${{ matrix.target }}/release/examples/update_smoke.exe --archive target/package/pp-switch-v0.0.3-${{ matrix.target }}.zip
+          target/${{ matrix.target }}/release/examples/update_smoke.exe --archive target/package/pp-switch-v${{ env.PP_VERSION }}-${{ matrix.target }}.zip
       - name: Memory and startup budget (Linux)
+        continue-on-error: true
         if: runner.os == 'Linux'
         run: xvfb-run -a python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --output target/metrics.json --enforce
       - name: Memory and startup budget (macOS)
+        continue-on-error: true
         if: runner.os == 'macOS'
         run: python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --output target/metrics.json --enforce
       - name: Memory and startup budget (Windows)
+        continue-on-error: true
         if: runner.os == 'Windows'
         run: |
           python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui.exe --output target/metrics.json --enforce
+      - name: Import preview memory (Linux)
+        if: runner.os == 'Linux'
+        continue-on-error: true
+        run: xvfb-run -a python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --import --output target/import-metrics.json --enforce
+      - name: Import preview memory (macOS)
+        if: runner.os == 'macOS'
+        continue-on-error: true
+        run: python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --import --output target/import-metrics.json --enforce
+      - name: Import preview memory (Windows)
+        if: runner.os == 'Windows'
+        continue-on-error: true
+        run: python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui.exe --import --output target/import-metrics.json --enforce
+      - name: Verify measurement evidence
+        shell: bash
+        run: python scripts/release.py --check-metrics target/metrics.json target/import-metrics.json
       - name: Upload packages and measurements
         if: always()
         uses: actions/upload-artifact@v4
@@ -97,7 +126,39 @@ jobs:
             target/package/*.tar.gz
             target/package/*.json
             target/metrics.json
+            target/import-metrics.json
             target/gui*.ppm
+            target/native-url/*.ppm
             target/gui-hang.txt
             target/measure-hang.txt
           if-no-files-found: ignore
+
+  release:
+    needs: check
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    concurrency:
+      group: release-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pp-switch-*
+          path: target/native-artifacts
+      - name: Assemble and verify all native packages
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_COMMIT: ${{ github.sha }}
+          RELEASE_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python scripts/release.py --artifacts target/native-artifacts --output target/release-assets
+      - name: Publish verified preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: python scripts/release.py --publish target/release-assets

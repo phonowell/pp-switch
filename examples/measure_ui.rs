@@ -19,5 +19,7 @@ fn main() {
             app::quit();
         });
     });
-    pp_switch::ui::run_with(store, paths).expect("measurement window");
+    let import = std::env::args().any(|arg| arg == "--import");
+    pp_switch::ui::run_with_link(store, paths, import.then_some("ccswitch://v1/import?resource=provider&app=claude&name=Example&endpoint=https%3A%2F%2Fapi.example.com&apiKey=measurement-fake-key"))
+        .expect("measurement window");
 }

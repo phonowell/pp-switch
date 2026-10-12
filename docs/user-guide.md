@@ -68,7 +68,15 @@ Models, scripts, tools and other fields are discarded. Review, **Save**, then **
 
 Importing is a preview: no client files change and no provider is saved yet.
 Remote-only configs, other resources, unsupported app/version and incomplete
-input are refused. There is no shared cc-switch database or OS link association.
+input are refused. There is no shared cc-switch database.
+
+OS links also open the same preview. On macOS move the `.app` to Applications
+and open it once. **More → Register import links** registers user-level handlers
+on every platform; `ccswitch` is claimed only without an installed handler.
+An installed cc-switch or another handler keeps its association. Windows/Linux
+registrations refer to the executable path; register again after moving it.
+No administrator or cc-switch installation is needed. Finish or cancel an open
+draft and retry the link; incoming links never replace your unsaved edits.
 The app reads the clipboard only if you paste normally; it does not monitor it.
 Treat real links as credentials; the example above is fake.
 

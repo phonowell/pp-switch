@@ -1,6 +1,7 @@
 [env]
-# FLTK 1.5's nested CMake project otherwise overrides static-msvcrt with /MD.
-CFLTK_TOOLCHAIN = { value = "cmake/static-crt.cmake", relative = true }
+MACOSX_DEPLOYMENT_TARGET = "11.0"
+# Size-focused native flags and FLTK's nested static MSVC runtime setting.
+CFLTK_TOOLCHAIN = { value = "cmake/minimal.cmake", relative = true }
 
 [target.x86_64-pc-windows-msvc]
 rustflags = ["-C", "target-feature=+crt-static"]

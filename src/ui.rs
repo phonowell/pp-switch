@@ -2,6 +2,7 @@ use crate::{
     Result,
     client::{Paths, environment_conflict},
     i18n::{self, Language, tr},
+    protocol,
     provider::{Client, Provider, import_link},
     storage::Store,
     theme, update,
@@ -41,6 +42,7 @@ struct Controls {
     language: Rc<Cell<Language>>,
     more: MenuButton,
     import_item: i32,
+    register_item: i32,
     update_item: i32,
     language_items: [i32; 4],
     labels: Vec<(Frame, &'static str)>,
@@ -108,6 +110,7 @@ impl Controls {
         self.importer.set_label(tr(lang, "Import link"));
         self.more.set_tooltip(tr(lang, "More"));
         self.menu_text(self.import_item, tr(lang, "Import link"));
+        self.menu_text(self.register_item, tr(lang, "Register import links"));
         self.menu_text(
             self.update_item,
             tr(
@@ -218,8 +221,9 @@ fn controls(language: Language) -> Controls {
             draw::draw_rounded_rect(m.x(), m.y(), m.w(), m.h(), 5);
         }
     });
-    more.add_choice("Import link|Check for updates|Language/English|Language/简体中文|Language/繁體中文|Language/日本語");
+    more.add_choice("Import link|Register import links|Check for updates|Language/English|Language/简体中文|Language/繁體中文|Language/日本語");
     let import_item = more.find_index("Import link");
+    let register_item = more.find_index("Register import links");
     let update_item = more.find_index("Check for updates");
     let language_items = ["English", "简体中文", "繁體中文", "日本語"]
         .map(|name| more.find_index(&format!("Language/{name}")));
@@ -327,6 +331,7 @@ fn controls(language: Language) -> Controls {
         language: Rc::new(Cell::new(language)),
         more,
         import_item,
+        register_item,
         update_item,
         language_items,
         labels,
@@ -472,12 +477,11 @@ fn refresh(
     c.list.clear();
     c.list.scroll_to(0, 0);
     c.list.begin();
-    let providers: Vec<_> = state
-        .borrow()
+    let current_state = state.borrow();
+    let providers: Vec<_> = current_state
         .providers
         .iter()
         .filter(|p| p.client == c.client.get())
-        .cloned()
         .collect();
     let row_width = if providers.len() * 74 > 248 { 380 } else { 392 };
     for (index, p) in providers.iter().enumerate() {
@@ -596,9 +600,17 @@ fn refresh(
         edit.set_tooltip(tr(c.lang(), "Edit provider"));
         let mut view = c.clone();
         let edit_state = state.clone();
-        let provider = p.clone();
+        let id = p.id.clone();
         edit.set_callback(move |_| {
-            open_editor(&mut view, &mut edit_state.borrow_mut(), Some(&provider))
+            let provider = edit_state
+                .borrow()
+                .providers
+                .iter()
+                .find(|p| p.id == id)
+                .cloned();
+            if let Some(provider) = provider {
+                open_editor(&mut view, &mut edit_state.borrow_mut(), Some(&provider));
+            }
         });
         c.rows.borrow_mut().push(Row {
             id: p.id.clone(),
@@ -615,6 +627,32 @@ fn refresh(
         c.empty.hide();
     }
     selection(c, &state.borrow());
+    Ok(())
+}
+
+fn preview_link(
+    c: &mut Controls,
+    state: Rc<RefCell<State>>,
+    store: &Store,
+    paths: &Paths,
+    link: &str,
+) -> Result<()> {
+    if c.editor.shown() {
+        return Err("Finish or cancel your edits, then open the import link again.".into());
+    }
+    let p = import_link(link)?;
+    c.client.set(p.client);
+    state.borrow_mut().selected = None;
+    refresh(c, state.clone(), store, paths)?;
+    for b in &mut c.clients {
+        b.redraw();
+    }
+    c.importer.hide();
+    c.link.set_value("");
+    open_editor(c, &mut state.borrow_mut(), None);
+    c.name.set_value(&p.name);
+    c.url.set_value(&p.base_url);
+    c.key.set_value(&p.api_key);
     Ok(())
 }
 
@@ -673,6 +711,11 @@ fn wire(c: &mut Controls, state: Rc<RefCell<State>>, store: Store, paths: Paths)
                 .set_pos(view.window.x() + 27, view.window.y() + 100);
             view.importer.show();
             let _ = view.link.take_focus();
+        } else if index == view.register_item {
+            match protocol::register() {
+                Ok(()) => view.message("Import links registered. Existing handlers were kept."),
+                Err(e) => view.message(&e),
+            }
         } else if index == view.update_item {
             check_updates(&mut view);
         } else if let Some(i) = view.language_items.iter().position(|v| *v == index) {
@@ -706,32 +749,18 @@ fn wire(c: &mut Controls, state: Rc<RefCell<State>>, store: Store, paths: Paths)
     let state_import = state.clone();
     let store_import = store.clone();
     let paths_import = paths.clone();
-    c.import
-        .set_callback(move |_| match import_link(&view.link.value()) {
-            Ok(p) => {
-                view.client.set(p.client);
-                state_import.borrow_mut().selected = None;
-                if let Err(e) = refresh(
-                    &mut view,
-                    state_import.clone(),
-                    &store_import,
-                    &paths_import,
-                ) {
-                    i18n::alert(view.lang(), &e);
-                    return;
-                }
-                for b in &mut view.clients {
-                    b.redraw();
-                }
-                view.importer.hide();
-                view.link.set_value("");
-                open_editor(&mut view, &mut state_import.borrow_mut(), None);
-                view.name.set_value(&p.name);
-                view.url.set_value(&p.base_url);
-                view.key.set_value(&p.api_key);
-            }
-            Err(e) => i18n::alert(view.lang(), &e),
-        });
+    c.import.set_callback(move |_| {
+        let link = view.link.value();
+        if let Err(e) = preview_link(
+            &mut view,
+            state_import.clone(),
+            &store_import,
+            &paths_import,
+            &link,
+        ) {
+            i18n::alert(view.lang(), &e);
+        }
+    });
     let mut view = c.clone();
     let state_save = state.clone();
     let store_save = store.clone();
@@ -928,18 +957,115 @@ fn check_updates(c: &mut Controls) {
     }
 }
 
-pub fn run() -> Result<()> {
-    run_with(Store::system()?, Paths::system()?)
+pub fn run(link: Option<&str>) -> Result<()> {
+    run_with_link(Store::system()?, Paths::system()?, link)
 }
 
 /// The production UI with isolated paths available to development tools.
 pub fn run_with(store: Store, paths: Paths) -> Result<()> {
+    run_with_link(store, paths, None)
+}
+
+pub fn run_with_link(store: Store, paths: Paths, link: Option<&str>) -> Result<()> {
+    #[cfg(target_os = "macos")]
+    protocol::prepare();
     let state = Rc::new(RefCell::new(State::default()));
     let mut c = controls(store.language()?);
     refresh(&mut c, state.clone(), &store, &paths)?;
-    wire(&mut c, state, store, paths);
+    wire(&mut c, state.clone(), store.clone(), paths.clone());
+    #[cfg(target_os = "macos")]
+    {
+        let mut view = c.clone();
+        let state = state.clone();
+        let store = store.clone();
+        let paths = paths.clone();
+        protocol::listen(move |link| {
+            if let Err(e) = preview_link(&mut view, state.clone(), &store, &paths, link) {
+                view.message(&e);
+            }
+        });
+    }
     c.window.show();
+    if let Some(link) = link
+        && let Err(e) = preview_link(&mut c, state, &store, &paths, link)
+    {
+        c.message(&e);
+    }
     while app::wait() {}
+    Ok(())
+}
+
+/// Development-only real-widget acceptance with fake keys and isolated client files.
+#[cfg(target_os = "macos")]
+pub fn protocol_smoke(store: Store, paths: Paths, output: std::path::PathBuf) -> Result<()> {
+    protocol::prepare();
+    let state = Rc::new(RefCell::new(State::default()));
+    let mut c = controls(Language::En);
+    refresh(&mut c, state.clone(), &store, &paths)?;
+    wire(&mut c, state.clone(), store.clone(), paths.clone());
+    c.window.show();
+    let mut step = 0;
+    let finished = output.clone();
+    protocol::listen(move |link| {
+        let result = (|| -> Result<()> {
+            let before = store.load()?;
+            let current = paths.current(Client::Claude)?;
+            let result = preview_link(&mut c, state.clone(), &store, &paths, link);
+            match step {
+                0 | 2 => {
+                    result?;
+                    if !c.editor.shown()
+                        || c.name.value() != "Native link"
+                        || c.key.value() != "native-fake-key"
+                    {
+                        return Err("Native URL event did not open import preview.".into());
+                    }
+                    app::check();
+                    capture(&mut c.editor, &output.join(format!("native-{step}.ppm")))?;
+                    if step == 2 {
+                        c.cancel.do_callback();
+                    }
+                }
+                1 => {
+                    if result.is_ok() || c.name.value() != "Native link" {
+                        return Err("Native URL overwrote an open draft.".into());
+                    }
+                    c.cancel.do_callback();
+                }
+                3 => {
+                    if result.is_ok() || c.editor.shown() {
+                        return Err("Malformed native URL was not rejected.".into());
+                    }
+                }
+                _ => return Err("Unexpected extra native URL event.".into()),
+            }
+            if store.load()? != before || paths.current(Client::Claude)? != current {
+                return Err("Native URL event wrote provider/client data.".into());
+            }
+            Ok(())
+        })();
+        if let Err(e) = result {
+            let _ = std::fs::write(output.join("error.txt"), e);
+            app::add_timeout3(0.0, |_| {});
+            app::quit();
+            return;
+        }
+        step += 1;
+        let _ = std::fs::write(output.join("step.txt"), step.to_string());
+        if step == 4 {
+            app::add_timeout3(0.0, |_| {});
+            app::quit();
+        }
+    });
+    while app::wait() {}
+    if finished.join("error.txt").exists()
+        || std::fs::read_to_string(finished.join("step.txt"))
+            .ok()
+            .as_deref()
+            != Some("4")
+    {
+        return Err("Native URL acceptance did not finish.".into());
+    }
     Ok(())
 }
 
@@ -1065,6 +1191,16 @@ fn smoke_language(
     if !c.importer.shown() {
         return Err("GUI import menu did not open the dialog.".into());
     }
+    if let Some(path) = &screenshot {
+        app::check();
+        capture(
+            &mut c.importer,
+            &path.with_file_name(format!(
+                "{}.import.ppm",
+                path.file_stem().unwrap().to_string_lossy()
+            )),
+        )?;
+    }
     c.link.set_value("ccswitch://v1/import?resource=provider&app=claude&name=Imported&endpoint=https%3A%2F%2Fother.example.com&apiKey=imported-test-key&model=ignored");
     c.import.do_callback();
     if !c.editor.shown()
@@ -1078,9 +1214,75 @@ fn smoke_language(
         return Err("GUI import preview changed files or failed to populate the editor.".into());
     }
     c.cancel.do_callback();
+    let files_before_link = store.load()?;
+    let client_before_link = paths.current(Client::Claude)?;
+    let incoming = "ppswitch://v1/import?resource=provider&app=claude&name=OS%20link&endpoint=https%3A%2F%2Fos.example.com&apiKey=os-fake-key";
+    preview_link(&mut c, state.clone(), &store, &paths, incoming)?;
+    if !c.editor.shown() || c.name.value() != "OS link" || c.key.value() != "os-fake-key" {
+        return Err("GUI OS link did not preview the provider.".into());
+    }
+    c.name.set_value("Unsaved draft");
+    if preview_link(&mut c, state.clone(), &store, &paths, incoming).is_ok()
+        || c.name.value() != "Unsaved draft"
+        || store.load()? != files_before_link
+        || paths.current(Client::Claude)? != client_before_link
+    {
+        return Err("GUI OS link changed saved data or an unsaved draft.".into());
+    }
+    c.cancel.do_callback();
+    if preview_link(
+        &mut c,
+        state.clone(),
+        &store,
+        &paths,
+        "ccswitch://v2/import?resource=prompt&apiKey=never-log-me",
+    )
+    .is_ok()
+        || c.editor.shown()
+        || store.load()? != files_before_link
+    {
+        return Err("GUI malformed OS link was not rejected.".into());
+    }
     c.clients[1].do_callback();
     if c.client.get() != Client::Codex || !c.rows.borrow().is_empty() {
         return Err("GUI client tab failed.".into());
+    }
+    // Exercise URL/key switching in all client tabs using initialized fixtures.
+    std::fs::create_dir_all(&paths.codex).map_err(|_| "Cannot create Codex fixture.")?;
+    std::fs::write(paths.codex.join("config.toml"), "# preserve\nmodel_provider = \"fixture\"\n[model_providers.fixture]\nbase_url = \"https://old.example.com\"\nexperimental_bearer_token = \"old-fake-key\"\nwire_api = \"responses\"\n").map_err(|_| "Cannot write Codex fixture.")?;
+    std::fs::create_dir_all(&paths.gemini).map_err(|_| "Cannot create Gemini fixture.")?;
+    std::fs::write(
+        paths.gemini.join("settings.json"),
+        r#"{"security":{"auth":{"selectedType":"gemini-api-key"}}}"#,
+    )
+    .map_err(|_| "Cannot write Gemini fixture.")?;
+    for index in [1, 2] {
+        c.clients[index].do_callback();
+        c.new.do_callback();
+        c.name.set_value("Fixture");
+        c.url.set_value("https://fixture.example.com");
+        c.key.set_value("fixture-fake-key");
+        c.save.do_callback();
+        c.apply.do_callback();
+        if paths.current(Client::ALL[index])?
+            != Some((
+                "https://fixture.example.com".into(),
+                "fixture-fake-key".into(),
+            ))
+            || c.apply.active()
+        {
+            return Err("GUI client fixture switch failed.".into());
+        }
+        if let Some(path) = &screenshot {
+            app::check();
+            capture(
+                &mut c.window,
+                &path.with_file_name(format!(
+                    "{}.client-{index}.ppm",
+                    path.file_stem().unwrap().to_string_lossy()
+                )),
+            )?;
+        }
     }
     c.clients[0].do_callback();
     for (name, url, key) in [

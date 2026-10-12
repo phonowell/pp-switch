@@ -16,6 +16,7 @@ parser.add_argument("binary", type=Path)
 parser.add_argument("--runs", type=int, default=3)
 parser.add_argument("--output", type=Path)
 parser.add_argument("--enforce", action="store_true")
+parser.add_argument("--import", dest="import_link", action="store_true", help="measure real import preview with fake data")
 args = parser.parse_args()
 if not 1 <= args.runs <= 20:
     raise SystemExit("runs must be between 1 and 20")
@@ -54,7 +55,7 @@ def terminate(process):
 samples = []
 for _ in range(args.runs):
     start = time.perf_counter()
-    process = subprocess.Popen([str(args.binary.resolve())], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    process = subprocess.Popen([str(args.binary.resolve())] + (["--import"] if args.import_link else []), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     ready = queue.Queue()
     threading.Thread(target=lambda: ready.put(process.stdout.readline().strip()), daemon=True).start()
     try:
@@ -95,7 +96,7 @@ for _ in range(args.runs):
     if returncode != 0 or not idle:
         raise SystemExit(f"Measurement process failed: {process.stderr.read()}")
     samples.append({"startup_ms": round(startup, 2), "idle_rss_bytes": int(statistics.median(idle)), "peak_rss_bytes": peak})
-report = {"os": platform.platform(), "machine": platform.machine(), "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+report = {"os": platform.platform(), "machine": platform.machine(), "scenario": "import-preview" if args.import_link else "empty-window", "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
           "samples": samples, "startup_median_ms": round(statistics.median(s["startup_ms"] for s in samples), 2),
           "startup_max_ms": max(s["startup_ms"] for s in samples),
           "idle_max_bytes": max(s["idle_rss_bytes"] for s in samples), "peak_max_bytes": max(s["peak_rss_bytes"] for s in samples)}

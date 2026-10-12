@@ -186,3 +186,7 @@ Switch to: {name}	切换至：{name}	切換至：{name}	切り替え先：{name}
 Everyday	日常	日常	普段用
 Backup	备用	備用	予備
 Local	本地	本機	ローカル
+Register import links	注册导入链接	註冊匯入連結	インポートリンクを登録
+Import links registered. Existing handlers were kept.	导入链接已注册，已有处理程序保持不变。	匯入連結已註冊，既有處理程式保持不變。	リンクを登録しました。既存の関連付けは維持されます。
+Cannot register import links. Run from the installed package.	无法注册导入链接，请从安装包运行。	無法註冊匯入連結，請從安裝套件執行。	リンクを登録できません。インストールしたパッケージから起動してください。
+Finish or cancel your edits, then open the import link again.	请先完成或取消编辑，再重新打开导入链接。	請先完成或取消編輯，再重新開啟匯入連結。	編集を完了またはキャンセルしてから、リンクをもう一度開いてください。
