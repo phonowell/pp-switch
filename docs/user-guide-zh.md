@@ -1,4 +1,4 @@
-# pp-switch 使用指南
+# Pure Provider Switch (pp-switch) 使用指南
 
 [English](user-guide.md) · 简体中文 · [日本語](user-guide-ja.md)
 
@@ -114,5 +114,7 @@ Codex 多文件写入可恢复，但不具备跨文件全局原子性。
 **这是目标，macOS 内存曾未达标。** [验证记录](verification.md) 公开各版本 / 平台、硬件、方法与原始数据。
 新进程事件循环就绪不代表冷启动或输入延迟；导入压力峰值未验证。
 不要用历史数据或另一系统的数据替代当前版本实测。
+
+0.0.3 使用极简平面界面与 PPC 图标。Windows / Linux 通过当前 CI 测量脚本，macOS RSS 仍超预算；见[最新实测](verification.md)。
 
 [README](../README_ZH.md) · [英文规范](../SPEC.md)

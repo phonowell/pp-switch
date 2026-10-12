@@ -3,11 +3,12 @@
 ## 0.0.3 local validation — 2026-10-12
 
 The user approved `design/minimal.html`, then requested a flat style and an app
-icon. The production window is now 440 × 502; editing and import use compact
+icon, with PPC lettering. Full name: Pure Provider Switch; short name: pp-switch.
+The production window is now 440 × 502; editing and import use compact
 native dialogs. More contains import, the four languages and manual updates.
 No new application dependency or runtime was added. The SVG icon produces
 OS icon formats; the window uses 16 KiB of raw RGBA with image decoders disabled.
-macOS adds a 65,504-byte ICNS resource; Windows embeds ICO through the installed
+macOS adds a 105,585-byte ICNS resource; Windows embeds ICO through the installed
 SDK and Linux uses the window icon. macOS 0.0.2 cannot accept the new icon in its
 fixed update layout and needs a one-time manual download. Windows/Linux retain
 their package file layouts.
@@ -22,16 +23,46 @@ backgrounds fixed corner artifacts. All data and client paths were disposable.
 The actual release archive passed updater layout/architecture validation, and
 the real helper installed, restarted and cleaned up in a temporary fixture.
 
-Installed application-owned files including notices and icon: 2,590,298 bytes
-(2.47 MiB), passing the 5 MiB size budget. Local idle maximum total RSS was
-102.81 MiB; OS peak was 112.14 MiB. Both memory budgets still fail. Fresh-process
-event-loop readiness was 625.88 / 258.43 / 249.04 ms, also failing the 300 ms
-maximum budget. This is a busy development machine with OS caches retained,
+Installed application-owned files including notices and icon: 2,630,386 bytes
+(2.51 MiB), passing the 5 MiB size budget. Local idle maximum total RSS was
+112.17 MiB; OS peak was 115.45 MiB. Both memory budgets still fail. Fresh-process
+event-loop readiness was 405.48 / 110.37 / 89.32 ms, also failing the 300 ms
+maximum budget. This is a local development run with OS caches retained,
 not a controlled comparison or a cold/input-readiness result.
 [Raw local data](measurements/v0.0.3/macos-m4-local.json).
 
-Cross-platform results for this revision will be added from native CI before
-publication. Historical 0.0.2 evidence below does not validate the new UI.
+## 0.0.3 cross-platform release evidence
+
+Implementation `021f8208e75fc37963b46674c10f89e2e252cfb9`,
+[CI run 38201751965](https://github.com/phonowell/pp-switch/actions/runs/38201751965).
+All four native runners passed format, Clippy, behavior (30 tests on Unix;
+28 on Windows), release build, four-language GUI, real helper/install/restart
+and actual package validation. Reviewed CJK screenshots on Linux and Windows.
+The Windows executable contains ICON and GROUP_ICON resources (group ID 1,
+seven sizes from 16 to 256 px, byte-matching the final PPC ICO); its imports contain no dynamic MSVC runtime.
+macOS ICNS was decoded successfully by the native icon tool and is listed in
+the bundle's Info.plist. The application icon is the only bundled bitmap asset.
+
+| Native runner | Installed bytes | Idle RSS MiB | Peak RSS MiB | Startup median / max ms | Script budget |
+| --- | ---: | ---: | ---: | ---: | --- |
+| macOS 15 · ARM64 | 2,630,402 | 66.64 | 66.67 | 122.08 / 151.19 | Memory fail |
+| macOS 15 · Intel | 2,864,402 | 38.40 | 38.41 | 255.64 / 299.35 | Memory fail |
+| Windows Server 2022 · x64 | 2,943,921 | 15.00 | 15.38 | 39.90 / 43.28 | Pass |
+| Ubuntu 22.04 · x64 · Xvfb | 3,167,905 | 17.19 | 19.23 | 17.14 / 17.89 | Pass |
+
+Windows and Linux pass this benchmark. macOS exceeds both RSS budgets, so the
+overall CI remains red; the original thresholds were not changed. These are
+fresh processes on separate GitHub VMs with OS caches retained, not controlled
+before/after comparisons. This does not certify PP-11 cold/input readiness,
+import stress or update-download/extraction peak memory. Shared pages and system
+fonts are included in total RSS.
+
+Raw results: [ARM64 macOS](measurements/v0.0.3/aarch64-apple-darwin.json),
+[Intel macOS](measurements/v0.0.3/x86_64-apple-darwin.json),
+[Windows](measurements/v0.0.3/x86_64-pc-windows-msvc.json),
+[Linux](measurements/v0.0.3/x86_64-unknown-linux-gnu.json).
+Release assets include archive SHA-256 sums and a consolidated verification JSON.
+
 
 ## 0.0.2 local validation — 2026-10-12
 

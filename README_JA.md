@@ -4,7 +4,7 @@
 
 # pp-switch
 
-**Pure Provider. 設定は、あなたのまま。**
+**Pure Provider Switch. 設定は、あなたのまま。**
 
 Claude Code・Codex・Gemini CLI の API URL とキーを切り替える小さなアプリ。
 
@@ -47,7 +47,7 @@ Claude Code・Codex・Gemini CLI の API URL とキーを切り替える小さ�
 
 ## ダウンロード
 
-**[v0.0.3 機能プレビュー](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**：小さなフラット UI、pp アプリアイコン、4 言語、手動更新。macOS と Linux のアイドルメモリは当初の予算を超えています。「20 MiB」と宣伝せず、[実際の検証記録](docs/verification.md) を公開します。
+**[v0.0.3 機能プレビュー](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**：小さなフラット UI、PPC アプリアイコン、4 言語、手動更新。macOS のアイドルメモリは予算を超えています。Windows と Linux は現在の測定スクリプトに合格。「20 MiB」と宣伝せず、[実際の検証記録](docs/verification.md) を公開します。
 
 | OS | パッケージ | 実行 |
 | --- | --- | --- |
@@ -94,16 +94,16 @@ macOS 0.0.2 からは今回だけ手動ダウンロードが必要です。旧�
 | コールド起動から操作可能まで | ≤300 ms |
 | 閉じた後 | プロセス終了 |
 
-**目標であり、達成済みの宣伝文句ではありません。** 0.0.1 の CI 基準値は容量 1.32–1.52 MiB、アイドル RSS は macOS ARM64 68.08 MiB、macOS Intel 40.24 MiB、Windows 15.10 MiB、Linux/Xvfb 8.77 MiB。ローカル M4 / macOS 27 では約 121 MiB。過去の基準値であり、0.0.2 の測定値や制御された OS 比較ではありません。
+**目標であり、達成済みの宣伝文句ではありません。** 0.0.1 の CI 基準値は容量 1.32–1.52 MiB、アイドル RSS は macOS ARM64 68.08 MiB、macOS Intel 40.24 MiB、Windows 15.10 MiB、Linux/Xvfb 8.77 MiB。ローカル M4 / macOS 27 では約 121 MiB。過去の基準値であり、0.0.3 の測定値や制御された OS 比較ではありません。
 
-**0.0.2 ネイティブ CI 実測：**
+**0.0.3 ネイティブ CI 実測：**
 
 | ネイティブ CI | 容量 MiB | アイドル RSS MiB | スクリプト予算 |
 | --- | ---: | ---: | --- |
-| macOS 15 · ARM64 | 2.39 | 70.88 | 不合格 |
-| macOS 15 · Intel | 2.62 | 42.76 | 不合格 |
-| Windows Server 2022 · x64 | 2.75 | 16.03 | 合格 |
-| Ubuntu 22.04 · x64 · Xvfb | 3.00 | 20.99 | 不合格 |
+| macOS 15 · ARM64 | 2.51 | 66.64 | 未達 |
+| macOS 15 · Intel | 2.73 | 38.40 | 未達 |
+| Windows Server 2022 · x64 | 2.81 | 15.00 | 合格 |
+| Ubuntu 22.04 · x64 · Xvfb | 3.02 | 17.19 | 合格 |
 
 [現行版の結果・生データ・測定方法](docs/verification.md) を公開しています。キャッシュを保持した新規プロセスのイベントループ準備時間は、厳密なコールド起動・入力遅延・大量インポートのピークを保証しません。予算違反は CI に残し、閾値は緩和していません。
 

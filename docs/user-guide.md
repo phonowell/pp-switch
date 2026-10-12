@@ -1,4 +1,4 @@
-# pp-switch user guide
+# Pure Provider Switch (pp-switch) user guide
 
 English · [简体中文](user-guide-zh.md) · [日本語](user-guide-ja.md)
 
@@ -135,5 +135,7 @@ cold interactive ≤300 ms. **These are targets. macOS memory has exceeded them.
 raw data. Fresh-process event-loop readiness is not a cold-start or input-latency
 measurement; import-stress peaks remain unverified. Do not infer current release
 performance from historical figures or another OS.
+
+0.0.3 uses the compact flat UI and app icon. Windows/Linux pass the current CI benchmark; macOS RSS remains above budget. See [current raw results](verification.md).
 
 [README](../README.md) · [Canonical English spec](../SPEC.md)

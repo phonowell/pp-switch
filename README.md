@@ -4,7 +4,7 @@
 
 # pp-switch
 
-**Pure Provider. Your setup stays yours.**
+**Pure Provider Switch. Your setup stays yours.**
 
 Switch API base URLs and keys for Claude Code, Codex and Gemini CLI.
 
@@ -47,7 +47,7 @@ This need is visible in the community: [cc-switch #7649](https://github.com/fari
 
 ## Download
 
-**[v0.0.3 functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)** — a compact flat native window, a pp app icon, four interface languages and manual updates. Preview status remains: macOS and Linux exceed the original idle-memory budget. Read the [actual evidence](docs/verification.md), not a “20 MiB” promise.
+**[v0.0.3 functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)** — a compact flat native window, a PPC app icon, four interface languages and manual updates. Preview status remains: macOS exceeds the original idle-memory budget; Windows and Linux pass the current benchmark. Read the [actual evidence](docs/verification.md), not a “20 MiB” promise.
 
 | Platform | Package | Run |
 | --- | --- | --- |
@@ -94,16 +94,16 @@ No model/auth-mode/protocol changes or first-time client setup. User-level files
 | Cold interactive startup | ≤300 ms |
 | After closing | Process exits |
 
-**Budgets are goals, not verified marketing claims.** The original 0.0.1 CI baseline was 1.32–1.52 MiB installed, with idle RSS of 68.08 MiB (macOS ARM64), 40.24 MiB (macOS Intel), 15.10 MiB (Windows) and 8.77 MiB (Linux/Xvfb). The local M4/macOS 27 result was about 121 MiB RSS. These are historical baseline figures, not measurements of 0.0.2 or controlled platform comparisons.
+**Budgets are goals, not verified marketing claims.** The original 0.0.1 CI baseline was 1.32–1.52 MiB installed, with idle RSS of 68.08 MiB (macOS ARM64), 40.24 MiB (macOS Intel), 15.10 MiB (Windows) and 8.77 MiB (Linux/Xvfb). The local M4/macOS 27 result was about 121 MiB RSS. These are historical baseline figures, not measurements of 0.0.3 or controlled platform comparisons.
 
-**0.0.2 native CI measurements:**
+**0.0.3 native CI measurements:**
 
 | Native CI | Installed MiB | Idle RSS MiB | Script budget |
 | --- | ---: | ---: | --- |
-| macOS 15 · ARM64 | 2.39 | 70.88 | Fail |
-| macOS 15 · Intel | 2.62 | 42.76 | Fail |
-| Windows Server 2022 · x64 | 2.75 | 16.03 | Pass |
-| Ubuntu 22.04 · x64 · Xvfb | 3.00 | 20.99 | Fail |
+| macOS 15 · ARM64 | 2.51 | 66.64 | Fail |
+| macOS 15 · Intel | 2.73 | 38.40 | Fail |
+| Windows Server 2022 · x64 | 2.81 | 15.00 | Pass |
+| Ubuntu 22.04 · x64 · Xvfb | 3.02 | 17.19 | Pass |
 
 [Current release results, raw measurements and methods](docs/verification.md) are public. Fresh-process event-loop readiness with caches intact does not establish disk-cold startup, input latency or import-stress peaks. Performance failures remain visible in CI; the thresholds have not been relaxed.
 

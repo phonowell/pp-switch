@@ -4,7 +4,7 @@
 
 # pp-switch
 
-**Pure Provider. Deine Konfiguration bleibt deine.**
+**Pure Provider Switch. Deine Konfiguration bleibt deine.**
 
 API-URL und Schlüssel für Claude Code, Codex und Gemini CLI wechseln.
 
@@ -47,7 +47,7 @@ Für eine umfassende Verwaltungsoberfläche eignet sich [cc-switch](https://gith
 
 ## Download
 
-**[v0.0.3 Funktionsvorschau](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**: ein kompaktes flaches natives Fenster, ein pp-App-Icon, vier Oberflächensprachen und manuelle Updates. Es bleibt eine Vorschau: macOS und Linux überschreiten das ursprüngliche Leerlauf-Speicherbudget. Wir veröffentlichen [Messwerte](docs/verification.md) statt eines „20 MiB“-Versprechens.
+**[v0.0.3 Funktionsvorschau](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**: ein kompaktes flaches natives Fenster, ein PPC-App-Icon, vier Oberflächensprachen und manuelle Updates. Es bleibt eine Vorschau: macOS überschreitet das Leerlauf-Speicherbudget; Windows und Linux bestehen den aktuellen Benchmark. Wir veröffentlichen [Messwerte](docs/verification.md) statt eines „20 MiB“-Versprechens.
 
 | Plattform | Paket | Start |
 | --- | --- | --- |
@@ -94,16 +94,16 @@ Keine Änderungen an Modellen, Authentifizierungsart oder Protokoll, keine Erste
 | Kaltstart bis bedienbar | ≤300 ms |
 | Nach dem Schließen | Prozess beendet |
 
-**Ziele, keine bereits bestätigten Werbeaussagen.** Die 0.0.1-CI-Basis hatte 1.32–1.52 MiB installierte Größe. Leerlauf-RSS: macOS ARM64 68.08 MiB, macOS Intel 40.24 MiB, Windows 15.10 MiB, Linux/Xvfb 8.77 MiB. Lokal auf M4 / macOS 27 etwa 121 MiB. Historische Werte, keine 0.0.2-Messungen oder kontrollierten Plattformvergleiche.
+**Ziele, keine bereits bestätigten Werbeaussagen.** Die 0.0.1-CI-Basis hatte 1.32–1.52 MiB installierte Größe. Leerlauf-RSS: macOS ARM64 68.08 MiB, macOS Intel 40.24 MiB, Windows 15.10 MiB, Linux/Xvfb 8.77 MiB. Lokal auf M4 / macOS 27 etwa 121 MiB. Historische Werte, keine 0.0.3-Messungen oder kontrollierten Plattformvergleiche.
 
-**Native CI-Messungen für 0.0.2:**
+**Native CI-Messungen für 0.0.3:**
 
 | Native CI | Installiert MiB | Leerlauf-RSS MiB | Skriptbudget |
 | --- | ---: | ---: | --- |
-| macOS 15 · ARM64 | 2.39 | 70.88 | Verfehlt |
-| macOS 15 · Intel | 2.62 | 42.76 | Verfehlt |
-| Windows Server 2022 · x64 | 2.75 | 16.03 | Erfüllt |
-| Ubuntu 22.04 · x64 · Xvfb | 3.00 | 20.99 | Verfehlt |
+| macOS 15 · ARM64 | 2.51 | 66.64 | Nicht bestanden |
+| macOS 15 · Intel | 2.73 | 38.40 | Nicht bestanden |
+| Windows Server 2022 · x64 | 2.81 | 15.00 | Bestanden |
+| Ubuntu 22.04 · x64 · Xvfb | 3.02 | 17.19 | Bestanden |
 
 [Aktuelle Ergebnisse, Rohdaten und Methoden](docs/verification.md) sind öffentlich. Ein neuer Prozess mit warmen OS-Caches und einer Eventloop-Markierung belegt keinen echten Kaltstart, keine Eingabelatenz und keine Importlastspitzen. Budgetfehler bleiben in CI sichtbar; die Grenzwerte wurden nicht gelockert.
 
