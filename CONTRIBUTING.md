@@ -58,6 +58,9 @@ target/release/examples/protocol_smoke target/native-url`. This opens a disposab
 app bundle via real cold/warm Apple URL events, checks preview-only handling,
 draft preservation and malformed input, then unregisters only that fixture.
 It never changes the user's default handlers or real provider/client files.
+Native CI adds `--register-in-ci` on disposable macOS users to verify missing
+handler registration, existing-handler preservation and untargeted OS URL opens.
+Do not use that flag on a personal desktop.
 
 ## Package and measure
 

@@ -67,7 +67,7 @@ jobs:
           python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke target/gui.ppm
       - name: Native URL events (macOS)
         if: runner.os == 'macOS'
-        run: python scripts/protocol_smoke.py target/${{ matrix.target }}/release/examples/protocol_smoke target/native-url
+        run: python scripts/protocol_smoke.py target/${{ matrix.target }}/release/examples/protocol_smoke target/native-url --register-in-ci
       - name: GUI smoke (Windows)
         if: runner.os == 'Windows'
         shell: pwsh

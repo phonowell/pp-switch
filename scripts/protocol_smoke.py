@@ -1,5 +1,6 @@
 """Real macOS cold/warm Apple URL events, explicitly targeting an isolated app."""
 from pathlib import Path
+import ctypes
 import os
 import plistlib
 import signal
@@ -10,6 +11,9 @@ import tempfile
 import time
 
 binary = Path(sys.argv[1]).resolve()
+register = "--register-in-ci" in sys.argv[3:]
+if register and os.environ.get("CI") != "true":
+    raise SystemExit("Default-handler acceptance is restricted to disposable CI runners")
 output = Path(sys.argv[2]).resolve()
 output.mkdir(parents=True, exist_ok=True)
 lsregister = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
@@ -27,9 +31,51 @@ with tempfile.TemporaryDirectory(prefix="pp-protocol-") as temp:
     (contents / "Info.plist").write_bytes(plistlib.dumps(plist))
     valid = "://v1/import?resource=provider&app=claude&name=Native%20link&endpoint=https%3A%2F%2Fnative.example.com&apiKey=native-fake-key"
     try:
+        if register:
+            cf = ctypes.CDLL("/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation")
+            ls = ctypes.CDLL("/System/Library/Frameworks/CoreServices.framework/CoreServices")
+            cf.CFStringCreateWithCString.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_uint32]
+            cf.CFStringCreateWithCString.restype = ctypes.c_void_p
+            cf.CFStringGetCString.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_long, ctypes.c_uint32]
+            cf.CFRelease.argtypes = [ctypes.c_void_p]
+            ls.LSCopyDefaultHandlerForURLScheme.argtypes = [ctypes.c_void_p]
+            ls.LSCopyDefaultHandlerForURLScheme.restype = ctypes.c_void_p
+            def handler(scheme):
+                name = cf.CFStringCreateWithCString(None, scheme.encode(), 0x08000100)
+                value = ls.LSCopyDefaultHandlerForURLScheme(name)
+                cf.CFRelease(name)
+                if not value:
+                    return None
+                buffer = ctypes.create_string_buffer(4096)
+                try:
+                    if not cf.CFStringGetCString(value, buffer, len(buffer), 0x08000100):
+                        raise RuntimeError("Cannot inspect CI URL association")
+                    return buffer.value.decode()
+                finally:
+                    cf.CFRelease(value)
+            if any(handler(s) for s in ("ccswitch", "ppswitch")):
+                raise RuntimeError("Registration acceptance needs a clean CI user")
+            (root / "register-only.txt").write_text("CI-only")
+            subprocess.run(["open", "-W", "-n", "-a", str(bundle)], check=True, timeout=30, capture_output=True)
+            if not (root / "registered.txt").exists():
+                raise RuntimeError("Registration fixture did not finish")
+            expected = plist["CFBundleIdentifier"]
+            if any(handler(s) != expected for s in ("ccswitch", "ppswitch")):
+                raise RuntimeError("Absent cc-switch handler was not registered")
+            alternate = root / "AlternateFixture.app"
+            shutil.copytree(bundle, alternate)
+            alternate_plist = dict(plist, CFBundleIdentifier=expected+".alternate")
+            (alternate / "Contents" / "Info.plist").write_bytes(plistlib.dumps(alternate_plist))
+            (root / "registered.txt").unlink()
+            subprocess.run(["open", "-W", "-n", "-a", str(alternate)], check=True, timeout=30, capture_output=True)
+            if not (root / "registered.txt").exists() or any(handler(s) != expected for s in ("ccswitch", "ppswitch")):
+                raise RuntimeError("Registration replaced an installed handler")
+            subprocess.run([lsregister, "-u", str(alternate)], check=True, capture_output=True, timeout=10)
+            (root / "register-only.txt").unlink()
+            print("PP-06: absent-handler registration and existing-handler preservation passed.")
         for step, link in enumerate(["ccswitch"+valid, "ppswitch"+valid, "ppswitch"+valid,
                                      "ccswitch://v2/import?resource=prompt&apiKey=never-log-me"], 1):
-            command = ["open"] + (["-n"] if step == 1 else []) + ["-a", str(bundle), link]
+            command = ["open"] + (["-n"] if step == 1 else []) + ([] if register else ["-a", str(bundle)]) + [link]
             subprocess.run(command, check=True, timeout=10, capture_output=True)
             deadline = time.monotonic() + 20
             while time.monotonic() < deadline:
