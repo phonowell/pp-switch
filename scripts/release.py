@@ -46,7 +46,7 @@ def assemble(artifacts, output):
     notes = [f"Pure Provider Switch {VERSION}", "",
              "- Native URL/key switcher for Claude Code, Codex and Gemini CLI.",
              "- OS Provider import links; existing ccswitch handlers are preserved during registration.",
-             "- Smaller native build and fewer provider/key copies; raw measurements below.",
+             "- Size-focused native build and fewer provider/key copies; raw measurements below.",
              "- Tag builds validate all four native targets before publishing.", "",
              "Packages are unsigned (macOS is not notarized). Full PP-11 is not certified:",
              "OS caches are retained; readiness is an event-loop marker, not cold input latency.",

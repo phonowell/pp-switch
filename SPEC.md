@@ -109,11 +109,13 @@ Rust core, FLTK native UI and a local JSON provider store. Use mature parsers;
 do not write a general-purpose JSON/TOML parser. Patch only validated value
 ranges. Keep the dependency graph small and omit unused FLTK features.
 
-The only persistent state beyond providers is a bounded recovery journal, an
+Inside the app's data directory, the only persistent state beyond providers is a bounded recovery journal, an
 advisory lock and one UI language preference. No plugin system, daemon, database
 or adapter SDK. User-triggered updates may use bounded temporary staging and
 rollback files, plus a temporary copy of the app as an installation helper.
 There is no permanent helper process. Translations are compiled text. Native
+URL associations refer to the installed executable or app bundle in user-level
+OS metadata; no link or credential is stored in that metadata. Native
 FLTK drawing uses system fonts, without an internationalization runtime.
 Configuration files are read only on launch, client selection and user actions.
 

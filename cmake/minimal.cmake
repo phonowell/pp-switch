@@ -12,7 +12,9 @@ if(CMAKE_HOST_WIN32)
   set(CMAKE_CXX_FLAGS_MINSIZEREL "/O1 /DNDEBUG /Gy /Gw" CACHE STRING "Native size flags" FORCE)
 else()
   if(CMAKE_HOST_APPLE)
-    set(PP_NATIVE_SIZE_FLAG "-Oz")
+    # Apple ld can optimize Clang bitcode from the static FLTK archives together.
+    # Rust LTO alone cannot inline/eliminate code across this native boundary.
+    set(PP_NATIVE_SIZE_FLAG "-Oz -flto=thin")
   else()
     set(PP_NATIVE_SIZE_FLAG "-Os")
   endif()
