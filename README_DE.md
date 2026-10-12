@@ -45,24 +45,26 @@ Für eine umfassende Verwaltungsoberfläche eignet sich [cc-switch](https://gith
 
 ## Download
 
-**[v0.0.2 Funktionsvorschau](https://github.com/phonowell/pp-switch/releases/tag/v0.0.2)**: vier Oberflächensprachen, neu gestaltetes natives Fenster und manuelle Updates. Es bleibt eine Vorschau: macOS und Linux überschreiten das ursprüngliche Leerlauf-Speicherbudget. Wir veröffentlichen [Messwerte](docs/verification.md) statt eines „20 MiB“-Versprechens.
+**[v0.0.3 Funktionsvorschau](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**: ein kompaktes flaches natives Fenster, ein pp-App-Icon, vier Oberflächensprachen und manuelle Updates. Es bleibt eine Vorschau: macOS und Linux überschreiten das ursprüngliche Leerlauf-Speicherbudget. Wir veröffentlichen [Messwerte](docs/verification.md) statt eines „20 MiB“-Versprechens.
 
 | Plattform | Paket | Start |
 | --- | --- | --- |
-| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-aarch64-apple-darwin.zip) | Entpacken, `.app` nach Applications verschieben |
-| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-apple-darwin.zip) | Ebenso |
-| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-pc-windows-msvc.zip) | Entpacken, `pp-switch.exe` starten |
-| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-unknown-linux-gnu.tar.gz) | Entpacken, `pp-switch` auf einem Desktop starten |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-aarch64-apple-darwin.zip) | Entpacken, `.app` nach Applications verschieben |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-apple-darwin.zip) | Ebenso |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-pc-windows-msvc.zip) | Entpacken, `pp-switch.exe` starten |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-unknown-linux-gnu.tar.gz) | Entpacken, `pp-switch` auf einem Desktop starten |
 
 Rust oder Node.js werden zum Ausführen nicht benötigt. macOS-Pakete deklarieren macOS 11+, sind aber **nicht mit Apple Developer signiert oder notarisiert**. Windows benötigt Windows 10+. Linux benötigt X11/XWayland, X11-/fontconfig-Bibliotheken und Systemschriften für die gewählte Sprache. Mindestversionen bedeuten nicht, dass jede OS-Version getestet wurde; siehe [Testumgebungen](docs/verification.md).
+
+Unter macOS ist von 0.0.2 einmal ein manueller Download nötig: Der alte Updater lehnt die neue Icon-Ressource ab. 0.0.3 berücksichtigt sie bei Updates.
 
 ## Verwendung
 
 1. Claude Code, Codex oder Gemini CLI auswählen.
-2. „New“ wählen und Name, Base URL und API-Schlüssel eingeben oder einen Anbieterlink importieren.
-3. „Save“, dann „Switch provider“. Den Client neu starten, falls er die Konfiguration nicht neu lädt.
+2. „Add“ wählen und Name, Base URL und API-Schlüssel eingeben oder „More → Import link“ öffnen.
+3. „Save“, dann „Switch“. Den Client neu starten, falls er die Konfiguration nicht neu lädt.
 
-Speichern betrifft nur pp-switch. Wechseln ändert URL und Schlüssel im Client. Die Oberfläche unterstützt **English, 简体中文, 繁體中文 und 日本語**; Deutsch ist eine Dokumentationssprache. Beim ersten Start wird die Systemsprache erkannt. Die Sprache lässt sich sofort wechseln, ohne ungespeicherte Eingaben zu verlieren.
+Das Stiftsymbol öffnet den Editor. Import, Sprache und manuelle Updates liegen unter „More“. Speichern betrifft nur pp-switch. Wechseln ändert URL und Schlüssel im Client. Die Oberfläche unterstützt **English, 简体中文, 繁體中文 und 日本語**; Deutsch ist eine Dokumentationssprache. Beim ersten Start wird die Systemsprache erkannt. Die Sprache lässt sich sofort wechseln, ohne ungespeicherte Eingaben zu verlieren.
 
 | Client | Erforderliche bestehende Einrichtung | Geänderte Werte |
 | --- | --- | --- |

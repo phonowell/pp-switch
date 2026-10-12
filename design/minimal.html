@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>pp-switch · 极简界面预览</title>
+  <style>
+    :root { color-scheme: light; --surface: #f7f8fa; --ink: #282d38; --muted: #616a79; --line: #e4e7ec; --blue: #365dd8; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; padding: 32px 16px; background: #eceef2; color: var(--ink); font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; }
+    button, input, select, textarea { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: default; }
+    button, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; }
+    [hidden] { display: none !important; }
+    .app { width: 440px; max-width: 100%; background: var(--surface); border: 1px solid #ffffffb3; border-radius: 18px; box-shadow: 0 14px 40px #2a354011, 0 2px 5px #2a354008; padding: 22px 24px 24px; }
+    header { display: flex; align-items: center; justify-content: space-between; position: relative; margin-bottom: 24px; }
+    h1 { font-size: 15px; letter-spacing: -.35px; font-weight: 650; margin: 0; }
+    .icon-button { width: 30px; height: 30px; display: inline-grid; place-items: center; padding: 0; border: 0; border-radius: 7px; background: transparent; color: var(--muted); }
+    .icon-button:hover { background: #e9ecf1; color: var(--ink); }
+    svg { width: 17px; height: 17px; display: block; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .clients { display: flex; gap: 3px; padding: 4px; background: #e9ecf1; border-radius: 10px; box-shadow: inset 1px 2px 3px #28364b06, 0 1px 0 #fff; }
+    .client { flex: 1; border: 0; padding: 7px 3px; color: #606a79; background: transparent; border-radius: 7px; white-space: nowrap; font-size: 12px; font-weight: 550; }
+    .client[aria-pressed="true"] { background: #fafbfc; color: var(--ink); box-shadow: 0 1px 4px #27354b12, 0 0 0 1px #ffffff80; }
+    .list-heading { margin: 27px 0 11px; display: flex; align-items: center; justify-content: space-between; }
+    .list-heading h2 { font-size: 12px; font-weight: 500; color: var(--muted); margin: 0; }
+    .quiet { border: 0; background: transparent; padding: 3px 0; font-size: 12px; color: var(--muted); }
+    .quiet:hover { color: var(--blue); }
+    .providers { border: 0; padding: 0; margin: 0; min-height: 210px; }
+    .row { position: relative; display: flex; align-items: center; border-radius: 9px; margin: 3px 0; border: 1px solid transparent; }
+    .row:has(input:checked) { background: #edf1fb; border-color: #dbe3f5; }
+    .provider { display: flex; gap: 12px; flex: 1; min-width: 0; align-items: center; padding: 14px 11px; cursor: pointer; }
+    .provider input { appearance: none; width: 15px; height: 15px; flex-shrink: 0; margin: 0; border: 1.5px solid #b7beca; border-radius: 50%; background: transparent; }
+    .provider input:checked { border: 4.5px solid var(--blue); background: #fff; }
+    .provider-info { min-width: 0; display: grid; gap: 3px; }
+    .provider-name { font-size: 14px; font-weight: 550; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .provider-url { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row-end { display: flex; align-items: center; gap: 4px; padding-right: 8px; flex-shrink: 0; }
+    .active-label { color: #39795f; font-size: 10px; white-space: nowrap; }
+    .edit { opacity: 0; }
+    .row:hover .edit, .row:focus-within .edit, .row:has(input:checked) .edit { opacity: 1; }
+    .edit svg { width: 14px; height: 14px; }
+    .empty { color: var(--muted); padding: 50px 10px; text-align: center; font-size: 13px; }
+    footer { display: flex; gap: 18px; justify-content: space-between; align-items: center; padding-top: 18px; border-top: 1px solid var(--line); margin-top: 16px; }
+    .status { color: var(--muted); font-size: 12px; min-width: 0; overflow-wrap: anywhere; }
+    .primary { border: 1px solid #3054c9; background: var(--blue); color: #fff; border-radius: 8px; padding: 9px 27px; font-size: 13px; font-weight: 550; box-shadow: 0 2px 3px #365dd81a, inset 0 1px 0 #ffffff20; white-space: nowrap; }
+    .primary:hover:not(:disabled) { background: #2e53c8; }
+    .primary:active:not(:disabled) { box-shadow: inset 0 2px 4px #1b34843b; }
+    .primary:disabled { border-color: var(--line); background: #e9ecf1; color: #747d8b; box-shadow: none; }
+    .menu { position: absolute; right: 0; top: 36px; z-index: 2; width: 200px; border-radius: 10px; border: 1px solid var(--line); padding: 6px; background: #fcfcfd; box-shadow: 0 7px 25px #27354b17; }
+    .menu > button { width: 100%; border: 0; text-align: left; padding: 9px 10px; border-radius: 5px; background: transparent; font-size: 12px; }
+    .menu > button:hover { background: #edf0f5; }
+    .menu-language { border-top: 1px solid var(--line); margin: 5px 4px 0; padding: 10px 6px 5px; display: flex; gap: 12px; align-items: center; justify-content: space-between; font-size: 12px; color: var(--muted); }
+    .menu-language select { border: 0; background: transparent; font-size: 12px; width: 106px; padding: 4px 0; }
+    dialog { width: 386px; max-width: calc(100% - 32px); max-height: calc(100svh - 32px); overflow: auto; border: 1px solid #fff; border-radius: 14px; padding: 24px; color: var(--ink); background: var(--surface); box-shadow: 0 16px 60px #24304426; }
+    dialog::backdrop { background: #232e4433; }
+    .dialog-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 22px; }
+    .dialog-heading h2 { margin: 0; font-size: 16px; font-weight: 600; }
+    .field { display: grid; gap: 7px; margin: 15px 0; font-size: 12px; color: var(--muted); }
+    .field input, .field textarea { color: var(--ink); width: 100%; min-width: 0; border: 1px solid #dce1e9; border-radius: 7px; background: #f0f2f6; box-shadow: inset 0 1px 3px #27354b05, 0 1px 0 #fff; padding: 10px 11px; font-size: 13px; }
+    .field textarea { resize: vertical; min-height: 98px; }
+    .form-actions { display: flex; gap: 12px; align-items: center; justify-content: flex-end; margin-top: 24px; }
+    .form-actions .danger { margin-right: auto; color: #ac4040; }
+    .secondary { border: 1px solid var(--line); border-radius: 7px; padding: 8px 14px; background: transparent; font-size: 13px; }
+    .secondary:hover { background: #edf0f5; }
+    .dialog-copy { color: var(--muted); font-size: 13px; margin: 8px 0; }
+    .error { color: #ac4040; font-size: 12px; margin: 10px 0 0; }
+    @media (max-width: 480px) { body { padding: 16px; } .app { padding: 18px; } .provider { gap: 10px; } .active-label { font-size: 9px; } }
+    @media (prefers-reduced-motion: no-preference) { button { transition: background-color .12s ease; } }
+  </style>
+</head>
+<body>
+  <main class="app" aria-label="pp-switch">
+    <header>
+      <h1>pp-switch</h1>
+      <button class="icon-button" id="more" aria-label="更多" aria-expanded="false" aria-controls="menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>
+      </button>
+      <div class="menu" id="menu" hidden>
+        <button id="import-open" data-text="import">导入链接</button>
+        <button id="update-open" data-text="updates">检查更新</button>
+        <label class="menu-language"><span data-text="language">语言</span><select id="language"><option value="zh">简体中文</option><option value="en">English</option><option value="zh-TW">繁體中文</option><option value="ja">日本語</option></select></label>
+      </div>
+    </header>
+    <nav class="clients" aria-label="客户端">
+      <button class="client" data-client="claude" aria-pressed="true">Claude Code</button>
+      <button class="client" data-client="codex" aria-pressed="false">Codex</button>
+      <button class="client" data-client="gemini" aria-pressed="false">Gemini CLI</button>
+    </nav>
+    <div class="list-heading"><h2 id="providers-heading" data-text="providers">服务商</h2><button class="quiet" id="add" data-text="add">＋ 添加</button></div>
+    <fieldset class="providers" id="providers" aria-labelledby="providers-heading"></fieldset>
+    <footer><span class="status" id="status" role="status" aria-live="polite"></span><button class="primary" id="switch" data-text="switch">切换</button></footer>
+  </main>
+
+  <dialog id="editor" aria-labelledby="editor-title">
+    <form id="provider-form">
+      <div class="dialog-heading"><h2 id="editor-title"></h2><button type="button" class="icon-button" data-close="editor" aria-label="关闭"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <label class="field"><span data-text="name">名称</span><input id="name" required maxlength="80" autocomplete="off"></label>
+      <label class="field"><span>Base URL</span><input id="url" type="url" required placeholder="https://api.example.com" autocomplete="off"></label>
+      <label class="field"><span>API Key</span><input id="key" type="password" required autocomplete="off" spellcheck="false"></label>
+      <p class="error" id="form-error" role="alert" hidden></p>
+      <div class="form-actions"><button type="button" class="quiet danger" id="delete" data-text="delete">删除</button><button type="button" class="secondary" data-close="editor" data-text="cancel">取消</button><button class="primary" type="submit" data-text="save">保存</button></div>
+    </form>
+  </dialog>
+  <dialog id="importer" aria-labelledby="import-title">
+    <form id="import-form">
+      <div class="dialog-heading"><h2 id="import-title" data-text="import">导入链接</h2><button type="button" class="icon-button" data-close="importer" aria-label="关闭"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <label class="field"><span data-text="link">Provider 链接</span><textarea id="link" placeholder="ccswitch://v1/import?resource=provider&…" required spellcheck="false"></textarea></label>
+      <p class="error" id="import-error" role="alert" hidden></p>
+      <div class="form-actions"><button type="button" class="secondary" data-close="importer" data-text="cancel">取消</button><button type="submit" class="primary" data-text="preview">预览</button></div>
+    </form>
+  </dialog>
+  <dialog id="updater" aria-labelledby="update-title">
+    <div class="dialog-heading"><h2 id="update-title" data-text="updates">检查更新</h2><button class="icon-button" data-close="updater" aria-label="关闭"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+    <p class="dialog-copy" data-text="updateDemo">这是界面预览，不会联网检查或安装更新。</p>
+    <div class="form-actions"><button class="secondary" data-close="updater" data-text="close">关闭</button></div>
+  </dialog>
+  <dialog id="delete-confirm" aria-labelledby="delete-title">
+    <h2 id="delete-title" style="font-size:16px;margin:0" data-text="deleteTitle">删除这个服务商？</h2>
+    <p class="dialog-copy" data-text="deleteCopy">只移除保存的记录，客户端配置不变。</p>
+    <div class="form-actions"><button class="secondary" data-close="delete-confirm" data-text="cancel">取消</button><button class="primary" id="delete-confirmed" data-text="delete">删除</button></div>
+  </dialog>
+
+  <script>
+    // Standalone design preview: sample data only, no network, storage or client-file access.
+    const $ = id => document.getElementById(id);
+    const text = {
+      zh: { providers: '服务商', add: '＋ 添加', switch: '切换', more: '更多', clients: '客户端', active: '使用中', edit: '编辑', editTitle: '编辑服务商', addTitle: '添加服务商', import: '导入链接', updates: '检查更新', language: '语言', name: '名称', delete: '删除', cancel: '取消', save: '保存', close: '关闭', link: 'Provider 链接', preview: '预览', empty: '还没有服务商', current: '当前：', selected: '切换至：', switched: '已切换至 ', applied: '已在使用', unconfigured: '尚未配置', updateDemo: '这是界面预览，不会联网检查或安装更新。', invalid: '请填写名称、HTTP(S) 地址和 API Key。', importInvalid: '预览支持包含 app、name、endpoint 和 apiKey 的 Provider 链接。', deleteTitle: '删除这个服务商？', deleteCopy: '只移除保存的记录，客户端配置不变。', daily: '日常', backup: '备用', local: '本地' },
+      en: { providers: 'Providers', add: '＋ Add', switch: 'Switch', more: 'More', clients: 'Clients', active: 'In use', edit: 'Edit', editTitle: 'Edit provider', addTitle: 'Add provider', import: 'Import link', updates: 'Check for updates', language: 'Language', name: 'Name', delete: 'Delete', cancel: 'Cancel', save: 'Save', close: 'Close', link: 'Provider link', preview: 'Preview', empty: 'No providers yet', current: 'Current: ', selected: 'Switch to: ', switched: 'Switched to ', applied: 'In use', unconfigured: 'Not configured', updateDemo: 'This UI preview does not check for or install updates.', invalid: 'Enter a name, HTTP(S) URL and API key.', importInvalid: 'Preview supports Provider links with app, name, endpoint and apiKey.', deleteTitle: 'Delete this provider?', deleteCopy: 'Only the saved entry is removed. Client configuration stays as it is.', daily: 'Everyday', backup: 'Backup', local: 'Local' },
+      'zh-TW': { providers: '供應商', add: '＋ 新增', switch: '切換', more: '更多', clients: '用戶端', active: '使用中', edit: '編輯', editTitle: '編輯供應商', addTitle: '新增供應商', import: '匯入連結', updates: '檢查更新', language: '語言', name: '名稱', delete: '刪除', cancel: '取消', save: '儲存', close: '關閉', link: 'Provider 連結', preview: '預覽', empty: '尚無供應商', current: '目前：', selected: '切換至：', switched: '已切換至 ', applied: '正在使用', unconfigured: '尚未設定', updateDemo: '這是介面預覽，不會連線檢查或安裝更新。', invalid: '請填寫名稱、HTTP(S) 網址和 API Key。', importInvalid: '預覽支援包含 app、name、endpoint 和 apiKey 的 Provider 連結。', deleteTitle: '刪除這個供應商？', deleteCopy: '只移除儲存的記錄，用戶端設定不變。', daily: '日常', backup: '備用', local: '本機' },
+      ja: { providers: 'プロバイダー', add: '＋ 追加', switch: '切り替え', more: 'その他', clients: 'クライアント', active: '使用中', edit: '編集', editTitle: 'プロバイダーを編集', addTitle: 'プロバイダーを追加', import: 'リンクをインポート', updates: '更新を確認', language: '言語', name: '名前', delete: '削除', cancel: 'キャンセル', save: '保存', close: '閉じる', link: 'Provider リンク', preview: 'プレビュー', empty: 'プロバイダーはありません', current: '現在：', selected: '切り替え先：', switched: '切り替えました：', applied: '使用中', unconfigured: '未設定', updateDemo: 'UI プレビューでは更新の確認やインストールを行いません。', invalid: '名前、HTTP(S) URL、API キーを入力してください。', importInvalid: 'プレビューは app、name、endpoint、apiKey を含む Provider リンクに対応しています。', deleteTitle: 'このプロバイダーを削除しますか？', deleteCopy: '保存した項目だけを削除します。クライアント設定は変わりません。', daily: '普段用', backup: '予備', local: 'ローカル' }
+    };
+    let locale = 'zh', client = 'claude', editing = null, announcement = null;
+    let nextId = 10;
+    const t = key => text[locale][key];
+    const data = {
+      claude: [{ id: 1, label: 'daily', url: 'https://api.example.com', key: 'demo-key-only' }, { id: 2, label: 'backup', url: 'https://backup.example.com', key: 'demo-key-only' }, { id: 3, label: 'local', url: 'http://localhost:8080', key: 'demo-key-only' }],
+      codex: [{ id: 4, label: 'daily', url: 'https://api.example.com/v1', key: 'demo-key-only' }, { id: 5, label: 'backup', url: 'https://backup.example.com/v1', key: 'demo-key-only' }],
+      gemini: [{ id: 6, label: 'daily', url: 'https://gemini.example.com', key: 'demo-key-only' }]
+    };
+    const selected = { claude: 2, codex: 4, gemini: 6 };
+    // Keep the applied snapshot separate: editing or deleting a saved entry does not apply it.
+    const applied = Object.fromEntries(Object.entries(data).map(([app, rows]) => [app, { ...rows[0] }]));
+    const displayName = row => row.name || t(row.label);
+    const matches = row => applied[client] && row.url === applied[client].url && row.key === applied[client].key;
+    function closeMenu() { $('menu').hidden = true; $('more').setAttribute('aria-expanded', 'false'); }
+    function render() {
+      document.documentElement.lang = { zh: 'zh-CN', 'zh-TW': 'zh-TW', en: 'en', ja: 'ja' }[locale];
+      document.querySelectorAll('[data-text]').forEach(el => el.textContent = t(el.dataset.text));
+      $('more').setAttribute('aria-label', t('more'));
+      document.querySelector('.clients').setAttribute('aria-label', t('clients'));
+      document.querySelectorAll('.client').forEach(el => el.setAttribute('aria-pressed', String(el.dataset.client === client)));
+      document.querySelectorAll('[data-close]').forEach(el => { if (el.classList.contains('icon-button')) el.setAttribute('aria-label', t('close')); });
+      $('editor-title').textContent = t(editing ? 'editTitle' : 'addTitle');
+      const focusedId = document.activeElement?.id;
+      const focusedEdit = document.activeElement?.dataset.edit;
+      $('providers').replaceChildren();
+      for (const row of data[client]) {
+        const item = document.createElement('div'); item.className = 'row';
+        const label = document.createElement('label'); label.className = 'provider';
+        const radio = document.createElement('input'); radio.type = 'radio'; radio.name = 'provider'; radio.id = 'provider-' + row.id; radio.checked = selected[client] === row.id;
+        radio.addEventListener('change', () => { selected[client] = row.id; announcement = null; render(); });
+        const info = document.createElement('span'); info.className = 'provider-info';
+        const name = document.createElement('span'); name.className = 'provider-name'; name.textContent = displayName(row);
+        const url = document.createElement('span'); url.className = 'provider-url'; url.textContent = row.url;
+        info.append(name, url); label.append(radio, info);
+        const end = document.createElement('span'); end.className = 'row-end';
+        if (matches(row)) { const active = document.createElement('span'); active.className = 'active-label'; active.textContent = t('active'); end.append(active); }
+        const edit = document.createElement('button'); edit.className = 'icon-button edit'; edit.dataset.edit = row.id; edit.setAttribute('aria-label', t('edit') + ' ' + displayName(row));
+        edit.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15z"/></svg>';
+        edit.addEventListener('click', () => openEditor(row)); end.append(edit); item.append(label, end); $('providers').append(item);
+      }
+      if (!data[client].length) { const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = t('empty'); $('providers').append(empty); }
+      const row = data[client].find(p => p.id === selected[client]);
+      $('switch').disabled = !row || matches(row);
+      $('switch').textContent = row && matches(row) ? t('applied') : t('switch');
+      $('status').textContent = announcement ? t('switched') + displayName(applied[client]) : row && !matches(row) ? t('selected') + displayName(row) : applied[client] ? t('current') + displayName(applied[client]) : t('unconfigured');
+      if (focusedId?.startsWith('provider-')) $(focusedId)?.focus();
+      else if (focusedEdit) document.querySelector('[data-edit="' + focusedEdit + '"]')?.focus();
+    }
+    function openEditor(row = null) {
+      closeMenu(); editing = row?.id || null; $('delete').hidden = !editing;
+      $('editor-title').textContent = t(editing ? 'editTitle' : 'addTitle');
+      $('name').value = row ? displayName(row) : ''; $('url').value = row?.url || ''; $('key').value = row?.key || '';
+      $('form-error').hidden = true; $('editor').showModal(); $('name').focus();
+    }
+    $('more').addEventListener('click', () => { const open = $('menu').hidden; $('menu').hidden = !open; $('more').setAttribute('aria-expanded', String(open)); });
+    document.addEventListener('click', event => { if (!event.target.closest('header')) closeMenu(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape' && !$('menu').hidden) { closeMenu(); $('more').focus(); } });
+    $('language').addEventListener('change', event => { locale = event.target.value; render(); });
+    document.querySelectorAll('.client').forEach(el => el.addEventListener('click', () => { client = el.dataset.client; announcement = null; render(); }));
+    $('add').addEventListener('click', () => openEditor());
+    $('switch').addEventListener('click', () => { const row = data[client].find(p => p.id === selected[client]); if (!row) return; applied[client] = { ...row }; announcement = true; render(); });
+    document.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', () => $(el.dataset.close).close()));
+    $('provider-form').addEventListener('submit', event => {
+      event.preventDefault(); const name = $('name').value.trim(), url = $('url').value.trim(), key = $('key').value.trim();
+      let address; try { address = new URL(url); } catch { /* show validation below */ }
+      if (!name || !key || !address || !['http:', 'https:'].includes(address.protocol) || address.username || address.password) { $('form-error').textContent = t('invalid'); $('form-error').hidden = false; return; }
+      const row = { id: editing || nextId++, name, url, key };
+      if (editing) data[client] = data[client].map(p => p.id === editing ? row : p); else data[client].push(row);
+      selected[client] = row.id; announcement = null; $('editor').close(); render();
+    });
+    $('delete').addEventListener('click', () => $('delete-confirm').showModal());
+    $('delete-confirmed').addEventListener('click', () => { data[client] = data[client].filter(p => p.id !== editing); if (selected[client] === editing) selected[client] = data[client][0]?.id; announcement = null; $('delete-confirm').close(); $('editor').close(); render(); });
+    $('import-open').addEventListener('click', () => { closeMenu(); $('import-error').hidden = true; $('importer').showModal(); });
+    $('import-form').addEventListener('submit', event => {
+      event.preventDefault();
+      try {
+        // Only enough parsing to demonstrate the review flow; production parser lives in Rust.
+        const link = new URL($('link').value.trim()), p = link.searchParams, app = p.get('app');
+        if (!['ccswitch:', 'ppswitch:'].includes(link.protocol) || link.host !== 'v1' || link.pathname !== '/import' || p.get('resource') !== 'provider' || !data[app] || !p.get('name') || !p.get('endpoint') || !p.get('apiKey')) throw Error();
+        client = app; $('importer').close(); render(); openEditor({ name: p.get('name'), url: p.get('endpoint'), key: p.get('apiKey') });
+      } catch { $('import-error').textContent = t('importInvalid'); $('import-error').hidden = false; }
+    });
+    $('update-open').addEventListener('click', () => { closeMenu(); $('updater').showModal(); });
+    render();
+  </script>
+</body>
+</html>

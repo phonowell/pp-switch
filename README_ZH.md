@@ -45,24 +45,26 @@
 
 ## 下载
 
-当前为 **[v0.0.2 功能预览](https://github.com/phonowell/pp-switch/releases/tag/v0.0.2)**：四种界面语言、新拟物原生界面、手动更新。仍是预览版，macOS 和 Linux 空闲内存仍超出原定预算；请看[真实验证记录](docs/verification.md)，我们不宣称「只占 20 MiB」。
+当前为 **[v0.0.3 功能预览](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**：极简平面原生界面、pp 应用图标、四种界面语言、手动更新。仍是预览版，macOS 和 Linux 空闲内存仍超出原定预算；请看[真实验证记录](docs/verification.md)，我们不宣称「只占 20 MiB」。
 
 | 平台 | 下载 | 使用 |
 | --- | --- | --- |
-| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-aarch64-apple-darwin.zip) | 解压，将 `.app` 移到 Applications |
-| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-apple-darwin.zip) | 同上 |
-| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-pc-windows-msvc.zip) | 解压，运行 `pp-switch.exe` |
-| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-unknown-linux-gnu.tar.gz) | 解压，在桌面运行 `pp-switch` |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-aarch64-apple-darwin.zip) | 解压，将 `.app` 移到 Applications |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-apple-darwin.zip) | 同上 |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-pc-windows-msvc.zip) | 解压，运行 `pp-switch.exe` |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-unknown-linux-gnu.tar.gz) | 解压，在桌面运行 `pp-switch` |
 
 无需安装 Rust 或 Node.js。macOS 包声明支持 macOS 11+，**未进行 Apple Developer 签名或公证**。Windows 要求 Windows 10+；Linux 需要 X11/XWayland、系统 X11/fontconfig 库及覆盖所选语言的系统字体。声明最低系统版本不代表每个版本均已测试；原生验收环境见[验证记录](docs/verification.md)。
+
+macOS 0.0.2 用户需手动下载这次更新：旧版更新器会拒绝新增的图标资源，0.0.3 已将它纳入更新文件列表。
 
 ## 使用
 
 1. 选择 Claude Code、Codex 或 Gemini CLI。
-2. 点击「新增」，填写名称、Base URL 和 API Key，或者导入服务商链接。
-3. 「保存」后「切换服务商」。客户端没有自动读取新配置时，请重启客户端。
+2. 点击「添加」，填写名称、Base URL 和 API Key，或从「更多 → 导入链接」预览。
+3. 「保存」后选中服务商，再「切换」。客户端没有自动读取新配置时，请重启客户端。
 
-保存只改 pp-switch 的本地列表；切换才修改客户端地址和 Key。界面支持 **English、简体中文、繁體中文、日本語**，首次跟随系统语言，也可即时切换，保留未保存内容。
+选中项的铅笔按钮用于编辑；导入、语言和手动更新统一收进「更多」。保存只改 pp-switch 的本地列表；切换才修改客户端地址和 Key。界面支持 **English、简体中文、繁體中文、日本語**，首次跟随系统语言，也可即时切换，保留未保存内容。
 
 | 客户端 | 已有配置要求 | 修改字段 |
 | --- | --- | --- |

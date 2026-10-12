@@ -1,6 +1,6 @@
 # pp-switch specification
 
-Status: v0.0.2 implementation contract. Changes to behavior start here.
+Status: v0.0.3 implementation contract. Changes to behavior start here.
 
 Release policy: 0.0.1 is a functional preview. The user authorized preview
 delivery with disclosed performance failures on 2026-10-12. PP-11 remains the
@@ -16,7 +16,8 @@ Supported desktop platforms: macOS (Apple Silicon / Intel), Windows x64, Linux x
 
 ## Product boundaries
 
-- One window: client selector, provider list, add/edit/delete, switch, import link.
+- One main window: three client tabs, provider list and switch action. Add/edit/delete
+  use a compact dialog; import, language and manual updates use the More menu.
 - A provider has an ID, client, display name, base URL and API key. Nothing else.
 - Closing the window exits the process. No tray, startup agent or background work.
 - No models, OAuth management, proxy, protocol translation, failover, network probes,
@@ -41,7 +42,7 @@ Supported desktop platforms: macOS (Apple Silicon / Intel), Windows x64, Linux x
 | PP-11 | Installed application-owned files ≤5 MiB; steady idle total RSS ≤20 MiB; startup/import peak total RSS ≤30 MiB; cold interactive startup ≤300 ms. Measure a stripped release build on each platform, state hardware/method and report failures. These are budgets, not verified claims. No subprocess/runtime exclusions for memory. |
 | PP-12 | Publish source, license, build instructions, compatibility limits and actual verification evidence. CI runs formatting, lint, behavioral tests and release builds on all three OSes. No platform is described as tested before evidence exists. |
 | PP-13 | Match cc-switch's interface languages: English, Simplified Chinese, Traditional Chinese and Japanese. Detect the system language on first launch; unsupported locales fall back to English. A compact language selector updates labels, dialogs, status and user-facing errors immediately, preserving unsaved edits and selection. Persist only the selected language in a private local UI preference file. Invalid preferences are reported and never silently overwritten. README versions cover English, Simplified Chinese, Japanese and German; user guides cover English, Simplified Chinese and Japanese, with the same compatibility and measured-performance caveats. SPEC remains the single English behavior contract. |
-| PP-14 | Use a restrained neumorphic native UI: light surfaces, rounded raised panels, inset fields, soft shadows and a distinct primary switch action. Text contrast, keyboard focus, pressed and disabled states must remain visible; secrets remain masked. Use system fonts and bounded vector drawing, without bundled bitmap assets, animations, new UI/runtime dependencies or background rendering. Review real screenshots in all interface languages and remeasure release size/RSS. PP-11 budgets remain unchanged. |
+| PP-14 | Follow the user-approved `design/minimal.html` layout with a flat native style: small title, three client tabs, one provider list with name/address, a selected-row edit action and a primary switch button. Show the active provider from current client files; disable switching an already matching provider. Add/edit use a three-field dialog; saving never applies. Import previews that dialog. Language and strictly manual updates live in More. Remove branding panels, nested cards, raised/inset effects and shadows. Keep visible contrast, keyboard focus, pressed/disabled states and masked credentials. Closing or cancelling an editor discards its unsaved draft without writing. Use system fonts and bounded vector drawing, without animations, new UI/runtime dependencies or background rendering. The only bitmap assets are the user-requested application icon: a flat blue pp monogram, generated from a small SVG for the window and OS package formats. Review real screenshots in all four languages and remeasure release size/RSS including the icon. PP-11 budgets remain unchanged. |
 | PP-15 | Updates are strictly user-triggered: no startup, scheduled or background checks. A compact Check for updates action queries only this repository's GitHub Releases over verified HTTPS; preview builds may receive newer previews. Show version and request confirmation before download/install/restart, warning about unsaved edits. Keep the GUI responsive during network work. Select only the current OS/architecture package, bound download/extraction size and whitelist application-owned files. Verify the archive against GitHub's SHA-256 asset digest before staging. Reject malformed metadata, path traversal, symlinks, unsupported layouts and unwritable installations without editing provider/client files. A temporary helper waits for the app to exit, checks the destination has not changed, replaces owned files with backups, rolls back failed installs and restarts. Report failures in the selected language. Release assets remain unsigned; a GitHub digest verifies download integrity, not an independent publisher signature. |
 
 ## Implementation decisions
@@ -49,6 +50,10 @@ Supported desktop platforms: macOS (Apple Silicon / Intel), Windows x64, Linux x
 Rust core, FLTK candidate UI, a local JSON provider store. Use mature parsers;
 do not write a general-purpose JSON/TOML parser. Patch only validated value
 ranges. Keep the dependency graph small and omit unused FLTK features.
+
+macOS 0.0.2 used a strict five-file update layout and cannot accept the new icon
+resource in 0.0.3. Those users must download 0.0.3 manually once; its updater
+includes the icon. Windows/Linux package layouts remain unchanged.
 
 The only persistent state beyond providers is a bounded recovery journal, an
 advisory lock and one UI language preference. No plugin system, daemon, database

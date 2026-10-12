@@ -10,13 +10,13 @@ model and protocol. [Downloads](https://github.com/phonowell/pp-switch/releases)
 ## First switch
 
 1. Configure your client for a supported API-key setup using the client itself.
-2. Open pp-switch and choose the client on the left.
-3. Click **New**, enter a name, HTTP(S) base URL and nonempty key; click **Save**.
-4. Click **Switch provider**. Restart the client if it does not reload its files.
+2. Open pp-switch and choose a client tab at the top.
+3. Click **Add**, enter a name, HTTP(S) base URL and nonempty key; click **Save**.
+4. Click **Switch**. Restart the client if it does not reload its files.
 
-Save only changes the local provider list. The `*` mark means that the current
+Save only changes the local provider list. The **In use** label means that the current
 client URL **and key** match that saved provider. Status is read from client
-files, not a remembered active ID. Unsaved changes must be saved before switching.
+files, not a remembered active ID. Use the selected row's pencil button to edit. Cancel closes the dialog and discards its draft; saving never applies it. The switch button is disabled for a matching provider.
 Delete removes the saved provider only; it does not revert the client.
 
 ## Client prerequisites and exact writes
@@ -54,7 +54,7 @@ system environment variables.
 
 ## Import existing links
 
-Paste a Provider link into the masked import field, then click **Import**:
+Open **More → Import link**, paste into the masked field, then click **Preview**:
 
 ```text
 ccswitch://v1/import?resource=provider&app=claude&name=Example&endpoint=https%3A%2F%2Fapi.example.com&apiKey=sk-example
@@ -64,7 +64,7 @@ ccswitch://v1/import?resource=provider&app=claude&name=Example&endpoint=https%3A
 Direct fields and Base64 inline JSON/TOML are supported (standard/URL-safe,
 padded/unpadded). Explicit nonempty parameters take precedence; use the first
 endpoint. Only name/client/URL/key enter the editor. Models, scripts, tools and
-other fields are discarded. Review, **Save**, then **Switch provider**.
+other fields are discarded. Review, **Save**, then **Switch**.
 
 Importing is a preview: no client files change and no provider is saved yet.
 Remote-only configs, other resources, unsupported app/version and incomplete
@@ -79,7 +79,7 @@ or WenQuanYi Zen Hei. Xft needs an installed face covering CJK; it does not
 automatically fall back for missing glyphs. No font files ship with the app.
 
 UI: English, Simplified Chinese, Traditional Chinese, Japanese. The first launch
-uses the system language (unsupported → English). The top-right selector updates
+uses the system language (unsupported → English). **More → Language** updates
 labels, dialogs and status immediately, preserving drafts and selected provider.
 
 | OS | pp-switch data directory |
@@ -96,7 +96,9 @@ if needed. Do not publish it or paste it into diagnostics.
 
 ## Manual update
 
-1. Click **Check for updates** in the footer. There is no startup or periodic check.
+macOS 0.0.2 users must download 0.0.3 manually once: the old strict file whitelist rejects the new app icon. 0.0.3 handles the icon in future updates.
+
+1. Click **More → Check for updates**. There is no startup or periodic check.
 2. If a newer compatible GitHub release is found, read its version and confirm
    **Install and restart**. Cancel makes no changes. Preview builds can receive
    newer previews. Save edits first; unsaved edits are lost on restart.

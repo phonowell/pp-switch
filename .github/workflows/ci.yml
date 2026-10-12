@@ -66,17 +66,17 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           xvfb-run -a target/${{ matrix.target }}/release/examples/update_smoke
-          target/${{ matrix.target }}/release/examples/update_smoke --archive target/package/pp-switch-v0.0.2-${{ matrix.target }}.tar.gz
+          target/${{ matrix.target }}/release/examples/update_smoke --archive target/package/pp-switch-v0.0.3-${{ matrix.target }}.tar.gz
       - name: Update helper / installation / restart (macOS)
         if: runner.os == 'macOS'
         run: |
           target/${{ matrix.target }}/release/examples/update_smoke
-          target/${{ matrix.target }}/release/examples/update_smoke --archive target/package/pp-switch-v0.0.2-${{ matrix.target }}.zip
+          target/${{ matrix.target }}/release/examples/update_smoke --archive target/package/pp-switch-v0.0.3-${{ matrix.target }}.zip
       - name: Update helper / installation / restart (Windows)
         if: runner.os == 'Windows'
         run: |
           target/${{ matrix.target }}/release/examples/update_smoke.exe
-          target/${{ matrix.target }}/release/examples/update_smoke.exe --archive target/package/pp-switch-v0.0.2-${{ matrix.target }}.zip
+          target/${{ matrix.target }}/release/examples/update_smoke.exe --archive target/package/pp-switch-v0.0.3-${{ matrix.target }}.zip
       - name: Memory and startup budget (Linux)
         if: runner.os == 'Linux'
         run: xvfb-run -a python scripts/measure.py target/${{ matrix.target }}/release/examples/measure_ui --output target/metrics.json --enforce

@@ -45,24 +45,26 @@ Claude Code・Codex・Gemini CLI の API URL とキーを切り替える小さ�
 
 ## ダウンロード
 
-**[v0.0.2 機能プレビュー](https://github.com/phonowell/pp-switch/releases/tag/v0.0.2)**：4 言語、新しいニューモーフィック UI、手動更新。macOS と Linux のアイドルメモリは当初の予算を超えています。「20 MiB」と宣伝せず、[実際の検証記録](docs/verification.md) を公開します。
+**[v0.0.3 機能プレビュー](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**：小さなフラット UI、pp アプリアイコン、4 言語、手動更新。macOS と Linux のアイドルメモリは当初の予算を超えています。「20 MiB」と宣伝せず、[実際の検証記録](docs/verification.md) を公開します。
 
 | OS | パッケージ | 実行 |
 | --- | --- | --- |
-| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-aarch64-apple-darwin.zip) | 展開し `.app` を Applications へ |
-| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-apple-darwin.zip) | 同上 |
-| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-pc-windows-msvc.zip) | 展開し `pp-switch.exe` を実行 |
-| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-unknown-linux-gnu.tar.gz) | 展開しデスクトップで `pp-switch` を実行 |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-aarch64-apple-darwin.zip) | 展開し `.app` を Applications へ |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-apple-darwin.zip) | 同上 |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-pc-windows-msvc.zip) | 展開し `pp-switch.exe` を実行 |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-unknown-linux-gnu.tar.gz) | 展開しデスクトップで `pp-switch` を実行 |
 
 Rust / Node.js のインストールは不要。macOS は 11+ を宣言していますが、**Apple Developer 署名・公証はありません**。Windows は 10+。Linux は X11/XWayland、X11/fontconfig ライブラリ、選択した言語を表示できるシステムフォントが必要です。宣言された最小 OS はすべてのバージョンの動作確認を意味しません。[検証環境](docs/verification.md) を参照してください。
+
+macOS 0.0.2 からは今回だけ手動ダウンロードが必要です。旧版は追加のアイコン資源を拒否します。0.0.3 の更新対象にはアイコンを含めています。
 
 ## 使い方
 
 1. Claude Code、Codex、Gemini CLI を選択。
-2. 「新規」から名前・Base URL・API キーを入力、またはリンクを取り込む。
+2. 「追加」から名前・Base URL・API キーを入力、またはリンクを取り込む。
 3. 「保存」して「切り替え」。設定を再読込しないクライアントは再起動。
 
-保存は pp-switch 内のみ、切り替えはクライアントの URL とキーのみを変更します。UI は **English・简体中文・繁體中文・日本語**。初回はシステム言語を検出し、編集内容を失わず即時変更できます。
+選択項目の鉛筆ボタンで編集。インポート・言語・手動更新は「その他」にまとめています。保存は pp-switch 内のみ、切り替えはクライアントの URL とキーのみを変更します。UI は **English・简体中文・繁體中文・日本語**。初回はシステム言語を検出し、編集内容を失わず即時変更できます。
 
 | クライアント | 必要な既存設定 | 変更する値 |
 | --- | --- | --- |

@@ -1,5 +1,38 @@
 # Verification evidence
 
+## 0.0.3 local validation — 2026-10-12
+
+The user approved `design/minimal.html`, then requested a flat style and an app
+icon. The production window is now 440 × 502; editing and import use compact
+native dialogs. More contains import, the four languages and manual updates.
+No new application dependency or runtime was added. The SVG icon produces
+OS icon formats; the window uses 12 KiB of raw RGB with image decoders disabled.
+macOS adds a 65,504-byte ICNS resource; Windows embeds ICO through the installed
+SDK and Linux uses the window icon. macOS 0.0.2 cannot accept the new icon in its
+fixed update layout and needs a one-time manual download. Windows/Linux retain
+their package file layouts.
+
+Local host: Apple M4, 16 GiB, macOS 27.0.1. Format, all-target Clippy with warnings
+denied, 30 behavior/localization/update tests, release build and all-four-language
+GUI acceptance passed. The GUI checks exercise add/save without applying,
+matching-provider disabled state, selection without opening an editor, cancel
+without saving, import preview, tabs, preserved drafts/selections on language
+change, rereading an external client edit on selection and closing every window. Real screenshots were reviewed; opaque row
+backgrounds fixed corner artifacts. All data and client paths were disposable.
+The actual release archive passed updater layout/architecture validation, and
+the real helper installed, restarted and cleaned up in a temporary fixture.
+
+Installed application-owned files including notices and icon: 2,590,298 bytes
+(2.47 MiB), passing the 5 MiB size budget. Local idle maximum total RSS was
+102.81 MiB; OS peak was 112.14 MiB. Both memory budgets still fail. Fresh-process
+event-loop readiness was 625.88 / 258.43 / 249.04 ms, also failing the 300 ms
+maximum budget. This is a busy development machine with OS caches retained,
+not a controlled comparison or a cold/input-readiness result.
+[Raw local data](measurements/v0.0.3/macos-m4-local.json).
+
+Cross-platform results for this revision will be added from native CI before
+publication. Historical 0.0.2 evidence below does not validate the new UI.
+
 ## 0.0.2 local validation — 2026-10-12
 
 Apple M4 (Mac16,1), 16 GiB, macOS 27.0.1, Rust 1.99.0 / Apple clang 17 / CMake 4.4.4.

@@ -170,3 +170,19 @@ Update package contains a link or special file.	更新包含链接或特殊文�
 Update package is missing required files.	更新包缺少必需文件。	更新包缺少必需檔案。	更新パッケージに必要なファイルがありません。
 Update rollback conflicted with external changes. Backup files were preserved.	更新回滚与外部修改冲突，已保留备份文件。	更新回滾與外部修改衝突，已保留備份檔案。	更新の復元が外部の変更と競合しました。バックアップファイルは保持しています。
 Close	关闭	關閉	閉じる
+Providers	服务商	服務商	プロバイダー
++ Add	＋ 添加	＋ 新增	＋ 追加
+Switch	切换	切換	切り替え
+In use	使用中	使用中	使用中
+More	更多	更多	その他
+Edit provider	编辑服务商	編輯服務商	プロバイダーを編集
+Add provider	添加服务商	新增服務商	プロバイダーを追加
+Import link	导入链接	匯入連結	リンクをインポート
+Provider link	Provider 链接	Provider 連結	Provider リンク
+Preview	预览	預覽	プレビュー
+Not configured	尚未配置	尚未設定	未設定
+Current: {name}	当前：{name}	目前：{name}	現在：{name}
+Switch to: {name}	切换至：{name}	切換至：{name}	切り替え先：{name}
+Everyday	日常	日常	普段用
+Backup	备用	備用	予備
+Local	本地	本機	ローカル

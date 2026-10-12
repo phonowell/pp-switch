@@ -217,6 +217,7 @@ pub fn owned_files(target: &str) -> Vec<&'static str> {
             "Contents/Resources/LICENSE",
             "Contents/Resources/THIRD_PARTY_NOTICES.txt",
             "Contents/Resources/README.txt",
+            "Contents/Resources/AppIcon.icns",
             "Contents/MacOS/pp-switch",
         ]
     } else {

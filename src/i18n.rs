@@ -150,6 +150,11 @@ pub fn message(language: Language, english: &str) -> String {
         return tr(language, "Current: {url}  ·  * marks a matching provider")
             .replace("{url}", url);
     }
+    for prefix in ["Current: ", "Switch to: "] {
+        if let Some(name) = english.strip_prefix(prefix) {
+            return tr(language, &format!("{prefix}{{name}}")).replace("{name}", name);
+        }
+    }
     english.to_owned()
 }
 

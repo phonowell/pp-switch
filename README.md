@@ -16,7 +16,7 @@ Switch API base URLs and keys for Claude Code, Codex and Gemini CLI.
 
 </div>
 
-![pp-switch: a native neumorphic window, with providers on the left and connection details on the right](assets/screenshot.png)
+![pp-switch: a compact flat native window with client tabs, providers and one switch action](assets/screenshot.png)
 
 ## Why pp-switch?
 
@@ -45,24 +45,26 @@ This need is visible in the community: [cc-switch #7649](https://github.com/fari
 
 ## Download
 
-**[v0.0.2 functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.2)** — four interface languages, a redesigned native window and manual updates. Preview status remains: macOS and Linux exceed the original idle-memory budget. Read the [actual evidence](docs/verification.md), not a “20 MiB” promise.
+**[v0.0.3 functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)** — a compact flat native window, a pp app icon, four interface languages and manual updates. Preview status remains: macOS and Linux exceed the original idle-memory budget. Read the [actual evidence](docs/verification.md), not a “20 MiB” promise.
 
 | Platform | Package | Run |
 | --- | --- | --- |
-| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-aarch64-apple-darwin.zip) | Extract; move `.app` to Applications |
-| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-apple-darwin.zip) | Same |
-| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-pc-windows-msvc.zip) | Extract; run `pp-switch.exe` |
-| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.2/pp-switch-v0.0.2-x86_64-unknown-linux-gnu.tar.gz) | Extract; run `pp-switch` on a desktop |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-aarch64-apple-darwin.zip) | Extract; move `.app` to Applications |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-apple-darwin.zip) | Same |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-pc-windows-msvc.zip) | Extract; run `pp-switch.exe` |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-unknown-linux-gnu.tar.gz) | Extract; run `pp-switch` on a desktop |
 
 No Rust or Node.js installation required. macOS packages declare macOS 11+ and are **not Apple Developer-signed or notarized**. Windows requires Windows 10+. Linux requires X11/XWayland, X11/fontconfig libraries and a system font covering your selected language. Native test environments are listed in [verification](docs/verification.md); a declared minimum is not evidence of testing every OS version.
+
+macOS 0.0.2 users: download this version manually once. The older updater rejects the new icon resource; 0.0.3 includes it in the update layout.
 
 ## Use
 
 1. Choose Claude Code, Codex or Gemini CLI.
-2. Click **New**, enter name/base URL/key, or import a Provider link.
-3. **Save**, then **Switch provider**. Restart the client if it does not reload configuration.
+2. Click **Add**, enter name/base URL/key, or use **More → Import link**.
+3. **Save**, select a provider, then **Switch**. Restart the client if it does not reload configuration.
 
-Saving changes only pp-switch's local store. Switching changes client URL/key values. The interface supports **English, 简体中文, 繁體中文 and 日本語**, detects the system language on first launch and allows instant switching without losing edits.
+Edit the selected row with its pencil button. Import, language and manual updates are in **More**. Saving changes only pp-switch's local store. Switching changes client URL/key values. The interface supports **English, 简体中文, 繁體中文 and 日本語**, detects the system language on first launch and allows instant switching without losing edits.
 
 | Client | Existing setup required | Fields changed |
 | --- | --- | --- |
