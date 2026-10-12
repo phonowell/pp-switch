@@ -28,23 +28,65 @@ Supported desktop platforms: macOS (Apple Silicon / Intel), Windows x64, Linux x
 
 ## Acceptance contract
 
-| ID | Requirement |
-| --- | --- |
-| PP-01 | Create, edit and delete a provider. Saving does not change client files. Names, HTTP(S) URLs and nonempty keys are validated; credentials are masked in the UI and excluded from diagnostics. |
-| PP-02 | Apply modifies only the effective base URL and API key. Preserve all unrelated bytes, including comments, whitespace, ordering and line endings. Idempotent apply makes no file changes. |
-| PP-03 | Claude: patch `env.ANTHROPIC_BASE_URL` and the existing `ANTHROPIC_AUTH_TOKEN` or `ANTHROPIC_API_KEY`. Default to `ANTHROPIC_AUTH_TOKEN` when neither exists. Refuse ambiguous credentials, external key helpers and active cloud-provider modes. |
-| PP-04 | Codex: patch the currently selected custom provider's `base_url` in `config.toml`; patch its existing `experimental_bearer_token`, or `auth.json.OPENAI_API_KEY` for an existing file-based API-key setup. Do not create/change `model_provider`, auth mode, `wire_api`, OAuth tokens or models. Refuse unsupported key sources or an uninitialized provider. |
-| PP-05 | Gemini: patch only `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` in `.env`. Require existing `security.auth.selectedType = gemini-api-key`; never change `settings.json`. Preserve unrelated dotenv lines. |
-| PP-06 | Import `ccswitch://v1/import?resource=provider` and equivalent `ppswitch://` text. Support claude/codex/gemini, URL decoding, inline Base64 config (standard/URL-safe, padded/unpadded), JSON/TOML and explicit nonempty parameter precedence. Use the first endpoint. Extract only name/client/address/key; never apply imported extra fields. Reject other resources/apps, unsupported versions, remote-only config and malformed/incomplete input. Import selects the imported client and previews name/address/key in the editor; it neither saves nor applies. |
-| PP-07 | Use client configuration-directory overrides where supported. Use platform-specific application-data storage for pp-switch. Do not modify shell profiles or system environment. Detect overrides visible to pp-switch; state that a separately launched client's environment may differ. |
-| PP-08 | Persist secrets in user-only files (Unix 0600; Windows current-user ACL). No provider network requests, secret logging or automatic clipboard access. The only application network action is the explicit PP-15 update flow, which sends no provider data. Never claim that masking encrypts storage. |
-| PP-09 | Before writing, validate every involved file. Refuse symbolic-link file destinations instead of replacing their links. Serialize pp-switch writes with an OS lock. Detect changes since reading. Replace each file via a same-directory temporary file; retain recovery data for multi-file operations. On failure/restart, roll back only files still matching this operation's output; refuse to overwrite external changes. A cross-file update is recoverable, not globally atomic. |
-| PP-10 | Display current status by reading client configuration, rather than trusting a stored active-provider ID. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration. |
-| PP-11 | Installed application-owned files ≤5 MiB; steady idle total RSS ≤20 MiB; startup/import peak total RSS ≤30 MiB; cold interactive startup ≤300 ms. Measure a stripped release build on each platform, state hardware/method and report failures. These are budgets, not verified claims. No subprocess/runtime exclusions for memory. |
-| PP-12 | Publish source, license, build instructions, compatibility limits and actual verification evidence. CI runs formatting, lint, behavioral tests and release builds on all three OSes. No platform is described as tested before evidence exists. |
-| PP-13 | Match cc-switch's interface languages: English, Simplified Chinese, Traditional Chinese and Japanese. Detect the system language on first launch; unsupported locales fall back to English. A compact language selector updates labels, dialogs, status and user-facing errors immediately, preserving unsaved edits and selection. Persist only the selected language in a private local UI preference file. Invalid preferences are reported and never silently overwritten. README versions cover English, Simplified Chinese, Japanese and German; user guides cover English, Simplified Chinese and Japanese, with the same compatibility and measured-performance caveats. SPEC remains the single English behavior contract. |
-| PP-14 | Follow the user-approved `design/minimal.html` layout with a flat native style: small title, three client tabs, one provider list with name/address, a selected-row edit action and a primary switch button. Show the active provider from current client files; disable switching an already matching provider. Add/edit use a three-field dialog; saving never applies. Import previews that dialog. Language and strictly manual updates live in More. Remove branding panels, nested cards, raised/inset effects and shadows. Keep visible contrast, keyboard focus, pressed/disabled states and masked credentials. Closing or cancelling an editor discards its unsaved draft without writing. Use system fonts and bounded vector drawing, without animations, new UI/runtime dependencies or background rendering. The only bundled bitmap asset is the application icon: a flat blue PPC monogram, generated from a small SVG for the window and OS package formats. Review real screenshots in all four languages and remeasure release size/RSS including the icon. PP-11 budgets remain unchanged. |
-| PP-15 | Updates are strictly user-triggered: no startup, scheduled or background checks. A compact Check for updates action queries only this repository's GitHub Releases over verified HTTPS; preview builds may receive newer previews. Show version and request confirmation before download/install/restart, warning about unsaved edits. Keep the GUI responsive during network work. Select only the current OS/architecture package, bound download/extraction size and whitelist application-owned files. Verify the archive against GitHub's SHA-256 asset digest before staging. Reject malformed metadata, path traversal, symlinks, unsupported layouts and unwritable installations without editing provider/client files. A temporary helper waits for the app to exit, checks the destination has not changed, replaces owned files with backups, rolls back failed installs and restarts. Report failures in the selected language. Release assets remain unsigned; a GitHub digest verifies download integrity, not an independent publisher signature. |
+### PP-01: Provider CRUD
+
+Create, edit and delete a provider. Saving does not change client files. Names, HTTP(S) URLs and nonempty keys are validated; credentials are masked in the UI and excluded from diagnostics.
+
+### PP-02: URL/key writes
+
+Apply modifies only the effective base URL and API key. Preserve all unrelated bytes, including comments, whitespace, ordering and line endings. Idempotent apply makes no file changes.
+
+### PP-03: Claude Code
+
+Claude: patch `env.ANTHROPIC_BASE_URL` and the existing `ANTHROPIC_AUTH_TOKEN` or `ANTHROPIC_API_KEY`. Default to `ANTHROPIC_AUTH_TOKEN` when neither exists. Refuse ambiguous credentials, external key helpers and active cloud-provider modes.
+
+### PP-04: Codex
+
+Codex: patch the currently selected custom provider's `base_url` in `config.toml`; patch its existing `experimental_bearer_token`, or `auth.json.OPENAI_API_KEY` for an existing file-based API-key setup. Do not create/change `model_provider`, auth mode, `wire_api`, OAuth tokens or models. Refuse unsupported key sources or an uninitialized provider.
+
+### PP-05: Gemini CLI
+
+Gemini: patch only `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` in `.env`. Require existing `security.auth.selectedType = gemini-api-key`; never change `settings.json`. Preserve unrelated dotenv lines.
+
+### PP-06: Provider links
+
+Import `ccswitch://v1/import?resource=provider` and equivalent `ppswitch://` text. Support claude/codex/gemini, URL decoding, inline Base64 config (standard/URL-safe, padded/unpadded), JSON/TOML and explicit nonempty parameter precedence. Use the first endpoint. Extract only name/client/address/key; never apply imported extra fields. Reject other resources/apps, unsupported versions, remote-only config and malformed/incomplete input. Import selects the imported client and previews name/address/key in the editor; it neither saves nor applies.
+
+### PP-07: Directories and overrides
+
+Use client configuration-directory overrides where supported. Use platform-specific application-data storage for pp-switch. Do not modify shell profiles or system environment. Detect overrides visible to pp-switch; state that a separately launched client's environment may differ.
+
+### PP-08: Secrets and network
+
+Persist secrets in user-only files (Unix 0600; Windows current-user ACL). No provider network requests, secret logging or automatic clipboard access. The only application network action is the explicit PP-15 update flow, which sends no provider data. Never claim that masking encrypts storage.
+
+### PP-09: Writes and recovery
+
+Before writing, validate every involved file. Refuse symbolic-link file destinations instead of replacing their links. Serialize pp-switch writes with an OS lock. Detect changes since reading. Replace each file via a same-directory temporary file; retain recovery data for multi-file operations. On failure/restart, roll back only files still matching this operation's output; refuse to overwrite external changes. A cross-file update is recoverable, not globally atomic.
+
+### PP-10: Current status
+
+Display current status by reading client configuration, rather than trusting a stored active-provider ID. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration.
+
+### PP-11: Performance budgets
+
+Installed application-owned files ≤5 MiB; steady idle total RSS ≤20 MiB; startup/import peak total RSS ≤30 MiB; cold interactive startup ≤300 ms. Measure a stripped release build on each platform, state hardware/method and report failures. These are budgets, not verified claims. No subprocess/runtime exclusions for memory.
+
+### PP-12: Public evidence and CI
+
+Publish source, license, build instructions, compatibility limits and actual verification evidence. CI runs formatting, lint, behavioral tests and release builds on all three OSes. No platform is described as tested before evidence exists.
+
+### PP-13: Languages
+
+Match cc-switch's interface languages: English, Simplified Chinese, Traditional Chinese and Japanese. Detect the system language on first launch; unsupported locales fall back to English. A compact language selector updates labels, dialogs, status and user-facing errors immediately, preserving unsaved edits and selection. Persist only the selected language in a private local UI preference file. Invalid preferences are reported and never silently overwritten. README versions cover English, Simplified Chinese, Japanese and German; user guides cover English, Simplified Chinese and Japanese, with the same compatibility and measured-performance caveats. SPEC remains the single English behavior contract.
+
+### PP-14: Minimal interface
+
+Follow the user-approved `design/minimal.html` layout with a flat native style: small title, three client tabs, one provider list with name/address, a selected-row edit action and a primary switch button. Show the active provider from current client files; disable switching an already matching provider. Add/edit use a three-field dialog; saving never applies. Import previews that dialog. Language and strictly manual updates live in More. Remove branding panels, nested cards, raised/inset effects and shadows. Keep visible contrast, keyboard focus, pressed/disabled states and masked credentials. Closing or cancelling an editor discards its unsaved draft without writing. Use system fonts and bounded vector drawing, without animations, new UI/runtime dependencies or background rendering. The only bundled bitmap asset is the application icon: a flat blue PPC monogram, generated from a small SVG for the window and OS package formats. Review real screenshots in all four languages and remeasure release size/RSS including the icon. PP-11 budgets remain unchanged.
+
+### PP-15: Manual updates
+
+Updates are strictly user-triggered: no startup, scheduled or background checks. A compact Check for updates action queries only this repository's GitHub Releases over verified HTTPS; preview builds may receive newer previews. Show version and request confirmation before download/install/restart, warning about unsaved edits. Keep the GUI responsive during network work. Select only the current OS/architecture package, bound download/extraction size and whitelist application-owned files. Verify the archive against GitHub's SHA-256 asset digest before staging. Reject malformed metadata, path traversal, symlinks, unsupported layouts and unwritable installations without editing provider/client files. A temporary helper waits for the app to exit, checks the destination has not changed, replaces owned files with backups, rolls back failed installs and restarts. Report failures in the selected language. Release assets remain unsigned; a GitHub digest verifies download integrity, not an independent publisher signature.
 
 ## Implementation decisions
 
