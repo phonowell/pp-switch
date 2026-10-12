@@ -40,7 +40,8 @@ with tempfile.TemporaryDirectory(prefix="pp-protocol-") as temp:
     (contents / "Resources" / "fixture-path.txt").write_text(str(root))
     plist = {"CFBundleExecutable": "protocol_smoke", "CFBundleIdentifier": "io.github.phonowell.pp-switch.protocol-fixture",
              "CFBundleName": "ProtocolFixture", "CFBundlePackageType": "APPL", "NSHighResolutionCapable": True,
-             "CFBundleURLTypes": [{"CFBundleURLSchemes": ["ccswitch", "ppswitch"], "CFBundleTypeRole": "Viewer", "LSHandlerRank": "Alternate"}]}
+             "CFBundleVersion": "1", "CFBundleShortVersionString": "1.0", "LSMinimumSystemVersion": "11.0",
+             "CFBundleURLTypes": [{"CFBundleURLName": "Provider import", "CFBundleURLSchemes": ["ccswitch", "ppswitch"], "CFBundleTypeRole": "Viewer", "LSHandlerRank": "Alternate"}]}
     (contents / "Info.plist").write_bytes(plistlib.dumps(plist))
     valid = "://v1/import?resource=provider&app=claude&name=Native%20link&endpoint=https%3A%2F%2Fnative.example.com&apiKey=native-fake-key"
     try:
@@ -53,7 +54,15 @@ with tempfile.TemporaryDirectory(prefix="pp-protocol-") as temp:
                 raise RuntimeError("Registration fixture did not finish")
             expected = str(bundle.resolve())
             actual = handlers()
+            deadline = time.monotonic() + 5
+            while any(value != expected for value in actual.values()) and time.monotonic() < deadline:
+                time.sleep(0.1)
+                actual = handlers()
             if any(value != expected for value in actual.values()):
+                dump = subprocess.check_output([lsregister, "-dump"], text=True, timeout=15)
+                for entry in dump.split("--------------------------------------------------------------------------------"):
+                    if plist["CFBundleIdentifier"] in entry:
+                        print(entry, flush=True)
                 raise RuntimeError(f"Absent cc-switch handler was not registered: {actual}")
             alternate = root / "AlternateFixture.app"
             shutil.copytree(bundle, alternate)
