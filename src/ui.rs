@@ -188,10 +188,10 @@ fn controls(language: Language) -> Controls {
     let mut window = Window::new(100, 100, 440, 502, "pp-switch");
     window.set_color(theme::background());
     let icon = fltk::image::RgbImage::new(
-        include_bytes!("../assets/icon-64.rgb"),
+        include_bytes!("../assets/icon-64.rgba"),
         64,
         64,
-        fltk::enums::ColorDepth::Rgb8,
+        fltk::enums::ColorDepth::Rgba8,
     )
     .expect("compiled application icon");
     window.set_icon(Some(icon));

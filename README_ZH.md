@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/icon.svg" width="72" height="72" alt="pp-switch icon">
+
 # pp-switch
 
 **Pure Provider. 只切地址和 Key，配置始终归你。**

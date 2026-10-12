@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="assets/icon.svg" width="72" height="72" alt="pp-switch icon">
+
 # pp-switch
 
 **Pure Provider. Deine Konfiguration bleibt deine.**

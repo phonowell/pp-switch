@@ -6,7 +6,7 @@ The user approved `design/minimal.html`, then requested a flat style and an app
 icon. The production window is now 440 × 502; editing and import use compact
 native dialogs. More contains import, the four languages and manual updates.
 No new application dependency or runtime was added. The SVG icon produces
-OS icon formats; the window uses 12 KiB of raw RGB with image decoders disabled.
+OS icon formats; the window uses 16 KiB of raw RGBA with image decoders disabled.
 macOS adds a 65,504-byte ICNS resource; Windows embeds ICO through the installed
 SDK and Linux uses the window icon. macOS 0.0.2 cannot accept the new icon in its
 fixed update layout and needs a one-time manual download. Windows/Linux retain
