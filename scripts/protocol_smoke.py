@@ -60,8 +60,9 @@ with tempfile.TemporaryDirectory(prefix="pp-protocol-") as temp:
             if not (root / "registered.txt").exists():
                 raise RuntimeError("Registration fixture did not finish")
             expected = plist["CFBundleIdentifier"]
-            if any(handler(s) != expected for s in ("ccswitch", "ppswitch")):
-                raise RuntimeError("Absent cc-switch handler was not registered")
+            actual = {s: handler(s) for s in ("ccswitch", "ppswitch")}
+            if any(value != expected for value in actual.values()):
+                raise RuntimeError(f"Absent cc-switch handler was not registered: {actual}")
             alternate = root / "AlternateFixture.app"
             shutil.copytree(bundle, alternate)
             alternate_plist = dict(plist, CFBundleIdentifier=expected+".alternate")
