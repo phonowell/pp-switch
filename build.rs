@@ -9,7 +9,14 @@ fn main() {
             .file("src/macos.m")
             .flag("-fobjc-arc")
             .compile("pp_native");
-        println!("cargo:rustc-link-lib=framework=CoreServices");
+        // Separate archive object: only the input acceptance example references
+        // these symbols, so production binaries do not contain test automation.
+        println!("cargo:rerun-if-changed=examples/macos_input.m");
+        cc::Build::new()
+            .file("examples/macos_input.m")
+            .flag("-fobjc-arc")
+            .compile("pp_smoke_input");
+        println!("cargo:rustc-link-lib=framework=QuartzCore");
     }
     println!("cargo:rerun-if-changed=assets/icon.ico");
     if env::var("CARGO_CFG_TARGET_OS").as_deref() != Ok("windows") {

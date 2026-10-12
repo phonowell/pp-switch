@@ -1,0 +1,18 @@
+{
+  "installed_utc": "20261012T113722Z",
+  "destination": "/Users/mimiko/Applications/pp-switch.app",
+  "backup": "/Users/mimiko/Applications/.pp-switch-backup-20261012T113722Z",
+  "archive_sha256": "e1536046f9154ef22e24bab500a27096fb8ee8f2c18832317f48211e43b5d29d",
+  "previous_binary_sha256": "e6a80cee43d4c870efb449dd5e3f8f64c21bf1beb2aa49749bb86e31ccccbe16",
+  "installed_sha256": {
+    "Contents/Info.plist": "e2d02218c0bb916c16f99b47160df54d3d23daabc7345c6a60d2c811961a88a9",
+    "Contents/MacOS/pp-switch": "c018cad0be4b202a374966a1df11820389d0baafaae0b9d39ebe04fde0dc6189",
+    "Contents/Resources/LICENSE": "18e5e3ed3e28b653178943cc38f54f3bc2dd883fbec46fcbc8d07aa72a7ecc97",
+    "Contents/Resources/AppIcon.icns": "de4941befb5978be5573dfef8ef5ee83309a7c1c556fc14333770acec906488b",
+    "Contents/Resources/THIRD_PARTY_NOTICES.txt": "0ac46826c01a244277e1c42655f811ebcb12019e816157a88f98b617973952cb",
+    "Contents/Resources/README.txt": "a4b6b0b327c33c08d7fb81785dfc139d99780b2112ca45ef28fe3d0832a7e34d"
+  },
+  "configuration_test_writes": false,
+  "open_exit_code": 0,
+  "open_stderr": ""
+}

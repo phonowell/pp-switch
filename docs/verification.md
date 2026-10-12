@@ -2,6 +2,130 @@
 
 [Product](../README.md) · [User guide](user-guide.md) · [Spec](../SPEC.md) · [Reproduce](../CONTRIBUTING.md)
 
+## Review candidate: 0.0.4
+
+User accepted the installed redesign on 2026-10-12 and authorized commit,
+push and publication. [Acceptance record](measurements/v0.0.4/user-acceptance-20261012.json).
+Native release CI and public upload verification are pending; downloads below
+remain 0.0.3 until publication completes. Earlier timestamped review records
+remain unchanged.
+
+**Settings/row-action redesign accepted.**
+The current candidate removes all hover tips, the in-content heading, More,
+bottom status/global Switch, Provider-link import and URL handlers/declarations.
+Every row has Lucide Edit then Switch; Switch targets that row. The small gear
+opens an in-window page for language and strictly manual updates. Matching
+duplicates all show In use. Existing providers/configuration are preserved.
+
+Chinese native input passes for the changed flows; other locales receive only
+prepared styles. System appearance transitions preserve drafts/cursor/focus/
+selection. Final light/dark style, package and installation evidence is recorded
+in [smoke acceptance](smoke.md). No claim that the previous unexplained hang is
+fixed, no fresh performance claim, and no native certification of these changes
+on Windows/Linux/Intel. Unchanged core/update-helper evidence is reused.
+
+### Current redesign package
+
+[Full current record](measurements/v0.0.4/settings-lucide-review-20261012.json) ·
+[Installation manifest](measurements/v0.0.4/install-review-20261012T113722Z.json).
+Installed/opened in `/Users/mimiko/Applications/pp-switch.app`; old bundle backed up.
+ARM64 archive SHA-256 `e1536046f9154ef22e24bab500a27096fb8ee8f2c18832317f48211e43b5d29d`;
+2,544,096 installed bytes, 1,349,523 archive bytes. Size budget passes. No new RSS
+or startup measurements were taken. [Current main](screenshots/v0.0.4/settings-lucide-20261012/light/zh-active.png) ·
+[Current Settings](screenshots/v0.0.4/settings-lucide-20261012/dark/zh-settings.png).
+
+### Historical candidate checks
+
+The following menu/footer/import results describe earlier 2026-10-12 candidates,
+not the redesigned UI. Raw reports and screenshots remain immutable.
+
+**Local UI correction passes; release review remains incomplete.** The menu is a
+7-pixel rounded rectangle without a border, retaining its native system shadow.
+The More glyph uses three fixed filled circles, and active badges reserve space
+before Edit. macOS title bars have no PPC icon; Windows/Linux window icons and
+installed application icons remain. The native input harness no longer requests
+a drawing context for a hidden window or intentionally panics on test failure.
+
+[Smoke matrix](smoke.md) · [UI design](../design/UI.md) ·
+[Raw commands/results/hashes](measurements/v0.0.4/menu-review-20261012.json).
+Chinese full functionality passed; other languages receive style checks only.
+Native assertions cover title icons, menu shadow and rounded clipping; transparent
+corner pixels verify the actual shape. Pixel regression gates reject menu borders,
+locale-dependent More glyphs and covered badge text. Real pre-fix captures fail
+these detectors. Human screenshot review is the final fallback.
+
+The base release run passed format, all-target Clippy, 32 Rust tests, 6 Python
+tests, Chinese callback/native input, targeted cold/warm URL delivery,
+update-helper wait/install/restart/cleanup, packaging and exact archive checks.
+The popup-rounding correction passed incremental format/Clippy/build,
+four-language style-only native capture, pixel checks and exact new archive
+validation. Unchanged functional/core evidence was reused; it was not rerun.
+Actionlint passes. CodeGraph remains unavailable (no index).
+
+The subsequent user review found startup More focus and an undesigned bottom
+status dialog/tooltip. Both are corrected. Duplicate records are explicitly
+allowed: all URL/key matches display In use, with independent selection/editing.
+[Targeted evidence](measurements/v0.0.4/interaction-review-20261012.json) records
+incremental format/Clippy/release, Chinese native input for these cases and modal/
+title-close recovery, four-language style/pixel checks and exact archive validation.
+Unchanged full-flow/core/URL/update/performance evidence is reused. New screenshots:
+[startup](screenshots/v0.0.4/interaction-review-20261012/zh-initial-focus.png) ·
+[duplicate active rows](screenshots/v0.0.4/interaction-review-20261012/zh-duplicate-active.png).
+
+During that review the previous installed build became unresponsive. The retained
+[sample](measurements/v0.0.4/hang-callgraph-20261012.txt) shows waiting in a nested
+event loop after mouse release; its stripped addresses do not identify the callback.
+The user does not recall the trigger. SIGTERM ended the identified process, with
+no residual process. The exact root cause remains unresolved; passing dismissal
+checks and removal of the status dialog do not establish a fix for that incident.
+
+[Candidate CI](https://github.com/phonowell/pp-switch/actions/runs/38210816784)
+finished: Windows, Linux and macOS ARM passed; macOS Intel failed Native URL events
+with `Registration acceptance needs a clean CI user`; release was skipped. That
+run tests HEAD, not these working-tree UI changes. The existing handler path was
+not printed, so its cause remains unresolved. Four-platform assembly, clean-user
+registration/preservation/untargeted-open acceptance and remote upload validation
+remain release-preparation limits.
+
+### Local package and measurements
+
+Historical interaction-review ARM64 archive:
+`target/package/pp-switch-v0.0.4-aarch64-apple-darwin.zip`, SHA-256
+`a0990f681819026f55c1abf526e57e8b3899af1e3e412cbc9b179561b14757c1`.
+Installed owned files: 2,557,439 bytes; archive: 1,356,647 bytes. This local review
+build was installed and opened at `/Users/mimiko/Applications/pp-switch.app`,
+preserving the previous bundle. [Interaction installation](measurements/v0.0.4/install-review-20261012T102057Z.json)
+and [earlier installation](measurements/v0.0.4/install-review-20261012T095740Z.json)
+retain exact manifests/backups. The old `target/review-v0.0.4/` archive is historical.
+
+Apple M4, 16 GiB, macOS 27.0.1, busy desktop with retained OS caches. The latest
+measurements precede the popup/focus/status corrections; they are reused without
+making a new performance claim. **Both RSS budgets fail.**
+
+| Scenario | Idle / peak maximum MiB | Readiness median / maximum ms | Evidence |
+| --- | ---: | ---: | --- |
+| Empty window | 109.50 / 109.53 | 152.70 / 422.37 | [Raw](measurements/v0.0.4/macos-m4-menu-review-empty.json) |
+| Import preview | 127.33 / 127.36 | 171.93 / 214.24 | [Raw](measurements/v0.0.4/macos-m4-menu-review-import.json) |
+
+These uncontrolled development-desktop results establish no before/after
+improvement. Historical [empty](measurements/v0.0.4/macos-m4-local.json),
+[import](measurements/v0.0.4/macos-m4-local-import.json) and
+[blocked-session smoke](measurements/v0.0.4/smoke-input-audit-20261012.json)
+remain unchanged. Performance acceptance is not complete.
+
+### Candidate screenshots
+
+All use fake data. Layer menu PNGs preserve actual corner transparency; system
+shadow is verified by native properties and lies outside these content captures.
+
+| View | Evidence |
+| --- | --- |
+| Rounded menu | [简体中文](screenshots/v0.0.4/menu-review-20261012/zh-menu.png) · [English](screenshots/v0.0.4/menu-review-20261012/en-menu.png) · [繁體中文](screenshots/v0.0.4/menu-review-20261012/zh-TW-menu.png) · [日本語](screenshots/v0.0.4/menu-review-20261012/ja-menu.png) |
+| Mac title bar | [简体中文](screenshots/v0.0.4/menu-review-20261012/zh-chrome.png) · [English](screenshots/v0.0.4/menu-review-20261012/en-chrome.png) |
+| Complete active badges | [Four languages](screenshots/v0.0.4/menu-review-20261012/review-active.png) |
+| Editor / import | [Edit](screenshots/v0.0.4/menu-review-20261012/review-edit.png) · [Import](screenshots/v0.0.4/menu-review-20261012/review-import.png) |
+| Error / delete / update | [Error](screenshots/v0.0.4/menu-review-20261012/review-invalid-url.png) · [Delete](screenshots/v0.0.4/menu-review-20261012/review-delete-confirm.png) · [Update](screenshots/v0.0.4/menu-review-20261012/review-update-confirm.png) |
+
 ## Current release: 0.0.3
 
 [Public functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3),
@@ -79,7 +203,8 @@ All screenshots use sample data and are excluded from application packages.
 ## Measurement method and limits
 
 [measure_ui](../examples/measure_ui.rs) runs the production window with an
-empty isolated provider store. [measure.py](../scripts/measure.py) starts three
+empty isolated provider store, or the actual provider editor with fake data using
+`--editor`. Historical import measurements retain their original scenario label. [measure.py](../scripts/measure.py) starts three
 fresh processes, samples total RSS every 50 ms and begins idle sampling after
 one second. Readiness is the first event-loop timer's `READY` marker. OS caches
 are retained. Peak is the OS high-water mark (`wait4` on macOS, `VmHWM` on Linux,

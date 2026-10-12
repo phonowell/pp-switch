@@ -1,0 +1,165 @@
+{
+  "started_utc": "20261012T070501Z",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "target": "aarch64-apple-darwin",
+  "published": false,
+  "checks": [
+    {
+      "name": "format",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.55,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/format.log"
+    },
+    {
+      "name": "clippy",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 6.51,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/clippy.log"
+    },
+    {
+      "name": "behavior",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 16.7,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/behavior.log"
+    },
+    {
+      "name": "release-tests",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.74,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/release-tests.log"
+    },
+    {
+      "name": "release-build",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 227.21,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/release-build.log"
+    },
+    {
+      "name": "gui-callback",
+      "status": "blocked",
+      "exit_code": 251,
+      "seconds": 2.42,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/gui-callback.log"
+    },
+    {
+      "name": "native-input",
+      "status": "blocked",
+      "exit_code": 2,
+      "seconds": 0.7,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/native-input.log"
+    },
+    {
+      "name": "native-url",
+      "status": "failed",
+      "exit_code": 1,
+      "seconds": 5.59,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/native-url.log"
+    },
+    {
+      "name": "package",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.38,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/package.log"
+    },
+    {
+      "name": "update-helper",
+      "status": "failed",
+      "exit_code": -6,
+      "seconds": 25.99,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/update-helper.log"
+    },
+    {
+      "name": "update-package",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.1,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/update-package.log"
+    },
+    {
+      "name": "measure-empty",
+      "status": "blocked",
+      "exit_code": 1,
+      "seconds": 1.76,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/measure-empty.log"
+    },
+    {
+      "name": "measure-import",
+      "status": "blocked",
+      "exit_code": 1,
+      "seconds": 0.77,
+      "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/measure-import.log"
+    }
+  ],
+  "source_sha256": {
+    "Cargo.toml": "5841cd5153d9be368273162337da42184cb6e21c7347e9945922a3f85883ca01",
+    "Cargo.lock": "9bd1e0613aeec9fd9c261e3cd6205e934f5dadd5aa6da2dd4a4708752ec1e18e",
+    "build.rs": "2f34d3962998b8f9568627ea9cbe9460feb3a3ad8eee516091d5d8c39dd0d438",
+    "src/ui.rs": "766d3bdd5b40f1fe52793e949dc5347bc5c9aeca1a56d551d5316775bde4c35b",
+    "src/protocol.rs": "88506ed6c69a80c7082e927649a83dade64daa3ad9243bf4fce5a0dac9316ca0",
+    "src/client.rs": "c1e54c50098451cb7b5c686833c28ca87a97f2b675d8d0e82d1efdeba92362ff",
+    "src/config.rs": "7a3283a1c42dfaf9250aa288dd389396f28c53cd128aaf80aac30afb2a1b0352",
+    "src/lib.rs": "6e47c2cd56fcc00e01b77b09f154474a437f65afec5b1a0d60f33b69ec76e091",
+    "src/locales.tsv": "00d10dc4dac1f239173718a30573e65fae990a6c5110e7a3c5ce831648502c79",
+    "src/provider.rs": "059d5f2c0feaa00ee5286331ff81bd61bde0105913b64adce6151d977cbd5c67",
+    "src/theme.rs": "81ddece5f7f86cae801831dc8678815ccdee89b0e64139a88b606cc580bb1fa5",
+    "src/update.rs": "7f14fb464c6d231a99c0391212a85f0adf79f2241177fc9790974946c2da69e9",
+    "src/main.rs": "a8acac5ac831b3daecdb303454168008c38fcc5af712c335cdd855fad6f9fb20",
+    "src/storage.rs": "47d04d5a41925b78a266012a5d1910b80c1500ed1d44567c0f1c9092bc27fd2c",
+    "src/i18n.rs": "e9e1d8e9cd666b975f8983cae177f0235ff242d1553d00782bd98eac7e410e78",
+    "src/macos.m": "55146a2920652ba7e79912ae96e6e996c4c18db803025ea4601c5247403d83b5",
+    "src/ui/acceptance.rs": "c309d2b1ea13883a1d63be2c35e523f6d58080833e50895098847e058a214b76",
+    "examples/macos_input.m": "65fb415094aac37618af44940158a74e485e3fd1b4ad7c817c4bc5b212de9f0f",
+    "examples/protocol_smoke.rs": "77746e88629bacd74e5e868b8fd07ba2e4dfd25f9f64166c5fd352624cbf04e7",
+    "examples/ui_smoke.rs": "560196dd906747241a716e53fa79d4ecd24e26ac72b7e29a796ba1f4b4b1d375",
+    "examples/update_smoke.rs": "12896f395079dc16c61d1f692ea8aebfd824f61dadd227986bd34c7dc7f89652",
+    "examples/input_smoke.rs": "e14a36facdb68be401ff83f551ad022ffb03201690bad983ee100773a4809002",
+    "examples/measure_ui.rs": "d79ce2601acac2b22a4afc51e73e260a60749175b308480928d024595bff212b",
+    "scripts/package.py": "f98708af48f76ce2eaaebb8ba03bdb51d495af1592736346b7bc1de4f22df1c8",
+    "scripts/measure.py": "d3ac59c123ca55ccac58737e0308b91f1ae6c2fd7591b4de1584d8b55af85196",
+    "scripts/release.py": "4026701e532220eaedd461acc9d4bbd23375ee1cac1d4b7e36a8cb6ff9914888",
+    "scripts/release_test.py": "60997613797a60e469d236b110d65450a360cd16dc11f53acc4ddbeeac676c69",
+    "scripts/protocol_smoke.py": "e624a438160000c8b03b1a7406ef59e21cb1d89ace1bb2cc86c2e9d340e60d5b",
+    "scripts/gui_smoke.py": "37bf9d75ef4ae872a23a7b16e06bab97457ff1e2467c6aee6b19f9ea682fb9e2",
+    "scripts/smoke.py": "10a8a90012b45313ff9f5ab66a97d9f411ae0cee175a7e568f5c25c1a7bd328c",
+    "design/UI.md": "e0772a82c8447b3e463abaa79d21252538093f2911d1287363dce53689f61c26",
+    "design/minimal.html": "cd451a34bb08675bb2aa52c4be741294eca9b41f8c75f7a44fc36339a001a009"
+  },
+  "automated_pass": false,
+  "visual_review": "pending: inspect newly captured images against design/UI.md; automation does not approve visuals",
+  "acceptance_complete": false,
+  "logs": {
+    "native-input.log": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/gui_smoke.py\", \"--timeout\", \"180\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/input_smoke\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/input\"]\nBLOCKED: macOS graphical session is unavailable; no native input acceptance ran.\n",
+    "behavior.log": "COMMAND [\"/Users/mimiko/.cargo/bin/cargo\", \"test\", \"--locked\"]\n   Compiling pp-switch v0.0.4 (/Users/mimiko/.codex/worktrees/4294/pp-switch)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.86s\n     Running unittests src/lib.rs (target/debug/deps/pp_switch-7f5fb48511c3b064)\n\nrunning 9 tests\ntest protocol::tests::pp06_desktop_path_cannot_inject_exec_fields ... ok\ntest protocol::tests::pp06_only_one_scheme_argument_is_delivered ... ok\ntest update::tests::pp15_selects_newest_platform_release_and_rejects_unverified_metadata ... ok\ntest update::tests::pp15_archive_whitelist_paths_links_and_architecture ... ok\ntest update::tests::pp15_fault_after_first_replace_restores_previous_version ... ok\ntest update::tests::pp15_changed_destination_or_tampered_payload_never_installs ... ok\ntest update::tests::pp15_rollback_preserves_external_changes_and_backups ... ok\ntest update::tests::pp15_symlink_destination_and_staging_are_refused ... ok\ntest update::tests::pp15_installs_owned_files_and_preserves_unrelated_files ... ok\n\ntest result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s\n\n     Running unittests src/main.rs (target/debug/deps/pp_switch-a9d0ca683573ae35)\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running tests/behavior.rs (target/debug/deps/behavior-1586659f8ca0dcfb)\n\nrunning 21 tests\ntest pp01_validation_rejects_control_characters_and_embedded_credentials ... ok\ntest pp05_gemini_oauth_and_duplicate_env_are_refused_without_writes ... ok\ntest pp06_import_base64_variants_and_all_supported_clients ... ok\ntest pp06_import_explicit_fields_win_and_extras_are_not_retained ... ok\ntest pp06_unsupported_or_incomplete_imports_return_no_secret_in_errors ... ok\ntest pp04_codex_bearer_key_preserves_oauth_cache ... ok\ntest pp02_pp05_gemini_preserves_settings_and_dotenv_comments ... ok\ntest pp02_pp03_claude_preserves_unrelated_bytes_and_is_idempotent ... ok\ntest pp03_claude_uses_existing_api_key_field_and_can_add_missing_containers ... ok\ntest pp04_codex_null_oauth_placeholders_are_preserved_in_api_key_mode ... ok\ntest pp02_pp04_codex_changes_only_selected_url_and_auth_key ... ok\ntest pp08_credentials_and_journal_use_private_files ... ok\ntest pp09_recovery_conflict_preserves_every_file_and_journal ... ok\ntest pp09_lock_prevents_a_second_writer_and_invalid_store_is_not_overwritten ... ok\ntest pp09_every_input_is_validated_before_the_first_write ... ok\ntest pp09_symlink_destinations_are_preserved_without_writing_the_target ... ok\ntest pp09_stale_snapshot_never_overwrites_external_changes ... ok\ntest pp09_restart_recovers_a_partially_published_multi_file_operation ... ok\ntest pp01_local_provider_crud_does_not_touch_client_config ... ok\ntest pp03_unsupported_claude_modes_never_write ... ok\ntest pp04_codex_unsupported_auth_or_selector_never_writes ... ok\n\ntest result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s\n\n     Running tests/localization.rs (target/debug/deps/localization-56364634b43cd78a)\n\nrunning 2 tests\ntest pp13_system_locale_mapping_and_catalog_coverage ... ok\ntest pp13_preferences_are_private_and_do_not_touch_provider_data ... ok\n\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s\n\n   Doc-tests pp_switch\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+    "gui-callback.log": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/gui_smoke.py\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/ui_smoke\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/gui.ppm\"]\n2026-10-12 15:09:15.579 ui_smoke[33359:12885935] Failure on line 688 in function id scheduleApplicationNotification(LSNotificationCode, NSWorkspaceNotificationCenter *): noErr == _LSModifyNotification(notificationID, 1, &code, 0, NULL, NULL, NULL)\n2026-10-12 15:09:16.284 ui_smoke[33359:12885976] Connection Invalid error for service com.apple.hiservices-xpcservice.\n2026-10-12 15:09:16.287 ui_smoke[33359:12885935] Error received in message reply handler: Connection invalid\nSwift/SwiftNativeNSArray.swift:78: Fatal error: Array index out of range\n",
+    "update-package.log": "COMMAND [\"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/update_smoke\", \"--archive\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/package/pp-switch-v0.0.4-aarch64-apple-darwin.zip\"]\nPP-15: real release package passed layout, bounds and executable architecture validation.\n",
+    "format.log": "COMMAND [\"/Users/mimiko/.cargo/bin/cargo\", \"fmt\", \"--check\"]\n",
+    "measure-import.log": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/measure.py\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/measure_ui\", \"--import\", \"--output\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/import-metrics.json\", \"--enforce\"]\nWindow did not enter its event loop (exit -5):\n2026-10-12 15:09:52.342 measure_ui[34230:12888260] Failure on line 688 in function id scheduleApplicationNotification(LSNotificationCode, NSWorkspaceNotificationCenter *): noErr == _LSModifyNotification(notificationID, 1, &code, 0, NULL, NULL, NULL)\n2026-10-12 15:09:52.671 measure_ui[34230:12888260] Error received in message reply handler: Connection invalid\n2026-10-12 15:09:52.671 measure_ui[34230:12888283] Connection Invalid error for service com.apple.hiservices-xpcservice.\nSwift/SwiftNativeNSArray.swift:78: Fatal error: Array index out of range\n\n",
+    "update-helper.log": "COMMAND [\"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/update_smoke\"]\nThe application cannot be opened for an unexpected reason, error=Error Domain=NSOSStatusErrorDomain Code=-10827 \"kLSNoExecutableErr: The executable is missing\" UserInfo={_LSLine=4288, _LSFunction=_LSOpenStuffCallLocal, _LSFile=LSOpenCore.mm, _LSErrorMessage=kLSNoExecutableErr}\n\nthread 'main' (12886390) panicked at examples/update_smoke.rs:161:9:\nInstaller/restart did not finish\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\n",
+    "clippy.log": "COMMAND [\"/Users/mimiko/.cargo/bin/cargo\", \"clippy\", \"--locked\", \"--all-targets\", \"--\", \"-D\", \"warnings\"]\n    Checking pp-switch v0.0.4 (/Users/mimiko/.codex/worktrees/4294/pp-switch)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.17s\n",
+    "native-url.log": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/protocol_smoke.py\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/protocol_smoke\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/native-url\"]\nTraceback (most recent call last):\n  File \"/Users/mimiko/.codex/worktrees/4294/pp-switch/scripts/protocol_smoke.py\", line 93, in <module>\n    native_open(command, timeout=10)\n  File \"/Users/mimiko/.codex/worktrees/4294/pp-switch/scripts/protocol_smoke.py\", line 16, in native_open\n    raise RuntimeError(f\"Native open failed (exit {result.returncode}): {result.stderr.strip()}\")\nRuntimeError: Native open failed (exit 1): The application /var/folders/5r/6r2gtz9x05s81070rs3swlw80000gn/T/pp-protocol-gukcjkqz/ProtocolFixture.app cannot be opened for an unexpected reason, error=Error Domain=NSOSStatusErrorDomain Code=-10827 \"kLSNoExecutableErr: The executable is missing\" UserInfo={_LSLine=4288, _LSFunction=_LSOpenStuffCallLocal, _LSFile=LSOpenCore.mm, _LSErrorMessage=kLSNoExecutableErr}\n",
+    "release-build.log": "COMMAND [\"/Users/mimiko/.cargo/bin/cargo\", \"build\", \"--locked\", \"--release\", \"--bins\", \"--examples\"]\n   Compiling pp-switch v0.0.4 (/Users/mimiko/.codex/worktrees/4294/pp-switch)\n    Finished `release` profile [optimized] target(s) in 3m 46s\n",
+    "measure-empty.log": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/measure.py\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/measure_ui\", \"--output\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-review-004-final/metrics.json\", \"--enforce\"]\nWindow did not enter its event loop (exit -5):\n2026-10-12 15:09:51.056 measure_ui[34179:12888074] Failure on line 688 in function id scheduleApplicationNotification(LSNotificationCode, NSWorkspaceNotificationCenter *): noErr == _LSModifyNotification(notificationID, 1, &code, 0, NULL, NULL, NULL)\n2026-10-12 15:09:51.854 measure_ui[34179:12888182] Connection Invalid error for service com.apple.hiservices-xpcservice.\n2026-10-12 15:09:51.858 measure_ui[34179:12888074] Error received in message reply handler: Connection invalid\nSwift/SwiftNativeNSArray.swift:78: Fatal error: Array index out of range\n\n",
+    "release-tests.log": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"-m\", \"unittest\", \"discover\", \"-s\", \"scripts\", \"-p\", \"*_test.py\"]\n...\n----------------------------------------------------------------------\nRan 3 tests in 0.176s\n\nOK\n",
+    "package.log": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/package.py\", \"aarch64-apple-darwin\", \"--binary\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/pp-switch\"]\n{\n  \"version\": \"0.0.4\",\n  \"target\": \"aarch64-apple-darwin\",\n  \"installed_bytes\": 2573807,\n  \"archive_bytes\": 1360297,\n  \"sha256\": \"5d011a2863875c38577c466ab64cc8919aea81dbcc76363d45ca57cd721c7a5f\"\n}\n"
+  },
+  "package": {
+    "version": "0.0.4",
+    "target": "aarch64-apple-darwin",
+    "installed_bytes": 2573807,
+    "archive_bytes": 1360297,
+    "sha256": "5d011a2863875c38577c466ab64cc8919aea81dbcc76363d45ca57cd721c7a5f"
+  },
+  "additional_checks": {
+    "actionlint": "passed",
+    "Markdown links/anchors/fences and four README corrections": "passed",
+    "git diff --check": "passed",
+    "CodeGraph": "unavailable: no index",
+    "GitHub final native CI": "unavailable: API unreachable"
+  }
+}

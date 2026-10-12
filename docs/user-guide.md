@@ -12,12 +12,18 @@ model and protocol. [Downloads](https://github.com/phonowell/pp-switch/releases)
 1. Configure your client for a supported API-key setup using the client itself.
 2. Open pp-switch and choose a client tab at the top.
 3. Click **Add**, enter a name, HTTP(S) base URL and nonempty key; click **Save**.
-4. Select a provider, then click **Switch**. Restart the client if it does not reload its files.
+4. Click the row’s **Switch** icon after its pencil icon. Restart the client if it does not reload its files.
 
 Save only changes the local provider list. The **In use** label means that the current
 client URL **and key** match that saved provider. Status is read from client
-files, not a remembered active ID. Use the selected row's pencil button to edit. Cancel closes the dialog and discards its draft; saving never applies it. The switch button is disabled for a matching provider.
+files, not a remembered active ID. Use any row's pencil button to edit. Cancel closes the dialog and discards its draft; saving never applies it. The switch button is disabled for a matching provider.
 Delete removes the saved provider only; it does not revert the client.
+Duplicate saved records are allowed. All records matching the client's
+URL and key show **In use**; each remains independently selectable and editable.
+Selecting a row never applies it. There is no bottom status/Switch area or hover tooltip.
+The small gear beside the client tabs opens Settings in the same window; Back returns to the list.
+The interface follows the system light/dark appearance, including open dialogs;
+changing appearance preserves unsaved edits and selection.
 
 ## Client prerequisites and exact writes
 
@@ -40,7 +46,7 @@ entry. `env_key` is unsupported. A bearer-token setup must not also have
 true, an existing nonempty `auth.json.OPENAI_API_KEY`, no active OAuth credentials,
 and `cli_auth_credentials_store` absent or `file`. External/keyring stores are
 unsupported. The app never changes selectors, `wire_api`, models or auth mode.
-Use Codex itself to initialize a compatible setup; importing a link does not do it.
+Use Codex itself to initialize a compatible setup.
 
 **Gemini:** select API-key authentication with `/auth` first.
 `security.auth.selectedType` must already be `gemini-api-key`. OAuth and Vertex
@@ -52,33 +58,10 @@ reported; another terminal may have a different environment. Resolve an override
 in your launch environment yourself—the app does not edit shell profiles or
 system environment variables.
 
-## Import existing links
+## Provider entry
 
-Open **More → Import link**, paste into the masked field, then click **Preview**:
-
-```text
-ccswitch://v1/import?resource=provider&app=claude&name=Example&endpoint=https%3A%2F%2Fapi.example.com&apiKey=sk-example
-```
-
-`ppswitch://` also works. Supported app values are `claude`, `codex`, `gemini`.
-Direct fields and Base64 inline JSON/TOML are supported (standard/URL-safe,
-padded/unpadded). Explicit nonempty parameters take precedence; use the first
-endpoint. The imported client tab is selected; the editor contains only name/URL/key.
-Models, scripts, tools and other fields are discarded. Review, **Save**, then **Switch**.
-
-Importing is a preview: no client files change and no provider is saved yet.
-Remote-only configs, other resources, unsupported app/version and incomplete
-input are refused. There is no shared cc-switch database.
-
-OS links also open the same preview. On macOS move the `.app` to Applications
-and open it once. **More → Register import links** registers user-level handlers
-on every platform; `ccswitch` is claimed only without an installed handler.
-An installed cc-switch or another handler keeps its association. Windows/Linux
-registrations refer to the executable path; register again after moving it.
-No administrator or cc-switch installation is needed. Finish or cancel an open
-draft and retry the link; incoming links never replace your unsaved edits.
-The app reads the clipboard only if you paste normally; it does not monitor it.
-Treat real links as credentials; the example above is fake.
+Add providers manually with name, URL and key. Provider-link import and URL
+registration are no longer offered. Existing saved providers remain available.
 
 ## Language and local storage
 
@@ -87,7 +70,7 @@ or WenQuanYi Zen Hei. Xft needs an installed face covering CJK; it does not
 automatically fall back for missing glyphs. No font files ship with the app.
 
 UI: English, Simplified Chinese, Traditional Chinese, Japanese. The first launch
-uses the system language (unsupported → English). **More → Language** updates
+uses the system language (unsupported → English). **Settings → Language** updates
 labels, dialogs and status immediately, preserving drafts and selected provider.
 
 | OS | pp-switch data directory |
@@ -106,7 +89,7 @@ if needed. Do not publish it or paste it into diagnostics.
 
 macOS 0.0.2 users must download 0.0.3 manually once: the old strict file whitelist rejects the new app icon. 0.0.3 handles the icon in future updates.
 
-1. Click **More → Check for updates**. There is no startup or periodic check.
+1. Click **Settings → Check for updates**. There is no startup or periodic check.
 2. If a newer compatible GitHub release is found, read its version and confirm
    **Install and restart**. Cancel makes no changes. Preview builds can receive
    newer previews. Save edits first; unsaved edits are lost on restart.

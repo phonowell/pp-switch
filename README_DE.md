@@ -28,7 +28,6 @@ Modelle, Denkparameter, Projektberechtigungen, MCP und Skills sind bereits einge
 
 **Fertig mit dem Wechsel? Fertig mit der App.** Ein Fenster, kein Tray, kein Autostart, keine Anbieterabfragen oder regelmäßigen Nutzungsabfragen. Beim Schließen endet der Prozess. Updates erfolgen nur nach einem Klick auf „Check for updates“ und deiner Bestätigung. Rust + FLTK, native Vektorzeichnung und Systemschriften; kein mitgeliefertes WebView, keine Datenbank und keine JavaScript-Laufzeit.
 
-**Vorhandene Links weiterverwenden.** Unterstützten `ccswitch://`-Anbieterlink öffnen oder einfügen, URL und Schlüssel prüfen, speichern und wechseln. Zusätzliche Modell- und Werkzeugeinstellungen werden nicht angewendet.
 
 [cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) fordert einen Pure-/Lite-Modus: „CC Switch only manages fields it owns. Everything else belongs to the target application/user.“ pp-switch setzt dieses Prinzip mit einem noch engeren Umfang um: URL und Schlüssel. Die Diskussion begründet den Bedarf, ist aber keine Empfehlung für dieses Projekt. [Quellen und Grenzen](docs/verification.md#community-sources).
 
@@ -38,7 +37,7 @@ Modelle, Denkparameter, Projektberechtigungen, MCP und Skills sind bereits einge
 | --- | --- | --- |
 | Zweck | URL-/Schlüsselwechsel für bereits eingerichtete Clients | Umfassendere Anbieter- und Clientverwaltung |
 | Schreibzugriffe | Nur wirksame Base URL und API-Schlüssel | Weitere Einstellungen je nach aktivierter Funktion |
-| Anbieterlinks | Unterstützte Importteilmenge einfügen | Vollständige Deep-Link-Abläufe |
+| Anbieterlinks | Nicht angeboten | Vollständige Deep-Link-Abläufe |
 | Modelle, Routing, Nutzung, MCP, Prompts, Skills | Außerhalb des Produktumfangs | Entsprechende Verwaltungsfunktionen |
 | Lebenszyklus | Fenster schließen → Prozess endet | Tray und weitere Arbeitsabläufe |
 | Updates | Manuell prüfen → bestätigen → herunterladen, installieren, neu starten | Eigener Updateablauf |
@@ -46,6 +45,10 @@ Modelle, Denkparameter, Projektberechtigungen, MCP und Skills sind bereits einge
 Für eine umfassende Verwaltungsoberfläche eignet sich [cc-switch](https://github.com/farion1231/cc-switch) besser. pp-switch ist unabhängig und richtet sich an Menschen, deren Clients bereits eingerichtet sind und die einen kleinen, vorhersehbaren Wechsel wünschen.
 
 ## Download
+
+**0.0.4 ist ein Kandidat zur Prüfung, ohne Tag oder Veröffentlichung.** Siehe [Prüfbelege](docs/verification.md#review-candidate-004). Die Downloads unten bleiben die veröffentlichte Vorschau 0.0.3.
+
+**Die UI-Überarbeitung von 0.0.4 wurde am 2026-10-12 abgenommen. Die Veröffentlichung ist genehmigt; native Release-CI steht noch aus.** Chinesische native Eingaben und alle Sprachstile werden getrennt geprüft; [Nachweise](docs/smoke.md).
 
 **[v0.0.3 Funktionsvorschau](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**. macOS überschreitet das Speicherbudget; [Messwerte](docs/verification.md) sind öffentlich.
 
@@ -62,11 +65,17 @@ Unter macOS ist von 0.0.2 einmal ein manueller Download nötig: Der alte Updater
 
 ## Verwendung
 
-1. Claude Code, Codex oder Gemini CLI auswählen.
-2. „Add“ wählen und Name, Base URL und API-Schlüssel eingeben oder „More → Import link“ öffnen.
-3. „Save“, dann „Switch“. Den Client neu starten, falls er die Konfiguration nicht neu lädt.
+1. Claude Code, Codex oder Gemini CLI wählen.
+2. „Add“ wählen, Name, Base URL und Schlüssel eingeben und speichern.
+3. Das Wechselsymbol rechts neben dem Stift in derselben Zeile anklicken.
 
-Das Stiftsymbol öffnet den Editor. Import, Sprache und manuelle Updates liegen unter „More“. Speichern betrifft nur pp-switch. Wechseln ändert URL und Schlüssel im Client. Die Oberfläche unterstützt **English, 简体中文, 繁體中文 und 日本語**; Deutsch ist eine Dokumentationssprache. Beim ersten Start wird die Systemsprache erkannt. Die Sprache lässt sich sofort wechseln, ohne ungespeicherte Eingaben zu verlieren.
+Jede Zeile hat Lucide-Symbole zum Bearbeiten und Wechseln; Auswahl allein wendet
+nichts an. Das kleine Zahnrad neben den Tabs öffnet Einstellungen für Sprache und
+manuelle Updates. Tooltips, Inhaltsüberschrift, unterer Status/Wechselbereich und
+Linkimport entfallen. Alle passenden Duplikate zeigen „In use“. Die Oberfläche
+folgt dem hellen/dunklen Systemmodus. Speichern betrifft nur die lokale Liste.
+UI: **English, 简体中文, 繁體中文 und 日本語**; Deutsch ist eine Dokumentationssprache.
+
 
 | Client | Erforderliche bestehende Einrichtung | Geänderte Werte |
 | --- | --- | --- |
@@ -78,8 +87,7 @@ Keine Änderungen an Modellen, Authentifizierungsart oder Protokoll, keine Erste
 
 ## Kompatibilität und Vertrauen
 
-- Unterstützt die **Provider-Importteilmenge** von `ccswitch://v1/import?resource=provider` und entsprechenden `ppswitch://`-Links: claude/codex/gemini, direkte Parameter und Base64-JSON/TOML. Die erste URL wird verwendet. Andere Ressourcen und ausschließlich entfernte Konfigurationen werden abgelehnt.
-- Links lassen sich über das Betriebssystem öffnen oder einfügen. „More → Register import links“ übernimmt `ccswitch` nur ohne installierten Handler und erhält cc-switch-Zuordnungen. Keine gemeinsame Datenbank. Entwürfe vor dem Öffnen eines weiteren Links abschließen oder verwerfen.
+- Der aktuelle Kandidat bietet keinen Linkimport oder URL-Registrierung. Gespeicherte Einträge bleiben erhalten.
 - Geheimnisse bleiben in lokalen Benutzerdateien (Unix 0600 / Windows-ACL für den aktuellen Benutzer). Maskierung ist **keine Verschlüsselung**. Keine automatischen Zwischenablagezugriffe, Geheimnisse in Diagnosen oder Anfragen an Anbieter.
 - Updates benötigen deine Bestätigung und einen beschreibbaren Installationsort. Nur Pakete dieses Repositorys werden heruntergeladen und per SHA-256 geprüft. Sie sind unsigniert; Anbieter- und Clientdateien bleiben außerhalb des Updaters. [Updatedetails (Englisch)](docs/user-guide.md#manual-update).
 - Vollständiger Vertrag: [SPEC.md](SPEC.md); Datei- und Datenpfade: [Anleitung](docs/user-guide.md).

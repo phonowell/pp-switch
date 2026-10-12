@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-12",
+  "status": "user accepted installed redesign; commit, push and publication authorized",
+  "user_message": "好了我验证通过了；你可以提交、推送、上线了",
+  "installation_record": "install-review-20261012T113722Z.json",
+  "checks_record": "settings-lucide-review-20261012.json",
+  "release_state": "native release CI and public verification pending",
+  "policy": "reuse passing checks with unchanged inputs; Chinese functional GUI, other locales style only"
+}

@@ -493,7 +493,6 @@ dependencies = [
 name = "pp-switch"
 version = "0.0.4"
 dependencies = [
- "base64",
  "cc",
  "dirs",
  "flate2",

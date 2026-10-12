@@ -1,0 +1,354 @@
+{
+  "date": "2026-10-12",
+  "base_report": {
+    "started_utc": "20261012T092553Z",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "target": "aarch64-apple-darwin",
+    "published": false,
+    "checks": [
+      {
+        "name": "format",
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 0.18,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/format.log"
+      },
+      {
+        "name": "clippy",
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 11.18,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/clippy.log"
+      },
+      {
+        "name": "behavior",
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 12.07,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/behavior.log"
+      },
+      {
+        "name": "release-tests",
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 0.34,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/release-tests.log"
+      },
+      {
+        "name": "release-build",
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 58.36,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/release-build.log"
+      },
+      {
+        "name": "gui-callback",
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 2.63,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/gui-callback.log"
+      },
+      {
+        "name": "native-input",
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 58.43,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/native-input.log"
+      },
+      {
+        "name": "visual-pixels",
+        "status": "failed",
+        "exit_code": 1,
+        "seconds": 0.18,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/visual-pixels.log"
+      },
+      {
+        "name": "native-url",
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.91,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/native-url.log"
+      },
+      {
+        "name": "package",
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 0.4,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/package.log"
+      },
+      {
+        "name": "update-helper",
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 1.58,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/update-helper.log"
+      },
+      {
+        "name": "update-package",
+        "status": "passed",
+        "exit_code": 0,
+        "seconds": 0.04,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/update-package.log"
+      },
+      {
+        "name": "measure-empty",
+        "status": "budget-failed",
+        "exit_code": 1,
+        "seconds": 9.97,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/measure-empty.log"
+      },
+      {
+        "name": "measure-import",
+        "status": "budget-failed",
+        "exit_code": 1,
+        "seconds": 9.84,
+        "log": "/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/measure-import.log"
+      }
+    ],
+    "source_sha256": {
+      "Cargo.toml": "5841cd5153d9be368273162337da42184cb6e21c7347e9945922a3f85883ca01",
+      "Cargo.lock": "9bd1e0613aeec9fd9c261e3cd6205e934f5dadd5aa6da2dd4a4708752ec1e18e",
+      "build.rs": "2f34d3962998b8f9568627ea9cbe9460feb3a3ad8eee516091d5d8c39dd0d438",
+      "src/ui.rs": "ddc81d43f29069fddbc2a2511ebe61548e1797d5f796cf35339d7b29d0f17154",
+      "src/protocol.rs": "88506ed6c69a80c7082e927649a83dade64daa3ad9243bf4fce5a0dac9316ca0",
+      "src/client.rs": "c1e54c50098451cb7b5c686833c28ca87a97f2b675d8d0e82d1efdeba92362ff",
+      "src/config.rs": "7a3283a1c42dfaf9250aa288dd389396f28c53cd128aaf80aac30afb2a1b0352",
+      "src/lib.rs": "6e47c2cd56fcc00e01b77b09f154474a437f65afec5b1a0d60f33b69ec76e091",
+      "src/locales.tsv": "00d10dc4dac1f239173718a30573e65fae990a6c5110e7a3c5ce831648502c79",
+      "src/provider.rs": "059d5f2c0feaa00ee5286331ff81bd61bde0105913b64adce6151d977cbd5c67",
+      "src/theme.rs": "cf3c3680f728f685191eeec262bb5e9ff7fc4bce218f41e9f3dd646e2d006a0c",
+      "src/update.rs": "7f14fb464c6d231a99c0391212a85f0adf79f2241177fc9790974946c2da69e9",
+      "src/main.rs": "a8acac5ac831b3daecdb303454168008c38fcc5af712c335cdd855fad6f9fb20",
+      "src/storage.rs": "47d04d5a41925b78a266012a5d1910b80c1500ed1d44567c0f1c9092bc27fd2c",
+      "src/i18n.rs": "0a8eba1e5b558f3a200f4ccda18c154654670222da590caaa3b51162ad8df479",
+      "src/macos.m": "55146a2920652ba7e79912ae96e6e996c4c18db803025ea4601c5247403d83b5",
+      "src/ui/acceptance.rs": "cae170766ebf2bebac9a77d651c2a03cb0129243e67912b6186f56ac8ec491b2",
+      "examples/macos_input.m": "1872a205dbea97f0a27e20d5e1ddecbe93ae845e34b3de3c362a212a893f2215",
+      "examples/protocol_smoke.rs": "77746e88629bacd74e5e868b8fd07ba2e4dfd25f9f64166c5fd352624cbf04e7",
+      "examples/ui_smoke.rs": "6f49d12184767a2773f12310edb9f77e282bef4d3d96571e37ccdb7fde539565",
+      "examples/update_smoke.rs": "12896f395079dc16c61d1f692ea8aebfd824f61dadd227986bd34c7dc7f89652",
+      "examples/input_smoke.rs": "948ec8eab207b526697b6675099884826724f6ff75f2b2b3dae9c91231b9bff5",
+      "examples/measure_ui.rs": "d79ce2601acac2b22a4afc51e73e260a60749175b308480928d024595bff212b",
+      "scripts/package.py": "f98708af48f76ce2eaaebb8ba03bdb51d495af1592736346b7bc1de4f22df1c8",
+      "scripts/measure.py": "d3ac59c123ca55ccac58737e0308b91f1ae6c2fd7591b4de1584d8b55af85196",
+      "scripts/release.py": "4026701e532220eaedd461acc9d4bbd23375ee1cac1d4b7e36a8cb6ff9914888",
+      "scripts/release_test.py": "60997613797a60e469d236b110d65450a360cd16dc11f53acc4ddbeeac676c69",
+      "scripts/protocol_smoke.py": "e624a438160000c8b03b1a7406ef59e21cb1d89ace1bb2cc86c2e9d340e60d5b",
+      "scripts/visual_check.py": "ded7b664b1647ec9a74766f1a7a8667cf11809ba08744cd2b14da60a0af310ec",
+      "scripts/gui_smoke.py": "37bf9d75ef4ae872a23a7b16e06bab97457ff1e2467c6aee6b19f9ea682fb9e2",
+      "scripts/visual_test.py": "bc1e1eae3ac21e14a22fdc827a6c0ee63d539579d6c8da44e8c1974a360f3a28",
+      "scripts/smoke.py": "383d41e6018be108555245111df5dc963660854e1e613a563b55191c18a62e4e",
+      "design/UI.md": "59de2d4ab199aeb76d93e07e8f1a1ce130c4102bf639f7f8fa683a1d089a1cac",
+      "design/minimal.html": "cd451a34bb08675bb2aa52c4be741294eca9b41f8c75f7a44fc36339a001a009"
+    },
+    "automated_pass": false,
+    "visual_review": "pending: inspect newly captured images against design/UI.md; automation does not approve visuals",
+    "acceptance_complete": false
+  },
+  "base_logs": {
+    "native-input": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/gui_smoke.py\", \"--timeout\", \"180\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/input_smoke\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/input\"]\nINPUT start zh\nINPUT negative control: NoBox left click rejected as expected\nINPUT-01/02 zh: More left click/Space, import cancel/native close\nINPUT-03/04 zh: native typing, Tab, save-only, switch\nINPUT validation zh: invalid-name\nINPUT validation zh: invalid-url\nINPUT validation zh: invalid-key\nINPUT-05/06 zh: invalid fields/import, retained draft, preview/save-only\nINPUT language zh -> en\nINPUT language zh -> zh\nINPUT language zh -> zh-TW\nINPUT language zh -> ja\nINPUT-07/08/09/10 zh: tabs/switches, delete, languages, overflow\nINPUT-12 zh: register entry (unbundled error); OS handler CI still required\nINPUT-11/13 zh: update worker/error/prompt cancel, main/modal close\nINPUT passed zh\nVISUAL en: prepare client rows\nVISUAL captured en: style only; no full functional acceptance\nVISUAL zh-TW: prepare client rows\nVISUAL captured zh-TW: style only; no full functional acceptance\nVISUAL ja: prepare client rows\nVISUAL captured ja: style only; no full functional acceptance\n",
+    "behavior": "COMMAND [\"/Users/mimiko/.cargo/bin/cargo\", \"test\", \"--locked\"]\n   Compiling fltk-sys v1.5.23\n   Compiling fltk v1.5.23\n   Compiling pp-switch v0.0.4 (/Users/mimiko/.codex/worktrees/4294/pp-switch)\n    Finished `test` profile [unoptimized + debuginfo] target(s) in 9.57s\n     Running unittests src/lib.rs (target/debug/deps/pp_switch-7f5fb48511c3b064)\n\nrunning 9 tests\ntest protocol::tests::pp06_desktop_path_cannot_inject_exec_fields ... ok\ntest protocol::tests::pp06_only_one_scheme_argument_is_delivered ... ok\ntest update::tests::pp15_selects_newest_platform_release_and_rejects_unverified_metadata ... ok\ntest update::tests::pp15_archive_whitelist_paths_links_and_architecture ... ok\ntest update::tests::pp15_rollback_preserves_external_changes_and_backups ... ok\ntest update::tests::pp15_fault_after_first_replace_restores_previous_version ... ok\ntest update::tests::pp15_changed_destination_or_tampered_payload_never_installs ... ok\ntest update::tests::pp15_symlink_destination_and_staging_are_refused ... ok\ntest update::tests::pp15_installs_owned_files_and_preserves_unrelated_files ... ok\n\ntest result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s\n\n     Running unittests src/main.rs (target/debug/deps/pp_switch-a9d0ca683573ae35)\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n     Running tests/behavior.rs (target/debug/deps/behavior-1586659f8ca0dcfb)\n\nrunning 21 tests\ntest pp01_validation_rejects_control_characters_and_embedded_credentials ... ok\ntest pp05_gemini_oauth_and_duplicate_env_are_refused_without_writes ... ok\ntest pp06_import_base64_variants_and_all_supported_clients ... ok\ntest pp06_import_explicit_fields_win_and_extras_are_not_retained ... ok\ntest pp06_unsupported_or_incomplete_imports_return_no_secret_in_errors ... ok\ntest pp02_pp05_gemini_preserves_settings_and_dotenv_comments ... ok\ntest pp02_pp03_claude_preserves_unrelated_bytes_and_is_idempotent ... ok\ntest pp04_codex_bearer_key_preserves_oauth_cache ... ok\ntest pp03_claude_uses_existing_api_key_field_and_can_add_missing_containers ... ok\ntest pp04_codex_null_oauth_placeholders_are_preserved_in_api_key_mode ... ok\ntest pp08_credentials_and_journal_use_private_files ... ok\ntest pp09_lock_prevents_a_second_writer_and_invalid_store_is_not_overwritten ... ok\ntest pp09_every_input_is_validated_before_the_first_write ... ok\ntest pp02_pp04_codex_changes_only_selected_url_and_auth_key ... ok\ntest pp09_recovery_conflict_preserves_every_file_and_journal ... ok\ntest pp01_local_provider_crud_does_not_touch_client_config ... ok\ntest pp09_stale_snapshot_never_overwrites_external_changes ... ok\ntest pp09_symlink_destinations_are_preserved_without_writing_the_target ... ok\ntest pp09_restart_recovers_a_partially_published_multi_file_operation ... ok\ntest pp03_unsupported_claude_modes_never_write ... ok\ntest pp04_codex_unsupported_auth_or_selector_never_writes ... ok\n\ntest result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s\n\n     Running tests/localization.rs (target/debug/deps/localization-56364634b43cd78a)\n\nrunning 2 tests\ntest pp13_system_locale_mapping_and_catalog_coverage ... ok\ntest pp13_preferences_are_private_and_do_not_touch_provider_data ... ok\n\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s\n\n   Doc-tests pp_switch\n\nrunning 0 tests\n\ntest result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+    "gui-callback": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/gui_smoke.py\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/ui_smoke\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/gui.ppm\"]\nPP-01/02/06/10/13/14: Simplified Chinese GUI save, switch, new, import preview, selection, draft preservation and close passed.\n",
+    "update-package": "COMMAND [\"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/update_smoke\", \"--archive\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/package/pp-switch-v0.0.4-aarch64-apple-darwin.zip\"]\nPP-15: real release package passed layout, bounds and executable architecture validation.\n",
+    "format": "COMMAND [\"/Users/mimiko/.cargo/bin/cargo\", \"fmt\", \"--check\"]\n",
+    "measure-import": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/measure.py\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/measure_ui\", \"--import\", \"--output\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/import-metrics.json\", \"--enforce\"]\n{\n  \"os\": \"macOS-27.0.1-arm64-arm-64bit\",\n  \"machine\": \"arm64\",\n  \"scenario\": \"import-preview\",\n  \"method\": \"fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark\",\n  \"samples\": [\n    {\n      \"startup_ms\": 157.04,\n      \"idle_rss_bytes\": 133349376,\n      \"peak_rss_bytes\": 133382144\n    },\n    {\n      \"startup_ms\": 214.24,\n      \"idle_rss_bytes\": 133513216,\n      \"peak_rss_bytes\": 133545984\n    },\n    {\n      \"startup_ms\": 171.93,\n      \"idle_rss_bytes\": 133332992,\n      \"peak_rss_bytes\": 133365760\n    }\n  ],\n  \"startup_median_ms\": 171.93,\n  \"startup_max_ms\": 214.24,\n  \"idle_max_bytes\": 133513216,\n  \"peak_max_bytes\": 133545984,\n  \"budget_pass\": false\n}\n\nPP-11 memory/startup budget failed; see measurements above\n",
+    "update-helper": "COMMAND [\"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/update_smoke\"]\nPP-15: real temporary helper waited, installed, restarted and cleaned up; user configuration untouched.\n",
+    "clippy": "COMMAND [\"/Users/mimiko/.cargo/bin/cargo\", \"clippy\", \"--locked\", \"--all-targets\", \"--\", \"-D\", \"warnings\"]\n   Compiling fltk-sys v1.5.23\n    Checking fltk v1.5.23\n    Checking pp-switch v0.0.4 (/Users/mimiko/.codex/worktrees/4294/pp-switch)\n    Finished `dev` profile [unoptimized + debuginfo] target(s) in 11.03s\n",
+    "native-url": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/protocol_smoke.py\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/protocol_smoke\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/native-url\"]\nPP-06: real cold ccswitch and warm ppswitch URL events, draft guard, malformed input and no writes passed.\n",
+    "release-build": "COMMAND [\"/Users/mimiko/.cargo/bin/cargo\", \"build\", \"--locked\", \"--release\", \"--bins\", \"--examples\"]\n   Compiling pp-switch v0.0.4 (/Users/mimiko/.codex/worktrees/4294/pp-switch)\n    Finished `release` profile [optimized] target(s) in 58.22s\n",
+    "measure-empty": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/measure.py\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/examples/measure_ui\", \"--output\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/metrics.json\", \"--enforce\"]\n{\n  \"os\": \"macOS-27.0.1-arm64-arm-64bit\",\n  \"machine\": \"arm64\",\n  \"scenario\": \"empty-window\",\n  \"method\": \"fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark\",\n  \"samples\": [\n    {\n      \"startup_ms\": 422.37,\n      \"idle_rss_bytes\": 114802688,\n      \"peak_rss_bytes\": 114851840\n    },\n    {\n      \"startup_ms\": 152.7,\n      \"idle_rss_bytes\": 114819072,\n      \"peak_rss_bytes\": 114851840\n    },\n    {\n      \"startup_ms\": 120.95,\n      \"idle_rss_bytes\": 114704384,\n      \"peak_rss_bytes\": 114753536\n    }\n  ],\n  \"startup_median_ms\": 152.7,\n  \"startup_max_ms\": 422.37,\n  \"idle_max_bytes\": 114819072,\n  \"peak_max_bytes\": 114851840,\n  \"budget_pass\": false\n}\n\nPP-11 memory/startup budget failed; see measurements above\n",
+    "release-tests": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"-m\", \"unittest\", \"discover\", \"-s\", \"scripts\", \"-p\", \"*_test.py\"]\n......\n----------------------------------------------------------------------\nRan 6 tests in 0.056s\n\nOK\n",
+    "visual-pixels": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/visual_check.py\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/smoke-20261012T092553Z/input\"]\nTraceback (most recent call last):\n  File \"/Users/mimiko/.codex/worktrees/4294/pp-switch/scripts/visual_check.py\", line 70, in <module>\n    validate(parser.parse_args().directory)\n  File \"/Users/mimiko/.codex/worktrees/4294/pp-switch/scripts/visual_check.py\", line 61, in validate\n    actual = badge_mask(ppm(directory / f\"{locale}-active.ppm\"))\n  File \"/Users/mimiko/.codex/worktrees/4294/pp-switch/scripts/visual_check.py\", line 40, in badge_mask\n    assert points, \"Active-provider badge has no rendered ink\"\nAssertionError: Active-provider badge has no rendered ink\n",
+    "package": "COMMAND [\"/Library/Developer/CommandLineTools/usr/bin/python3\", \"scripts/package.py\", \"aarch64-apple-darwin\", \"--binary\", \"/Users/mimiko/.codex/worktrees/4294/pp-switch/target/release/pp-switch\"]\n{\n  \"version\": \"0.0.4\",\n  \"target\": \"aarch64-apple-darwin\",\n  \"installed_bytes\": 2557727,\n  \"archive_bytes\": 1356733,\n  \"sha256\": \"c550e37559be5919133bc0dc34c58a4604dc5fa723f75b144a0c2de7c5837157\"\n}\n"
+  },
+  "scope": "Simplified Chinese full functionality; other locales styles only. Final rounding uses style-only checks and reuses unchanged functional/core evidence.",
+  "final_style_results": [
+    {
+      "captured": true,
+      "error": null,
+      "language": "en",
+      "scope": "visual capture only"
+    },
+    {
+      "captured": true,
+      "error": null,
+      "language": "zh",
+      "scope": "visual capture only"
+    },
+    {
+      "captured": true,
+      "error": null,
+      "language": "zh-TW",
+      "scope": "visual capture only"
+    },
+    {
+      "captured": true,
+      "error": null,
+      "language": "ja",
+      "scope": "visual capture only"
+    }
+  ],
+  "targeted_checks": [
+    {
+      "command": [
+        "python3",
+        "scripts/visual_check.py",
+        "target/menu-rounded-20261012"
+      ],
+      "exit_code": 0,
+      "stdout": "STYLE zh: borderless menus, identical filled dots, complete badge passed\nSTYLE en: borderless menus, identical filled dots, complete badge passed\nSTYLE zh-TW: borderless menus, identical filled dots, complete badge passed\nSTYLE ja: borderless menus, identical filled dots, complete badge passed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/visual_check.py",
+        "target/smoke-20261012T092553Z/input"
+      ],
+      "exit_code": 0,
+      "stdout": "STYLE zh: borderless menus, identical filled dots, complete badge passed\nSTYLE en: borderless menus, identical filled dots, complete badge passed\nSTYLE zh-TW: borderless menus, identical filled dots, complete badge passed\nSTYLE ja: borderless menus, identical filled dots, complete badge passed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "*_test.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.035s\n\nOK\n"
+    },
+    {
+      "command": [
+        "target/tools/actionlint",
+        ".github/workflows/ci.yml"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "final_source_sha256": {
+    "src/ui.rs": "ddc81d43f29069fddbc2a2511ebe61548e1797d5f796cf35339d7b29d0f17154",
+    "src/protocol.rs": "88506ed6c69a80c7082e927649a83dade64daa3ad9243bf4fce5a0dac9316ca0",
+    "src/client.rs": "c1e54c50098451cb7b5c686833c28ca87a97f2b675d8d0e82d1efdeba92362ff",
+    "src/config.rs": "7a3283a1c42dfaf9250aa288dd389396f28c53cd128aaf80aac30afb2a1b0352",
+    "src/lib.rs": "6e47c2cd56fcc00e01b77b09f154474a437f65afec5b1a0d60f33b69ec76e091",
+    "src/locales.tsv": "00d10dc4dac1f239173718a30573e65fae990a6c5110e7a3c5ce831648502c79",
+    "src/provider.rs": "059d5f2c0feaa00ee5286331ff81bd61bde0105913b64adce6151d977cbd5c67",
+    "src/theme.rs": "b3fdb1acfeba8cdf2fa2876e60c7745fc7741a77a768ec8fec8b1eb037e5d871",
+    "src/update.rs": "7f14fb464c6d231a99c0391212a85f0adf79f2241177fc9790974946c2da69e9",
+    "src/main.rs": "a8acac5ac831b3daecdb303454168008c38fcc5af712c335cdd855fad6f9fb20",
+    "src/storage.rs": "47d04d5a41925b78a266012a5d1910b80c1500ed1d44567c0f1c9092bc27fd2c",
+    "src/i18n.rs": "0a8eba1e5b558f3a200f4ccda18c154654670222da590caaa3b51162ad8df479",
+    "src/macos.m": "ff6b8f2bf22f51ffd09a7151a32313a660a6bfdc175bd55b17eeef8be7a34659",
+    "src/ui/acceptance.rs": "a095d7c6bb5a74c4c32160247acbb2d325c4e3a4d1acfbdea316ba24236cb9c6",
+    "examples/macos_input.m": "c05e652b7fd0d020859224ae4775da4caf50044262a4254d160d683873f08a4b",
+    "examples/protocol_smoke.rs": "77746e88629bacd74e5e868b8fd07ba2e4dfd25f9f64166c5fd352624cbf04e7",
+    "examples/ui_smoke.rs": "6f49d12184767a2773f12310edb9f77e282bef4d3d96571e37ccdb7fde539565",
+    "examples/update_smoke.rs": "12896f395079dc16c61d1f692ea8aebfd824f61dadd227986bd34c7dc7f89652",
+    "examples/input_smoke.rs": "f4421cb2eac42147c02d4a8bbea8f77ab9862af15e9942cd80e34d3de7a51147",
+    "examples/measure_ui.rs": "d79ce2601acac2b22a4afc51e73e260a60749175b308480928d024595bff212b",
+    "scripts/package.py": "f98708af48f76ce2eaaebb8ba03bdb51d495af1592736346b7bc1de4f22df1c8",
+    "scripts/measure.py": "d3ac59c123ca55ccac58737e0308b91f1ae6c2fd7591b4de1584d8b55af85196",
+    "scripts/release.py": "4026701e532220eaedd461acc9d4bbd23375ee1cac1d4b7e36a8cb6ff9914888",
+    "scripts/release_test.py": "60997613797a60e469d236b110d65450a360cd16dc11f53acc4ddbeeac676c69",
+    "scripts/protocol_smoke.py": "e624a438160000c8b03b1a7406ef59e21cb1d89ace1bb2cc86c2e9d340e60d5b",
+    "scripts/visual_check.py": "ad8d67d93c499de76c961f8b16bca177d3ca0da7bff566ff4276222e0e493b31",
+    "scripts/gui_smoke.py": "37bf9d75ef4ae872a23a7b16e06bab97457ff1e2467c6aee6b19f9ea682fb9e2",
+    "scripts/visual_test.py": "bc1e1eae3ac21e14a22fdc827a6c0ee63d539579d6c8da44e8c1974a360f3a28",
+    "scripts/smoke.py": "383d41e6018be108555245111df5dc963660854e1e613a563b55191c18a62e4e",
+    "build.rs": "ddf621c14add3bf5e30907294cc2fdb6bce66bdf0c3830776543d3f80f5b6688",
+    "Cargo.toml": "5841cd5153d9be368273162337da42184cb6e21c7347e9945922a3f85883ca01",
+    "Cargo.lock": "9bd1e0613aeec9fd9c261e3cd6205e934f5dadd5aa6da2dd4a4708752ec1e18e"
+  },
+  "screenshots": {
+    "docs/screenshots/v0.0.4/menu-review-20261012/en-menu.png": "f49bed873cdc8a360330abd7c1eeff145d2bbb13ac4a61a1698eeaf5a9d9eee4",
+    "docs/screenshots/v0.0.4/menu-review-20261012/en-chrome.png": "8b9a7c011ceb8e4a35313d7768af5a3b8bac335829a48a0baefed8aaeeafa55f",
+    "docs/screenshots/v0.0.4/menu-review-20261012/zh-menu.png": "b89be837383e3005626621f0964eb52a6e4475e9fd80628ef08cb7265ea8ca94",
+    "docs/screenshots/v0.0.4/menu-review-20261012/zh-chrome.png": "409c4e7ec295c9eaf1730fd3487f717a5b69483f9e9bec717d3df77db4c8b614",
+    "docs/screenshots/v0.0.4/menu-review-20261012/zh-TW-menu.png": "7ba411e80fbd9c9defe0c0ca17b1c562b176c8d6fbf9d3ba93492beae9ee3ce8",
+    "docs/screenshots/v0.0.4/menu-review-20261012/zh-TW-chrome.png": "7bc84e2bf87d10477e4e0d54136fd6336de2f9a5e216608460c59b371d206850",
+    "docs/screenshots/v0.0.4/menu-review-20261012/ja-menu.png": "c0f8a63961bf4978923c5288b1fe1f1503d86f21bcf10af36ee82e9229fb12bd",
+    "docs/screenshots/v0.0.4/menu-review-20261012/ja-chrome.png": "4a5fe7b48b3a13cca04341c8d9461ac04d03baccf5866ec591a8577b788d1622",
+    "docs/screenshots/v0.0.4/menu-review-20261012/review-active.png": "6f6ef59afc3177a5505a99dfde798ee950c7ead3cb9b17a73eaebdbb9ea993b8",
+    "docs/screenshots/v0.0.4/menu-review-20261012/review-add.png": "50ea07524072d994bee8ea2d105795f8da30d59afd36480b2bb02fc993b8f805",
+    "docs/screenshots/v0.0.4/menu-review-20261012/review-edit.png": "833c75e91231209f1e06080be038ffb3afa8f3da014af01bc3e8e77cd7380db1",
+    "docs/screenshots/v0.0.4/menu-review-20261012/review-import.png": "40586f0755da734a4ee52ac9941a1b2f1659e21700771098562922318361edd9",
+    "docs/screenshots/v0.0.4/menu-review-20261012/review-invalid-url.png": "8636c712b0ee3e94c6c97d20270be5c1fc00b577e3cd2ed7101607f8e80e4852",
+    "docs/screenshots/v0.0.4/menu-review-20261012/review-delete-confirm.png": "c240fc2e9f3aa86db73723274ef23cafff0b9e81e02d2f30666674ff9df7db7e",
+    "docs/screenshots/v0.0.4/menu-review-20261012/review-update-confirm.png": "0b7d49f0fbc96806f800bc03e82ae30296273699124461de47a47a4c5c95086a",
+    "docs/screenshots/v0.0.4/menu-review-20261012/review-scrolled.png": "ffbf8cb14febe8c21d8ce7c1cd5890a4e792726c1beadc6009302affa3ade630",
+    "docs/screenshots/v0.0.4/menu-review-20261012/ja-language-submenu-submenu-0.png": "f50f7e175630eae790be1927690cf9a47eda793144ca61b1bfc12c81c4de1e93",
+    "docs/screenshots/v0.0.4/menu-review-20261012/ja-language-submenu-submenu-1.png": "5fe33412c136b91d0ab55baedd7aa5f2b3eb73a8f4fa1ba2d36aac258a0a62b4",
+    "docs/screenshots/v0.0.4/menu-review-20261012/en-language-submenu-submenu-0.png": "3ffbedd1abd4927efea3517cd1a903267dec97a9d4c447e4914fdbddb678ebb3",
+    "docs/screenshots/v0.0.4/menu-review-20261012/en-language-submenu-submenu-1.png": "d0978cc98604660414ab6b2280d126bfaf43c00cfba4224f48f10fc62cef9584",
+    "docs/screenshots/v0.0.4/menu-review-20261012/zh-language-submenu-submenu-1.png": "0290cce55eef8bc29d5867cd9173fe789eff0f711079131a49e761c0d35c9e1d",
+    "docs/screenshots/v0.0.4/menu-review-20261012/zh-language-submenu-submenu-0.png": "81543c5ffc311f99f19451ef75c9d3fc039e290bf0edd29939e9fe864cbae69a",
+    "docs/screenshots/v0.0.4/menu-review-20261012/zh-TW-language-submenu-submenu-1.png": "cb1f25cabc7549a3159108ccb819415f44223e7511305d2137f0bde15537b22c",
+    "docs/screenshots/v0.0.4/menu-review-20261012/zh-TW-language-submenu-submenu-0.png": "0a2457c6ab697c02ce3f50b0336d091c09f381c709a0ed9d31cc47a28ae2c565"
+  },
+  "published": false,
+  "installed_user_app": false,
+  "acceptance_complete": false,
+  "incremental_code_checks": {
+    "format": {
+      "exit_code": 0,
+      "command": "rtk proxy /Users/mimiko/.cargo/bin/cargo fmt --check"
+    },
+    "clippy": {
+      "exit_code": 0,
+      "command": "rtk proxy /Users/mimiko/.cargo/bin/cargo clippy --locked --all-targets -- -D warnings",
+      "visible_output_excerpt": "Checking fltk v1.5.23\nFinished dev profile [unoptimized + debuginfo] target(s) in 11.70s"
+    },
+    "release_build": {
+      "exit_code": 0,
+      "command": "rtk proxy env PATH=/Users/mimiko/.cargo/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin CARGO_BUILD_JOBS=2 cargo build --locked --release --bins --example input_smoke",
+      "visible_output_excerpt": "Compiling fltk v1.5.23\nFinished release profile [optimized] target(s) in 32.51s"
+    },
+    "native_style": {
+      "exit_code": 0,
+      "command": "rtk proxy python3 scripts/gui_smoke.py --timeout 60 target/release/examples/input_smoke target/menu-rounded-20261012 --style-only",
+      "visible_output_excerpt": "VISUAL captured en: style only; no full functional acceptance\nVISUAL captured zh: style only; no full functional acceptance\nVISUAL captured zh-TW: style only; no full functional acceptance\nVISUAL captured ja: style only; no full functional acceptance"
+    }
+  },
+  "final_package": {
+    "path": "target/package/pp-switch-v0.0.4-aarch64-apple-darwin.zip",
+    "installed_bytes": 2557759,
+    "archive_bytes": 1357174,
+    "sha256": "458211a78d11798a1e543c79ae3c6c4c1cdfaa0cf4beff0a4b8eaaed25cb9e4d",
+    "archive_validation_exit_code": 0
+  },
+  "visual_review": {
+    "status": "reviewed",
+    "coverage": [
+      "four languages",
+      "menu/submenu",
+      "main title chrome",
+      "active badge",
+      "add/edit/import",
+      "errors/delete/update confirmation",
+      "scroll overflow"
+    ],
+    "limits": "Menu PNGs contain native layer contents and transparent corners; OS shadows are checked through the native hasShadow property. No screenshot of another app."
+  },
+  "negative_controls": {
+    "previous_border_rejected": true,
+    "previous_locale_icon_change_rejected": true,
+    "previous_covered_badge_rejected": true,
+    "NoBox_left_click_rejected": true
+  },
+  "documentation_checks": {
+    "markdown_files": 13,
+    "local_links_and_anchors": 176,
+    "source_screenshot_package_hashes": "matched",
+    "translation_coverage": "unchanged catalogs; existing Rust catalog coverage passed; contract/design/evidence docs are English-owned",
+    "errors": []
+  }
+}

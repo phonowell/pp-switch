@@ -45,13 +45,13 @@ def assemble(artifacts, output):
                 "ci_run": os.environ["RELEASE_RUN_URL"], "signed": False, "platforms": []}
     notes = [f"Pure Provider Switch {VERSION}", "",
              "- Native URL/key switcher for Claude Code, Codex and Gemini CLI.",
-             "- OS Provider import links; existing ccswitch handlers are preserved during registration.",
+             "- Row Edit/Switch actions and an in-window settings page; no Provider-link import.",
              "- Size-focused native build and fewer provider/key copies; raw measurements below.",
              "- Tag builds validate all four native targets before publishing.", "",
              "Packages are unsigned (macOS is not notarized). Full PP-11 is not certified:",
              "OS caches are retained; readiness is an event-loop marker, not cold input latency.",
              "RSS includes system/shared pages. Update download/install peaks are unverified.", "",
-             "| Target | Installed MiB | Idle / peak MiB | Readiness max ms | Import peak MiB | Budget |",
+             "| Target | Installed MiB | Idle / peak MiB | Readiness max ms | Editor peak MiB | Budget |",
              "| --- | ---: | ---: | ---: | ---: | --- |"]
     for target in TARGETS:
         root = artifacts / f"pp-switch-{target}"
@@ -64,23 +64,23 @@ def assemble(artifacts, output):
                 or report["sha256"] != digest(package)):
             raise ValueError(f"Invalid native package: {target}")
         idle = metrics(root / "metrics.json")
-        imported = metrics(root / "import-metrics.json")
-        if idle["scenario"] != "empty-window" or imported["scenario"] != "import-preview":
+        editor = metrics(root / "editor-metrics.json")
+        if idle["scenario"] != "empty-window" or editor["scenario"] != "provider-editor":
             raise ValueError(f"Missing measurement scenario: {target}")
-        report.update(measurement=idle, import_measurement=imported,
+        report.update(measurement=idle, editor_measurement=editor,
                       functional_checks="passed (required native CI job)")
         evidence["platforms"].append(report)
         shutil.copy2(package, output / package.name)
-        passed = idle["budget_pass"] and imported["budget_pass"]
+        passed = idle["budget_pass"] and editor["budget_pass"]
         notes.append(f"| {target} | {report['installed_bytes']/1024**2:.2f} | "
                      f"{idle['idle_max_bytes']/1024**2:.2f} / {idle['peak_max_bytes']/1024**2:.2f} | "
-                     f"{idle['startup_max_ms']:.2f} | {imported['peak_max_bytes']/1024**2:.2f} | "
+                     f"{idle['startup_max_ms']:.2f} | {editor['peak_max_bytes']/1024**2:.2f} | "
                      f"{'Script pass' if passed else '**FAIL**'} |")
     notes += ["", "Budget failures are disclosed; thresholds remain 5 MiB installed, 20 MiB idle RSS,",
-              "30 MiB startup/import peak RSS and 300 ms readiness. See verification.json for all samples.",
+              "30 MiB startup/editor peak RSS and 300 ms readiness. See verification.json for all samples.",
               "", f"Implementation: `{evidence['commit']}`. [Native CI]({evidence['ci_run']}).",
               "", "macOS 0.0.2 users must download manually once (the old updater rejects the icon).",
-              "Move the app to Applications, open it, and use More → Register import links as needed."]
+              "Move the app to Applications and open it. Language and manual updates are in Settings."]
     (output / "verification.json").write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
     sums = [f"{digest(p)}  {p.name}" for p in sorted(output.iterdir())]
     (output / "SHA256SUMS.txt").write_text("\n".join(sums) + "\n", encoding="utf-8")

@@ -1,0 +1,144 @@
+{
+  "head": "29c3194a030ad76772c991f0a29a150d708145fe",
+  "working_tree_changes": true,
+  "changes": [
+    "no initial control focus; normal first Tab/Shift-Tab navigation",
+    "passive status without callback or tooltip",
+    "duplicate policy retained: all matching records active"
+  ],
+  "checks": [
+    {
+      "command": "cargo fmt --check",
+      "exit_code": 0,
+      "visible_output_excerpt": ""
+    },
+    {
+      "command": "cargo clippy --locked --all-targets -- -D warnings",
+      "exit_code": 0,
+      "visible_output_excerpt": "Finished dev profile in 1.07s"
+    },
+    {
+      "command": "cargo build --locked --release --bins --example input_smoke",
+      "exit_code": 0,
+      "visible_output_excerpt": "Finished release profile in 10.66s"
+    },
+    {
+      "command": "python3 scripts/gui_smoke.py --timeout 90 target/release/examples/input_smoke target/interaction-review-20261012 --interaction-only",
+      "exit_code": 0,
+      "visible_output_excerpt": "REGRESSION zh: no startup control focus, Tab/Space menu, passive status\nREGRESSION zh: repeated import retained, both active, independent selection/edit\nREGRESSION zh: message Escape/title close, editor title close, main title close\nVISUAL captured en/zh/zh-TW/ja: style only; no full functional acceptance",
+      "results": {
+        "language": "zh",
+        "scope": "targeted native input",
+        "passed": true
+      },
+      "style_results": [
+        {
+          "captured": true,
+          "error": null,
+          "language": "en",
+          "scope": "visual capture only"
+        },
+        {
+          "captured": true,
+          "error": null,
+          "language": "zh",
+          "scope": "visual capture only"
+        },
+        {
+          "captured": true,
+          "error": null,
+          "language": "zh-TW",
+          "scope": "visual capture only"
+        },
+        {
+          "captured": true,
+          "error": null,
+          "language": "ja",
+          "scope": "visual capture only"
+        }
+      ]
+    },
+    {
+      "command": "python3 scripts/visual_check.py target/interaction-review-20261012",
+      "exit_code": 0,
+      "visible_output_excerpt": "STYLE zh/en/zh-TW/ja: borderless menus, identical filled dots, complete badge passed"
+    },
+    {
+      "command": "target/release/examples/update_smoke --archive target/package/pp-switch-v0.0.4-aarch64-apple-darwin.zip",
+      "exit_code": 0,
+      "visible_output_excerpt": "PP-15: real release package passed layout, bounds and executable architecture validation."
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "visible_output_excerpt": ""
+    }
+  ],
+  "failed_attempts": [
+    {
+      "exit_code": 1,
+      "error": "Initial activation focused a control instead of only the main window.",
+      "cause": "FLTK wrapper runs Group handler first; set super_handle_first(false)"
+    },
+    {
+      "exit_code": 1,
+      "error": "Initial Tab did not focus More.",
+      "cause": "Group navigation assumes child focus; first Tab must enter eligible children"
+    }
+  ],
+  "reused": {
+    "baseline": "target/smoke-20261012T092553Z",
+    "checks": [
+      "32 core Rust tests",
+      "6 Python tests",
+      "unaffected Chinese full flow",
+      "native URL events",
+      "isolated updater helper",
+      "performance measurements (RSS fails)"
+    ]
+  },
+  "visual_fallback": "Reviewed zh initial window, duplicate active rows and native menu; no initial focus outline, full badges, rounded borderless menu",
+  "hang": {
+    "pid": 83555,
+    "sample_utc": "2026-10-12T10:09:12Z",
+    "raw_sample_sha256": "9d816d5595da2eb6815aa8ac06cc333d9cf71cab4777086fb39bf6421f2b9e70",
+    "retained_raw_callgraph": "hang-callgraph-20261012.txt",
+    "termination": "SIGTERM exit 0; subsequent pgrep exit 1",
+    "cause": "unresolved: waiting in a nested event loop after mouse release; stripped stack does not identify trigger; user cannot recall last action",
+    "original_binary_sha256": "473190d7d60e0596096af2cb345cb2a955365e7f6776fa4bb5965572fa4ffcb8"
+  },
+  "package": {
+    "path": "target/package/pp-switch-v0.0.4-aarch64-apple-darwin.zip",
+    "sha256": "a0990f681819026f55c1abf526e57e8b3899af1e3e412cbc9b179561b14757c1",
+    "archive_bytes": 1356647,
+    "installed_bytes": 2557439,
+    "binary_sha256": "9a260be2dda7cf9a00b8feb6a41c153061ef29939ff38825fcf4f92a607bf34d"
+  },
+  "installation_record": "install-review-20261012T102057Z.json",
+  "configuration_test_writes": false,
+  "codegraph": "unavailable: no index, reused prior failed discovery",
+  "source_sha256": {
+    "src/ui.rs": "e28ed361e23289e1f9072bd8f1d9be039dc6fa4d4560dc5f7b7944c4afc034e9",
+    "src/ui/acceptance.rs": "684622a0438eb2004153687005404e89b967c4c7b6fc3560a4636047a320b619",
+    "examples/input_smoke.rs": "d87ea6dcbe7e1d39d56e54b035e182c87b3b08e6af0d3c64f97a4cdd6262abd6"
+  },
+  "screenshots_sha256": {
+    "docs/screenshots/v0.0.4/interaction-review-20261012/zh-initial-focus.png": "076f88c463f86734f19b1bab4db6783c05bb5b482f31a7a24cd88a11b0a7986b",
+    "docs/screenshots/v0.0.4/interaction-review-20261012/zh-duplicate-active.png": "3f42c8a597d8a544543367c874bfcb8b388355c21e7e57a0ef31f806fd521edd",
+    "docs/screenshots/v0.0.4/interaction-review-20261012/zh-menu.png": "b89be837383e3005626621f0964eb52a6e4475e9fd80628ef08cb7265ea8ca94",
+    "docs/screenshots/v0.0.4/interaction-review-20261012/zh-chrome.png": "77057131bc4249f2fd57d3aa32e91bab86a2fc8c288f7535d0e589701600099d",
+    "docs/screenshots/v0.0.4/interaction-review-20261012/en-menu.png": "f49bed873cdc8a360330abd7c1eeff145d2bbb13ac4a61a1698eeaf5a9d9eee4",
+    "docs/screenshots/v0.0.4/interaction-review-20261012/en-chrome.png": "dba7f3bfab03b3984deaf00035d30aae13f7cc54595b494149dbcbaa73787d6d",
+    "docs/screenshots/v0.0.4/interaction-review-20261012/zh-TW-menu.png": "7ba411e80fbd9c9defe0c0ca17b1c562b176c8d6fbf9d3ba93492beae9ee3ce8",
+    "docs/screenshots/v0.0.4/interaction-review-20261012/zh-TW-chrome.png": "ab142baf0daf9ab13f55ec9afe23803ac152f3490cb7da79ee91291f00c6184c",
+    "docs/screenshots/v0.0.4/interaction-review-20261012/ja-menu.png": "c0f8a63961bf4978923c5288b1fe1f1503d86f21bcf10af36ee82e9229fb12bd",
+    "docs/screenshots/v0.0.4/interaction-review-20261012/ja-chrome.png": "5cbab6c7f6d86dddbc3ac2f61c846563983cc6342b17b7484697cd4dde4add98"
+  },
+  "documentation_checks": {
+    "markdown_files": 13,
+    "local_links_and_anchors": 207,
+    "translation_coverage": "4 README / 3 guides; new duplicate/status rules aligned",
+    "source_screenshot_package_install_hashes": "pass",
+    "exit_code": 0
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "os": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "scenario": "import-preview",
+  "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+  "samples": [
+    {
+      "startup_ms": 157.04,
+      "idle_rss_bytes": 133349376,
+      "peak_rss_bytes": 133382144
+    },
+    {
+      "startup_ms": 214.24,
+      "idle_rss_bytes": 133513216,
+      "peak_rss_bytes": 133545984
+    },
+    {
+      "startup_ms": 171.93,
+      "idle_rss_bytes": 133332992,
+      "peak_rss_bytes": 133365760
+    }
+  ],
+  "startup_median_ms": 171.93,
+  "startup_max_ms": 214.24,
+  "idle_max_bytes": 133513216,
+  "peak_max_bytes": 133545984,
+  "budget_pass": false
+}

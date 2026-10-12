@@ -158,11 +158,109 @@ pub fn message(language: Language, english: &str) -> String {
     english.to_owned()
 }
 
-/// Explicit labels avoid FLTK's untranslated default Close button.
+/// Application messages use the same flat controls as editor/import windows.
 pub fn alert(language: Language, english: &str) {
-    let _app = fltk::app::App::default();
-    crate::theme::init();
-    fltk::dialog::message_title("pp-switch");
-    let _ =
-        fltk::dialog::choice2_default(&message(language, english), tr(language, "Close"), "", "");
+    let _ = confirm(
+        language,
+        &message(language, english),
+        tr(language, "Close"),
+        None,
+    );
+}
+
+pub fn confirm(_language: Language, text: &str, cancel: &str, action: Option<&str>) -> bool {
+    use crate::theme::{self, ButtonStyle};
+    use fltk::{
+        app,
+        button::Button,
+        enums::{Align, Font},
+        frame::Frame,
+        prelude::*,
+        window::Window,
+    };
+    use std::{cell::Cell, rc::Rc};
+    let _app = app::App::default();
+    theme::init();
+    // Bound wrapping for long localized messages, including scripts without spaces.
+    fltk::draw::set_font(Font::Helvetica, 13);
+    let mut line = String::new();
+    let mut wrapped = String::new();
+    for ch in text.chars() {
+        if ch == '\n' {
+            wrapped.push_str(&line);
+            wrapped.push('\n');
+            line.clear();
+            continue;
+        }
+        line.push(ch);
+        if fltk::draw::measure(&line, false).0 > 310 {
+            // Prefer word boundaries in Latin text; CJK and long unbroken
+            // tokens still need a character boundary to stay inside the frame.
+            let split = line.rfind(' ').filter(|index| *index > 0);
+            let remainder = if let Some(index) = split {
+                let remainder = line[index + 1..].to_owned();
+                wrapped.push_str(&line[..index]);
+                remainder
+            } else {
+                line.pop();
+                wrapped.push_str(&line);
+                ch.to_string()
+            };
+            wrapped.push('\n');
+            line = remainder;
+        }
+    }
+    wrapped.push_str(&line);
+    let lines = wrapped.lines().count() as i32;
+    let text_height = (lines * 21).max(42);
+    let height = text_height + 108;
+    let parent = app::first_window();
+    let (x, y) = parent.map_or((130, 160), |w| {
+        (w.x() + (w.w() - 386) / 2, w.y() + (w.h() - height) / 2)
+    });
+    let mut window = Window::new(x, y, 386, height, "pp-switch");
+    window.make_modal(true);
+    window.set_color(theme::background());
+    let mut copy = Frame::new(24, 24, 338, text_height, None);
+    copy.set_label(&wrapped);
+    copy.set_label_font(Font::Helvetica);
+    copy.set_label_size(13);
+    copy.set_label_color(theme::ink());
+    copy.set_align(Align::Inside | Align::Left | Align::Top | Align::Wrap);
+    let result = Rc::new(Cell::new(false));
+    let mut close = Button::new(
+        if action.is_some() { 146 } else { 258 },
+        height - 60,
+        104,
+        36,
+        None,
+    );
+    close.set_label(cancel);
+    theme::button(&mut close, ButtonStyle::Secondary);
+    let mut view = window.clone();
+    close.set_callback(move |_| view.hide());
+    if let Some(action) = action {
+        let mut accept = Button::new(262, height - 60, 100, 36, None);
+        accept.set_label(action);
+        // Allow longer localized update actions without truncating the label.
+        let width = fltk::draw::measure(action, false).0.max(76) + 24;
+        accept.resize(362 - width, height - 60, width, 36);
+        close.resize(362 - width - 116, height - 60, 104, 36);
+        theme::button(&mut accept, ButtonStyle::Primary);
+        let chosen = result.clone();
+        let mut view = window.clone();
+        accept.set_callback(move |_| {
+            chosen.set(true);
+            view.hide();
+        });
+    }
+    window.end();
+    window.set_callback(|w| w.hide());
+    window.show();
+    let _ = close.take_focus();
+    while window.shown() {
+        app::wait();
+    }
+    Window::delete(window);
+    result.get()
 }

@@ -33,10 +33,7 @@ if macos:
         plistlib.dump({"CFBundleExecutable": "pp-switch", "CFBundleIdentifier": "io.github.phonowell.pp-switch",
                       "CFBundleName": "pp-switch", "CFBundlePackageType": "APPL", "CFBundleVersion": version,
                       "CFBundleShortVersionString": version, "LSMinimumSystemVersion": "11.0",
-                      "NSHighResolutionCapable": True, "CFBundleIconFile": "AppIcon.icns",
-                      "CFBundleURLTypes": [{"CFBundleURLName": "Provider import",
-                                            "CFBundleTypeRole": "Viewer", "LSHandlerRank": "Alternate",
-                                            "CFBundleURLSchemes": ["ppswitch", "ccswitch"]}]}, file)
+                      "NSHighResolutionCapable": True, "CFBundleIconFile": "AppIcon.icns"}, file)
 else:
     shutil.copy2(binary, stage / binary.name)
 resources = app / "Resources" if macos else stage

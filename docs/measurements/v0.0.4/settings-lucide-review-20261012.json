@@ -1,0 +1,273 @@
+{
+  "recorded_utc": "2026-10-12T11:40:13.892321+00:00",
+  "head": "29c3194a030ad76772c991f0a29a150d708145fe",
+  "working_tree": true,
+  "published": false,
+  "ui_review": "awaiting user acceptance after redesign",
+  "functional_language": "zh",
+  "other_languages": "style only",
+  "source_sha256": {
+    ".github/workflows/ci.yml": "c81a73446952ba7af4d71d68cfe3bc7f19d4435e6dbf2ada24dce46a23edf062",
+    "Cargo.lock": "a37aac4d36cca088373d71f07354c8e6202349f0c3cb4dda290755c158ab9ab0",
+    "Cargo.toml": "808049c71059e3b6ef09d830726d49425b4bff60ad0284a726c7f2fd18fb21d9",
+    "assets/lucide/LICENSE": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "assets/lucide/README.md": "f98b32e87323d7ef23beb5ca55149682b825cf39d67883920c01c8e2d351b6bf",
+    "assets/lucide/arrow-left.svg": "c5f4b88076108eb1a0d95336e1aa7e7bb1419a3a92af96f6247d88cd3456f933",
+    "assets/lucide/arrow-right-left.svg": "c32f61f0ea5aea4f11592db61e42774977a95086a4fa40656d00289a9604b9ad",
+    "assets/lucide/chevron-down.svg": "66ea878e72ed3488bb3b464c39dfdccee8d1f78e560dccea40e5e12da0e87e87",
+    "assets/lucide/circle-dot.svg": "c263f6a08a089c06ad40f408ad5da9100359ab52d379e6c571cd7c5bd74eaa87",
+    "assets/lucide/circle.svg": "3a991bd47beaf9874fba6fdf87bbba442970a89b5e6aa391558bc8b0a00a0513",
+    "assets/lucide/pencil.svg": "7e1ca7a6f5c1eb949671df762f2baadd32f5bd841d43153c3a15279af7d78d0c",
+    "assets/lucide/plus.svg": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17",
+    "assets/lucide/settings.svg": "0ae27fd0f81999229e3127ac96c5b32edfea448e291d509e76212b917551d66b",
+    "build.rs": "185c5534ff2298b9c9f724b59404bc698d4471442a534209c6dcf65d2600a41d",
+    "design/minimal.html": "0dc568d42ec55d7d47847faecb3c3e998f0c7d244554c9fac98a89c81502372e",
+    "examples/input_smoke.rs": "d510890a01292ee5bee1114c1dc759acfe34ec8675be8974112d2ceabadc3b64",
+    "examples/macos_input.m": "9fba8293771c7d65e209dcc77e5593ada39a0ee3aab9820d6990c820339cf197",
+    "examples/measure_ui.rs": "9afc852e3af266fb7d0b64eb21f06596e148a3ce67ba5f6e1c6aa19ba385984b",
+    "examples/ui_smoke.rs": "0c78aa077643e76c25ed6a35391972b1b5c94a1c7e9da5470e3711bad091ad88",
+    "examples/update_smoke.rs": "12896f395079dc16c61d1f692ea8aebfd824f61dadd227986bd34c7dc7f89652",
+    "scripts/gui_smoke.py": "37bf9d75ef4ae872a23a7b16e06bab97457ff1e2467c6aee6b19f9ea682fb9e2",
+    "scripts/lucide.py": "4956b599c78b0628d4fccaa9e092b662305a4e6af8c09b71ad2efa840a0281ff",
+    "scripts/measure.py": "5ae8f5e772d00523b713934c81a17d8fd067ef19c108cb5ec95c7e5916469249",
+    "scripts/package.py": "01343c090773afd05fb449a0427684229ef85b1c28bd78eec47ee97afdf2c607",
+    "scripts/release.py": "bb611aea7ff8ef87fda9cb3b757835136421da8b4f8c004d69fb649a335fd59e",
+    "scripts/release_test.py": "1c5776debf8accbe6f87f9962331c25f79b0de15b32c85b3423d93f7c2251ab3",
+    "scripts/smoke.py": "1d838a284f4ade23320d8354491c81e9b3ffa9b8cddb811e48e14b8d068f97f7",
+    "scripts/visual_check.py": "a01ba538dfd01b5654c8b77af82e11716da3678ae09c25abb989796c425f918b",
+    "scripts/visual_test.py": "b2ede34436ac0cba13a51f1f6cfb5d787d41a6b11b7a7831ace665396179b9fd",
+    "src/client.rs": "c1e54c50098451cb7b5c686833c28ca87a97f2b675d8d0e82d1efdeba92362ff",
+    "src/config.rs": "7a3283a1c42dfaf9250aa288dd389396f28c53cd128aaf80aac30afb2a1b0352",
+    "src/i18n.rs": "0a8eba1e5b558f3a200f4ccda18c154654670222da590caaa3b51162ad8df479",
+    "src/lib.rs": "192690907ee0f9a37078e490c25bccdbf4da2e9674ae7de21a24f2261f715c16",
+    "src/locales.tsv": "1853e26e5f4f82fa70648326f3e2ddc23b72f7ff75fedc29a22b2cc10d559889",
+    "src/macos.m": "f5c422935f7e33c86e43c52fac7ff0347ddc9abd136089c3b3c79960eceb3dcb",
+    "src/main.rs": "f9995ed14763e72deec77cdcfa086bdc61c31b0f3ef0050f5e599c4025d2a74d",
+    "src/provider.rs": "b219df7133e17eb6becc858191662c87cfb0a744339aea46d64708ae2bb63646",
+    "src/storage.rs": "47d04d5a41925b78a266012a5d1910b80c1500ed1d44567c0f1c9092bc27fd2c",
+    "src/theme/system.rs": "5bdccce096e5b923df61a26e5c27a9ab5ca1b5e04f186b42f76a67fd63c147b1",
+    "src/theme.rs": "d5c4ee672387a73d73c56148500527f34dfd6bc975317d42c71979245aca6eff",
+    "src/ui/acceptance.rs": "e2f12c3e3255955b359b127c9c2d202039da4cec071f31c75642489b99aa1044",
+    "src/ui/lucide.rs": "8134e9868ad8d19a3a345f0606a04392aeed914c743510bada075151fbb6e0ed",
+    "src/ui.rs": "d36b27db97aab22552a9c5a3e1a14fdd8e3b706f2f5dd682b255d87ae2de28c1",
+    "src/update.rs": "7f14fb464c6d231a99c0391212a85f0adf79f2241177fc9790974946c2da69e9",
+    "scripts/docs_check.py": "3e1c79f7acde4131162dd723aa2ada8d524eb79b6da23f7d9183ea6e6ae0d22d"
+  },
+  "screenshots_sha256": {
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/en-active.png": "0fff4cda3e813fd056a0a576135bdd5dcc4ad645a4157e88145658b21c0721d6",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/en-chrome.png": "d33408770640dbb3924c53a124c106b17d4a9c97648fd892b58bf974592f103d",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/en-edit.png": "0375f309b0d465dae99e91b78005aa3e4ff589164e9a90a7e6dd3c97db647ba3",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/en-empty.png": "d48c959b94cc17f0e100d15931a90668868fc429862c384bfb67235d32fd9912",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/en-language-popup.png": "3b1c0f4cf9a3c472743339cbe2edc03f18942ea3a97885fc20bfd7734c4d8c73",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/en-overflow.png": "0477e19256e653e7efbb7f5acd33fa5bd620ff0d3757711e260e3006a217e816",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/en-settings.png": "1e0a29416cbac772d126736a1955c92ed7cf5a02f6204d61dedcae058e22f0ff",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/en-update-error.png": "fe1786877a1e6d5e796299afc8d473cae6a05268ac126738f616370533daa827",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/ja-active.png": "ad5723b02d0dfb3815306cae4bf9038789eaf2addb64743636ec6b0ab899c467",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/ja-chrome.png": "46f36590e396753ce82b7673a108428bf961ad08d0f5e1d368a29190c558086e",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/ja-edit.png": "2f727593e1cb732e6140393d38a273688657b7c546b9dc044f3a93ed08c6453a",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/ja-empty.png": "022d53768f03b84b808224d7da222411d0a0880bf9878e97eb8b1c1597316d48",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/ja-language-popup.png": "8d46e0db4eb5f78b653cc5a49fac1e73f0c63e8109227e037e85b0184fe07085",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/ja-overflow.png": "86339e4f87e0fc38a990d42fb73bf470a82c334f9d2fd3884548409767777df3",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/ja-settings.png": "341eec082a846d1e5b5e7ad22b445589780467eca54e708a84946cabf17e3111",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/ja-update-error.png": "0e75421d2217870aa4d4e72607c14901c37e9b9257f120376c0581d4e72bd0ef",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/results.json": "9bb0b3677a5425fe0780e3593f3dae3481834112dab4b820e4fd2a801108c0a7",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-TW-active.png": "5e5b1b35b4d45ee8a70abfa4a16bef5873e0c2e552550717c073c75065024c07",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-TW-chrome.png": "f6afe642923d80a6ac255197b338d67299aebc33e98146f3cfeddca7ebffeee4",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-TW-edit.png": "6cd3dc911c52a40fd6fb651ad4c9552edfc7e1b7092297340e5f39e32ecd2e2a",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-TW-empty.png": "5b21899c63376a561df3174ee26104d4ad06630678cbcd929b7ec62c3a0010c4",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-TW-language-popup.png": "2db37342ba3d08d6de26da718af99762f70ac8c8fa21b1221542cbd64fab4265",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-TW-overflow.png": "226744a5ef939aa9752807f9ff3a0580e5e460ab775a4d111dc54cbb3e0c3511",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-TW-settings.png": "bc3086339cf1d1855b4d006d45068d435e37d2fb3e0e941a2ee539dcd8c3ba34",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-TW-update-error.png": "a7ff62d7d70349bcec351b0ab1b2db808a004dc6061b860eaf6bff03ac866145",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-active.png": "063add2295adf6d5490e3f9abfe30e451dc190664779d6368a79f722bd22c34c",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-chrome.png": "485fdeb4d10ceb09c9dae8850478e99c0f7a2fb0560ab2293280bcf8f52e8061",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-edit.png": "7987803dd85587d4d705378d97fdc838e6f1d220b3afb64632d3272f2d348fda",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-empty.png": "6579a973a5bf43ec5e8eb7b9a4949469d6dd443fd323283d4eb49543f052e43c",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-language-popup.png": "47a3d83193b28090bcbf0b71cfdca5a55d08a87c0c9cc197efba5bca04070a3c",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-overflow.png": "1a7601b84e55042fb9a2ec1e7fb7c0ed966bd17c1c7e7285d00f0518d377e700",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-settings.png": "d38682a5ab2bc8a9ce00d6b9a1c2d563583b4be721b3c5b55f6813771d4f609c",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/dark/zh-update-error.png": "a65482651521d3202de91d67a467b08ce6b45c10ad4ccef9360046ac2af6ecce",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/en-active.png": "e52f7a0bc33f5ae411957f1e4a0345bc947b8e189c4986de5d60e9dca931e639",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/en-chrome.png": "dd287dd8553c042c84e81948328069514bbd4b17f2a3ffbb6685099c30bfb7e6",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/en-edit.png": "946735154bf233385d50b2ca287eeed0dc435ace8640249c5fcd477e240244d7",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/en-empty.png": "2d34e9b29a82a6ce76859998796a0783c0c9535c3e998a597bb828531670dda0",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/en-language-popup.png": "655b55e83164c730ad563c7f3734621e399413d977664ea1f5688aed58324d6a",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/en-overflow.png": "0d0fc04e0d52d12328a27994b10d1418a2d2bd376166ff4e0522e3d018a626b8",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/en-settings.png": "c37a5e8212314f28814412bfc6b060f5a5578fd5e29efee6c6ba24e68135359a",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/en-update-error.png": "d2e3545f7b9bc5813cded8685f8542104f315ec9ed5a4670cc913137415314c1",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/ja-active.png": "9ee7d45cc34ca264a31740acc572c7d7640b883a8503790a3906102da898ebd9",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/ja-chrome.png": "99db251448280c4c4e266db5c249fc09c961384cb069a35d846dfab6a31c3933",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/ja-edit.png": "6d0dfa28174bae89c75125ef69d06ceab9d9b89f5010f598316a6016be424219",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/ja-empty.png": "dda00a5f54ea5de839e521c6f506a78b57e7cdcceff057803ab1fa0628de1126",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/ja-language-popup.png": "4c839df5c1edde814a10315cfc0aac550e3a29ded3eb441b07d3e835593a6df6",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/ja-overflow.png": "005942993799efe532c1afce1d349b04a8bc6725b26e46f52059e16f02d9b426",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/ja-settings.png": "a13ca702285ece8277ab7ea863835854ecbdced50b8bcd3827fab346467f96d5",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/ja-update-error.png": "a158fd6a549aa8d85e5b02eae7bfc29e19b0db03f3deaf2eb91b8b573a3f68cb",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/results.json": "9bb0b3677a5425fe0780e3593f3dae3481834112dab4b820e4fd2a801108c0a7",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-TW-active.png": "568fc90541b78f93f7e54d1bf5ea1520cecacfd991bf850632df8a5df70cf2cf",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-TW-chrome.png": "42fb268a7cdedf95b1930fd06a7ba7eab83f2d8efe62708ff360c81fceee9022",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-TW-edit.png": "416f40963b3cf1cee601df656eca89e6e219a76d6e89a613a7d7b06f75235ae1",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-TW-empty.png": "99dbfd23b77a422b584e729223331dc72b53fd033a002cf970ac4183624fbbb7",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-TW-language-popup.png": "d04eabfad5262730a9ac8e982001f4203099ef87b031afe9dbe5ade3d75ee3f2",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-TW-overflow.png": "7a993c39e8a3fff7e12844e4b0b77d5ac0ddff0632a116e2c5881f49407deab9",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-TW-settings.png": "8e04ba6bf65cf21a0d8d02e33e325256a8277c7fc64552e4daf78fb5c274ce2c",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-TW-update-error.png": "1dc3e8c61a47588bf8f26317319a17e31fef9f626817459d4e3b5fa1397a1b4f",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-active.png": "9528fa882cc39da72ca274d0827351bc18df360cbbd758e1d4d604e16ca29cab",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-chrome.png": "6171281ef0ec9a6a1252954228cfdff41bc79359c58304ea4f899de3b62b4295",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-edit.png": "825dcf027ed0ee4df62ddaff4b247e18c0b19c68000d722e75cab1c8750a1d3e",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-empty.png": "bd07739987949518b5392ba69e4a5842a08afb870b046b47ceed60c62a95f875",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-language-popup.png": "72b68f8ebbf62b9c8aa0f1862109a84766a4ee55fd6110f158e6f6b85e24df65",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-overflow.png": "d8f3f90e02bd32b2d2b12db00c2d877166f124e5c83bd0c762fc906d6d051895",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-settings.png": "ebf0f089f4cf9941afb7a01df03b807624cce65cdc76a5b69ed13358990e5c9d",
+    "docs/screenshots/v0.0.4/settings-lucide-20261012/light/zh-update-error.png": "2707ca740b441ecdf5a9eb2af54e87b756b0bfa1bdbfda25b216477d82d3acf8"
+  },
+  "package": {
+    "version": "0.0.4",
+    "target": "aarch64-apple-darwin",
+    "installed_bytes": 2544096,
+    "archive_bytes": 1349523,
+    "sha256": "e1536046f9154ef22e24bab500a27096fb8ee8f2c18832317f48211e43b5d29d",
+    "path": "target/package/pp-switch-v0.0.4-aarch64-apple-darwin.zip"
+  },
+  "installation_record": "install-review-20261012T113722Z.json",
+  "checks": [
+    {
+      "command": "cargo fmt --check",
+      "exit_code": 0
+    },
+    {
+      "command": "cargo clippy --locked --offline --all-targets -- -D warnings",
+      "exit_code": 0
+    },
+    {
+      "command": "cargo test --locked --offline",
+      "exit_code": 0,
+      "passed_tests": 28,
+      "reuse": "Unchanged client/storage/updater behavior since this pass; subsequent icon/Choice rendering-only changes."
+    },
+    {
+      "command": "cargo test --locked --offline --test localization",
+      "exit_code": 0,
+      "passed_tests": 2,
+      "scope": "Final Add/Settings/Back locale catalog"
+    },
+    {
+      "command": "python3 -m unittest discover -s scripts -p *_test.py",
+      "exit_code": 0,
+      "passed_tests": 8
+    },
+    {
+      "command": "cargo build --locked --offline --release --bins --examples",
+      "exit_code": 0,
+      "incremental_rebuilds": "Final changed bins/input/update followed by ui_smoke/measure_ui"
+    },
+    {
+      "command": "python3 scripts/gui_smoke.py --timeout 180 target/release/examples/input_smoke target/settings-lucide-review-20261012 --interaction-only",
+      "exit_code": 0,
+      "scope": "Chinese new navigation/row actions/settings; all-language style",
+      "reuse": "Final Add text, Choice background/menu-frame corrections only affect paint; functional callbacks unchanged."
+    },
+    {
+      "command": "python3 scripts/gui_smoke.py --timeout 90 target/release/examples/input_smoke target/settings-lucide-themes-20261012 --themes-only",
+      "exit_code": 0,
+      "scope": "Chinese live appearance draft/cursor/focus/selection; both-theme styles",
+      "reuse": "Same appearance observer/palette in final package"
+    },
+    {
+      "command": "python3 scripts/gui_smoke.py --timeout 90 target/release/examples/input_smoke target/settings-lucide-final-20261012 --themes-only --style-only",
+      "exit_code": 0,
+      "scope": "Final four-language light/dark styles; native language popup rounding/shadow; no full functional rerun"
+    },
+    {
+      "command": "python3 scripts/visual_check.py target/settings-lucide-final-20261012/light",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 scripts/visual_check.py target/settings-lucide-final-20261012/dark",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 scripts/lucide.py --check",
+      "exit_code": 0,
+      "dependency": "Development-only fonttools==4.60.1"
+    },
+    {
+      "command": "target/tools/actionlint .github/workflows/ci.yml",
+      "exit_code": 0
+    },
+    {
+      "command": "node --check target/design-reference.js",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 scripts/package.py aarch64-apple-darwin --binary target/release/pp-switch",
+      "exit_code": 0
+    },
+    {
+      "command": "target/release/examples/update_smoke --archive target/package/pp-switch-v0.0.4-aarch64-apple-darwin.zip",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 target/install-review-20261012.py",
+      "exit_code": 0
+    },
+    {
+      "command": "pgrep -fl pp-switch.app/Contents/MacOS/pp-switch",
+      "exit_code": 0,
+      "pid": 48644
+    },
+    {
+      "command": "python3 scripts/gui_smoke.py --timeout 30 target/release/examples/ui_smoke target/settings-callback-final.ppm",
+      "exit_code": 0,
+      "scope": "New Chinese callback harness runnable; native input supplies close/hit-testing evidence"
+    },
+    {
+      "command": "python3 scripts/gui_smoke.py --timeout 15 target/release/examples/measure_ui --editor",
+      "exit_code": 0,
+      "stdout": "READY\n",
+      "scope": "New isolated editor measurement harness launches/exits; no performance samples or claim"
+    },
+    {
+      "command": "python3 scripts/docs_check.py --record docs/measurements/v0.0.4/settings-lucide-review-20261012.json",
+      "exit_code": 0
+    }
+  ],
+  "earlier_attempts": [
+    {
+      "exit_code": 1,
+      "error": "Scrolled Edit is unreachable.",
+      "resolution": "Test selected a fixed offscreen row; now selects a fully visible scrolled action. Revised Chinese flow passed."
+    },
+    {
+      "exit_code": 1,
+      "error": "Language popup lost its native rounding/shadow.",
+      "resolution": "Choice needed menu_frame instead of down_frame; final native style/property and pixel checks pass."
+    }
+  ],
+  "limitations": [
+    "No native Windows/Linux/Intel validation of new working-tree changes.",
+    "Previous unknown user hang trigger remains unresolved; modal close passing does not identify or guarantee correction.",
+    "No new RSS/readiness claim. Historical budgets failed; obsolete import metrics retained unchanged.",
+    "CodeGraph unavailable: no index.",
+    "Four-platform CI/release and user acceptance remain pending."
+  ],
+  "reused_evidence": [
+    "docs/measurements/v0.0.4/menu-review-20261012.json",
+    "docs/measurements/v0.0.4/interaction-review-20261012.json",
+    "docs/measurements/v0.0.4/install-review-20261012T105643Z.json"
+  ],
+  "documentation_checks": {
+    "markdown_files": 14,
+    "local_links_and_anchors": 220,
+    "translation_coverage": "4 README / 3 guides: settings, row actions, removed import, Lucide, duplicate and appearance rules aligned",
+    "hashes": "source/screenshots/package/install manifests and installed byte count pass"
+  },
+  "visual_review": {
+    "status": "reviewed after automated gates",
+    "views": [
+      "final dark Chinese main and Settings",
+      "final light English main"
+    ],
+    "remaining": "User review of installed redesigned UI"
+  }
+}

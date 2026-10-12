@@ -10,6 +10,8 @@ the optimization budget; previews do not relax its thresholds or expand scope.
 
 Full product name: Pure Provider Switch. Repository, executable and compact UI
 name: pp-switch. The application icon uses PPC lettering.
+macOS window title bars show the title without a PPC icon. Windows/Linux window
+icons and all platforms' installed application icons retain PPC lettering.
 
 A small desktop application that saves API providers and switches only a
 client's base URL and API key. Supported clients: Claude Code, Codex, Gemini CLI.
@@ -17,8 +19,9 @@ Supported desktop platforms: macOS (Apple Silicon / Intel), Windows x64, Linux x
 
 ## Product boundaries
 
-- One main window: three client tabs, provider list and switch action. Add/edit/delete
-  use a compact dialog; import, language and manual updates use the More menu.
+- One main window: three client tabs, provider list and per-row edit/switch actions. Add/edit/delete
+  use a compact dialog; a small gear opens an in-window settings page for language
+  and strictly manual updates.
 - A provider has an ID, client, display name, base URL and API key. Nothing else.
 - Closing the window exits the process. No tray, startup agent or background work.
 - No models, OAuth management, proxy, protocol translation, failover, network probes,
@@ -50,16 +53,10 @@ Gemini: patch only `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` in `.env`. Requ
 
 ### PP-06: Provider links
 
-Import `ccswitch://v1/import?resource=provider` and equivalent `ppswitch://` text. Support claude/codex/gemini, URL decoding, inline Base64 config (standard/URL-safe, padded/unpadded), JSON/TOML and explicit nonempty parameter precedence. Use the first endpoint. Extract only name/client/address/key; never apply imported extra fields. Reject other resources/apps, unsupported versions, remote-only config and malformed/incomplete input. Import selects the imported client and previews name/address/key in the editor; it neither saves nor applies.
-
-Installed packages handle OS-opened links as well as pasted text. More → Register
-import links registers user-level associations; claim `ccswitch` only when no
-installed handler exists, preserving cc-switch or another existing handler.
-macOS bundles declare both schemes and receive Apple URL events, including on
-cold launch. Windows/Linux receive one URL argument, without shell interpretation.
-Registration needs no administrator, daemon, startup agent or cc-switch install.
-An incoming link must not replace an open editor's unsaved draft; report that
-the user should finish or cancel it and retry. Never log the link or key.
+Provider-link import is outside the product scope. Do not display import or
+registration controls, parse import arguments or declare URL schemes in packages.
+Existing saved providers remain usable. Do not change other applications' OS URL
+associations while upgrading.
 
 ### PP-07: Directories and overrides
 
@@ -75,11 +72,11 @@ Before writing, validate every involved file. Refuse symbolic-link file destinat
 
 ### PP-10: Current status
 
-Display current status by reading client configuration, rather than trusting a stored active-provider ID. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration.
+Display current status by reading client configuration, rather than trusting a stored active-provider ID. Allow duplicate saved providers, including identical records; every record for the selected client matching the effective URL and key displays In use and cannot be switched again. Selection and editing still identify individual records. There is no bottom Current/status or global Switch area; status is represented by row badges. Setup errors are reported when switching is attempted. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration.
 
 ### PP-11: Performance budgets
 
-Installed application-owned files ≤5 MiB; steady idle total RSS ≤20 MiB; startup/import peak total RSS ≤30 MiB; cold interactive startup ≤300 ms. Measure a stripped release build on each platform, state hardware/method and report failures. These are budgets, not verified claims. No subprocess/runtime exclusions for memory.
+Installed application-owned files ≤5 MiB; steady idle total RSS ≤20 MiB; startup/editor peak total RSS ≤30 MiB; cold interactive startup ≤300 ms. Measure a stripped release build on each platform, state hardware/method and report failures. These are budgets, not verified claims. No subprocess/runtime exclusions for memory.
 
 ### PP-12: Public evidence and CI
 
@@ -97,7 +94,26 @@ Match cc-switch's interface languages: English, Simplified Chinese, Traditional 
 
 ### PP-14: Minimal interface
 
-Follow the user-approved `design/minimal.html` layout with a flat native style: small title, three client tabs, one provider list with name/address, a selected-row edit action and a primary switch button. Show the active provider from current client files; disable switching an already matching provider. Add/edit use a three-field dialog; saving never applies. Import previews that dialog. Language and strictly manual updates live in More. Remove branding panels, nested cards, raised/inset effects and shadows. Keep visible contrast, keyboard focus, pressed/disabled states and masked credentials. Closing or cancelling an editor discards its unsaved draft without writing. Use system fonts and bounded vector drawing, without animations, new UI/runtime dependencies or background rendering. The only bundled bitmap asset is the application icon: a flat blue PPC monogram, generated from a small SVG for the window and OS package formats. Review real screenshots in all four languages and remeasure release size/RSS including the icon. PP-11 budgets remain unchanged.
+Follow [design/UI.md](design/UI.md): three client tabs and a smaller Settings
+gear at the top, a provider list below, and visible Edit then Switch icon buttons
+on each row. Do not show an in-content product heading, More menu, bottom status
+or global Switch button. Row selection never applies; a row's Switch targets
+that record even if another is selected. Matching records show In use and have
+disabled Switch. Add/edit use a three-field dialog; saving never applies.
+Settings replaces the list within the same window and contains language and
+manual updates, with a Back action. No hover tooltips anywhere. Initial activation
+focuses no control; later keyboard navigation retains visible focus. Preserve
+pressed/disabled states, contrast, masked credentials and unsaved drafts. Closing
+or cancelling an editor discards its draft without writing. Use system fonts and
+bounded vector icons, without new UI dependencies or background rendering.
+The application icon remains the flat blue PPC monogram in OS packages; macOS
+window titles omit it, while other platforms retain their window icons.
+
+Follow system light/dark appearance without a theme selector or saved preference.
+Recolor existing widgets without losing drafts, selection or focus. Chinese native
+functional acceptance and all four languages' light/dark style checks must cover
+row actions, settings, localized badge visibility and keyboard navigation.
+PP-11 budgets remain unchanged.
 
 ### PP-15: Manual updates
 
@@ -109,13 +125,11 @@ Rust core, FLTK native UI and a local JSON provider store. Use mature parsers;
 do not write a general-purpose JSON/TOML parser. Patch only validated value
 ranges. Keep the dependency graph small and omit unused FLTK features.
 
-Inside the app's data directory, the only persistent state beyond providers is a bounded recovery journal, an
-advisory lock and one UI language preference. No plugin system, daemon, database
-or adapter SDK. User-triggered updates may use bounded temporary staging and
+Inside the app's data directory, the only persistent state beyond providers is a
+bounded recovery journal, an advisory lock and one UI language preference. No
+plugin system, daemon, database or adapter SDK. User-triggered updates may use bounded temporary staging and
 rollback files, plus a temporary copy of the app as an installation helper.
 There is no permanent helper process. Translations are compiled text. Native
-URL associations refer to the installed executable or app bundle in user-level
-OS metadata; no link or credential is stored in that metadata. Native
 FLTK drawing uses system fonts, without an internationalization runtime.
 Configuration files are read only on launch, client selection and user actions.
 
@@ -123,20 +137,18 @@ Configuration files are read only on launch, client selection and user actions.
 
 cc-switch commit `8845b1ef799aa8810b864b122de6af5f4629de10`:
 
-- [Deep-link parser](https://github.com/farion1231/cc-switch/blob/8845b1ef799aa8810b864b122de6af5f4629de10/src-tauri/src/deeplink/parser.rs)
+- Historical reference: [Deep-link parser](https://github.com/farion1231/cc-switch/blob/8845b1ef799aa8810b864b122de6af5f4629de10/src-tauri/src/deeplink/parser.rs)
 - [Provider config extraction](https://github.com/farion1231/cc-switch/blob/8845b1ef799aa8810b864b122de6af5f4629de10/src-tauri/src/deeplink/provider.rs)
 - [Claude projection](https://github.com/farion1231/cc-switch/blob/8845b1ef799aa8810b864b122de6af5f4629de10/src-tauri/src/live/project/claude.rs)
 - [Gemini projection](https://github.com/farion1231/cc-switch/blob/8845b1ef799aa8810b864b122de6af5f4629de10/src-tauri/src/live/project/gemini.rs)
 
-Only the Provider deep-link subset above is compatible. pp-switch does not share
-cc-switch's database, routing state or full provider settings. It handles only
-Provider import links and preserves an existing `ccswitch` handler during explicit
-registration; pasted links remain available regardless of OS association.
+pp-switch does not share cc-switch's database, routing state or full provider
+settings. Provider links are no longer supported.
 
 ## Verification
 
 Behavioral tests reference PP IDs and exercise real temporary files: unrelated
-byte preservation, effective-provider selection, import fixtures, malformed
+byte preservation, effective-provider selection, malformed
 inputs, idempotency, permissions, rollback and concurrent-change recovery.
 A GUI smoke harness exercises the same widgets/callbacks as the shipped window.
 Record release size, actual process RSS and startup measurements in

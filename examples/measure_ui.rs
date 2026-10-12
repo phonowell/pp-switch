@@ -19,7 +19,21 @@ fn main() {
             app::quit();
         });
     });
-    let import = std::env::args().any(|arg| arg == "--import");
-    pp_switch::ui::run_with_link(store, paths, import.then_some("ccswitch://v1/import?resource=provider&app=claude&name=Example&endpoint=https%3A%2F%2Fapi.example.com&apiKey=measurement-fake-key"))
-        .expect("measurement window");
+    if std::env::args().any(|arg| arg == "--editor") {
+        // Saved synthetic row exercises the editor-sized scenario without links.
+        store
+            .save(
+                pp_switch::provider::Provider::new(
+                    pp_switch::provider::Client::Claude,
+                    "Example",
+                    "https://api.example.com",
+                    "measurement-fake-key",
+                )
+                .unwrap(),
+            )
+            .unwrap();
+        pp_switch::ui::run_measure_editor(store, paths).expect("measurement editor");
+    } else {
+        pp_switch::ui::run_with(store, paths).expect("measurement window");
+    }
 }

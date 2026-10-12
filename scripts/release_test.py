@@ -22,7 +22,7 @@ class PublicationGates(unittest.TestCase):
             (package / f"{name}.json").write_text(json.dumps({"version": release.VERSION,
                 "target": target, "installed_bytes": 100, "archive_bytes": archive.stat().st_size,
                 "sha256": release.digest(archive)}))
-            for filename, scenario in [("metrics.json", "empty-window"), ("import-metrics.json", "import-preview")]:
+            for filename, scenario in [("metrics.json", "empty-window"), ("editor-metrics.json", "provider-editor")]:
                 # Budget failures must be retained, not silently made successful.
                 data = {"scenario": scenario, "samples": [{"startup_ms": 301, "idle_rss_bytes": 100,
                     "peak_rss_bytes": 100}], "startup_max_ms": 301, "idle_max_bytes": 100,
@@ -44,7 +44,7 @@ class PublicationGates(unittest.TestCase):
             self.assertEqual(len(evidence["platforms"]), 4)
             self.assertTrue(all(not p["measurement"]["budget_pass"] for p in evidence["platforms"]))
             self.assertIn("**FAIL**", (out / "release-notes.md").read_text(encoding="utf-8"))
-            self.assertIn("More → Register import links", (out / "release-notes.md").read_text(encoding="utf-8"))
+            self.assertIn("Language and manual updates are in Settings", (out / "release-notes.md").read_text(encoding="utf-8"))
             for line in (out / "SHA256SUMS.txt").read_text(encoding="utf-8").splitlines():
                 digest, name = line.split("  ")
                 self.assertEqual(digest, release.digest(out / name))
@@ -61,7 +61,7 @@ class PublicationGates(unittest.TestCase):
                 elif broken == "tampered":
                     next((first / "package").glob("*.zip")).write_bytes(b"tampered")
                 else:
-                    (first / "import-metrics.json").unlink()
+                    (first / "editor-metrics.json").unlink()
                 with self.assertRaises((ValueError, FileNotFoundError)):
                     self.assemble(root, Path(temp) / "release")
 

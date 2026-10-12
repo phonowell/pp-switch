@@ -28,8 +28,6 @@ Your models, reasoning settings, project permissions, MCP and skills already wor
 
 **A switcher should finish when you do.** One window, no tray, no startup agent, no provider probes or usage polling. Close it and the process exits. Updates happen only when you click **Check for updates** and confirm installation. Rust + FLTK, native vector drawing, system fonts; no bundled WebView, database or JavaScript runtime.
 
-**Keep the links you already have.** Open or paste a supported `ccswitch://` Provider link, review its URL/key, save and switch. Extra model and tool settings stay out of your client files.
-
 This need is visible in the community: [cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) asks for a Pure/Lite mode and says “CC Switch only manages fields it owns. Everything else belongs to the target application/user.” pp-switch takes that ownership principle and narrows it to URL + key. The discussion is motivation, not an endorsement. [Research notes](docs/verification.md#community-sources) record the sources and their limits.
 
 ## Small scope, clear differences
@@ -38,7 +36,7 @@ This need is visible in the community: [cc-switch #7649](https://github.com/fari
 | --- | --- | --- |
 | Purpose | URL/key switching for an already configured client | Broader provider and client management |
 | Writes | Only the effective base URL and API key | More configuration, according to enabled features |
-| Provider links | Open/paste the supported subset | Full deep-link workflows |
+| Provider links | Outside scope | Full deep-link workflows |
 | Models, routing, usage, MCP, prompts, skills | Outside the product boundary | Offers corresponding management features |
 | Lifecycle | Close window → process exits | Supports tray and broader workflows |
 | Updates | Explicit check → confirm → download, install, restart | Its own update workflow |
@@ -46,6 +44,10 @@ This need is visible in the community: [cc-switch #7649](https://github.com/fari
 [cc-switch](https://github.com/farion1231/cc-switch) is a better fit when you want a full management dashboard. pp-switch is an independent project for people who have already configured their clients and want a small, predictable switching tool.
 
 ## Download
+
+**0.0.4 is a review candidate, without a tag or release.** See its [acceptance evidence](docs/verification.md#review-candidate-004). Downloads below remain the published 0.0.3 preview.
+
+**The 0.0.4 UI redesign passed user acceptance on 2026-10-12; publication is authorized and native release CI is pending.** Chinese native interaction and all-language styles are checked separately; see the [smoke matrix](docs/smoke.md).
 
 **[v0.0.3 functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**. macOS memory remains over budget; [actual measurements](docs/verification.md) are public.
 
@@ -63,10 +65,16 @@ macOS 0.0.2 users: download this version manually once. The older updater reject
 ## Use
 
 1. Choose Claude Code, Codex or Gemini CLI.
-2. Click **Add**, enter name/base URL/key, or use **More → Import link**.
-3. **Save**, select a provider, then **Switch**. Restart the client if it does not reload configuration.
+2. Click **Add**, enter name/base URL/key and **Save**.
+3. Click that row's Switch icon, after Edit. Restart the client if needed.
 
-Edit the selected row with its pencil button. Import, language and manual updates are in **More**. Saving changes only pp-switch's local store. Switching changes client URL/key values. The interface supports **English, 简体中文, 繁體中文 and 日本語**, detects the system language on first launch and allows instant switching without losing edits.
+Each row has Lucide Edit and Switch icons; selection alone never applies.
+The smaller gear beside the tabs opens Settings for language and manual updates.
+All hover tips, the in-content heading, bottom status/Switch area and Provider-link
+import are removed. Matching duplicates all show In use. The interface follows
+system light/dark appearance. Saving only changes the local store. UI languages:
+**English, 简体中文, 繁體中文 and 日本語**, initially matching the system.
+
 
 | Client | Existing setup required | Fields changed |
 | --- | --- | --- |
@@ -78,8 +86,7 @@ No model/auth-mode/protocol changes or first-time client setup. User-level files
 
 ## Compatibility and trust
 
-- Compatible with the **Provider import subset** of `ccswitch://v1/import?resource=provider` and equivalent `ppswitch://` links: claude/codex/gemini, direct parameters and inline Base64 JSON/TOML. First endpoint wins; unsupported resources and remote-only configs are rejected.
-- Open links through the OS or paste them. **More → Register import links** claims `ccswitch` only without an installed handler, preserving cc-switch; no shared database. Finish or cancel a draft before opening another link.
+- Provider-link import and URL registration are outside the current candidate scope; existing saved providers are retained.
 - Secrets stay in local user-only files (Unix 0600 / Windows current-user ACL). Masking is **not encryption**. No automatic clipboard reads, secret diagnostics or provider requests.
 - Updates require your confirmation and a writable installation. Only this repository's release packages are downloaded and SHA-256 checked. Packages are unsigned; provider/client files are outside the updater. [Update details](docs/user-guide.md#manual-update).
 - Full behavior contract: [SPEC.md](SPEC.md). Exact write locations and storage paths: [guide](docs/user-guide.md).

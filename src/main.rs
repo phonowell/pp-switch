@@ -15,7 +15,7 @@ fn main() {
     {
         pp_switch::update::cleanup(std::path::Path::new(&args[1]), pid);
     }
-    if let Err(error) = pp_switch::ui::run(pp_switch::protocol::argument(&args)) {
+    if let Err(error) = pp_switch::ui::run() {
         let language = pp_switch::storage::Store::system()
             .and_then(|s| s.language())
             .unwrap_or_else(|_| pp_switch::i18n::Language::system());
