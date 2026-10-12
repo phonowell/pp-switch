@@ -242,8 +242,9 @@ notes; the thresholds do not change. Run `python3 -m unittest discover -s script
 
 [scripts/release.py](scripts/release.py) assembles four packages,
 SHA256SUMS.txt and verification.json from that run. The release job creates a
-draft preview, checks all six uploaded sizes and GitHub SHA-256 digests, then
-publishes. An existing release is never overwritten. A digest failure leaves
+draft preview, queries it with `gh release view` (the REST release-by-tag endpoint
+returns 404 for drafts), checks all six uploaded sizes and GitHub SHA-256 digests,
+then publishes. An existing release is never overwritten. A digest failure leaves
 the draft for inspection; do not blindly rerun publication. Tag and Cargo
 versions must match, and the workflow records the tag SHA and CI run URL.
 

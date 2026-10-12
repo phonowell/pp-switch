@@ -1,0 +1,52 @@
+{
+  "tag": "v0.0.4",
+  "implementation": "47d83267796d901db333ec06d0e523dda900917b",
+  "ci_run": "https://github.com/phonowell/pp-switch/actions/runs/38245799635",
+  "draft_assets_verified_against_ci": [
+    {
+      "name": "pp-switch-v0.0.4-aarch64-apple-darwin.zip",
+      "bytes": 1350708,
+      "sha256": "29039816d8377497c3c49cd94fd7e59e6c266442d05dee882013c86c953f353c"
+    },
+    {
+      "name": "pp-switch-v0.0.4-x86_64-apple-darwin.zip",
+      "bytes": 1417992,
+      "sha256": "2f194a5a8cdc9bd74af06d38c3315881d726e726e6e8c31b357e31e556aa7481"
+    },
+    {
+      "name": "pp-switch-v0.0.4-x86_64-pc-windows-msvc.zip",
+      "bytes": 1406153,
+      "sha256": "e1555fb849dfef43396c9a2200056e9d3fa9367b5e62e7db48b5302d6d01bc4a"
+    },
+    {
+      "name": "pp-switch-v0.0.4-x86_64-unknown-linux-gnu.tar.gz",
+      "bytes": 1423541,
+      "sha256": "9f78decf5a09b3e8f9c024d1c6fdbb5f81ecae1b6e77aee05e71081524e36920"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 524,
+      "sha256": "dc9f043c877463eed0bd9c3049d70b4d24a8038af8f080afd35689ad22b55c2c"
+    },
+    {
+      "name": "verification.json",
+      "bytes": 8720,
+      "sha256": "b6fcc8d70051210787df92bf09b8daa361c9f7786354823cd09ff267ddf5e5ca"
+    }
+  ],
+  "native_jobs": "all four passed; release draft tag REST lookup returned404",
+  "recovery": "verify existing uploaded assets; publish same draft; no rebuild or overwrite",
+  "published_at": "2026-10-12T12:07:48Z",
+  "release_url": "https://github.com/phonowell/pp-switch/releases/tag/v0.0.4",
+  "anonymous_downloads": "all six assets passed; checksums match CI and GitHub digests",
+  "anonymous_metadata": "HTTP403; inspect retained headers; authenticated metadata only for isolated staging",
+  "isolated_public_staging": {
+    "exit_code": 0,
+    "result": "PP-15: real release downloaded, verified and staged in isolation; installation unchanged.",
+    "metadata": "authenticated gh metadata; package and checksum downloads anonymous"
+  },
+  "publication_gate_tests": {
+    "count": 4,
+    "exit_code": 0
+  }
+}

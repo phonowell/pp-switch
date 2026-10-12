@@ -1,0 +1,265 @@
+{
+  "version": "0.0.4",
+  "tag": "v0.0.4",
+  "commit": "47d83267796d901db333ec06d0e523dda900917b",
+  "ci_run": "https://github.com/phonowell/pp-switch/actions/runs/38245799635",
+  "signed": false,
+  "platforms": [
+    {
+      "version": "0.0.4",
+      "target": "aarch64-apple-darwin",
+      "installed_bytes": 2544128,
+      "archive_bytes": 1350708,
+      "sha256": "29039816d8377497c3c49cd94fd7e59e6c266442d05dee882013c86c953f353c",
+      "measurement": {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "empty-window",
+        "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "samples": [
+          {
+            "startup_ms": 173.12,
+            "idle_rss_bytes": 50790400,
+            "peak_rss_bytes": 50855936
+          },
+          {
+            "startup_ms": 130.1,
+            "idle_rss_bytes": 50003968,
+            "peak_rss_bytes": 50020352
+          },
+          {
+            "startup_ms": 205.8,
+            "idle_rss_bytes": 50216960,
+            "peak_rss_bytes": 50233344
+          }
+        ],
+        "startup_median_ms": 173.12,
+        "startup_max_ms": 205.8,
+        "idle_max_bytes": 50790400,
+        "peak_max_bytes": 50855936,
+        "budget_pass": false
+      },
+      "editor_measurement": {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "provider-editor",
+        "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "samples": [
+          {
+            "startup_ms": 87.67,
+            "idle_rss_bytes": 53641216,
+            "peak_rss_bytes": 53657600
+          },
+          {
+            "startup_ms": 173.16,
+            "idle_rss_bytes": 53379072,
+            "peak_rss_bytes": 53428224
+          },
+          {
+            "startup_ms": 214.97,
+            "idle_rss_bytes": 53166080,
+            "peak_rss_bytes": 53182464
+          }
+        ],
+        "startup_median_ms": 173.16,
+        "startup_max_ms": 214.97,
+        "idle_max_bytes": 53641216,
+        "peak_max_bytes": 53657600,
+        "budget_pass": false
+      },
+      "functional_checks": "passed (required native CI job)"
+    },
+    {
+      "version": "0.0.4",
+      "target": "x86_64-apple-darwin",
+      "installed_bytes": 2803992,
+      "archive_bytes": 1417992,
+      "sha256": "2f194a5a8cdc9bd74af06d38c3315881d726e726e6e8c31b357e31e556aa7481",
+      "measurement": {
+        "os": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+        "machine": "x86_64",
+        "scenario": "empty-window",
+        "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "samples": [
+          {
+            "startup_ms": 122.15,
+            "idle_rss_bytes": 33525760,
+            "peak_rss_bytes": 33538048
+          },
+          {
+            "startup_ms": 155.76,
+            "idle_rss_bytes": 33464320,
+            "peak_rss_bytes": 33476608
+          },
+          {
+            "startup_ms": 154.56,
+            "idle_rss_bytes": 33452032,
+            "peak_rss_bytes": 33464320
+          }
+        ],
+        "startup_median_ms": 154.56,
+        "startup_max_ms": 155.76,
+        "idle_max_bytes": 33525760,
+        "peak_max_bytes": 33538048,
+        "budget_pass": false
+      },
+      "editor_measurement": {
+        "os": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+        "machine": "x86_64",
+        "scenario": "provider-editor",
+        "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "samples": [
+          {
+            "startup_ms": 210.35,
+            "idle_rss_bytes": 36548608,
+            "peak_rss_bytes": 36552704
+          },
+          {
+            "startup_ms": 170.6,
+            "idle_rss_bytes": 36491264,
+            "peak_rss_bytes": 36495360
+          },
+          {
+            "startup_ms": 190.3,
+            "idle_rss_bytes": 36360192,
+            "peak_rss_bytes": 36364288
+          }
+        ],
+        "startup_median_ms": 190.3,
+        "startup_max_ms": 210.35,
+        "idle_max_bytes": 36548608,
+        "peak_max_bytes": 36552704,
+        "budget_pass": false
+      },
+      "functional_checks": "passed (required native CI job)"
+    },
+    {
+      "version": "0.0.4",
+      "target": "x86_64-pc-windows-msvc",
+      "installed_bytes": 2915551,
+      "archive_bytes": 1406153,
+      "sha256": "e1555fb849dfef43396c9a2200056e9d3fa9367b5e62e7db48b5302d6d01bc4a",
+      "measurement": {
+        "os": "Windows-2022Server-10.0.20348-SP0",
+        "machine": "AMD64",
+        "scenario": "empty-window",
+        "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "samples": [
+          {
+            "startup_ms": 42.34,
+            "idle_rss_bytes": 15810560,
+            "peak_rss_bytes": 16199680
+          },
+          {
+            "startup_ms": 37.82,
+            "idle_rss_bytes": 15171584,
+            "peak_rss_bytes": 15568896
+          },
+          {
+            "startup_ms": 37.16,
+            "idle_rss_bytes": 15192064,
+            "peak_rss_bytes": 15585280
+          }
+        ],
+        "startup_median_ms": 37.82,
+        "startup_max_ms": 42.34,
+        "idle_max_bytes": 15810560,
+        "peak_max_bytes": 16199680,
+        "budget_pass": true
+      },
+      "editor_measurement": {
+        "os": "Windows-2022Server-10.0.20348-SP0",
+        "machine": "AMD64",
+        "scenario": "provider-editor",
+        "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "samples": [
+          {
+            "startup_ms": 56.94,
+            "idle_rss_bytes": 16289792,
+            "peak_rss_bytes": 16654336
+          },
+          {
+            "startup_ms": 54.35,
+            "idle_rss_bytes": 16306176,
+            "peak_rss_bytes": 16670720
+          },
+          {
+            "startup_ms": 53.62,
+            "idle_rss_bytes": 16314368,
+            "peak_rss_bytes": 16678912
+          }
+        ],
+        "startup_median_ms": 54.35,
+        "startup_max_ms": 56.94,
+        "idle_max_bytes": 16314368,
+        "peak_max_bytes": 16678912,
+        "budget_pass": true
+      },
+      "functional_checks": "passed (required native CI job)"
+    },
+    {
+      "version": "0.0.4",
+      "target": "x86_64-unknown-linux-gnu",
+      "installed_bytes": 3158143,
+      "archive_bytes": 1423541,
+      "sha256": "9f78decf5a09b3e8f9c024d1c6fdbb5f81ecae1b6e77aee05e71081524e36920",
+      "measurement": {
+        "os": "Linux-6.8.0-1064-azure-x86_64-with-glibc2.35",
+        "machine": "x86_64",
+        "scenario": "empty-window",
+        "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "samples": [
+          {
+            "startup_ms": 21.04,
+            "idle_rss_bytes": 17780736,
+            "peak_rss_bytes": 19939328
+          },
+          {
+            "startup_ms": 20.55,
+            "idle_rss_bytes": 17735680,
+            "peak_rss_bytes": 20201472
+          },
+          {
+            "startup_ms": 24.52,
+            "idle_rss_bytes": 17739776,
+            "peak_rss_bytes": 20201472
+          }
+        ],
+        "startup_median_ms": 21.04,
+        "startup_max_ms": 24.52,
+        "idle_max_bytes": 17780736,
+        "peak_max_bytes": 20201472,
+        "budget_pass": true
+      },
+      "editor_measurement": {
+        "os": "Linux-6.8.0-1064-azure-x86_64-with-glibc2.35",
+        "machine": "x86_64",
+        "scenario": "provider-editor",
+        "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "samples": [
+          {
+            "startup_ms": 30.41,
+            "idle_rss_bytes": 22917120,
+            "peak_rss_bytes": 22937600
+          },
+          {
+            "startup_ms": 26.42,
+            "idle_rss_bytes": 23166976,
+            "peak_rss_bytes": 23330816
+          },
+          {
+            "startup_ms": 27.71,
+            "idle_rss_bytes": 23031808,
+            "peak_rss_bytes": 23031808
+          }
+        ],
+        "startup_median_ms": 27.71,
+        "startup_max_ms": 30.41,
+        "idle_max_bytes": 23166976,
+        "peak_max_bytes": 23330816,
+        "budget_pass": false
+      },
+      "functional_checks": "passed (required native CI job)"
+    }
+  ]
+}

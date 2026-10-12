@@ -4,11 +4,10 @@
 
 ## Review candidate: 0.0.4
 
-User accepted the installed redesign on 2026-10-12 and authorized commit,
-push and publication. [Acceptance record](measurements/v0.0.4/user-acceptance-20261012.json).
-Native release CI and public upload verification are pending; downloads below
-remain 0.0.3 until publication completes. Earlier timestamped review records
-remain unchanged.
+User accepted the installed redesign on 2026-10-12 and authorized publication.
+[Acceptance record](measurements/v0.0.4/user-acceptance-20261012.json).
+The release is now public; see [release evidence](#release-004).
+Earlier timestamped review records remain unchanged.
 
 **Settings/row-action redesign accepted.**
 The current candidate removes all hover tips, the in-content heading, More,
@@ -21,8 +20,8 @@ Chinese native input passes for the changed flows; other locales receive only
 prepared styles. System appearance transitions preserve drafts/cursor/focus/
 selection. Final light/dark style, package and installation evidence is recorded
 in [smoke acceptance](smoke.md). No claim that the previous unexplained hang is
-fixed, no fresh performance claim, and no native certification of these changes
-on Windows/Linux/Intel. Unchanged core/update-helper evidence is reused.
+fixed, no fresh performance claim, and no certification of live appearance transitions on Windows/Linux.
+All four native CI functional jobs now pass. Unchanged core/update-helper evidence is reused.
 
 ### Current redesign package
 
@@ -126,7 +125,37 @@ shadow is verified by native properties and lies outside these content captures.
 | Editor / import | [Edit](screenshots/v0.0.4/menu-review-20261012/review-edit.png) · [Import](screenshots/v0.0.4/menu-review-20261012/review-import.png) |
 | Error / delete / update | [Error](screenshots/v0.0.4/menu-review-20261012/review-invalid-url.png) · [Delete](screenshots/v0.0.4/menu-review-20261012/review-delete-confirm.png) · [Update](screenshots/v0.0.4/menu-review-20261012/review-update-confirm.png) |
 
-## Current release: 0.0.3
+## Release: 0.0.4
+
+[Public release](https://github.com/phonowell/pp-switch/releases/tag/v0.0.4).
+Implementation and immutable tag: `47d83267796d901db333ec06d0e523dda900917b`.
+[Native CI](https://github.com/phonowell/pp-switch/actions/runs/38245799635): all four
+check jobs passed. The release job failed after creating a draft because its REST
+tag lookup returned 404 for drafts. Six uploaded sizes/digests were verified
+against those exact CI artifacts, then the existing draft was published without
+rebuilding or overwriting assets. The automation now queries drafts with
+`gh release view`; four publication-gate tests pass.
+
+| Native runner | Installed bytes | Idle / peak MiB | Readiness median / max ms | Editor peak MiB | Both scenario budgets |
+| --- | ---: | ---: | ---: | ---: | --- |
+| aarch64-apple-darwin | 2,544,128 | 48.44 / 48.50 | 173.12 / 205.80 | 51.17 | Fail |
+| x86_64-apple-darwin | 2,803,992 | 31.97 / 31.98 | 154.56 / 155.76 | 34.86 | Fail |
+| x86_64-pc-windows-msvc | 2,915,551 | 15.08 / 15.45 | 37.82 / 42.34 | 15.91 | Pass |
+| x86_64-unknown-linux-gnu | 3,158,143 | 16.96 / 19.27 | 21.04 / 24.52 | 22.25 | Fail |
+
+[Raw native measurements and package digests](measurements/v0.0.4/verification.json) ·
+[Publication/download evidence](measurements/v0.0.4/publication-verification.json).
+Windows passes both scenarios. macOS exceeds memory budgets; Linux's empty window
+passes but its editor idle RSS exceeds 20 MiB. Full PP-11 is not certified.
+The real updater downloaded, verified and staged the public ARM64 package in an
+isolated fixture without changing the installation or user data.
+All six assets downloaded anonymously and matched CI bytes, GitHub digests and
+SHA256SUMS. Anonymous update metadata returned HTTP 403 with zero remaining rate
+quota ([headers](measurements/v0.0.4/anonymous-api.headers)); authenticated metadata
+was used only for the isolated staging fixture. The application uses no GitHub
+credentials. Packages remain unsigned; macOS is not notarized.
+
+## Historical release: 0.0.3
 
 [Public functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3),
 verified on 2026-10-12. Implementation:
@@ -225,7 +254,7 @@ have not been tested on local physical desktops.
 ## Historical releases
 
 Historical raw JSON remains versioned; full release-era narratives are preserved
-at their tags. Use the current section above for 0.0.3 claims.
+at their tags. Use the historical 0.0.3 section above for claims about that version.
 
 | Release | Implementation / native CI | Functional result | Script budget | Evidence |
 | --- | --- | --- | --- | --- |

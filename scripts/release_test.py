@@ -81,6 +81,30 @@ class PublicationGates(unittest.TestCase):
                     release.publish(out)
                 self.assertEqual(run.call_count, 1)  # draft created; publication never called
 
+    def test_verified_draft_is_visible_before_publication(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp) / "artifacts"
+            self.fixture(root)
+            out = Path(temp) / "release"
+            self.assemble(root, out)
+            assets = [p for p in out.iterdir() if p.name != "release-notes.md"]
+            remote = {"assets": [{"name": p.name, "size": p.stat().st_size,
+                "digest": f"sha256:{release.digest(p)}"} for p in assets]}
+
+            def draft_lookup(command, **kwargs):
+                # The REST release-by-tag endpoint returns 404 for drafts.
+                if command[:2] == ["gh", "api"]:
+                    raise RuntimeError("Not Found (HTTP 404)")
+                self.assertEqual(command, ["gh", "release", "view", f"v{release.VERSION}",
+                                           "--json", "assets"])
+                return json.dumps(remote)
+
+            with patch.dict(os.environ, RELEASE_TAG=f"v{release.VERSION}"), patch("release.subprocess.run") as run, patch("release.subprocess.check_output", side_effect=draft_lookup), contextlib.redirect_stdout(io.StringIO()):
+                release.publish(out)
+                self.assertEqual(run.call_count, 2)
+                self.assertEqual(run.call_args.args[0],
+                                 ["gh", "release", "edit", f"v{release.VERSION}", "--draft=false"])
+
 
 if __name__ == "__main__":
     unittest.main()

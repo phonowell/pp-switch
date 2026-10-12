@@ -45,18 +45,16 @@ Claude Code・Codex・Gemini CLI の API URL とキーを切り替える小さ�
 
 ## ダウンロード
 
-**0.0.4 はレビュー候補で、タグ作成・公開はまだ行っていません。** [検証結果](docs/verification.md#review-candidate-004)を参照してください。以下のダウンロードは公開済みの 0.0.3 プレビューです。
+**0.0.4 は 2026-10-12 にユーザー承認・公開済みです。** 中国語の機能と全言語の外観を検証。[確認記録](docs/smoke.md)。
 
-**0.0.4 の UI 改訂は 2026-10-12 にユーザー承認済みです。公開は承認済みで、ネイティブ公開 CI は未完了です。** 中国語のネイティブ操作と全言語の外観を別々に検証。[確認記録](docs/smoke.md)。
-
-**[v0.0.3 機能プレビュー](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**。macOS のメモリは予算超過です。[実測結果](docs/verification.md) を公開しています。
+**[v0.0.4 機能プレビュー](https://github.com/phonowell/pp-switch/releases/tag/v0.0.4)**。macOS のメモリは予算超過です。[実測結果](docs/verification.md) を公開しています。
 
 | OS | パッケージ | 実行 |
 | --- | --- | --- |
-| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-aarch64-apple-darwin.zip) | 展開し `.app` を Applications へ |
-| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-apple-darwin.zip) | 同上 |
-| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-pc-windows-msvc.zip) | 展開し `pp-switch.exe` を実行 |
-| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-unknown-linux-gnu.tar.gz) | 展開しデスクトップで `pp-switch` を実行 |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-aarch64-apple-darwin.zip) | 展開し `.app` を Applications へ |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-apple-darwin.zip) | 同上 |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-pc-windows-msvc.zip) | 展開し `pp-switch.exe` を実行 |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-unknown-linux-gnu.tar.gz) | 展開しデスクトップで `pp-switch` を実行 |
 
 Rust / Node.js のインストールは不要。macOS は 11+ を宣言していますが、**Apple Developer 署名・公証はありません**。Windows は 10+。Linux は X11/XWayland、X11/fontconfig ライブラリ、選択した言語を表示できるシステムフォントが必要です。宣言された最小 OS はすべてのバージョンの動作確認を意味しません。[検証環境](docs/verification.md) を参照してください。
 
@@ -92,18 +90,16 @@ macOS 0.0.2 からは今回だけ手動ダウンロードが必要です。旧�
 
 ## 性能を公開する
 
-**0.0.3 ネイティブ CI 実測：**
+**0.0.4 ネイティブ CI 実測：**
 
 | ネイティブ CI | 容量 MiB | アイドル RSS MiB | スクリプト予算 |
 | --- | ---: | ---: | --- |
-| macOS 15 · ARM64 | 2.51 | 66.64 | 未達 |
-| macOS 15 · Intel | 2.73 | 38.40 | 未達 |
-| Windows Server 2022 · x64 | 2.81 | 15.00 | 合格 |
-| Ubuntu 22.04 · x64 · Xvfb | 3.02 | 17.19 | 合格 |
+| macOS 15 · ARM64 | 2.43 | 48.44 | 未達 |
+| macOS 15 · Intel | 2.67 | 31.97 | 未達 |
+| Windows Server 2022 · x64 | 2.78 | 15.08 | 合格 |
+| Ubuntu 22.04 · x64 · Xvfb | 3.01 | 16.96 | 未達 |
 
-予算の定義は [SPEC PP-11](SPEC.md#acceptance-contract)。Windows / Linux は
-このスクリプトに合格し、macOS のメモリは予算超過です。厳密なコールド起動、
-インポート・更新のピークは未検証です。[測定方法・生データ・過去の結果](docs/verification.md)。
+Windows は両シナリオに合格。macOS はメモリ予算超過。Linux は空ウィンドウに合格し、エディターのアイドル予算は超過。厳密なコールド起動と更新ピークは未検証です。 [SPEC PP-11](SPEC.md#acceptance-contract) · [Raw data](docs/verification.md#release-004).
 
 ## 開発
 

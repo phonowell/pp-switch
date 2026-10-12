@@ -45,18 +45,16 @@ This need is visible in the community: [cc-switch #7649](https://github.com/fari
 
 ## Download
 
-**0.0.4 is a review candidate, without a tag or release.** See its [acceptance evidence](docs/verification.md#review-candidate-004). Downloads below remain the published 0.0.3 preview.
+**0.0.4 passed user acceptance on 2026-10-12 and is published.** Chinese functional GUI and four-language styles are verified; see [acceptance](docs/smoke.md).
 
-**The 0.0.4 UI redesign passed user acceptance on 2026-10-12; publication is authorized and native release CI is pending.** Chinese native interaction and all-language styles are checked separately; see the [smoke matrix](docs/smoke.md).
-
-**[v0.0.3 functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**. macOS memory remains over budget; [actual measurements](docs/verification.md) are public.
+**[v0.0.4 functional preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.4)**. macOS memory remains over budget; [actual measurements](docs/verification.md) are public.
 
 | Platform | Package | Run |
 | --- | --- | --- |
-| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-aarch64-apple-darwin.zip) | Extract; move `.app` to Applications |
-| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-apple-darwin.zip) | Same |
-| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-pc-windows-msvc.zip) | Extract; run `pp-switch.exe` |
-| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-unknown-linux-gnu.tar.gz) | Extract; run `pp-switch` on a desktop |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-aarch64-apple-darwin.zip) | Extract; move `.app` to Applications |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-apple-darwin.zip) | Same |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-pc-windows-msvc.zip) | Extract; run `pp-switch.exe` |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-unknown-linux-gnu.tar.gz) | Extract; run `pp-switch` on a desktop |
 
 No Rust or Node.js installation required. macOS packages declare macOS 11+ and are **not Apple Developer-signed or notarized**. Windows requires Windows 10+. Linux requires X11/XWayland, X11/fontconfig libraries and a system font covering your selected language. Native test environments are listed in [verification](docs/verification.md); a declared minimum is not evidence of testing every OS version.
 
@@ -93,18 +91,16 @@ No model/auth-mode/protocol changes or first-time client setup. User-level files
 
 ## Performance, with evidence
 
-**0.0.3 native CI measurements:**
+**0.0.4 native CI measurements:**
 
 | Native CI | Installed MiB | Idle RSS MiB | Script budget |
 | --- | ---: | ---: | --- |
-| macOS 15 · ARM64 | 2.51 | 66.64 | Fail |
-| macOS 15 · Intel | 2.73 | 38.40 | Fail |
-| Windows Server 2022 · x64 | 2.81 | 15.00 | Pass |
-| Ubuntu 22.04 · x64 · Xvfb | 3.02 | 17.19 | Pass |
+| macOS 15 · ARM64 | 2.43 | 48.44 | Fail |
+| macOS 15 · Intel | 2.67 | 31.97 | Fail |
+| Windows Server 2022 · x64 | 2.78 | 15.08 | Pass |
+| Ubuntu 22.04 · x64 · Xvfb | 3.01 | 16.96 | Fail |
 
-The full budgets are defined in [SPEC PP-11](SPEC.md#acceptance-contract).
-Windows/Linux pass this script; macOS memory exceeds budget. Cold interactive
-startup and import/update peaks remain unverified. [Method, raw data and historical results](docs/verification.md).
+Windows passes both scenarios; macOS exceeds memory budgets. Linux passes the empty-window script but exceeds the editor idle budget. Cold interactive startup and update peaks remain unverified. [SPEC PP-11](SPEC.md#acceptance-contract) · [Raw data](docs/verification.md#release-004).
 
 ## Contribute
 

@@ -46,18 +46,16 @@
 
 ## 下载
 
-**0.0.4 为审核候选，尚未打 tag 或发布。** 查看[验收证据](docs/verification.md#review-candidate-004)；下方下载仍为已发布的 0.0.3 预览。
+**0.0.4 已于 2026-10-12 通过用户验收并发布。** 中文功能与四种语言样式分别验证；见[验收记录](docs/smoke.md)。
 
-**0.0.4 界面改版已于 2026-10-12 通过用户验收，已授权发布，原生发布 CI 待完成。** 中文原生交互与四种语言的样式分别验证；见[验收矩阵](docs/smoke.md)。
-
-**[v0.0.3 功能预览](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**。macOS 内存仍超预算，[完整实测](docs/verification.md)公开可查。
+**[v0.0.4 功能预览](https://github.com/phonowell/pp-switch/releases/tag/v0.0.4)**。macOS 内存仍超预算，[完整实测](docs/verification.md)公开可查。
 
 | 平台 | 下载 | 使用 |
 | --- | --- | --- |
-| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-aarch64-apple-darwin.zip) | 解压，将 `.app` 移到 Applications |
-| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-apple-darwin.zip) | 同上 |
-| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-pc-windows-msvc.zip) | 解压，运行 `pp-switch.exe` |
-| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-unknown-linux-gnu.tar.gz) | 解压，在桌面运行 `pp-switch` |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-aarch64-apple-darwin.zip) | 解压，将 `.app` 移到 Applications |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-apple-darwin.zip) | 同上 |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-pc-windows-msvc.zip) | 解压，运行 `pp-switch.exe` |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-unknown-linux-gnu.tar.gz) | 解压，在桌面运行 `pp-switch` |
 
 无需安装 Rust 或 Node.js。macOS 包声明支持 macOS 11+，**未进行 Apple Developer 签名或公证**。Windows 要求 Windows 10+；Linux 需要 X11/XWayland、系统 X11/fontconfig 库及覆盖所选语言的系统字体。声明最低系统版本不代表每个版本均已测试；原生验收环境见[验证记录](docs/verification.md)。
 
@@ -92,18 +90,16 @@ macOS 0.0.2 用户需手动下载这次更新：旧版更新器会拒绝新增�
 
 ## 性能：预算与实测分开
 
-**0.0.3 原生 CI 实测：**
+**0.0.4 原生 CI 实测：**
 
 | 原生 CI | 安装大小 MiB | 空闲 RSS MiB | 脚本预算 |
 | --- | ---: | ---: | --- |
-| macOS 15 · ARM64 | 2.51 | 66.64 | 失败 |
-| macOS 15 · Intel | 2.73 | 38.40 | 失败 |
-| Windows Server 2022 · x64 | 2.81 | 15.00 | 通过 |
-| Ubuntu 22.04 · x64 · Xvfb | 3.02 | 17.19 | 通过 |
+| macOS 15 · ARM64 | 2.43 | 48.44 | 失败 |
+| macOS 15 · Intel | 2.67 | 31.97 | 失败 |
+| Windows Server 2022 · x64 | 2.78 | 15.08 | 通过 |
+| Ubuntu 22.04 · x64 · Xvfb | 3.01 | 16.96 | 失败 |
 
-完整预算定义在 [SPEC PP-11](SPEC.md#acceptance-contract)。Windows / Linux
-通过当前脚本，macOS 内存仍超预算；严格冷启动、导入和更新峰值尚未验证。
-[测量方法、原始数据与历史结果](docs/verification.md)。
+Windows 两种场景均通过；macOS 内存超预算。Linux 空窗口通过，编辑器空闲内存超预算。严格冷启动和更新峰值仍未验证。 [SPEC PP-11](SPEC.md#acceptance-contract) · [Raw data](docs/verification.md#release-004).
 
 ## 参与开发
 

@@ -46,18 +46,16 @@ Für eine umfassende Verwaltungsoberfläche eignet sich [cc-switch](https://gith
 
 ## Download
 
-**0.0.4 ist ein Kandidat zur Prüfung, ohne Tag oder Veröffentlichung.** Siehe [Prüfbelege](docs/verification.md#review-candidate-004). Die Downloads unten bleiben die veröffentlichte Vorschau 0.0.3.
+**0.0.4 wurde am 2026-10-12 abgenommen und veröffentlicht.** Chinesische Funktionstests und alle Sprachstile sind geprüft; [Nachweise](docs/smoke.md).
 
-**Die UI-Überarbeitung von 0.0.4 wurde am 2026-10-12 abgenommen. Die Veröffentlichung ist genehmigt; native Release-CI steht noch aus.** Chinesische native Eingaben und alle Sprachstile werden getrennt geprüft; [Nachweise](docs/smoke.md).
-
-**[v0.0.3 Funktionsvorschau](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)**. macOS überschreitet das Speicherbudget; [Messwerte](docs/verification.md) sind öffentlich.
+**[v0.0.4 Funktionsvorschau](https://github.com/phonowell/pp-switch/releases/tag/v0.0.4)**. macOS überschreitet das Speicherbudget; [Messwerte](docs/verification.md) sind öffentlich.
 
 | Plattform | Paket | Start |
 | --- | --- | --- |
-| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-aarch64-apple-darwin.zip) | Entpacken, `.app` nach Applications verschieben |
-| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-apple-darwin.zip) | Ebenso |
-| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-pc-windows-msvc.zip) | Entpacken, `pp-switch.exe` starten |
-| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.3/pp-switch-v0.0.3-x86_64-unknown-linux-gnu.tar.gz) | Entpacken, `pp-switch` auf einem Desktop starten |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-aarch64-apple-darwin.zip) | Entpacken, `.app` nach Applications verschieben |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-apple-darwin.zip) | Ebenso |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-pc-windows-msvc.zip) | Entpacken, `pp-switch.exe` starten |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-unknown-linux-gnu.tar.gz) | Entpacken, `pp-switch` auf einem Desktop starten |
 
 Rust oder Node.js werden zum Ausführen nicht benötigt. macOS-Pakete deklarieren macOS 11+, sind aber **nicht mit Apple Developer signiert oder notarisiert**. Windows benötigt Windows 10+. Linux benötigt X11/XWayland, X11-/fontconfig-Bibliotheken und Systemschriften für die gewählte Sprache. Mindestversionen bedeuten nicht, dass jede OS-Version getestet wurde; siehe [Testumgebungen](docs/verification.md).
 
@@ -94,18 +92,16 @@ Keine Änderungen an Modellen, Authentifizierungsart oder Protokoll, keine Erste
 
 ## Leistung mit Belegen
 
-**Native CI-Messungen für 0.0.3:**
+**Native CI-Messungen für 0.0.4:**
 
 | Native CI | Installiert MiB | Leerlauf-RSS MiB | Skriptbudget |
 | --- | ---: | ---: | --- |
-| macOS 15 · ARM64 | 2.51 | 66.64 | Nicht bestanden |
-| macOS 15 · Intel | 2.73 | 38.40 | Nicht bestanden |
-| Windows Server 2022 · x64 | 2.81 | 15.00 | Bestanden |
-| Ubuntu 22.04 · x64 · Xvfb | 3.02 | 17.19 | Bestanden |
+| macOS 15 · ARM64 | 2.43 | 48.44 | Nicht bestanden |
+| macOS 15 · Intel | 2.67 | 31.97 | Nicht bestanden |
+| Windows Server 2022 · x64 | 2.78 | 15.08 | Bestanden |
+| Ubuntu 22.04 · x64 · Xvfb | 3.01 | 16.96 | Nicht bestanden |
 
-Die Budgets stehen in [SPEC PP-11](SPEC.md#acceptance-contract). Windows/Linux
-bestehen dieses Skript; macOS überschreitet das Speicherbudget. Echter Kaltstart
-sowie Import-/Updatespitzen sind nicht bestätigt. [Methode, Rohdaten und frühere Ergebnisse](docs/verification.md).
+Windows besteht beide Szenarien; macOS überschreitet das Speicherbudget. Linux besteht das leere Fenster, überschreitet aber das Leerlaufbudget im Editor. Echter Kaltstart und Updatespitzen sind ungeprüft. [SPEC PP-11](SPEC.md#acceptance-contract) · [Raw data](docs/verification.md#release-004).
 
 ## Mitwirken
 

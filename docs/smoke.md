@@ -34,7 +34,7 @@ styles again without repeating the functional flow.
 [appearance installation](measurements/v0.0.4/install-review-20261012T105643Z.json)
 remain unchanged. Import/More/footer scenarios are obsolete, not current gates.
 The removed native URL registration CI step previously failed on Intel; that
-failure remains historical. Current native CI on other platforms is pending.
+failure remains historical. All four native CI check jobs now pass; see [release evidence](verification.md#release-004).
 
 The prior installed candidate's unknown hang trigger remains unresolved. Its
 [raw sample](measurements/v0.0.4/hang-callgraph-20261012.txt) shows a nested event
@@ -64,5 +64,5 @@ Final archive SHA-256:
 Installed owned bytes: 2,544,096; archive bytes: 1,349,523. The new Chinese callback and isolated editor measurement harnesses also run and
 exit normally; the latter collects no new performance samples. All installed files
 match the archive; PPC package icon and Lucide notices remain, no URL schemes.
-User acceptance is complete; native release CI and public upload verification are pending.
+User acceptance, four native CI check jobs and public upload/download verification are complete.
 [Acceptance record](measurements/v0.0.4/user-acceptance-20261012.json).

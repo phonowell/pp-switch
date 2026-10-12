@@ -101,7 +101,7 @@ def publish(directory):
                     "--title", f"pp-switch {VERSION}", "--notes-file", str(directory / "release-notes.md"),
                     *map(str, assets)], check=True, cwd=ROOT)
     remote = json.loads(subprocess.check_output(
-        ["gh", "api", f"repos/phonowell/pp-switch/releases/tags/{tag}"], cwd=ROOT))
+        ["gh", "release", "view", tag, "--json", "assets"], cwd=ROOT))
     uploaded = {asset["name"]: asset for asset in remote["assets"]}
     if len(uploaded) != len(assets):
         raise ValueError("Uploaded asset count mismatch; draft kept for inspection")
