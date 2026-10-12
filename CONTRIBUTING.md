@@ -60,6 +60,8 @@ draft preservation and malformed input, then unregisters only that fixture.
 It never changes the user's default handlers or real provider/client files.
 Native CI adds `--register-in-ci` on disposable macOS users to verify missing
 handler registration, existing-handler preservation and untargeted OS URL opens.
+Its disposable bundles live below that CI user's Applications directory; Launch
+Services excludes bundles flagged `in-temp-dir` from installed URL routing.
 Do not use that flag on a personal desktop.
 
 ## Package and measure

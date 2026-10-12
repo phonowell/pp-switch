@@ -27,10 +27,18 @@ binary = Path(sys.argv[1]).resolve()
 register = "--register-in-ci" in sys.argv[3:]
 if register and os.environ.get("CI") != "true":
     raise SystemExit("Default-handler acceptance is restricted to disposable CI runners")
+if register and any(handlers().values()):
+    raise RuntimeError("Registration acceptance needs a clean CI user")
 output = Path(sys.argv[2]).resolve()
 output.mkdir(parents=True, exist_ok=True)
 lsregister = "/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister"
-with tempfile.TemporaryDirectory(prefix="pp-protocol-") as temp:
+# Launch Services records temp-directory bundles but excludes their URL bindings
+# from installed-app routing. Exercise the supported Applications installation.
+fixture_parent = None
+if register:
+    fixture_parent = Path.home() / "Applications"
+    fixture_parent.mkdir(exist_ok=True)
+with tempfile.TemporaryDirectory(prefix="pp-protocol-", dir=fixture_parent) as temp:
     root = Path(temp)
     bundle = root / "ProtocolFixture.app"
     contents = bundle / "Contents"
@@ -46,8 +54,6 @@ with tempfile.TemporaryDirectory(prefix="pp-protocol-") as temp:
     valid = "://v1/import?resource=provider&app=claude&name=Native%20link&endpoint=https%3A%2F%2Fnative.example.com&apiKey=native-fake-key"
     try:
         if register:
-            if any(handlers().values()):
-                raise RuntimeError("Registration acceptance needs a clean CI user")
             (root / "register-only.txt").write_text("CI-only")
             subprocess.run(["open", "-W", "-n", "-a", str(bundle)], check=True, timeout=30, capture_output=True)
             if not (root / "registered.txt").exists():
