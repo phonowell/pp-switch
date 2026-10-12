@@ -4,7 +4,7 @@ version = "0.0.3"
 edition = "2024"
 rust-version = "1.89"
 license = "MIT"
-description = "Pure Provider: switch only API base URLs and keys"
+description = "Pure Provider Switch: switch only API base URLs and keys"
 repository = "https://github.com/phonowell/pp-switch"
 
 [dependencies]

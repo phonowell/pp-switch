@@ -1,8 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
-  <title>pp-switch</title>
+  <title>Pure Provider Switch — PPC</title>
   <rect x="64" y="64" width="896" height="896" rx="208" fill="#365dd8"/>
-  <g fill="#fff" fill-rule="evenodd">
+  <g fill="#fff" fill-rule="evenodd" transform="translate(-20 0) scale(.8 1)">
     <path d="M244 736V312h118c83 0 140 54 140 134s-57 134-140 134h-34v156Zm84-344v108h30c38 0 60-20 60-54s-22-54-60-54Z"/>
     <path d="M548 736V312h118c83 0 140 54 140 134s-57 134-140 134h-34v156Zm84-344v108h30c38 0 60-20 60-54s-22-54-60-54Z"/>
   </g>
+  <path d="M846 378c-23-21-46-26-68-26-76 0-112 70-112 172s36 172 112 172c22 0 45-5 68-26" fill="none" stroke="#fff" stroke-width="80"/>
 </svg>

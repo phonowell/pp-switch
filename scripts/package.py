@@ -42,7 +42,7 @@ if macos:
     shutil.copy2(root / "assets" / "icon.icns", resources / "AppIcon.icns")
 shutil.copy2(root / "LICENSE", resources / "LICENSE")
 shutil.copy2(root / "THIRD_PARTY_NOTICES.txt", resources / "THIRD_PARTY_NOTICES.txt")
-(resources / "README.txt").write_text(f"pp-switch {version} — Pure Provider\n\n"
+(resources / "README.txt").write_text(f"pp-switch {version} — Pure Provider Switch\n\n"
     "Switch only API base URLs and keys. Close the window to exit.\n"
     "Clients must already use a supported API-key configuration.\n"
     "Source, setup and limits: https://github.com/phonowell/pp-switch\n"
