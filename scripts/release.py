@@ -10,7 +10,7 @@ import subprocess
 TARGETS = ("aarch64-apple-darwin", "x86_64-apple-darwin",
            "x86_64-pc-windows-msvc", "x86_64-unknown-linux-gnu")
 ROOT = Path(__file__).resolve().parents[1]
-VERSION = next(line.split('"')[1] for line in (ROOT / "Cargo.toml").read_text().splitlines()
+VERSION = next(line.split('"')[1] for line in (ROOT / "Cargo.toml").read_text(encoding="utf-8").splitlines()
                if line.startswith("version ="))
 
 
@@ -19,7 +19,7 @@ def digest(path):
 
 
 def metrics(path):
-    data = json.loads(path.read_text())
+    data = json.loads(path.read_text(encoding="utf-8"))
     samples = data["samples"]
     if not 1 <= len(samples) <= 20 or any(
             not isinstance(s[k], (float, int)) or not 0 < s[k] < 10**10
@@ -56,7 +56,7 @@ def assemble(artifacts, output):
     for target in TARGETS:
         root = artifacts / f"pp-switch-{target}"
         name = f"pp-switch-v{VERSION}-{target}"
-        report = json.loads((root / "package" / f"{name}.json").read_text())
+        report = json.loads((root / "package" / f"{name}.json").read_text(encoding="utf-8"))
         package = root / "package" / f"{name}.{'tar.gz' if 'linux' in target else 'zip'}"
         if (report["version"] != VERSION or report["target"] != target
                 or not 0 < report["installed_bytes"] <= 5 * 1024**2
@@ -81,16 +81,16 @@ def assemble(artifacts, output):
               "", f"Implementation: `{evidence['commit']}`. [Native CI]({evidence['ci_run']}).",
               "", "macOS 0.0.2 users must download manually once (the old updater rejects the icon).",
               "Move the app to Applications, open it, and use More → Register import links as needed."]
-    (output / "verification.json").write_text(json.dumps(evidence, indent=2) + "\n")
+    (output / "verification.json").write_text(json.dumps(evidence, indent=2) + "\n", encoding="utf-8")
     sums = [f"{digest(p)}  {p.name}" for p in sorted(output.iterdir())]
-    (output / "SHA256SUMS.txt").write_text("\n".join(sums) + "\n")
-    (output / "release-notes.md").write_text("\n".join(notes) + "\n")
+    (output / "SHA256SUMS.txt").write_text("\n".join(sums) + "\n", encoding="utf-8")
+    (output / "release-notes.md").write_text("\n".join(notes) + "\n", encoding="utf-8")
     print(json.dumps(evidence, indent=2))
 
 
 def publish(directory):
     tag = os.environ["RELEASE_TAG"]
-    report = json.loads((directory / "verification.json").read_text())
+    report = json.loads((directory / "verification.json").read_text(encoding="utf-8"))
     if tag != f"v{VERSION}" or report["tag"] != tag:
         raise ValueError("Release tag/evidence mismatch")
     # Creation fails if the release already exists; never overwrite released assets.

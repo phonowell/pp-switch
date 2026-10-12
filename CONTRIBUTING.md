@@ -20,6 +20,11 @@ cargo run --locked
 cargo build --locked --release --bins --examples
 ```
 
+When upgrading the native toolchain configuration, run
+`cargo clean --release -p fltk-sys` once before rebuilding. CMake can retain an
+older toolchain include even after Cargo notices the new filename. The release
+cache must show `-Oz` on macOS and filesystem/print/SVG options OFF.
+
 `cargo run` opens the actual app and uses your local data. Use the isolated
 harnesses below for verification; never test writes against real client files.
 Rust + FLTK is the UI implementation. Use existing dependencies, system fonts

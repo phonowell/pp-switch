@@ -40,11 +40,12 @@ class PublicationGates(unittest.TestCase):
             self.fixture(root)
             out = Path(temp) / "release"
             self.assemble(root, out)
-            evidence = json.loads((out / "verification.json").read_text())
+            evidence = json.loads((out / "verification.json").read_text(encoding="utf-8"))
             self.assertEqual(len(evidence["platforms"]), 4)
             self.assertTrue(all(not p["measurement"]["budget_pass"] for p in evidence["platforms"]))
-            self.assertIn("**FAIL**", (out / "release-notes.md").read_text())
-            for line in (out / "SHA256SUMS.txt").read_text().splitlines():
+            self.assertIn("**FAIL**", (out / "release-notes.md").read_text(encoding="utf-8"))
+            self.assertIn("More → Register import links", (out / "release-notes.md").read_text(encoding="utf-8"))
+            for line in (out / "SHA256SUMS.txt").read_text(encoding="utf-8").splitlines():
                 digest, name = line.split("  ")
                 self.assertEqual(digest, release.digest(out / name))
 
