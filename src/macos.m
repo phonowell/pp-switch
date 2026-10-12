@@ -29,8 +29,8 @@ static BOOL has_other_handler(NSString *scheme, NSURL *bundleURL) {
     NSURL *handler = [[NSWorkspace sharedWorkspace] URLForApplicationToOpenURL:url];
     // Opening the bundle can make LS discover us before explicit registration.
     // That must not prevent claiming an otherwise unowned scheme.
-    return handler && ![[handler URLByResolvingSymlinksInPath]
-        isEqual:[bundleURL URLByResolvingSymlinksInPath]];
+    return handler && ![[[handler URLByResolvingSymlinksInPath] path]
+        isEqualToString:[[bundleURL URLByResolvingSymlinksInPath] path]];
 }
 
 int pp_register_urls(void) {
