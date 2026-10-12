@@ -63,6 +63,24 @@ Raw results: [ARM64 macOS](measurements/v0.0.3/aarch64-apple-darwin.json),
 [Linux](measurements/v0.0.3/x86_64-unknown-linux-gnu.json).
 Release assets include archive SHA-256 sums and a consolidated verification JSON.
 
+### Published release verification
+
+Published [v0.0.3](https://github.com/phonowell/pp-switch/releases/tag/v0.0.3)
+as a public prerelease at documentation commit
+`911db7b0c598e95d2b63fe2f4353020f98e0ae54`; executable source is the implementation
+commit above. All six uploaded asset sizes and GitHub SHA-256 digests match the
+final local files. The real updater downloaded the public macOS ARM64 archive,
+verified its digest and staged the six owned bundle files in a disposable fixture.
+The installed application and real provider/client files were untouched.
+
+The local anonymous metadata check returned HTTP 403 with
+`X-RateLimit-Remaining: 0`: the current outbound address had exhausted GitHub's
+60-request anonymous API quota. This live check did not pass. Release metadata
+for the download/staging smoke was obtained through authenticated `gh`; the
+application's archive download remained unauthenticated. The application does
+not use the user's GitHub credentials and reports this check failure for retry
+later. No automatic retries or background checks were added.
+
 
 ## 0.0.2 local validation — 2026-10-12
 
