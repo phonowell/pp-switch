@@ -1,0 +1,2 @@
+COMMAND ["/Users/mimiko/.cargo/bin/cargo", "build", "--locked", "--release", "--bins", "--examples"]
+    Finished `release` profile [optimized] target(s) in 0.07s

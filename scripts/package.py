@@ -31,9 +31,12 @@ if macos:
     shutil.copy2(binary, app / "MacOS" / "pp-switch")
     with (app / "Info.plist").open("wb") as file:
         plistlib.dump({"CFBundleExecutable": "pp-switch", "CFBundleIdentifier": "io.github.phonowell.pp-switch",
-                      "CFBundleName": "pp-switch", "CFBundlePackageType": "APPL", "CFBundleVersion": version,
+                      "CFBundleName": "Pure Provider Switch", "CFBundleDisplayName": "Pure Provider Switch", "CFBundlePackageType": "APPL", "CFBundleVersion": version,
                       "CFBundleShortVersionString": version, "LSMinimumSystemVersion": "11.0",
-                      "NSHighResolutionCapable": True, "CFBundleIconFile": "AppIcon.icns"}, file)
+                      "NSHighResolutionCapable": True, "CFBundleIconFile": "AppIcon.icns",
+                      "CFBundleURLTypes": [{"CFBundleURLName": "Provider import",
+                                            "CFBundleURLSchemes": ["ppswitch", "ccswitch"],
+                                            "CFBundleTypeRole": "Viewer", "LSHandlerRank": "Alternate"}]}, file)
 else:
     shutil.copy2(binary, stage / binary.name)
 resources = app / "Resources" if macos else stage

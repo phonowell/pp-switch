@@ -1,0 +1,114 @@
+{
+  "desktop_input_allowed": false,
+  "started_utc": "20261013T042546Z",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "target": "aarch64-apple-darwin",
+  "published": false,
+  "checks": [
+    {
+      "name": "lucide-parity",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.07,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-background-20261013/lucide-parity.log"
+    },
+    {
+      "name": "format",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.13,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-background-20261013/format.log"
+    },
+    {
+      "name": "clippy",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 3.01,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-background-20261013/clippy.log"
+    },
+    {
+      "name": "behavior",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 4.6,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-background-20261013/behavior.log"
+    },
+    {
+      "name": "release-tests",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.19,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-background-20261013/release-tests.log"
+    },
+    {
+      "name": "release-build",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 11.18,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-background-20261013/release-build.log"
+    },
+    {
+      "name": "package",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.29,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-background-20261013/package.log"
+    },
+    {
+      "name": "update-package",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.4,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-background-20261013/update-package.log"
+    }
+  ],
+  "source_sha256": {
+    "Cargo.toml": "d223d60326a0a182bb51105ba1122b9cc1484c93fc1d0cc643b3c160a0315c4a",
+    "Cargo.lock": "15ca86b0a7291582c30122ddf830cece5a7e14c45e35bdf867fb8867325c5054",
+    "build.rs": "ee0cc3ce556003bb3b419b929c45a0f764a782d1be0f53c706ea0ca5117bf08a",
+    "src/ui.rs": "e61271d4ee2d14c3fb0451ea92a17828fcd84d345ac5d042983313b8dacfeff2",
+    "src/protocol.rs": "98034ec6df806204e07ca33a77242efa2c79616cbd12af9208dc10bcfc12f9e3",
+    "src/client.rs": "c1e54c50098451cb7b5c686833c28ca87a97f2b675d8d0e82d1efdeba92362ff",
+    "src/config.rs": "7a3283a1c42dfaf9250aa288dd389396f28c53cd128aaf80aac30afb2a1b0352",
+    "src/lib.rs": "6e47c2cd56fcc00e01b77b09f154474a437f65afec5b1a0d60f33b69ec76e091",
+    "src/locales.tsv": "1853e26e5f4f82fa70648326f3e2ddc23b72f7ff75fedc29a22b2cc10d559889",
+    "src/provider.rs": "059d5f2c0feaa00ee5286331ff81bd61bde0105913b64adce6151d977cbd5c67",
+    "src/theme.rs": "26b5efa049540ae76f2a904e81912c469c350c7166ee4d52fb8d29f443f0948a",
+    "src/update.rs": "7f14fb464c6d231a99c0391212a85f0adf79f2241177fc9790974946c2da69e9",
+    "src/main.rs": "a8acac5ac831b3daecdb303454168008c38fcc5af712c335cdd855fad6f9fb20",
+    "src/storage.rs": "47d04d5a41925b78a266012a5d1910b80c1500ed1d44567c0f1c9092bc27fd2c",
+    "src/i18n.rs": "0a8eba1e5b558f3a200f4ccda18c154654670222da590caaa3b51162ad8df479",
+    "src/macos.m": "c4ff9cf5f8071553c9ce21f3a0551fcd72931c1cea3639db3782999727fc5770",
+    "src/ui/acceptance.rs": "6f244bde2cc56e5ea0f0c985a8ce257b4677be58e012f8cc593bc938acdc498b",
+    "src/ui/lucide.rs": "209dc0e8d21f4c06d307cfec88fa8f5ee6aa41a1086d9f90c44668cbc253f27a",
+    "src/theme/system.rs": "5bdccce096e5b923df61a26e5c27a9ab5ca1b5e04f186b42f76a67fd63c147b1",
+    "examples/macos_input.m": "9fba8293771c7d65e209dcc77e5593ada39a0ee3aab9820d6990c820339cf197",
+    "examples/protocol_smoke.rs": "77746e88629bacd74e5e868b8fd07ba2e4dfd25f9f64166c5fd352624cbf04e7",
+    "examples/ui_smoke.rs": "9c668cb435762cf77802f12cb6fd7f0dba05e34aacbcbea650062656593b8cfe",
+    "examples/update_smoke.rs": "12896f395079dc16c61d1f692ea8aebfd824f61dadd227986bd34c7dc7f89652",
+    "examples/input_smoke.rs": "c485827993530003f0a8089fcd04ac08d5b40ed41e85f70d22995e586a7830f8",
+    "examples/measure_ui.rs": "0b396f30a10fd6ae35a8565eb014a2039a089b3eb6906dc40e7edb44509fa834",
+    "examples/support/mod.rs": "b8b98891731747559a59544aa1a59d3be3c5aeb67ccd7115d3473a71786fc7be",
+    "scripts/package.py": "bc2d58571b18cddfa4d9316bb57f67e0533d7343db4208c5fdb0e97ab1e54c4b",
+    "scripts/measure.py": "b5e5d456d9313f37012438c9a6ddcd3fd146d6ce591bb65965346324373e220c",
+    "scripts/docs_check.py": "3e1c79f7acde4131162dd723aa2ada8d524eb79b6da23f7d9183ea6e6ae0d22d",
+    "scripts/release.py": "5c33081b65877412de08e270b9f451b8ba047eb322f0ebb803ae7928d149c530",
+    "scripts/generate_icons.py": "d401be38068587422560ee4c4b63c21adcd22774254b4531c0540126e6f2078a",
+    "scripts/release_test.py": "b2b2ee29a0a110f114d6e43691b645f6193e76f2ed56768e31139feca4717cb8",
+    "scripts/protocol_smoke.py": "4f09706c6a0eeb3e6fa8ed801fee2529463ccda512e0eef581598462da3de4c0",
+    "scripts/visual_check.py": "47665b8cf74df572b8cbf339daad82a6e544fb87dbbd607088db86e14c5145ce",
+    "scripts/desktop_test.py": "7a678dff599788686f10efe9d374fada18a2095b586b26e091a0556a9e3813fd",
+    "scripts/gui_smoke.py": "d13a16208d33262440b717cb0f7c2fb6ace4b41880fa406deebf8c866c0a6c39",
+    "scripts/lucide.py": "2eb9c49fb6e37912f64836354d818587787db97ea4e9166157cc119e3d9f3881",
+    "scripts/visual_test.py": "b2ede34436ac0cba13a51f1f6cfb5d787d41a6b11b7a7831ace665396179b9fd",
+    "scripts/smoke.py": "e43edb2b48ec0f897bc4b0192a472229e1f8410b129a9d3fbb02fa279d8d1e5e",
+    "design/UI.md": "39b08c50a7ba0b4c6285d0fcfb735d327fa5dafd08df7fbd55245fef7b9fd221",
+    "design/icon-pps-refined.svg": "13d2c6c9dbdb0ebd8f3fedd480bb4a355e40aff3872848eaf022b72c97bcc094",
+    "design/minimal.html": "42f1edbfed8ebf5a1f58cbe86254fb2cd3b0563bd71629b2025be5d6e76ed55c"
+  },
+  "unrun": "GUI, native links/input/appearance, restart and measurements skipped to preserve the shared desktop; use --allow-desktop-input only with user authorization or a dedicated CI session.",
+  "background_pass": true,
+  "automated_pass": false,
+  "visual_review": "pending: inspect newly captured images against design/UI.md; automation does not approve visuals",
+  "acceptance_complete": false
+}

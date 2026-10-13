@@ -1,3 +1,5 @@
+mod support;
+
 #[cfg(target_os = "macos")]
 mod native {
     use fltk::{prelude::*, window::Window};
@@ -105,6 +107,7 @@ mod native {
 }
 
 fn main() -> std::process::ExitCode {
+    support::require_desktop_input();
     #[cfg(target_os = "macos")]
     {
         if !native::Cocoa::available() {

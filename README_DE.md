@@ -37,7 +37,7 @@ Modelle, Denkparameter, Projektberechtigungen, MCP und Skills sind bereits einge
 | --- | --- | --- |
 | Zweck | URL-/Schlüsselwechsel für bereits eingerichtete Clients | Umfassendere Anbieter- und Clientverwaltung |
 | Schreibzugriffe | Nur wirksame Base URL und API-Schlüssel | Weitere Einstellungen je nach aktivierter Funktion |
-| Anbieterlinks | Nicht angeboten | Vollständige Deep-Link-Abläufe |
+| Anbieterlinks | Nur URL-/Schlüsselvorschau (Entwicklung 0.0.5) | Vollständige Deep-Link-Abläufe |
 | Modelle, Routing, Nutzung, MCP, Prompts, Skills | Außerhalb des Produktumfangs | Entsprechende Verwaltungsfunktionen |
 | Lebenszyklus | Fenster schließen → Prozess endet | Tray und weitere Arbeitsabläufe |
 | Updates | Manuell prüfen → bestätigen → herunterladen, installieren, neu starten | Eigener Updateablauf |
@@ -67,10 +67,8 @@ Unter macOS ist von 0.0.2 einmal ein manueller Download nötig: Der alte Updater
 2. „Add“ wählen, Name, Base URL und Schlüssel eingeben und speichern.
 3. Das Wechselsymbol rechts neben dem Stift in derselben Zeile anklicken.
 
-Jede Zeile hat Lucide-Symbole zum Bearbeiten und Wechseln; Auswahl allein wendet
-nichts an. Das kleine Zahnrad neben den Tabs öffnet Einstellungen für Sprache und
-manuelle Updates. Tooltips, Inhaltsüberschrift, unterer Status/Wechselbereich und
-Linkimport entfallen. Alle passenden Duplikate zeigen „In use“. Die Oberfläche
+Jede Zeile hat Lucide-Symbole zum Bearbeiten und Wechseln; Zeilen haben keinen eigenen Auswahlzustand. Das kleine Zahnrad neben den Tabs öffnet Einstellungen für Sprache und
+manuelle Updates. Tooltips, Inhaltsüberschrift, unterer Status/Wechselbereich entfallen. Alle passenden Duplikate zeigen „In use“. Die Oberfläche
 folgt dem hellen/dunklen Systemmodus. Speichern betrifft nur die lokale Liste.
 UI: **English, 简体中文, 繁體中文 und 日本語**; Deutsch ist eine Dokumentationssprache.
 
@@ -85,7 +83,7 @@ Keine Änderungen an Modellen, Authentifizierungsart oder Protokoll, keine Erste
 
 ## Kompatibilität und Vertrauen
 
-- Der aktuelle Kandidat bietet keinen Linkimport oder URL-Registrierung. Gespeicherte Einträge bleiben erhalten.
+- Die Entwicklungsversion 0.0.5 stellt begrenzte Anbieterlink-Vorschauen und ausdrückliche URL-Registrierung wieder her. Speichern wendet keine Clientkonfiguration an; Downloads von 0.0.4 enthalten diesen Ablauf nicht.
 - Geheimnisse bleiben in lokalen Benutzerdateien (Unix 0600 / Windows-ACL für den aktuellen Benutzer). Maskierung ist **keine Verschlüsselung**. Keine automatischen Zwischenablagezugriffe, Geheimnisse in Diagnosen oder Anfragen an Anbieter.
 - Updates benötigen deine Bestätigung und einen beschreibbaren Installationsort. Nur Pakete dieses Repositorys werden heruntergeladen und per SHA-256 geprüft. Sie sind unsigniert; Anbieter- und Clientdateien bleiben außerhalb des Updaters. [Updatedetails (Englisch)](docs/user-guide.md#manual-update).
 - Vollständiger Vertrag: [SPEC.md](SPEC.md); Datei- und Datenpfade: [Anleitung](docs/user-guide.md).

@@ -76,9 +76,9 @@ def validate(directory):
         assert gear == baseline, f"{locale}: Settings icon changed with language"
         assert borderless(ppm(directory / f"{locale}-language-popup.ppm"), background), f"{locale}: language popup border remains"
         assert clean_margin(empty), f"{locale}: bottom status/Switch area remains"
-        selected = ppm(directory / f"{locale}-selected.ppm")
+        rows = ppm(directory / f"{locale}-rows.ppm")
         active = ppm(directory / f"{locale}-active.ppm")
-        for name, image in (("selected", selected), ("active", active)):
+        for name, image in (("rows", rows), ("active", active)):
             for left in (341, 377):
                 pixels = icon(image, left+5, 148, 20, 20)
                 assert len(set(pixels)) > 1, f"{locale}/{name}: missing row action at {left}"

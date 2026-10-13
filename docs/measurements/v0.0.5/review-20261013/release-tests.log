@@ -1,0 +1,6 @@
+COMMAND ["/Users/mimiko/.cache/uv/builds-v0/.tmpvoxZsP/bin/python", "-m", "unittest", "discover", "-s", "scripts", "-p", "*_test.py"]
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.030s
+
+OK

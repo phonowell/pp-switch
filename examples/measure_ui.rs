@@ -1,8 +1,10 @@
 //! The production window and event loop, with an isolated home and a test-only timer.
+mod support;
 use fltk::app;
 use std::io::Write;
 
 fn main() {
+    support::require_desktop_input();
     let root = tempfile::tempdir().expect("temporary measurement directory");
     let paths = pp_switch::client::Paths::from_home(root.path().to_owned());
     let store = pp_switch::storage::Store {

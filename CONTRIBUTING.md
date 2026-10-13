@@ -4,7 +4,7 @@ Agents start with [AGENTS.md](AGENTS.md), then read only the task's relevant
 PP requirements and chapters here. [SPEC.md](SPEC.md) is the behavior contract:
 update the relevant requirement before changing intended behavior, then implement
 the smallest change and verify its observable result. Keep URL/key switching,
-language selection and strictly manual updates as the
+scoped Provider import, language selection and strictly manual updates as the
 entire product scope. Run the shell examples below through `rtk proxy`.
 
 ## Build
@@ -31,6 +31,22 @@ Rust + FLTK is the UI implementation. Use existing dependencies, system fonts
 and bounded native drawing. [The approved layout](design/minimal.html) remains
 the visual reference; [current screenshots](docs/verification.md#screenshots)
 show the shipped implementation.
+
+## Shared workstation testing
+
+`scripts/smoke.py` defaults to background checks: formatting, lint, unit/behavior
+and detector tests, builds and package validation. It skips GUI activation, URL
+opens, native input, appearance, restart and window measurements. The report
+records skipped desktop gates and cannot certify full GUI acceptance.
+
+On this developer's shared machine, preserve foreground focus, pointer and
+keyboard input. Desktop checks below require a dedicated CI/desktop session or
+an explicitly authorized idle period. Only then pass `--allow-desktop-input` to
+`scripts/smoke.py`, `scripts/gui_smoke.py`, `scripts/measure.py`,
+`scripts/protocol_smoke.py`, or directly invoked GUI examples. Dedicated CI sets
+`CI=true`; do not spoof that value on a shared workstation. Wrappers and native
+input/GUI/measurement examples refuse to launch by default. Style-only captures
+also show windows and are subject to the same rule.
 
 ## Validate code and behavior
 
@@ -61,7 +77,9 @@ This moves the cursor inside this process's fixture windows and restores it on
 normal exit. Run on an interactive desktop without using the mouse during the
 check. A missing graphical session is a blocked check, never a pass.
 Review the screenshots
-after UI changes. Add tests for PP behavior, not for implementation details.
+after UI changes. `python3 scripts/protocol_smoke.py target/release/examples/protocol_smoke target/native-links`
+checks cold/warm Apple URL events in an isolated bundle without changing defaults.
+Add tests for PP behavior, not for implementation details.
 Native CI validates macOS ARM64/Intel, Windows x64 and Linux x64 independently.
 
 After a correction, rerun checks affected by its changed inputs and reuse the
@@ -69,7 +87,7 @@ others' retained commands/logs/hashes. In particular, a pixel-checker correction
 uses the existing screenshots; it does not require another build or GUI run.
 
 Install development-only `fonttools==4.60.1` for SVG/native icon parity.
-`python3 scripts/smoke.py` runs all local automated gates, including packaging,
+`python3 scripts/smoke.py --allow-desktop-input` runs all desktop automated gates, including packaging,
 native input checks on macOS, updater and both measurements. It writes an
 isolated timestamped directory below `target/` containing exact commands, raw
 logs, exit codes and `report.json`, and continues after failures to expose all
@@ -127,7 +145,7 @@ paint, not the popup window; using it alone loses native corner clipping/shadow.
 Capture/inspect the actual popup and assert its native properties. Paint the
 parent background before a rounded custom control to avoid stale corner pixels.
 
-More/footer/import observations below are historical toolkit lessons; those UI
+More/footer observations below are historical toolkit lessons; those UI
 components were removed. Apply relevant lessons to the remaining language popup.
 
 These observations apply to FLTK/fltk-sys 1.5.23 and the tested macOS build.

@@ -1,0 +1,5 @@
+COMMAND ["/Users/mimiko/.cache/uv/builds-v0/.tmpvoxZsP/bin/python", "scripts/visual_check.py", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-review-20261013/input"]
+STYLE zh: stable Settings icon, Edit/Switch visible, no footer, complete badge with overflow passed
+STYLE en: stable Settings icon, Edit/Switch visible, no footer, complete badge with overflow passed
+STYLE zh-TW: stable Settings icon, Edit/Switch visible, no footer, complete badge with overflow passed
+STYLE ja: stable Settings icon, Edit/Switch visible, no footer, complete badge with overflow passed

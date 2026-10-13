@@ -1,0 +1,2 @@
+COMMAND ["/Users/mimiko/.cache/uv/builds-v0/.tmpaglyBW/bin/python", "scripts/lucide.py", "--check"]
+Lucide SVG/native path parity passed

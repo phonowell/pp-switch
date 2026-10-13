@@ -1,6 +1,6 @@
 # Pure Provider Switch — agent instructions
 
-Keep the product limited to URL/key switching, UI language
+Keep the product limited to URL/key switching, scoped Provider import, UI language
 and strictly user-triggered updates. Preserve user configuration and secrets;
 never test writes against real client files. Commit only task-owned changes;
 do not discard others' edits, rewrite history or force-push.
@@ -18,6 +18,17 @@ do not discard others' edits, rewrite history or force-push.
    build; UI changes also require GUI acceptance. Pure docs require Markdown,
    link/anchor, translation and evidence checks. Reuse passed checks with unchanged
    inputs. Report results and unverified items; tie performance claims to measurements.
+
+## Shared workstation input
+
+The user works on this machine during development. Default local checks must
+preserve foreground focus, pointer and keyboard input. Run `scripts/smoke.py`
+without desktop opt-in for background format/lint/tests/build/package checks.
+GUI, native URL delivery, input/appearance and window measurements activate the
+app; run those only in a dedicated CI/desktop session or after the user explicitly
+authorizes an idle period. Never pass `--allow-desktop-input` or set `CI=true` to
+bypass this preference. Reuse existing valid captures when inputs are unchanged;
+report skipped desktop checks as unverified rather than passed.
 
 Full GUI functionality is tested in **Simplified Chinese only**; all four interface
 languages receive style/property/pixel checks. Automate regressions first;
@@ -37,7 +48,7 @@ Documentation-only tasks do not require a code graph query.
 | --- | --- |
 | Client configuration writes | Relevant [Claude](SPEC.md#pp-03-claude-code), [Codex](SPEC.md#pp-04-codex) or [Gemini](SPEC.md#pp-05-gemini-cli) contract, plus [write limits](SPEC.md#pp-02-urlkey-writes), [secrets](SPEC.md#pp-08-secrets-and-network) and [recovery](SPEC.md#pp-09-writes-and-recovery). |
 | Providers, paths or status | Relevant [PP-01](SPEC.md#pp-01-provider-crud), [PP-07](SPEC.md#pp-07-directories-and-overrides) or [PP-10](SPEC.md#pp-10-current-status). |
-| Updates | [PP-15](SPEC.md#pp-15-manual-updates), plus [secrets](SPEC.md#pp-08-secrets-and-network). |
+| Import or updates | [PP-06](SPEC.md#pp-06-provider-links) or [PP-15](SPEC.md#pp-15-manual-updates), plus [secrets](SPEC.md#pp-08-secrets-and-network). |
 | UI or languages | [PP-14](SPEC.md#pp-14-minimal-interface) or [PP-13](SPEC.md#pp-13-languages), plus [UI rules and regression gates](design/UI.md); follow other PP entries for the behavior being changed. |
 | Code validation | [Validation](CONTRIBUTING.md#validate-code-and-behavior); [build](CONTRIBUTING.md#build) only for setup. Add tests for behavior, not implementation details. |
 | Documentation | [Ownership and checks](CONTRIBUTING.md#documentation-ownership). |
@@ -46,6 +57,6 @@ Documentation-only tasks do not require a code graph query.
 
 Current UI: per-row Edit/Switch and in-window Settings; no hover tips, More menu,
 content branding or bottom status/Switch. Use pinned Lucide icons, never handmade
-substitutes or font glyphs. Preserve native OS chrome and the PPC app logo.
+substitutes or font glyphs. Preserve native OS chrome and the PPS app logo.
 Chinese functional checks only; other locales style only. Reuse passed checks
 when inputs are unchanged; visual review is the last fallback.

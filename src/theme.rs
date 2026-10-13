@@ -51,7 +51,7 @@ macro_rules! colors {
     )* };
 }
 colors! { background=0, ink=1, muted=2, accent=3, line=4, selected=5,
-hover=6, danger=7, field_fill=8, selected_border=9, radio_outline=10,
+hover=6, danger=7, field_fill=8,
 active_badge=11, disabled_text=12, pressed_accent=13 }
 
 pub fn is_dark() -> bool {

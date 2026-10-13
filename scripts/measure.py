@@ -15,11 +15,15 @@ parser = argparse.ArgumentParser()
 parser.add_argument("binary", type=Path)
 parser.add_argument("--runs", type=int, default=3)
 parser.add_argument("--output", type=Path)
+parser.add_argument("--allow-desktop-input", action="store_true", help="explicitly allow measurement windows on an idle or isolated desktop")
 parser.add_argument("--enforce", action="store_true")
 parser.add_argument("--editor", dest="editor", action="store_true", help="measure provider editor with fake data")
 args = parser.parse_args()
 if not 1 <= args.runs <= 20:
     raise SystemExit("runs must be between 1 and 20")
+
+if not args.allow_desktop_input and os.environ.get("CI") != "true":
+    raise SystemExit("SKIPPED: measurement windows require --allow-desktop-input or a dedicated CI session")
 
 windows = os.name == "nt"
 if windows:
@@ -55,7 +59,7 @@ def terminate(process):
 samples = []
 for _ in range(args.runs):
     start = time.perf_counter()
-    process = subprocess.Popen([str(args.binary.resolve())] + (["--editor"] if args.editor else []), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    process = subprocess.Popen([str(args.binary.resolve())] + (["--editor"] if args.editor else []) + ["--allow-desktop-input"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     ready = queue.Queue()
     threading.Thread(target=lambda: ready.put(process.stdout.readline().strip()), daemon=True).start()
     try:

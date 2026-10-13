@@ -1,0 +1,2 @@
+COMMAND ["/Users/mimiko/.cache/uv/builds-v0/.tmpvoxZsP/bin/python", "scripts/gui_smoke.py", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/release/examples/ui_smoke", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-review-20261013/gui.ppm"]
+PP-01/02/10/13/14: Simplified Chinese GUI save, switch, new, row actions, settings, selection, draft preservation and close passed.

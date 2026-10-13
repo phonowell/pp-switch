@@ -69,6 +69,9 @@ jobs:
         shell: bash
         run: |
           python scripts/gui_smoke.py target/${{ matrix.target }}/release/examples/ui_smoke target/gui.ppm
+      - name: Native Provider link delivery (macOS)
+        if: runner.os == 'macOS'
+        run: python scripts/protocol_smoke.py target/${{ matrix.target }}/release/examples/protocol_smoke target/native-links
       - name: Native mouse and keyboard acceptance (macOS)
         if: runner.os == 'macOS'
         run: python scripts/gui_smoke.py --timeout 180 target/${{ matrix.target }}/release/examples/input_smoke target/input-smoke
@@ -145,6 +148,7 @@ jobs:
             target/input-smoke/*.png
             target/input-smoke/results.json
             target/theme-smoke/**
+            target/native-links/**
             target/input-smoke/interaction-results.json
             target/gui-hang.txt
             target/measure-hang.txt

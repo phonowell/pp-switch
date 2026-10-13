@@ -1,7 +1,8 @@
+use base64::{Engine, engine::general_purpose};
 use pp_switch::{
     client::Paths,
     config,
-    provider::{Client, Provider},
+    provider::{Client, Provider, import_link},
     storage::{self, Change, Store},
 };
 use std::{fs, path::Path};
@@ -412,4 +413,77 @@ fn pp09_symlink_destinations_are_preserved_without_writing_the_target() {
     assert!(paths.apply(&store, &provider(Client::Claude)).is_err());
     assert!(fs::symlink_metadata(link).unwrap().file_type().is_symlink());
     assert_eq!(fs::read_to_string(real).unwrap(), config);
+}
+
+#[test]
+fn pp06_import_explicit_fields_win_and_extras_are_not_retained() {
+    let config = general_purpose::URL_SAFE_NO_PAD.encode(r#"{"env":{"ANTHROPIC_BASE_URL":"https://inline.example","ANTHROPIC_AUTH_TOKEN":"inline-key","ANTHROPIC_MODEL":"ignored"},"apiKeyHelper":"never-run"}"#);
+    let link = format!(
+        "ccswitch://v1/import?resource=provider&app=claude&name=%E6%B5%8B%E8%AF%95&endpoint=https%3A%2F%2Fexplicit.example%2Cv2&apiKey=explicit-key&config={config}&usageScript=ignored&enabled=true"
+    );
+    let p = import_link(&link).unwrap();
+    assert_eq!(p.name, "测试");
+    assert_eq!(p.base_url, "https://explicit.example");
+    assert_eq!(p.api_key, "explicit-key");
+    let serialized = serde_json::to_string(&p).unwrap();
+    assert!(!serialized.contains("ignored"));
+    assert!(!serialized.contains("apiKeyHelper"));
+}
+
+#[test]
+fn pp06_import_base64_variants_and_all_supported_clients() {
+    let payload = r#"{"env":{"ANTHROPIC_BASE_URL":"https://inline.example","ANTHROPIC_AUTH_TOKEN":"inline-key"}}"#;
+    for engine in [
+        &general_purpose::STANDARD,
+        &general_purpose::STANDARD_NO_PAD,
+        &general_purpose::URL_SAFE,
+        &general_purpose::URL_SAFE_NO_PAD,
+    ] {
+        let encoded = url::form_urlencoded::Serializer::new(String::new())
+            .append_pair("config", &engine.encode(payload))
+            .finish();
+        let p = import_link(&format!(
+            "ppswitch://v1/import?resource=provider&app=claude&name=Test&{encoded}"
+        ))
+        .unwrap();
+        assert_eq!(p.api_key, "inline-key");
+    }
+    let codex = serde_json::json!({"auth":{"OPENAI_API_KEY":"codex-key"},"config":"model_provider='chosen'\n[model_providers.stale]\nbase_url='https://stale.example'\n[model_providers.chosen]\nbase_url='https://chosen.example'\n"});
+    let p = import_link(&format!(
+        "ccswitch://v1/import?resource=provider&app=codex&name=Test&config={}",
+        general_purpose::URL_SAFE_NO_PAD.encode(codex.to_string())
+    ))
+    .unwrap();
+    assert_eq!(p.base_url, "https://chosen.example");
+    assert_eq!(p.api_key, "codex-key");
+    let p = import_link(&format!(
+        "ccswitch://v1/import?resource=provider&app=gemini&name=Test&config={}",
+        general_purpose::URL_SAFE_NO_PAD.encode(
+            r#"{"GOOGLE_GEMINI_BASE_URL":"https://gemini.example","GEMINI_API_KEY":"gemini-key"}"#
+        )
+    ))
+    .unwrap();
+    assert_eq!(p.api_key, "gemini-key");
+    let toml = "model_provider='chosen'\n[model_providers.chosen]\nbase_url='https://chosen.example'\nexperimental_bearer_token='bearer-key'\n";
+    let p = import_link(&format!(
+        "ccswitch://v1/import?resource=provider&app=codex&name=Test&configFormat=toml&config={}",
+        general_purpose::URL_SAFE_NO_PAD.encode(toml)
+    ))
+    .unwrap();
+    assert_eq!(p.api_key, "bearer-key");
+}
+
+#[test]
+fn pp06_unsupported_or_incomplete_imports_return_no_secret_in_errors() {
+    for link in [
+        "ccswitch://v2/import?resource=provider",
+        "ccswitch://v1/import?resource=mcp",
+        "ccswitch://v1/import?resource=provider&app=opencode&name=x",
+        "ccswitch://v1/import?resource=provider&app=claude&name=x&configUrl=https://example.com&apiKey=secret-never-print",
+        "ccswitch://v1/import?resource=provider&app=claude&name=x&endpoint=file:///tmp/secret-never-print&apiKey=key",
+        "ccswitch://v1/import?resource=provider&app=claude&name=x&config=secret-never-print",
+    ] {
+        let error = import_link(link).err().expect("must reject");
+        assert!(!error.contains("secret-never-print"));
+    }
 }

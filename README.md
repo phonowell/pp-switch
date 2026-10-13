@@ -36,7 +36,7 @@ This need is visible in the community: [cc-switch #7649](https://github.com/fari
 | --- | --- | --- |
 | Purpose | URL/key switching for an already configured client | Broader provider and client management |
 | Writes | Only the effective base URL and API key | More configuration, according to enabled features |
-| Provider links | Outside scope | Full deep-link workflows |
+| Provider links | URL/key preview only (0.0.5 development) | Full deep-link workflows |
 | Models, routing, usage, MCP, prompts, skills | Outside the product boundary | Offers corresponding management features |
 | Lifecycle | Close window → process exits | Supports tray and broader workflows |
 | Updates | Explicit check → confirm → download, install, restart | Its own update workflow |
@@ -66,10 +66,9 @@ macOS 0.0.2 users: download this version manually once. The older updater reject
 2. Click **Add**, enter name/base URL/key and **Save**.
 3. Click that row's Switch icon, after Edit. Restart the client if needed.
 
-Each row has Lucide Edit and Switch icons; selection alone never applies.
+Each row has Lucide Edit and Switch icons; rows have no separate selection state.
 The smaller gear beside the tabs opens Settings for language and manual updates.
-All hover tips, the in-content heading, bottom status/Switch area and Provider-link
-import are removed. Matching duplicates all show In use. The interface follows
+All hover tips, the in-content heading, bottom status/Switch area are removed. Matching duplicates all show In use. The interface follows
 system light/dark appearance. Saving only changes the local store. UI languages:
 **English, 简体中文, 繁體中文 and 日本語**, initially matching the system.
 
@@ -84,7 +83,7 @@ No model/auth-mode/protocol changes or first-time client setup. User-level files
 
 ## Compatibility and trust
 
-- Provider-link import and URL registration are outside the current candidate scope; existing saved providers are retained.
+- 0.0.5 development restores scoped Provider-link previews and explicit URL registration; Save does not apply client files. 0.0.4 downloads do not include this flow.
 - Secrets stay in local user-only files (Unix 0600 / Windows current-user ACL). Masking is **not encryption**. No automatic clipboard reads, secret diagnostics or provider requests.
 - Updates require your confirmation and a writable installation. Only this repository's release packages are downloaded and SHA-256 checked. Packages are unsigned; provider/client files are outside the updater. [Update details](docs/user-guide.md#manual-update).
 - Full behavior contract: [SPEC.md](SPEC.md). Exact write locations and storage paths: [guide](docs/user-guide.md).

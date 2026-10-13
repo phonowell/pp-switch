@@ -1,6 +1,6 @@
 # Pure Provider Switch (pp-switch) specification
 
-Status: v0.0.4 implementation contract. Changes to behavior start here.
+Status: v0.0.5 development contract. Changes to behavior start here.
 
 Release policy: functional previews may be published with disclosed performance
 failures. Report functional and performance checks separately. PP-11 remains
@@ -9,9 +9,9 @@ the optimization budget; previews do not relax its thresholds or expand scope.
 ## Purpose
 
 Full product name: Pure Provider Switch. Repository, executable and compact UI
-name: pp-switch. The application icon uses PPC lettering.
-macOS window title bars show the title without a PPC icon. Windows/Linux window
-icons and all platforms' installed application icons retain PPC lettering.
+name: pp-switch. Main window title: Pure Provider Switch. The application icon uses a white geometric S and two opposing sliders on the PPS blue rounded square (`#365DD8`), authored in SVG.
+macOS window title bars show the title without an application icon. Windows/Linux window
+icons and all platforms' installed application icons retain the PPS logo.
 
 A small desktop application that saves API providers and switches only a
 client's base URL and API key. Supported clients: Claude Code, Codex, Gemini CLI.
@@ -53,10 +53,17 @@ Gemini: patch only `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` in `.env`. Requ
 
 ### PP-06: Provider links
 
-Provider-link import is outside the product scope. Do not display import or
-registration controls, parse import arguments or declare URL schemes in packages.
-Existing saved providers remain usable. Do not change other applications' OS URL
-associations while upgrading.
+Accept `ccswitch://v1/import` and `ppswitch://v1/import` links for
+`resource=provider` only. Extract client, name, base URL and API key from direct
+parameters or bounded inline JSON/TOML; discard unrelated settings. Never fetch
+remote config URLs. Bound each link to 256 KiB and the native pending queue to
+8 links. Show the three-field editor as an unsaved preview; only Save persists a
+provider, and saving never applies client files. A new link must not replace an
+open editor's draft; report that the user must finish/cancel and reopen the link.
+Accept OS URL events on both cold and running macOS launches. Packaged macOS
+apps declare both schemes. Settings offers explicit registration for otherwise
+unowned schemes, preserving other installed applications' handlers. Startup
+never changes URL defaults. URL arguments are delivery only, not CLI management.
 
 ### PP-07: Directories and overrides
 
@@ -72,11 +79,12 @@ Before writing, validate every involved file. Refuse symbolic-link file destinat
 
 ### PP-10: Current status
 
-Display current status by reading client configuration, rather than trusting a stored active-provider ID. Allow duplicate saved providers, including identical records; every record for the selected client matching the effective URL and key displays In use and cannot be switched again. Selection and editing still identify individual records. There is no bottom Current/status or global Switch area; status is represented by row badges. Setup errors are reported when switching is attempted. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration.
+Display current status by reading client configuration, rather than trusting a stored active-provider ID. Allow duplicate saved providers, including identical records; every record for the selected client matching the effective URL and key displays In use and cannot be switched again. Editing identifies individual records; rows have no independent selection state. There is no bottom Current/status or global Switch area; status is represented by row badges. Setup errors are reported when switching is attempted. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration.
 
 ### PP-11: Performance budgets
 
-Installed application-owned files ≤5 MiB; steady idle total RSS ≤20 MiB; startup/editor peak total RSS ≤30 MiB; cold interactive startup ≤300 ms. Measure a stripped release build on each platform, state hardware/method and report failures. These are budgets, not verified claims. No subprocess/runtime exclusions for memory.
+The primary v0.0.5 work is reducing macOS memory, startup time and package size,
+with comparable release-build measurements. Installed application-owned files ≤5 MiB; steady idle total RSS ≤20 MiB; startup/editor peak total RSS ≤30 MiB; cold interactive startup ≤300 ms. Measure a stripped release build on each platform, state hardware/method and report failures. These are budgets, not verified claims. No subprocess/runtime exclusions for memory.
 
 ### PP-12: Public evidence and CI
 
@@ -90,27 +98,27 @@ Publishing must not use partial or stale artifacts or replace an existing releas
 
 ### PP-13: Languages
 
-Match cc-switch's interface languages: English, Simplified Chinese, Traditional Chinese and Japanese. Detect the system language on first launch; unsupported locales fall back to English. A compact language selector updates labels, dialogs, status and user-facing errors immediately, preserving unsaved edits and selection. Persist only the selected language in a private local UI preference file. Invalid preferences are reported and never silently overwritten. README versions cover English, Simplified Chinese, Japanese and German; user guides cover English, Simplified Chinese and Japanese, with the same compatibility and measured-performance caveats. SPEC remains the single English behavior contract.
+Match cc-switch's interface languages: English, Simplified Chinese, Traditional Chinese and Japanese. Detect the system language on first launch; unsupported locales fall back to English. A compact language selector updates labels, dialogs, status and user-facing errors immediately, preserving unsaved edits and keyboard focus. Persist only the selected language in a private local UI preference file. Invalid preferences are reported and never silently overwritten. README versions cover English, Simplified Chinese, Japanese and German; user guides cover English, Simplified Chinese and Japanese, with the same compatibility and measured-performance caveats. SPEC remains the single English behavior contract.
 
 ### PP-14: Minimal interface
 
 Follow [design/UI.md](design/UI.md): three client tabs and a smaller Settings
 gear at the top, a provider list below, and visible Edit then Switch icon buttons
 on each row. Do not show an in-content product heading, More menu, bottom status
-or global Switch button. Row selection never applies; a row's Switch targets
-that record even if another is selected. Matching records show In use and have
+or global Switch button. Rows have no selection circle or selected background; Edit and Switch each
+target their own record by ID. Matching records show In use and have
 disabled Switch. Add/edit use a three-field dialog; saving never applies.
-Settings replaces the list within the same window and contains language and
+Settings replaces the list within the same window and contains language, import-link registration and
 manual updates, with a Back action. No hover tooltips anywhere. Initial activation
 focuses no control; later keyboard navigation retains visible focus. Preserve
 pressed/disabled states, contrast, masked credentials and unsaved drafts. Closing
 or cancelling an editor discards its draft without writing. Use system fonts and
 bounded vector icons, without new UI dependencies or background rendering.
-The application icon remains the flat blue PPC monogram in OS packages; macOS
+The application icon remains the flat blue PPS switch mark in OS packages; macOS
 window titles omit it, while other platforms retain their window icons.
 
 Follow system light/dark appearance without a theme selector or saved preference.
-Recolor existing widgets without losing drafts, selection or focus. Chinese native
+Recolor existing widgets without losing drafts, text selection or focus. Chinese native
 functional acceptance and all four languages' light/dark style checks must cover
 row actions, settings, localized badge visibility and keyboard navigation.
 PP-11 budgets remain unchanged.
@@ -143,7 +151,7 @@ cc-switch commit `8845b1ef799aa8810b864b122de6af5f4629de10`:
 - [Gemini projection](https://github.com/farion1231/cc-switch/blob/8845b1ef799aa8810b864b122de6af5f4629de10/src-tauri/src/live/project/gemini.rs)
 
 pp-switch does not share cc-switch's database, routing state or full provider
-settings. Provider links are no longer supported.
+settings. Provider-link compatibility is limited to the PP-06 fields and preview flow.
 
 ## Verification
 

@@ -1,0 +1,2 @@
+COMMAND ["/Users/mimiko/.codex/worktrees/v005/pp-switch/target/release/examples/update_smoke"]
+PP-15: real temporary helper waited, installed, restarted and cleaned up; user configuration untouched.

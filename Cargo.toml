@@ -1,6 +1,6 @@
 [package]
 name = "pp-switch"
-version = "0.0.4"
+version = "0.0.5"
 edition = "2024"
 rust-version = "1.89"
 license = "MIT"
@@ -8,6 +8,7 @@ description = "Pure Provider Switch: switch only API base URLs and keys"
 repository = "https://github.com/phonowell/pp-switch"
 
 [dependencies]
+base64 = "0.22"
 dirs = "6"
 fltk = { version = "=1.5.23", features = ["no-images", "no-pango", "single-threaded", "static-msvcrt"] }
 serde = { version = "1", features = ["derive"] }

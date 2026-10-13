@@ -1,4 +1,18 @@
-# v0.0.4 smoke acceptance
+# Smoke acceptance
+
+## v0.0.5 development checkpoint
+
+[Current acceptance, raw logs/hashes and performance failures](development-0.0.5.md).
+Local smoke defaults to background checks and preserves shared desktop input;
+desktop checks require explicit authorization or dedicated CI. The guard changes
+passed 8 background gates, 33 Rust tests and 11 Python tests. Earlier valid
+production GUI evidence is reused (unchanged executable hash).
+Chinese native rows/settings/full title and isolated cold/warm URL events pass;
+four-language light/dark styles pass. Format, Clippy, 33 Rust tests, 9 Python tests,
+release build and package/updater checks pass. Both RSS budget gates fail. Other
+platforms, default registration and true cold interactive startup are unverified.
+
+## Published v0.0.4 acceptance
 
 User accepted the installed redesign on 2026-10-12 and authorized publication. Functional GUI checks run only in
 **简体中文**. English, 繁體中文 and 日本語 use prepared style states. Every test

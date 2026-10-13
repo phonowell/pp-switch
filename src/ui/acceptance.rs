@@ -84,7 +84,7 @@ fn initial_focus(c: &Controls) -> Result<()> {
     no_tooltips(&c.window)?;
     no_tooltips(&c.editor)
 }
-fn snapshot<W: WindowExt>(window: &mut W, path: &Path) -> Result<()> {
+pub(super) fn snapshot<W: WindowExt>(window: &mut W, path: &Path) -> Result<()> {
     require(
         window.shown(),
         &format!("Cannot capture hidden window: {}", path.display()),
@@ -292,6 +292,10 @@ fn visual_locale(
     pump();
     initial_focus(&c)?;
     require(
+        c.window.label() == "Pure Provider Switch",
+        "Main title is not the full product name.",
+    )?;
+    require(
         !driver.title_icon_visible(&c.window),
         "macOS title contains an application icon.",
     )?;
@@ -322,9 +326,9 @@ fn visual_locale(
     }
     c.client.set(Client::Claude);
     refresh(&mut c, state.clone(), &store, &paths)?;
-    snapshot(&mut c.window, &shot("selected"))?;
+    snapshot(&mut c.window, &shot("rows"))?;
     state.borrow_mut().current = Some((provider.base_url.clone(), provider.api_key.clone()));
-    selection(&mut c, &state.borrow());
+    row_status(&mut c, &state.borrow());
     snapshot(&mut c.window, &shot("active"))?;
     open_editor(&mut c, &mut state.borrow_mut(), None);
     pump();
@@ -345,7 +349,7 @@ fn visual_locale(
     }
     refresh(&mut c, state.clone(), &store, &paths)?;
     state.borrow_mut().current = Some((provider.base_url.clone(), provider.api_key.clone()));
-    selection(&mut c, &state.borrow());
+    row_status(&mut c, &state.borrow());
     snapshot(&mut c.window, &shot("overflow"))?;
     c.list.scroll_to(0, 24);
     snapshot(&mut c.window, &shot("scrolled"))?;
@@ -391,6 +395,10 @@ pub fn interaction_regression(
     c.window.show();
     pump();
     initial_focus(&c)?;
+    require(
+        c.window.label() == "Pure Provider Switch",
+        "Main title is not the full product name.",
+    )?;
     driver.key(Some(&c.window), NativeKey::Tab);
     pump();
     require(
@@ -430,18 +438,18 @@ pub fn interaction_regression(
     )?;
     store.save(other)?;
     refresh(&mut c, state.clone(), &store, &paths)?;
-    let pick = c.rows.borrow()[2].pick.clone();
-    click(driver.as_ref(), &c.window, &pick);
+    let surface = c.rows.borrow()[2].surface.clone();
+    click(driver.as_ref(), &c.window, &surface);
     require(
         paths.current(Client::Claude)? == before,
-        "Row selection applied configuration.",
+        "Passive row click applied configuration.",
     )?;
-    // Switch a different row than the selected one.
+    // Switch remains record-specific after clicking another passive row.
     let switch = row_action(&c, 0, false);
     click(driver.as_ref(), &c.window, &switch);
     require(
         paths.current(Client::Claude)? == Some(("https://same.example".into(), "fake".into())),
-        "Switch acted on selected row rather than its own row.",
+        "Switch did not target its own row.",
     )?;
     require(
         c.rows
@@ -478,7 +486,7 @@ pub fn interaction_regression(
     )?;
     snapshot(&mut c.window, &output.join("zh-duplicate-active.ppm"))?;
     println!(
-        "INPUT zh: startup focus/Tab/Space, in-window settings/back, duplicate save, selection-only, record-specific switch/edit passed"
+        "INPUT zh: startup focus/Tab/Space, in-window settings/back, duplicate save, passive row click, record-specific switch/edit passed"
     );
     // Invalid fields keep the editor open and never save.
     click(driver.as_ref(), &c.window, &c.new);
@@ -715,14 +723,14 @@ pub fn callback_smoke(
     )?;
     row_action(&c, 0, true).do_callback();
     c.name.set_value("Draft");
-    let selected = state.borrow().selected.clone();
+    let editing = state.borrow().editing.clone();
     c.languages.set_value(Language::Ja.index() as i32);
     c.languages.do_callback();
     require(
         c.name.value() == "Draft"
-            && state.borrow().selected == selected
+            && state.borrow().editing == editing
             && store.language()? == Language::Ja,
-        "Language lost draft or selection.",
+        "Language lost draft or edited record.",
     )?;
     c.languages.set_value(Language::Zh.index() as i32);
     c.languages.do_callback();
@@ -733,6 +741,36 @@ pub fn callback_smoke(
         "Settings routing failed.",
     )?;
     c.back.do_callback();
+    let current = paths.current(Client::Claude)?;
+    let count = store.load()?.len();
+    let link = "ccswitch://v1/import?resource=provider&app=claude&name=Imported&endpoint=https%3A%2F%2Fimport.example&apiKey=import-fake";
+    preview_link(&mut c, state.clone(), &store, &paths, link)?;
+    require(
+        c.editor.shown()
+            && !c.delete.visible()
+            && c.key.value() == "import-fake"
+            && store.load()?.len() == count
+            && paths.current(Client::Claude)? == current,
+        "Import preview persisted or applied without Save.",
+    )?;
+    c.name.set_value("Unsaved import draft");
+    require(
+        preview_link(&mut c, state.clone(), &store, &paths, link).is_err()
+            && c.name.value() == "Unsaved import draft",
+        "Incoming import replaced an open draft.",
+    )?;
+    c.cancel.do_callback();
+    require(
+        store.load()?.len() == count,
+        "Cancel persisted an imported provider.",
+    )?;
+    preview_link(&mut c, state.clone(), &store, &paths, link)?;
+    c.save.do_callback();
+    require(
+        store.load()?.len() == count + 1 && paths.current(Client::Claude)? == current,
+        "Import Save applied client configuration.",
+    )?;
+
     no_tooltips(&c.window)?;
     no_tooltips(&c.editor)?;
     if let Some(path) = screenshot {
@@ -755,10 +793,7 @@ pub fn appearance_regression(
         "theme-fake",
     )?;
     store.save(provider.clone())?;
-    let state = Rc::new(RefCell::new(State {
-        selected: Some(provider.id.clone()),
-        ..State::default()
-    }));
+    let state = Rc::new(RefCell::new(State::default()));
     let mut c = controls(Language::Zh);
     let _windows = Windows {
         main: c.window.clone(),
@@ -777,7 +812,7 @@ pub fn appearance_regression(
     let edit = c.rows.borrow()[0].edit.clone();
     click(driver.as_ref(), &c.window, &edit);
     type_field(driver.as_ref(), &c.editor, &c.name, "Unsaved theme draft");
-    let selection = state.borrow().selected.clone();
+    let editing = state.borrow().editing.clone();
     let current = paths.current(Client::Claude)?;
     let (position, mark) = (c.name.position(), c.name.mark());
     for dark in [true, false, true] {
@@ -794,7 +829,7 @@ pub fn appearance_regression(
                 && c.name.mark() == mark
                 && c.name.has_focus()
                 && c.key.value() == "theme-fake"
-                && state.borrow().selected == selection,
+                && state.borrow().editing == editing,
             "Appearance change lost draft, cursor, focus or selection.",
         )?;
         require(

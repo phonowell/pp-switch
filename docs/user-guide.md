@@ -19,11 +19,11 @@ client URL **and key** match that saved provider. Status is read from client
 files, not a remembered active ID. Use any row's pencil button to edit. Cancel closes the dialog and discards its draft; saving never applies it. The switch button is disabled for a matching provider.
 Delete removes the saved provider only; it does not revert the client.
 Duplicate saved records are allowed. All records matching the client's
-URL and key show **In use**; each remains independently selectable and editable.
-Selecting a row never applies it. There is no bottom status/Switch area or hover tooltip.
+URL and key show **In use**; each remains independently editable.
+Rows have no separate selection state. There is no bottom status/Switch area or hover tooltip.
 The small gear beside the client tabs opens Settings in the same window; Back returns to the list.
 The interface follows the system light/dark appearance, including open dialogs;
-changing appearance preserves unsaved edits and selection.
+changing appearance preserves unsaved edits, text selection and focus.
 
 ## Client prerequisites and exact writes
 
@@ -60,8 +60,13 @@ system environment variables.
 
 ## Provider entry
 
-Add providers manually with name, URL and key. Provider-link import and URL
-registration are no longer offered. Existing saved providers remain available.
+Add providers manually with name, URL and key. In 0.0.5 development, browser
+`ccswitch://v1/import` / `ppswitch://v1/import` Provider links open an unsaved
+preview. Review the name, URL and masked key, then Save; client files are unchanged.
+Remote configs and unrelated settings are never imported. An open draft is kept;
+finish or cancel it and reopen the link. Settings → Register import links claims
+only unowned schemes and preserves other installed handlers. Nothing registers
+at startup. 0.0.4 downloads do not support import. Existing providers are retained.
 
 ## Language and local storage
 
@@ -71,7 +76,7 @@ automatically fall back for missing glyphs. No font files ship with the app.
 
 UI: English, Simplified Chinese, Traditional Chinese, Japanese. The first launch
 uses the system language (unsupported → English). **Settings → Language** updates
-labels, dialogs and status immediately, preserving drafts and selected provider.
+labels, dialogs and status immediately, preserving drafts and the edited record.
 
 | OS | pp-switch data directory |
 | --- | --- |

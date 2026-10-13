@@ -2,7 +2,14 @@
 
 [Product](../README.md) · [User guide](user-guide.md) · [Spec](../SPEC.md) · [Reproduce](../CONTRIBUTING.md)
 
-## Review candidate: 0.0.4
+## Development checkpoint: 0.0.5
+
+[Current branch changes and comparable local evidence](development-0.0.5.md).
+The new title, PPS icon, passive rows and scoped import flow pass local macOS
+functional/style checks. Package size decreased; memory budgets still fail, and
+no startup improvement is established. This branch is not released or installed.
+
+## Published version: 0.0.4
 
 User accepted the installed redesign on 2026-10-12 and authorized publication.
 [Acceptance record](measurements/v0.0.4/user-acceptance-20261012.json).

@@ -1,9 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
-  <title>Pure Provider Switch — PPC</title>
-  <rect x="64" y="64" width="896" height="896" rx="208" fill="#365dd8"/>
-  <g fill="#fff" fill-rule="evenodd" transform="translate(-20 0) scale(.8 1)">
-    <path d="M244 736V312h118c83 0 140 54 140 134s-57 134-140 134h-34v156Zm84-344v108h30c38 0 60-20 60-54s-22-54-60-54Z"/>
-    <path d="M548 736V312h118c83 0 140 54 140 134s-57 134-140 134h-34v156Zm84-344v108h30c38 0 60-20 60-54s-22-54-60-54Z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">PPS — Pure Provider Switch</title>
+  <desc id="desc">A white geometric S with rounded terminals and two short sliders shifted in opposing directions, on the PPS blue rounded square.</desc>
+  <rect x="64" y="64" width="896" height="896" rx="208" fill="#365DD8"/>
+  <g fill="#FFFFFF">
+    <path d="M750.851 448A128 128 0 0 0 640 256H384A128 128 0 0 0 384 512H640A128 128 0 0 1 640 768H384A128 128 0 0 1 273.149 576"
+          fill="none" stroke="#FFFFFF" stroke-width="64" stroke-linecap="round"/>
+    <rect x="516" y="352" width="144" height="64" rx="32"/>
+    <rect x="364" y="608" width="144" height="64" rx="32"/>
   </g>
-  <path d="M846 378c-23-21-46-26-68-26-76 0-112 70-112 172s36 172 112 172c22 0 45-5 68-26" fill="none" stroke="#fff" stroke-width="80"/>
 </svg>

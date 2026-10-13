@@ -1,0 +1,10 @@
+COMMAND ["/Users/mimiko/.cache/uv/builds-v0/.tmpvoxZsP/bin/python", "scripts/gui_smoke.py", "--timeout", "90", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/release/examples/input_smoke", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-review-20261013/themes", "--themes-only"]
+APPEARANCE zh: native light/dark/light/dark, existing windows, draft/cursor/focus/selection and modal close passed
+VISUAL en: main/settings/editor, badge, row actions, overflow; style only
+VISUAL zh: main/settings/editor, badge, row actions, overflow; style only
+VISUAL zh-TW: main/settings/editor, badge, row actions, overflow; style only
+VISUAL ja: main/settings/editor, badge, row actions, overflow; style only
+VISUAL en: main/settings/editor, badge, row actions, overflow; style only
+VISUAL zh: main/settings/editor, badge, row actions, overflow; style only
+VISUAL zh-TW: main/settings/editor, badge, row actions, overflow; style only
+VISUAL ja: main/settings/editor, badge, row actions, overflow; style only

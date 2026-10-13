@@ -2,7 +2,8 @@ use crate::{
     Result,
     client::{Paths, environment_conflict},
     i18n::{self, Language, tr},
-    provider::{Client, Provider},
+    protocol,
+    provider::{Client, Provider, import_link},
     storage::Store,
     theme, update,
 };
@@ -30,10 +31,9 @@ use lucide::Icon;
 #[derive(Clone)]
 struct Row {
     id: String,
-    pick: Button,
+    surface: Frame,
     edit: Button,
     switch: Button,
-    selected: Rc<Cell<bool>>,
     active: Rc<Cell<bool>>,
 }
 
@@ -49,6 +49,7 @@ struct Controls {
     back: Button,
     languages: Choice,
     update: Button,
+    register: Button,
     labels: Vec<(Frame, &'static str)>,
     raw_status: Rc<RefCell<String>>,
     updating: Rc<Cell<bool>>,
@@ -69,7 +70,6 @@ struct Controls {
 #[derive(Default)]
 struct State {
     providers: Vec<Provider>,
-    selected: Option<String>,
     editing: Option<String>,
     current: Option<(String, String)>,
     setup_error: Option<String>,
@@ -95,6 +95,7 @@ impl Controls {
             (&mut self.cancel, "Cancel"),
             (&mut self.delete, "Delete"),
             (&mut self.back, "Back"),
+            (&mut self.register, "Register import links"),
         ] {
             button.set_label(tr(lang, key));
         }
@@ -143,14 +144,10 @@ fn button(button: &mut Button, primary: bool) {
         },
     );
 }
-fn icon_button(button: &mut Button, icon: Icon, selected: Option<Rc<Cell<bool>>>) {
+fn icon_button(button: &mut Button, icon: Icon) {
     button.set_frame(FrameType::NoBox);
     button.draw(move |b| {
-        draw::set_draw_color(if selected.as_ref().is_some_and(|v| v.get()) {
-            theme::selected()
-        } else {
-            theme::background()
-        });
+        draw::set_draw_color(theme::background());
         draw::draw_rectf(b.x(), b.y(), b.w(), b.h());
         if b.value() {
             draw::set_draw_color(theme::hover());
@@ -205,7 +202,7 @@ fn controls(language: Language) -> Controls {
     app::set_font(Font::Helvetica);
     theme::init();
     fltk::misc::Tooltip::disable();
-    let mut window = Window::new(100, 100, 440, 502, "pp-switch");
+    let mut window = Window::new(100, 100, 440, 502, "Pure Provider Switch");
     window.set_color(theme::background());
     // Keep initial native activation on the window, rather than letting
     // Fl_Group focus the first interactive child. User input restores
@@ -250,7 +247,7 @@ fn controls(language: Language) -> Controls {
     }
     let main_page = Group::new(0, 0, 440, 502, "");
     let mut settings = Button::new(384, 27, 32, 32, "");
-    icon_button(&mut settings, Icon::Settings, None);
+    icon_button(&mut settings, Icon::Settings);
     let client = Rc::new(Cell::new(Client::Claude));
     let mut track = Frame::new(24, 24, 348, 38, "");
     track.draw(|f| {
@@ -372,7 +369,9 @@ fn controls(language: Language) -> Controls {
     });
     let mut update = Button::new(24, 156, 392, 36, "Check for updates");
     button(&mut update, false);
-    let mut status = Frame::new(24, 208, 392, 84, "");
+    let mut register = Button::new(24, 208, 392, 36, "Register import links");
+    button(&mut register, false);
+    let mut status = Frame::new(24, 260, 392, 108, "");
     status.set_label_color(theme::muted());
     status.set_label_size(12);
     status.set_align(Align::Left | Align::Inside | Align::Wrap);
@@ -411,6 +410,7 @@ fn controls(language: Language) -> Controls {
         back,
         languages,
         update,
+        register,
         labels,
         raw_status: Rc::new(RefCell::new(String::new())),
         updating: Rc::new(Cell::new(false)),
@@ -437,9 +437,8 @@ fn matching(state: &State, p: &Provider) -> bool {
         .as_ref()
         .is_some_and(|(url, key)| *url == p.base_url && *key == p.api_key)
 }
-fn selection(c: &mut Controls, state: &State) {
+fn row_status(c: &mut Controls, state: &State) {
     for row in c.rows.borrow_mut().iter_mut() {
-        row.selected.set(Some(&row.id) == state.selected.as_ref());
         row.active.set(
             state
                 .providers
@@ -452,7 +451,7 @@ fn selection(c: &mut Controls, state: &State) {
         } else {
             row.switch.activate();
         }
-        row.pick.redraw();
+        row.surface.redraw();
         row.edit.redraw();
         row.switch.redraw();
     }
@@ -504,19 +503,6 @@ fn refresh(
         let mut s = state.borrow_mut();
         s.providers = store.load()?;
         read_current(&mut s, paths, c.client.get());
-        if !s
-            .providers
-            .iter()
-            .any(|p| p.client == c.client.get() && Some(&p.id) == s.selected.as_ref())
-        {
-            s.selected = s
-                .providers
-                .iter()
-                .filter(|p| p.client == c.client.get())
-                .find(|p| matching(&s, p))
-                .or_else(|| s.providers.iter().find(|p| p.client == c.client.get()))
-                .map(|p| p.id.clone());
-        }
     }
     c.rows.borrow_mut().clear();
     c.list.clear();
@@ -534,59 +520,32 @@ fn refresh(
         392
     };
     for (index, p) in providers.iter().enumerate() {
-        let selected = Rc::new(Cell::new(false));
         let active = Rc::new(Cell::new(matching(&state.borrow(), p)));
         let active_draw = active.clone();
-        let mut pick = Button::new(24, 124 + index as i32 * 74, row_width, 69, "");
-        pick.set_frame(FrameType::NoBox);
-        let chosen = selected.clone();
+        let mut surface = Frame::new(24, 124 + index as i32 * 74, row_width, 69, "");
+        surface.set_frame(FrameType::NoBox);
         let language = c.language.clone();
         let name = p.name.clone();
         let url = p.base_url.clone();
-        pick.draw(move |b| {
+        surface.draw(move |b| {
             draw::set_draw_color(theme::background());
             draw::draw_rectf(b.x(), b.y(), b.w(), b.h());
-            draw::set_draw_color(if chosen.get() {
-                theme::selected()
-            } else {
-                theme::background()
-            });
-            draw::draw_rounded_rectf(b.x(), b.y(), b.w(), b.h(), 8);
-            if chosen.get() {
-                draw::set_draw_color(theme::selected_border());
-                draw::draw_rounded_rect(b.x(), b.y(), b.w(), b.h(), 8);
-            }
-            draw::set_draw_color(if chosen.get() {
-                theme::accent()
-            } else {
-                theme::radio_outline()
-            });
-            lucide::draw(
-                if chosen.get() {
-                    Icon::Selected
-                } else {
-                    Icon::Circle
-                },
-                b.x() + 11,
-                b.y() + 26,
-                16,
-            );
             draw::set_font(Font::Helvetica, 10);
             let badge = tr(language.get(), "In use");
             let badge_width = draw::measure(badge, false).0 + 6;
             // Reserve both icon hit targets and an 8px gap before the badge.
             let badge_left = b.w() - 75 - 8 - badge_width;
             let text_width = if active_draw.get() {
-                badge_left - 12 - 39
+                badge_left - 12 - 16
             } else {
-                b.w() - 126
+                b.w() - 103
             };
-            draw::push_clip(b.x() + 39, b.y() + 12, text_width, 46);
+            draw::push_clip(b.x() + 16, b.y() + 12, text_width, 46);
             draw::set_draw_color(theme::ink());
             draw::set_font(Font::HelveticaBold, 14);
             draw::draw_text2(
                 &name,
-                b.x() + 39,
+                b.x() + 16,
                 b.y() + 12,
                 text_width,
                 23,
@@ -596,7 +555,7 @@ fn refresh(
             draw::set_font(Font::Helvetica, 11);
             draw::draw_text2(
                 &url,
-                b.x() + 39,
+                b.x() + 16,
                 b.y() + 37,
                 text_width,
                 18,
@@ -615,24 +574,10 @@ fn refresh(
                     Align::Right | Align::Inside,
                 );
             }
-            if b.has_focus() {
-                draw::set_draw_color(theme::accent());
-                draw::draw_rounded_rect(b.x() + 2, b.y() + 2, b.w() - 4, b.h() - 4, 7);
-            }
-        });
-        let mut view = c.clone();
-        let chosen_state = state.clone();
-        let id = p.id.clone();
-        let current_paths = paths.clone();
-        pick.set_callback(move |_| {
-            let mut s = chosen_state.borrow_mut();
-            s.selected = Some(id.clone());
-            read_current(&mut s, &current_paths, view.client.get());
-            selection(&mut view, &s);
         });
         let y = 124 + index as i32 * 74 + 19;
         let mut edit = Button::new(24 + row_width - 75, y, 30, 30, "");
-        icon_button(&mut edit, Icon::Edit, Some(selected.clone()));
+        icon_button(&mut edit, Icon::Edit);
         let mut view = c.clone();
         let edit_state = state.clone();
         let id = p.id.clone();
@@ -648,7 +593,7 @@ fn refresh(
             }
         });
         let mut switch = Button::new(24 + row_width - 39, y, 30, 30, "");
-        icon_button(&mut switch, Icon::Switch, Some(selected.clone()));
+        icon_button(&mut switch, Icon::Switch);
         let mut view = c.clone();
         let switch_state = state.clone();
         let switch_store = store.clone();
@@ -665,13 +610,12 @@ fn refresh(
                     .ok_or("Select a saved provider first.")?;
                 environment_conflict(provider.client)?;
                 switch_paths.apply(&switch_store, &provider)?;
-                switch_state.borrow_mut().selected = Some(id.clone());
-                refresh(
-                    &mut view,
-                    switch_state.clone(),
-                    &switch_store,
-                    &switch_paths,
-                )
+                // Applying changes status, not list structure. Keep widgets,
+                // scroll and keyboard focus rather than rebuilding the list.
+                let mut state = switch_state.borrow_mut();
+                read_current(&mut state, &switch_paths, view.client.get());
+                row_status(&mut view, &state);
+                Ok(())
             })();
             if let Err(error) = result {
                 i18n::alert(view.lang(), &error);
@@ -679,10 +623,9 @@ fn refresh(
         });
         c.rows.borrow_mut().push(Row {
             id: p.id.clone(),
-            pick,
+            surface,
             edit,
             switch,
-            selected,
             active,
         });
     }
@@ -692,7 +635,33 @@ fn refresh(
     } else {
         c.empty.hide();
     }
-    selection(c, &state.borrow());
+    row_status(c, &state.borrow());
+    Ok(())
+}
+
+fn preview_link(
+    c: &mut Controls,
+    state: Rc<RefCell<State>>,
+    store: &Store,
+    paths: &Paths,
+    link: &str,
+) -> Result<()> {
+    if c.editor.shown() {
+        return Err("Finish or cancel your edits, then open the import link again.".into());
+    }
+    let p = import_link(link)?;
+    c.client.set(p.client);
+    refresh(c, state.clone(), store, paths)?;
+    c.settings_page.hide();
+    c.main_page.show();
+    c.window.show();
+    for b in &mut c.clients {
+        b.redraw();
+    }
+    open_editor(c, &mut state.borrow_mut(), None);
+    c.name.set_value(&p.name);
+    c.url.set_value(&p.base_url);
+    c.key.set_value(&p.api_key);
     Ok(())
 }
 
@@ -732,7 +701,6 @@ fn wire_with_updates(
         let paths = paths.clone();
         b.set_callback(move |_| {
             view.client.set(Client::ALL[i]);
-            state.borrow_mut().selected = None;
             if let Err(e) = refresh(&mut view, state.clone(), &store, &paths) {
                 i18n::alert(view.lang(), &e);
             }
@@ -782,6 +750,12 @@ fn wire_with_updates(
     c.update
         .set_callback(move |_| check_updates(&mut view, check_update));
     let mut view = c.clone();
+    c.register
+        .set_callback(move |_| match protocol::register() {
+            Ok(()) => view.message("Import links registered. Existing handlers were kept."),
+            Err(error) => view.message(&error),
+        });
+    let mut view = c.clone();
     let state_save = state.clone();
     let store_save = store.clone();
     let paths_save = paths.clone();
@@ -797,7 +771,6 @@ fn wire_with_updates(
                 p.id.clone_from(id);
             }
             store_save.save(p.clone())?;
-            state_save.borrow_mut().selected = Some(p.id);
             close_editor(&mut view, &mut state_save.borrow_mut());
             refresh(&mut view, state_save.clone(), &store_save, &paths_save)
         })();
@@ -943,17 +916,40 @@ fn check_updates(c: &mut Controls, check: fn() -> Result<Option<update::Update>>
     }
 }
 
-pub fn run() -> Result<()> {
-    run_with(Store::system()?, Paths::system()?)
+pub fn run(link: Option<&str>) -> Result<()> {
+    run_with_link(Store::system()?, Paths::system()?, link)
 }
 
 /// Production UI with isolated paths available to development tools.
 pub fn run_with(store: Store, paths: Paths) -> Result<()> {
+    run_with_link(store, paths, None)
+}
+
+pub fn run_with_link(store: Store, paths: Paths, link: Option<&str>) -> Result<()> {
+    #[cfg(target_os = "macos")]
+    protocol::prepare();
     let state = Rc::new(RefCell::new(State::default()));
     let mut c = controls(store.language()?);
     refresh(&mut c, state.clone(), &store, &paths)?;
-    wire(&mut c, state, store, paths);
+    wire(&mut c, state.clone(), store.clone(), paths.clone());
     c.window.show();
+    #[cfg(target_os = "macos")]
+    {
+        let mut view = c.clone();
+        let state = state.clone();
+        let store = store.clone();
+        let paths = paths.clone();
+        protocol::listen(move |link| {
+            if let Err(error) = preview_link(&mut view, state.clone(), &store, &paths, link) {
+                i18n::alert(view.lang(), &error);
+            }
+        });
+    }
+    if let Some(link) = link
+        && let Err(error) = preview_link(&mut c, state, &store, &paths, link)
+    {
+        i18n::alert(c.lang(), &error);
+    }
     while app::wait() {}
     Ok(())
 }
@@ -973,5 +969,82 @@ pub fn run_measure_editor(store: Store, paths: Paths) -> Result<()> {
     let provider = state.borrow().providers.first().cloned();
     open_editor(&mut c, &mut state.borrow_mut(), provider.as_ref());
     while app::wait() {}
+    Ok(())
+}
+
+/// Isolated real Apple URL-event acceptance; never uses system client paths.
+#[cfg(target_os = "macos")]
+pub fn protocol_smoke(store: Store, paths: Paths, output: std::path::PathBuf) -> Result<()> {
+    protocol::prepare();
+    let state = Rc::new(RefCell::new(State::default()));
+    let mut c = controls(Language::Zh);
+    refresh(&mut c, state.clone(), &store, &paths)?;
+    wire(&mut c, state.clone(), store.clone(), paths.clone());
+    c.window.show();
+    let mut step = 0;
+    let finished = output.clone();
+    protocol::listen(move |link| {
+        let result = (|| -> Result<()> {
+            let before = store.load()?;
+            let current = paths.current(Client::Claude)?;
+            let result = preview_link(&mut c, state.clone(), &store, &paths, link);
+            match step {
+                0 | 2 => {
+                    result?;
+                    if !c.editor.shown()
+                        || c.name.value() != "Native link"
+                        || c.key.value() != "native-fake-key"
+                    {
+                        return Err("Native URL event did not open import preview.".into());
+                    }
+                    app::check();
+                    acceptance::snapshot(
+                        &mut c.editor,
+                        &output.join(format!("native-{step}.ppm")),
+                    )?;
+                    if step == 2 {
+                        c.cancel.do_callback();
+                    }
+                }
+                1 => {
+                    if result.is_ok() || c.name.value() != "Native link" {
+                        return Err("Native URL overwrote an open draft.".into());
+                    }
+                    c.cancel.do_callback();
+                }
+                3 => {
+                    if result.is_ok() || c.editor.shown() {
+                        return Err("Malformed native URL was not rejected.".into());
+                    }
+                }
+                _ => return Err("Unexpected extra native URL event.".into()),
+            }
+            if store.load()? != before || paths.current(Client::Claude)? != current {
+                return Err("Native URL event wrote provider/client data.".into());
+            }
+            Ok(())
+        })();
+        if let Err(e) = result {
+            let _ = std::fs::write(output.join("error.txt"), e);
+            app::add_timeout3(0.0, |_| {});
+            app::quit();
+            return;
+        }
+        step += 1;
+        let _ = std::fs::write(output.join("step.txt"), step.to_string());
+        if step == 4 {
+            app::add_timeout3(0.0, |_| {});
+            app::quit();
+        }
+    });
+    while app::wait() {}
+    if finished.join("error.txt").exists()
+        || std::fs::read_to_string(finished.join("step.txt"))
+            .ok()
+            .as_deref()
+            != Some("4")
+    {
+        return Err("Native URL acceptance did not finish.".into());
+    }
     Ok(())
 }

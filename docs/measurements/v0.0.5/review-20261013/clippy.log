@@ -1,0 +1,2 @@
+COMMAND ["/Users/mimiko/.cargo/bin/cargo", "clippy", "--locked", "--all-targets", "--", "-D", "warnings"]
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.55s

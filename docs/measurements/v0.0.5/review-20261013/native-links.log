@@ -1,0 +1,2 @@
+COMMAND ["/Users/mimiko/.cache/uv/builds-v0/.tmpvoxZsP/bin/python", "scripts/protocol_smoke.py", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/release/examples/protocol_smoke", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-review-20261013/links"]
+PP-06: real cold ccswitch and warm ppswitch URL events, draft guard, malformed input and no writes passed.

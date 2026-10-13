@@ -1,0 +1,31 @@
+COMMAND ["/Users/mimiko/.cache/uv/builds-v0/.tmpvoxZsP/bin/python", "scripts/measure.py", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/release/examples/measure_ui", "--output", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-review-20261013/metrics.json", "--enforce"]
+{
+  "os": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "scenario": "empty-window",
+  "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+  "samples": [
+    {
+      "startup_ms": 441.87,
+      "idle_rss_bytes": 115949568,
+      "peak_rss_bytes": 115982336
+    },
+    {
+      "startup_ms": 109.6,
+      "idle_rss_bytes": 116146176,
+      "peak_rss_bytes": 116178944
+    },
+    {
+      "startup_ms": 112.37,
+      "idle_rss_bytes": 115998720,
+      "peak_rss_bytes": 116031488
+    }
+  ],
+  "startup_median_ms": 112.37,
+  "startup_max_ms": 441.87,
+  "idle_max_bytes": 116146176,
+  "peak_max_bytes": 116178944,
+  "budget_pass": false
+}
+
+PP-11 memory/startup budget failed; see measurements above

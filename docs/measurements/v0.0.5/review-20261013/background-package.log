@@ -1,0 +1,8 @@
+COMMAND ["/Users/mimiko/.cache/uv/builds-v0/.tmpaglyBW/bin/python", "scripts/package.py", "aarch64-apple-darwin", "--binary", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/release/pp-switch"]
+{
+  "version": "0.0.5",
+  "target": "aarch64-apple-darwin",
+  "installed_bytes": 2498449,
+  "archive_bytes": 1285871,
+  "sha256": "1eee1a153e1adf3ff4da524e90a5a5602eafd2ffcac217d75dc8c42f7057301b"
+}

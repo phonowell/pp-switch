@@ -17,6 +17,7 @@ fn main() {
             .flag("-fobjc-arc")
             .compile("pp_smoke_input");
         println!("cargo:rustc-link-lib=framework=QuartzCore");
+        println!("cargo:rustc-link-lib=framework=CoreServices");
     }
     println!("cargo:rerun-if-changed=assets/icon.ico");
     if env::var("CARGO_CFG_TARGET_OS").as_deref() != Ok("windows") {

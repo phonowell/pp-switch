@@ -13,8 +13,7 @@ from fontTools.pens.recordingPen import RecordingPen
 
 ROOT = Path(__file__).resolve().parents[1]
 ICONS = {"Settings": "settings", "Edit": "pencil", "Switch": "arrow-right-left",
-         "Back": "arrow-left", "Add": "plus", "Circle": "circle",
-         "Selected": "circle-dot", "Down": "chevron-down"}
+         "Back": "arrow-left", "Add": "plus", "Down": "chevron-down"}
 
 
 def point(p):

@@ -8,8 +8,6 @@ pub enum Icon {
     Switch,
     Back,
     Add,
-    Circle,
-    Selected,
     Down,
 }
 pub fn draw(icon: Icon, x: i32, y: i32, size: i32) {
@@ -262,19 +260,6 @@ pub fn draw(icon: Icon, x: i32, y: i32, size: i32) {
             draw::begin_line();
             draw::vertex(12.000000000, 5.000000000);
             draw::vertex(12.000000000, 19.000000000);
-            draw::end_line();
-        }
-        Icon::Circle => {
-            draw::begin_line();
-            draw::draw_circle(12.0, 12.0, 10.0);
-            draw::end_line();
-        }
-        Icon::Selected => {
-            draw::begin_line();
-            draw::draw_circle(12.0, 12.0, 1.0);
-            draw::end_line();
-            draw::begin_line();
-            draw::draw_circle(12.0, 12.0, 10.0);
             draw::end_line();
         }
         Icon::Down => {

@@ -12,7 +12,7 @@ follow the host; screenshots alone never establish operability.
 | Window surface / ink / secondary text | `#f7f8fa` / `#282d38` / `#616a79` | `#1e2026` / `#ebeef5` / `#a9b1c0` |
 | Accent / pressed accent | `#365dd8` / `#2e53c8` | `#4b6ee0` / `#3e5bbe` |
 | Border / field fill | `#e4e7ec` / `#f0f2f6` | `#3e4452` / `#272b34` |
-| Selected row / selected border | `#edf1fb` / `#dbe3f5` | `#283452` / `#445984` |
+| Selected client / selected border | `#edf1fb` / `#dbe3f5` | `#283452` / `#445984` |
 | Hover / disabled fill | `#e9ecf1` | `#2e323c` |
 | Disabled text / danger / active provider | `#747d8b` / `#ac4040` / `#39795f` | `#858fa2` / `#f28484` / `#78cca6` |
 | Body / label / caption / heading | 13 / 12 / 11 / 15 logical pixels | Same |
@@ -24,7 +24,7 @@ not replace UI labels. No gradients, nested cards, inset/raised frames, applicat
 shadows or animation. Credentials stay masked; sample screenshots use fake keys.
 Follow system appearance with no theme selector or saved preference. Recolor
 existing widgets using shared palette slots; preserve drafts, caret/selection,
-keyboard focus and provider selection. macOS observes effective appearance;
+keyboard focus and edited record. macOS observes effective appearance;
 Windows reads the application light/dark preference; Linux uses exposed GNOME
 color-scheme, GTK or KDE settings, falling back to light if unavailable. Non-macOS
 preferences are checked once per second while the GUI runs; no resident helper.
@@ -34,21 +34,22 @@ preferences are checked once per second while the GUI runs; no resident helper.
 - **Client tabs:** continuous neutral track, three equal 116-pixel cells, selected
   inset surface and distinct focus/pressed feedback.
 - **Icons:** use the pinned [Lucide SVGs](../assets/lucide/README.md) for all
-  application-drawn icons, including selection circles and the language chevron.
+  application-drawn icons, including the language chevron.
   Native paths are generated from these sources; no handmade substitutes or font
   glyphs. Rounded absolute 2-pixel strokes, 16–18-pixel drawings, 30–32-pixel hit
-  targets. The PPC application logo and OS-owned chrome remain separate.
+  targets. The PPS application logo and OS-owned chrome remain separate.
 - **Rows:** 69-pixel height, 5-pixel gap, name above address. Each row shows Edit
-  then Switch, including unselected rows. Selection never applies. Switch targets
-  its own record by ID. All effective URL/key matches show In use and disable
+  then Switch. Rows have no selected state or selection circles. Switch targets
+  its own record by ID, preserving list scroll and keyboard focus. All effective URL/key matches show In use and disable
   Switch, including duplicates. Edit still identifies each record independently.
 - **Badges/text:** measure localized badge width, reserve both icon hit targets
   plus an 8-pixel gap before Edit. Long text clips within its own area. Scrollbar
   width reduces row width; it must never cover text or action targets.
 - **Settings:** smaller gear right of tabs; replaces the main content in the same
-  native window. Back restores list/client/selection. Contains Language, manual
+  native window. Back restores list/client. Contains Language, manual
   Check for updates and passive wrapped update status. Navigation remains usable
-  during a worker; repeated update activation is disabled. No automatic requests.
+  during a worker; repeated update activation is disabled. Explicit import-link
+  registration preserves other installed handlers. No automatic requests.
 - **Fields/dialogs:** three fields, masked key, consistent flat controls; Save
   stores only. Cancel/title-close discard drafts. Delete requires confirmation and
   never changes client configuration. Error messages preserve an invalid draft.
@@ -60,7 +61,7 @@ preferences are checked once per second while the GUI runs; no resident helper.
 
 ## Window geometry
 
-Main: 440 × 502. No in-content pp-switch heading, More menu, divider or bottom
+Main: 440 × 502, titled Pure Provider Switch. No in-content pp-switch heading, More menu, divider or bottom
 Current/status/Switch area. OS title bar remains.
 
 | Component | x / y | width / height |
@@ -74,17 +75,18 @@ Current/status/Switch area. OS title bar remains.
 | Settings Back | 24 / 24 | 88 / 32 |
 | Language selector | 196 / 84 | 220 / 36 |
 | Manual update | 24 / 156 | 392 / 36 |
-| Update status | 24 / 208 | 392 / 84 |
+| Register import links | 24 / 208 | 392 / 36 |
+| Update / registration status | 24 / 260 | 392 / 108 |
 
 Editor: 386 × 396, three 338 × 40 fields; action row y=328. Messages use a
-386-pixel width and grow to fit wrapped text. macOS title bars omit the PPC icon;
+386-pixel width and grow to fit wrapped text. macOS title bars omit the PPS icon;
 Windows/Linux retain it. Package icons remain on all platforms. The language
 popup uses the existing borderless rounded menu frame and native shadow.
 
 ## Automated regression gates
 
 [Native input](../src/ui/acceptance.rs) covers startup focus, keyboard Settings,
-page/back navigation, duplicate Save, selection-only behavior, a different row's
+page/back navigation, duplicate Save, passive row clicks, a different row's
 Switch, independent duplicate Edit, validation, save/cancel, delete confirmation,
 three clients, native scrolling/reachable actions, language preference, responsive
 update worker/error recovery, tooltips, modal and main close. All files are fixtures.
@@ -96,7 +98,7 @@ badge silhouettes against a same-run reference, including overflow/scroll.
 [Detector tests](../scripts/visual_test.py) reject removed icon ink, changed locale
 icons, footer ink and covered badges. [Generator](../scripts/lucide.py) `--check`
 requires parity with pinned SVGs. Palette tests require ≥4.5:1 text contrast.
-Native appearance transitions preserve existing drafts/cursor/focus/selection.
+Native appearance transitions preserve existing drafts/cursor/focus/edited record.
 Four-language light and dark captures cover main, settings, fields and row states.
 
 Reuse unchanged successful checks. For only icon/style changes use `--style-only`;
@@ -107,7 +109,7 @@ use bounded watchdogs and normal error returns; visual review is the final fallb
 
 ## Review matrix
 
-Chinese functional acceptance only. All four UI languages: empty/client/selected/
+Chinese functional acceptance only. All four UI languages: empty/client/rows/
 active/overflow/scroll, Add/Edit, Settings, update busy/error; both light and dark.
 Record current results and limitations in [smoke acceptance](../docs/smoke.md).
 Historical More/footer/import captures are evidence of prior candidates, not the

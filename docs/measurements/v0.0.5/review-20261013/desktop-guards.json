@@ -1,0 +1,26 @@
+[
+  {
+    "command": [
+      "target/release/examples/input_smoke"
+    ],
+    "exit_code": 2,
+    "stdout": "",
+    "stderr": "SKIPPED: GUI/input acceptance requires --allow-desktop-input or a dedicated CI session.\n"
+  },
+  {
+    "command": [
+      "target/release/examples/ui_smoke"
+    ],
+    "exit_code": 2,
+    "stdout": "",
+    "stderr": "SKIPPED: GUI/input acceptance requires --allow-desktop-input or a dedicated CI session.\n"
+  },
+  {
+    "command": [
+      "target/release/examples/measure_ui"
+    ],
+    "exit_code": 2,
+    "stdout": "",
+    "stderr": "SKIPPED: GUI/input acceptance requires --allow-desktop-input or a dedicated CI session.\n"
+  }
+]

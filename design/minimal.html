@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>pp-switch · 极简界面预览</title>
+  <title>Pure Provider Switch · 极简界面预览</title>
   <style>
     :root { color-scheme: light; --surface: #f7f8fa; --ink: #282d38; --muted: #616a79; --line: #e4e7ec; --blue: #365dd8; }
     * { box-sizing: border-box; }
@@ -29,17 +29,13 @@
     .quiet:hover { color: var(--blue); }
     .providers { border: 0; padding: 0; margin: 0; min-height: 210px; }
     .row { position: relative; display: flex; align-items: center; border-radius: 9px; margin: 3px 0; border: 1px solid transparent; }
-    .row:has(input:checked) { background: #edf1fb; border-color: #dbe3f5; }
-    .provider { display: flex; gap: 12px; flex: 1; min-width: 0; align-items: center; padding: 14px 11px; cursor: pointer; }
-    .provider input { appearance: none; width: 15px; height: 15px; flex-shrink: 0; margin: 0; border: 1.5px solid #b7beca; border-radius: 50%; background: transparent; }
-    .provider input:checked { border: 4.5px solid var(--blue); background: #fff; }
+    .provider { display: flex; gap: 12px; flex: 1; min-width: 0; align-items: center; padding: 14px 15px; cursor: default; }
     .provider-info { min-width: 0; display: grid; gap: 3px; }
     .provider-name { font-size: 14px; font-weight: 550; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .provider-url { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .row-end { display: flex; align-items: center; gap: 4px; padding-right: 8px; flex-shrink: 0; }
     .active-label { color: #39795f; font-size: 10px; white-space: nowrap; }
     .edit { opacity: 1; }
-    .row:hover .edit, .row:focus-within .edit, .row:has(input:checked) .edit { opacity: 1; }
     .edit svg { width: 14px; height: 14px; }
     .empty { color: var(--muted); padding: 50px 10px; text-align: center; font-size: 13px; }
     .status { color: var(--muted); font-size: 12px; min-width: 0; overflow-wrap: anywhere; }
@@ -71,9 +67,9 @@
     #settings{width:32px;height:32px}svg{width:18px;height:18px;stroke-width:2}
     .list-heading{height:28px;margin:22px 0 12px}.quiet{display:flex;align-items:center;gap:8px;padding:0 10px}
     .quiet svg{width:16px;height:16px}.providers{height:354px;overflow:auto;scrollbar-width:thin}
-    .row{height:69px;margin:0 0 5px;border-radius:8px}.row.chosen{background:var(--selected);border-color:var(--line)}
+    .row{height:69px;margin:0 0 5px;border-radius:8px}
     .provider{border:0;background:transparent;text-align:left;height:100%;color:var(--muted)}.provider svg{width:16px;height:16px;flex-shrink:0}
-    .row.chosen .provider svg{color:var(--blue)}.row-end{gap:6px;padding-right:8px}.active-label{color:var(--active);margin-right:2px}
+    .row-end{gap:6px;padding-right:8px}.active-label{color:var(--active);margin-right:2px}
     .settings-heading{height:32px;display:flex;align-items:center;gap:12px}.settings-heading #back{width:88px;height:32px}
     .language-setting{display:flex;align-items:center;justify-content:space-between;margin-top:28px;height:36px;font-size:12px;color:var(--muted)}
     #language{width:220px;height:36px;border:0;border-radius:7px;padding:0 12px;background:var(--field);color:var(--ink)}
@@ -83,7 +79,7 @@
   </style>
 </head>
 <body>
-  <main class="app" aria-label="pp-switch">
+  <main class="app" aria-label="Pure Provider Switch">
     <section id="main-page">
     <header>
     <nav class="clients" aria-label="Clients">
@@ -140,6 +136,7 @@
 <span data-text="back"></span></button><h1 data-text="settings"></h1></div>
       <label class="language-setting"><span data-text="language"></span><select id="language"><option value="zh">简体中文</option><option value="en">English</option><option value="zh-TW">繁體中文</option><option value="ja">日本語</option></select></label>
       <button class="secondary update" id="update-open" data-text="updates"></button>
+      <button class="secondary update" style="margin-top:16px" id="register-links" data-text="register"></button>
       <p class="status" id="update-status"></p>
     </section>
   </main>
@@ -162,7 +159,7 @@
 
   <script>
     // Standalone design preview: sample data only, no network, storage or client-file access.
-    const icons = {"settings": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\" />\n  <circle cx=\"12\" cy=\"12\" r=\"3\" />\n</svg>\n", "pencil": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\" />\n  <path d=\"m15 5 4 4\" />\n</svg>\n", "arrow-right-left": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"m16 3 4 4-4 4\" />\n  <path d=\"M20 7H4\" />\n  <path d=\"m8 21-4-4 4-4\" />\n  <path d=\"M4 17h16\" />\n</svg>\n", "arrow-left": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"m12 19-7-7 7-7\" />\n  <path d=\"M19 12H5\" />\n</svg>\n", "plus": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M5 12h14\" />\n  <path d=\"M12 5v14\" />\n</svg>\n", "circle": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <circle cx=\"12\" cy=\"12\" r=\"10\" />\n</svg>\n", "circle-dot": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <circle cx=\"12\" cy=\"12\" r=\"1\" />\n  <circle cx=\"12\" cy=\"12\" r=\"10\" />\n</svg>\n"};
+    const icons = {"settings": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\" />\n  <circle cx=\"12\" cy=\"12\" r=\"3\" />\n</svg>\n", "pencil": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z\" />\n  <path d=\"m15 5 4 4\" />\n</svg>\n", "arrow-right-left": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"m16 3 4 4-4 4\" />\n  <path d=\"M20 7H4\" />\n  <path d=\"m8 21-4-4 4-4\" />\n  <path d=\"M4 17h16\" />\n</svg>\n", "arrow-left": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"m12 19-7-7 7-7\" />\n  <path d=\"M19 12H5\" />\n</svg>\n", "plus": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"24\"\n  height=\"24\"\n  viewBox=\"0 0 24 24\"\n  fill=\"none\"\n  stroke=\"currentColor\"\n  stroke-width=\"2\"\n  stroke-linecap=\"round\"\n  stroke-linejoin=\"round\"\n>\n  <path d=\"M5 12h14\" />\n  <path d=\"M12 5v14\" />\n</svg>\n"};
     const $ = id => document.getElementById(id);
     const text = {
       zh: { providers: '服务商', add: '＋ 添加', switch: '切换', clients: '客户端', active: '使用中', edit: '编辑', editTitle: '编辑服务商', addTitle: '添加服务商', updates: '检查更新', language: '语言', name: '名称', delete: '删除', cancel: '取消', save: '保存', close: '关闭', empty: '还没有服务商', updateDemo: '这是界面预览，不会联网检查或安装更新。', invalid: '请填写名称、HTTP(S) 地址和 API Key。', deleteTitle: '删除这个服务商？', deleteCopy: '只移除保存的记录，客户端配置不变。', daily: '日常', backup: '备用', local: '本地' },
@@ -173,6 +170,8 @@
     for (const [locale, labels] of Object.entries(text)) {
       labels.settings = {zh:'设置',en:'Settings','zh-TW':'設定',ja:'設定'}[locale];
       labels.back = {zh:'返回',en:'Back','zh-TW':'返回',ja:'戻る'}[locale];
+      labels.register = {zh:'注册导入链接',en:'Register import links','zh-TW':'註冊匯入連結',ja:'インポートリンクを登録'}[locale];
+      labels.registerDemo = {zh:'这是界面预览，不会修改系统链接关联。',en:'This preview does not change system URL associations.','zh-TW':'這是介面預覽，不會修改系統連結關聯。',ja:'このプレビューはシステムの URL 関連付けを変更しません。'}[locale];
       labels.add = labels.add.replace(/[＋+]/g,'').trim();
     }
     let locale = 'zh', client = 'claude', editing = null, announcement = null;
@@ -183,7 +182,6 @@
       codex: [{ id: 4, label: 'daily', url: 'https://api.example.com/v1', key: 'demo-key-only' }, { id: 5, label: 'backup', url: 'https://backup.example.com/v1', key: 'demo-key-only' }],
       gemini: [{ id: 6, label: 'daily', url: 'https://gemini.example.com', key: 'demo-key-only' }]
     };
-    const selected = { claude: 2, codex: 4, gemini: 6 };
     // Keep the applied snapshot separate: editing or deleting a saved entry does not apply it.
     const applied = Object.fromEntries(Object.entries(data).map(([app, rows]) => [app, { ...rows[0] }]));
     const displayName = row => row.name || t(row.label);
@@ -200,10 +198,8 @@
       const focusedEdit = document.activeElement?.dataset.edit;
       $('providers').replaceChildren();
       for (const row of data[client]) {
-        const item = document.createElement('div'); item.className = 'row' + (selected[client] === row.id ? ' chosen' : '');
-        const label = document.createElement('button'); label.className = 'provider'; label.id = 'provider-' + row.id;
-        label.innerHTML = icons[selected[client] === row.id ? 'circle-dot' : 'circle'];
-        label.addEventListener('click', () => { selected[client] = row.id; announcement = null; render(); });
+        const item = document.createElement('div'); item.className = 'row';
+        const label = document.createElement('div'); label.className = 'provider';
         const info = document.createElement('span'); info.className = 'provider-info';
         const name = document.createElement('span'); name.className = 'provider-name'; name.textContent = displayName(row);
         const url = document.createElement('span'); url.className = 'provider-url'; url.textContent = row.url;
@@ -215,7 +211,7 @@
         edit.addEventListener('click', () => openEditor(row)); end.append(edit);
         const change = document.createElement('button'); change.className = 'icon-button'; change.setAttribute('aria-label',t('switch'));
         change.innerHTML = icons['arrow-right-left']; change.disabled = matches(row);
-        change.addEventListener('click', () => { applied[client] = {...row}; selected[client] = row.id; render(); });
+        change.addEventListener('click', () => { applied[client] = {...row}; render(); });
         end.append(change); item.append(label, end); $('providers').append(item);
       }
       if (!data[client].length) { const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = t('empty'); $('providers').append(empty); }
@@ -240,11 +236,12 @@
       if (!name || !key || !address || !['http:', 'https:'].includes(address.protocol) || address.username || address.password) { $('form-error').textContent = t('invalid'); $('form-error').hidden = false; return; }
       const row = { id: editing || nextId++, name, url, key };
       if (editing) data[client] = data[client].map(p => p.id === editing ? row : p); else data[client].push(row);
-      selected[client] = row.id; announcement = null; $('editor').close(); render();
+      announcement = null; $('editor').close(); render();
     });
     $('delete').addEventListener('click', () => $('delete-confirm').showModal());
-    $('delete-confirmed').addEventListener('click', () => { data[client] = data[client].filter(p => p.id !== editing); if (selected[client] === editing) selected[client] = data[client][0]?.id; announcement = null; $('delete-confirm').close(); $('editor').close(); render(); });
+    $('delete-confirmed').addEventListener('click', () => { data[client] = data[client].filter(p => p.id !== editing); announcement = null; $('delete-confirm').close(); $('editor').close(); render(); });
     $('update-open').addEventListener('click', () => { $('update-status').textContent = t('updateDemo'); });
+    $('register-links').addEventListener('click', () => { $('update-status').textContent = t('registerDemo'); });
     render();
   </script>
 </body>

@@ -1,4 +1,4 @@
-"""Run every local smoke gate, keep raw logs, and never publish or install locally."""
+"""Run background checks by default; desktop acceptance requires explicit opt-in."""
 import argparse
 import datetime
 import hashlib
@@ -15,6 +15,8 @@ import time
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--allow-desktop-input", action="store_true",
+                        help="allow GUI activation, cursor movement and native key events on an idle or isolated desktop")
     args = parser.parse_args()
     root = Path(__file__).resolve().parents[1]
     stamp = datetime.datetime.now(datetime.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
@@ -28,8 +30,10 @@ def main():
     suffix = ".exe" if os.name == "nt" else ""
     examples = root / "target/release/examples"
     python = sys.executable
-    package = root / "target/package" / ("pp-switch-v0.0.4-" + target + (".tar.gz" if "linux" in target else ".zip"))
-    report = {"started_utc": stamp, "platform": platform.platform(), "target": target,
+    version = next(line.split('"')[1] for line in (root / "Cargo.toml").read_text().splitlines() if line.startswith("version ="))
+    package = root / "target/package" / (f"pp-switch-v{version}-" + target + (".tar.gz" if "linux" in target else ".zip"))
+    desktop = args.allow_desktop_input or env.get("CI") == "true"
+    report = {"desktop_input_allowed": desktop, "started_utc": stamp, "platform": platform.platform(), "target": target,
               "published": False, "checks": [], "source_sha256": {}}
     sources = [root / "Cargo.toml", root / "Cargo.lock", root / "build.rs"]
     for directory in ("src", "examples", "scripts", "design"):
@@ -67,27 +71,34 @@ def main():
     run("behavior", [cargo, "test", "--locked"])
     run("release-tests", [python, "-m", "unittest", "discover", "-s", "scripts", "-p", "*_test.py"])
     built = run("release-build", [cargo, "build", "--locked", "--release", "--bins", "--examples"], timeout=900)
-    if built:
-        run("gui-callback", [python, "scripts/gui_smoke.py", str(examples / ("ui_smoke" + suffix)), str(output / "gui.ppm")], graphical=True)
+    if built and desktop:
+        run("gui-callback", [python, "scripts/gui_smoke.py", "--allow-desktop-input", str(examples / ("ui_smoke" + suffix)), str(output / "gui.ppm")], graphical=True)
         if platform.system() == "Darwin":
-            run("native-input", [python, "scripts/gui_smoke.py", "--timeout", "180", str(examples / "input_smoke"), str(output / "input")], timeout=190, graphical=True)
+            run("native-links", [python, "scripts/protocol_smoke.py", str(examples / "protocol_smoke"), str(output / "links"), "--allow-desktop-input"], timeout=100, graphical=True)
+            run("native-input", [python, "scripts/gui_smoke.py", "--allow-desktop-input", "--timeout", "180", str(examples / "input_smoke"), str(output / "input")], timeout=190, graphical=True)
             run("visual-pixels", [python, "scripts/visual_check.py", str(output / "input")])
-            run("native-appearance", [python, "scripts/gui_smoke.py", "--timeout", "90", str(examples / "input_smoke"), str(output / "themes"), "--themes-only"], timeout=100, graphical=True)
+            run("native-appearance", [python, "scripts/gui_smoke.py", "--allow-desktop-input", "--timeout", "90", str(examples / "input_smoke"), str(output / "themes"), "--themes-only"], timeout=100, graphical=True)
             for appearance in ("light", "dark"):
                 run(f"visual-{appearance}", [python, "scripts/visual_check.py", str(output / "themes" / appearance)])
+        run("measure-empty", [python, "scripts/measure.py", str(examples / ("measure_ui" + suffix)), "--output", str(output / "metrics.json"), "--enforce", "--allow-desktop-input"], graphical=True)
+        run("measure-editor", [python, "scripts/measure.py", str(examples / ("measure_ui" + suffix)), "--editor", "--output", str(output / "editor-metrics.json"), "--enforce", "--allow-desktop-input"], graphical=True)
+    elif built:
+        report["unrun"] = "GUI, native links/input/appearance, restart and measurements skipped to preserve the shared desktop; use --allow-desktop-input only with user authorization or a dedicated CI session."
+        print("SKIPPED desktop checks: shared workstation input is reserved for the user.", flush=True)
+    if built:
         run("package", [python, "scripts/package.py", target, "--binary", str(root / "target/release" / ("pp-switch" + suffix))])
-        run("update-helper", [str(examples / ("update_smoke" + suffix))], timeout=40)
+        if desktop:
+            run("update-helper", [str(examples / ("update_smoke" + suffix))], timeout=40)
         run("update-package", [str(examples / ("update_smoke" + suffix)), "--archive", str(package)])
-        run("measure-empty", [python, "scripts/measure.py", str(examples / ("measure_ui" + suffix)), "--output", str(output / "metrics.json"), "--enforce"], graphical=True)
-        run("measure-editor", [python, "scripts/measure.py", str(examples / ("measure_ui" + suffix)), "--editor", "--output", str(output / "editor-metrics.json"), "--enforce"], graphical=True)
     else:
         report["unrun"] = "GUI, input, package, update and measurements require a successful build."
-    report["automated_pass"] = built and all(check["status"] == "passed" for check in report["checks"])
+    report["background_pass"] = built and all(check["status"] == "passed" for check in report["checks"] if check["name"] not in ("measure-empty", "measure-editor"))
+    report["automated_pass"] = desktop and built and all(check["status"] == "passed" for check in report["checks"])
     report["visual_review"] = "pending: inspect newly captured images against design/UI.md; automation does not approve visuals"
     report["acceptance_complete"] = False
     (output / "report.json").write_text(json.dumps(report, indent=2) + "\n")
     print("REPORT " + str(output / "report.json"), flush=True)
-    return 0 if report["automated_pass"] else 1
+    return 0 if (report["automated_pass"] if desktop else report["background_pass"]) else 1
 
 
 if __name__ == "__main__":

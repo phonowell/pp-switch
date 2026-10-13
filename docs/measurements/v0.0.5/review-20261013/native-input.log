@@ -1,0 +1,8 @@
+COMMAND ["/Users/mimiko/.cache/uv/builds-v0/.tmpvoxZsP/bin/python", "scripts/gui_smoke.py", "--timeout", "180", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/release/examples/input_smoke", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/v005-review-20261013/input"]
+INPUT zh: startup focus/Tab/Space, in-window settings/back, duplicate save, passive row click, record-specific switch/edit passed
+INPUT zh: validation, save/cancel, delete confirm/cancel, three clients and overflow actions passed
+INPUT zh: settings language, async update/error/navigation, no hover tips, modal Escape/title-close and main close passed
+VISUAL en: main/settings/editor, badge, row actions, overflow; style only
+VISUAL zh: main/settings/editor, badge, row actions, overflow; style only
+VISUAL zh-TW: main/settings/editor, badge, row actions, overflow; style only
+VISUAL ja: main/settings/editor, badge, row actions, overflow; style only
