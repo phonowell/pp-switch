@@ -8,6 +8,10 @@ The branch is not published. [Current checkpoint](development-0.0.5.md) separate
 background validation from pending native acceptance. Earlier captures do not
 certify later Grok/DSH, model, Official, compact-tab or blue-status changes.
 
+The `v0.0.5` preview tag points to `80c460c0c543da703e77225b8f66a5b220b9ad2d`.
+[Tag-driven native CI](https://github.com/phonowell/pp-switch/actions/runs/38391365065)
+is in progress; publication and public package verification are not yet complete.
+
 The [current installed candidate](measurements/v0.0.5/model-default-20261013/report.json)
 has 2,788,557 owned bytes (2.66 MiB), 82 Rust tests and 18 Python tests.
 It removes compulsory Claude model entry and verifies actual Add/Edit/import
