@@ -4,7 +4,6 @@ Uses only the standard library. Native title-icon and interaction properties are
 by input_smoke; this gate checks rendered output rather than source constants.
 """
 import argparse
-from collections import Counter
 import json
 from pathlib import Path
 
@@ -42,22 +41,26 @@ def clean_margin(image):
                for x in range(width))
 
 
-def badge_mask(image):
+def badge_mask(image, bounds=None):
     width, height, _ = image
     # Cocoa text rasterization applies color conversion/antialiasing. Compare
-    # the captured green glyph silhouette against a reference from this run,
+    # the captured blue glyph silhouette against a reference from this run,
     # rather than assuming its pixels equal the requested RGB paint color.
+    left, top, right, bottom = bounds or (0, 0, width, height)
+    background = pixel(image, 0, 0)
+    background_chroma = background[2] - background[0]
     colored = {}
-    for y in range(height):
-        for x in range(width):
+    for y in range(top, bottom):
+        for x in range(left, right):
             red, green, blue = pixel(image, x, y)
-            if green > red + 15 and green > blue + 10:
-                colored[x, y] = (red, green, blue)
+            if blue > red + 40 and blue > green + 25:
+                colored[x, y] = blue - red - background_chroma
     assert colored, "Active-provider badge has no rendered ink"
-    # Solid ink is independent of the selected/ordinary row background. Edge
-    # antialiasing is allowed to blend with either surface while scrolling.
-    ink = Counter(colored.values()).most_common(1)[0][0]
-    points = {point for point, color in colored.items() if color == ink}
+    # Normalize glyph coverage against the captured background. Thin English
+    # strokes can contain no solid pixels; their most frequent RGB changes
+    # between the reference and the plain row even with identical silhouettes.
+    threshold = max(colored.values()) * 0.5
+    points = {point for point, strength in colored.items() if strength > threshold}
     left = min(x for x, _ in points)
     top = min(y for _, y in points)
     return {(x - left, y - top) for x, y in points}
@@ -84,9 +87,15 @@ def validate(directory):
                 assert len(set(pixels)) > 1, f"{locale}/{name}: missing row action at {left}"
             assert clean_margin(image), f"{locale}/{name}: removed footer remains"
         reference = badge_mask(ppm(directory / f"{locale}-badge-reference.ppm"))
+        badge_width = max(x for x, _ in reference) + 1
         for state in ("active", "overflow", "scrolled"):
             actual = ppm(directory / f"{locale}-{state}.ppm")
-            assert badge_mask(actual) == reference, f"{locale}/{state}: badge clipped or covered"
+            # Only the badge: names and addresses now share its blue ink.
+            # Overflow reserves 12px for the scrollbar; scroll moves this row.
+            right = actual[0] - 24 - 75 - 8 - (12 if state != "active" else 0)
+            top = 198 - (24 if state == "scrolled" else 0)
+            bounds = (right - badge_width - 8, top, right + 2, top + 69)
+            assert badge_mask(actual, bounds) == reference, f"{locale}/{state}: badge clipped or covered"
         settings = ppm(directory / f"{locale}-settings.ppm")
         assert all(pixel(settings,x,y) == background for x,y in ((196,84),(415,84),(196,119),(415,119))), f"{locale}: selector corners retain stale ink"
         for state in ("settings", "update-busy", "update-error", "add", "edit"):

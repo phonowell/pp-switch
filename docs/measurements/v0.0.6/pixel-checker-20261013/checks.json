@@ -1,0 +1,59 @@
+[
+  {
+    "name": "detectors",
+    "command": [
+      "rtk",
+      "proxy",
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts",
+      "-p",
+      "visual_test.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "log": "detectors.log",
+    "elapsed_seconds": 0.055
+  },
+  {
+    "name": "arm64-existing-captures",
+    "command": [
+      "rtk",
+      "proxy",
+      "python3",
+      "scripts/visual_check.py",
+      "/tmp/pps-v006-preflight-arm64/input-smoke"
+    ],
+    "exit_code": 0,
+    "log": "arm64-existing-captures.log",
+    "elapsed_seconds": 0.077
+  },
+  {
+    "name": "intel-existing-captures",
+    "command": [
+      "rtk",
+      "proxy",
+      "python3",
+      "scripts/visual_check.py",
+      "/tmp/pps-v006-preflight-intel/input-smoke"
+    ],
+    "exit_code": 0,
+    "log": "intel-existing-captures.log",
+    "elapsed_seconds": 0.077
+  },
+  {
+    "name": "documentation",
+    "command": [
+      "rtk",
+      "proxy",
+      "python3",
+      "scripts/docs_check.py"
+    ],
+    "exit_code": 0,
+    "log": "documentation.log",
+    "elapsed_seconds": 0.189
+  }
+]

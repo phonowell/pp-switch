@@ -16,6 +16,13 @@ That tag remains immutable and unpublished. The next preview is v0.0.6, retainin
 the v0.0.5 product changes and correcting the portable test bootstrap. Native CI
 and public package verification must complete before publication.
 
+The [first v0.0.6 preflight](https://github.com/phonowell/pp-switch/actions/runs/38391812689)
+passed Windows/Linux and macOS native input, URL delivery and termination, then
+exposed a stale green-only pixel detector. The checker now isolates blue badges
+from blue row text and normalizes antialiasing against the captured background.
+[Both macOS screenshot sets pass the targeted correction](measurements/v0.0.6/pixel-checker-20261013/report.json).
+Light/dark CI gates and final publication remain pending.
+
 The [current installed candidate](measurements/v0.0.5/model-default-20261013/report.json)
 has 2,788,557 owned bytes (2.66 MiB), 82 Rust tests and 18 Python tests.
 It removes compulsory Claude model entry and verifies actual Add/Edit/import
