@@ -1,0 +1,11 @@
+{
+  "name": "config-read-comparison",
+  "command": [
+    "rtk",
+    "proxy",
+    "target/release/examples/measure_config"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 13.86,
+  "log": "docs/measurements/v0.0.5/official-20261013/config-read-comparison.log"
+}

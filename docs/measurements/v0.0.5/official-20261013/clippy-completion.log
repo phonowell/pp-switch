@@ -1,0 +1,96 @@
+    Checking pp-switch v0.0.5 (/Users/mimiko/.codex/worktrees/v005/pp-switch)
+error: items after a test module
+    --> src/ui.rs:580:1
+     |
+ 580 |   mod status_tests {
+     |   ^^^^^^^^^^^^^^^^
+...
+ 599 |   fn row_status(c: &mut Controls, state: &State) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 629 |   fn close_editor(c: &mut Controls, state: &mut State) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 637 |   fn open_editor(c: &mut Controls, state: &mut State, p: Option<&Provider>) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 660 |   fn read_current(state: &mut State, paths: &Paths, client: Client) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 677 | / fn provider_surface(
+ 678 | |     y: i32,
+ 679 | |     width: i32,
+ 680 | |     language: Rc<Cell<Language>>,
+...    |
+ 684 | |     official: bool,
+ 685 | | ) -> Frame {
+     | |__________^
+...
+ 757 | / fn refresh(
+ 758 | |     c: &mut Controls,
+ 759 | |     state: Rc<RefCell<State>>,
+ 760 | |     store: &Store,
+ 761 | |     paths: &Paths,
+ 762 | | ) -> Result<()> {
+     | |_______________^
+...
+ 892 | / fn preview_link(
+ 893 | |     c: &mut Controls,
+ 894 | |     state: Rc<RefCell<State>>,
+ 895 | |     store: &Store,
+ 896 | |     paths: &Paths,
+ 897 | |     link: &str,
+ 898 | | ) -> Result<()> {
+     | |_______________^
+...
+ 923 |   fn wire(c: &mut Controls, state: Rc<RefCell<State>>, store: Store, paths: Paths) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+ 927 | / fn wire_with_updates(
+ 928 | |     c: &mut Controls,
+ 929 | |     state: Rc<RefCell<State>>,
+ 930 | |     store: Store,
+ 931 | |     paths: Paths,
+ 932 | |     check_update: fn() -> Result<Option<update::Update>>,
+ 933 | | ) {
+     | |_^
+...
+1096 |   fn quit() {
+     |   ^^^^^^^^^
+...
+1104 |   fn event_loop() {
+     |   ^^^^^^^^^^^^^^^
+...
+1108 |   enum UpdateEvent {
+     |   ^^^^^^^^^^^^^^^^
+...
+1113 |   fn check_updates(c: &mut Controls, check: fn() -> Result<Option<update::Update>>) {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1209 |   pub fn run(link: Option<&str>) -> Result<()> {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1214 |   pub fn run_with(store: Store, paths: Paths) -> Result<()> {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1218 |   pub fn run_with_link(store: Store, paths: Paths, link: Option<&str>) -> Result<()> {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1248 |   pub fn smoke(store: Store, paths: Paths, screenshot: Option<std::path::PathBuf>) -> Result<()> {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1253 |   pub fn run_measure_editor(store: Store, paths: Paths) -> Result<()> {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1268 |   pub fn mac_acceptance(store: Store, paths: Paths, scenario: &str) -> Result<()> {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+...
+1355 |   pub fn protocol_smoke(store: Store, paths: Paths, output: std::path::PathBuf) -> Result<()> {
+     |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#items_after_test_module
+     = note: `-D clippy::items-after-test-module` implied by `-D warnings`
+     = help: to override `-D warnings` add `#[allow(clippy::items_after_test_module)]`
+     = help: move the items to before the test module was defined
+
+error: could not compile `pp-switch` (lib test) due to 1 previous error

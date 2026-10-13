@@ -193,3 +193,58 @@ Finish or cancel your edits, then open the import link again.	请先完成或取
 Settings	设置	設定	設定
 Back	返回	返回	戻る
 Add	添加	新增	追加
+Default model (optional)	默认模型（可选）	預設模型（選填）	既定モデル（任意）
+Haiku (optional)	Haiku（可选）	Haiku（選填）	Haiku（任意）
+Sonnet (optional)	Sonnet（可选）	Sonnet（選填）	Sonnet（任意）
+Opus (optional)	Opus（可选）	Opus（選填）	Opus（任意）
+Claude model mappings	Claude 模型映射	Claude 模型對應	Claude モデルの割り当て
+Hide model mappings	收起模型映射	收合模型對應	モデルの割り当てを閉じる
+Blank keeps models. Mappings follow a supplied default.	全部留空则保留原模型；映射默认跟随填写的默认模型。	全部留空則保留原模型；對應預設跟隨填寫的預設模型。	全て空欄なら維持。割り当ては指定した既定モデルに従います。
+Blank keeps the client's model.	留空则保留客户端原有模型。	留空則保留用戶端原有模型。	空欄ならクライアントのモデルを維持します。
+Model mappings are supported only for Claude Code.	模型映射仅适用于 Claude Code。	模型對應僅適用於 Claude Code。	モデルの割り当ては Claude Code のみ対応しています。
+Model IDs must contain 1–512 bytes without whitespace or control characters.	模型 ID 须为 1–512 字节，不得包含空白或控制字符。	模型 ID 須為 1–512 位元組，不得包含空白或控制字元。	モデル ID は 1～512 バイトで、空白・制御文字は使用できません。
+Configured model must be a string.	配置中的模型须为字符串。	設定中的模型須為字串。	設定のモデルは文字列である必要があります。
+Gemini settings are missing.	缺少 Gemini 设置文件。	缺少 Gemini 設定檔。	Gemini の設定ファイルがありません。
+This client is not supported. Choose Claude, Codex, Gemini or Grok.	不支持此客户端。请选择 Claude、Codex、Gemini 或 Grok。	不支援此用戶端。請選擇 Claude、Codex、Gemini 或 Grok。	非対応クライアントです。Claude、Codex、Gemini、Grok を選択してください。
+Grok Build config is not valid TOML.	Grok Build 配置不是有效的 TOML。	Grok Build 設定不是有效的 TOML。	Grok Build の設定は有効な TOML ではありません。
+Initialize a custom Grok Build API-key profile first; pp-switch never changes models.default.	请先初始化 Grok Build 自定义 API Key profile；PPS 不修改 models.default。	請先初始化 Grok Build 自訂 API Key profile；PPS 不修改 models.default。	先に Grok Build のカスタム API キー profile を初期設定してください。models.default は変更しません。
+Selected Grok Build profile has no custom configuration.	选中的 Grok Build profile 没有自定义配置。	選取的 Grok Build profile 沒有自訂設定。	選択済みの Grok Build profile にカスタム設定がありません。
+Grok Build uses an external credential source; only an existing inline API-key profile is supported.	Grok Build 使用外部凭据；仅支持既有内联 API Key profile。	Grok Build 使用外部憑證；僅支援既有內聯 API Key profile。	Grok Build は外部認証情報を使用しています。既存のインライン API キー profile のみ対応しています。
+Initialize a custom Grok Build API-key profile with base_url and api_key first.	请先初始化含 base_url 和 api_key 的 Grok Build 自定义 profile。	請先初始化含 base_url 和 api_key 的 Grok Build 自訂 profile。	先に base_url と api_key を持つ Grok Build のカスタム profile を初期設定してください。
+Inline Grok Build config is not valid TOML.	内联 Grok Build 配置不是有效的 TOML。	內聯 Grok Build 設定不是有效的 TOML。	インライン Grok Build 設定は有効な TOML ではありません。
+Inline Grok Build config has no custom profile.	内联 Grok Build 配置没有自定义 profile。	內聯 Grok Build 設定沒有自訂 profile。	インライン Grok Build 設定にカスタム profile がありません。
+Inline Grok Build config has multiple profiles; select models.default first.	内联 Grok Build 配置有多个 profile；请先设置 models.default。	內聯 Grok Build 設定有多個 profile；請先設定 models.default。	インライン Grok Build 設定に複数の profile があります。先に models.default を指定してください。
+A provider with this name already exists for this client. Choose a different name.	此客户端已有同名 Provider，请使用其他名称。	此客戶端已有同名 Provider，請使用其他名稱。	このクライアントには同名の Provider があります。別の名前を入力してください。
+Official	官方	官方	公式
+Native login	原生登录	原生登入	標準ログイン
+A non-PPS pps profile already exists; rename it before switching.	已有非 PPS 创建的 pps 配置；请先重命名它。	已有非 PPS 建立的 pps 設定；請先重新命名。	PPS 以外の pps 設定が存在します。先に名前を変更してください。
+Claude model/environment overrides must be cleared before restoring official mode.	请先清除 Claude 的模型或环境覆盖，再切回官方。	請先清除 Claude 的模型或環境覆寫，再切回官方。	公式へ戻す前に Claude のモデル・環境変数の上書きを解除してください。
+Codex forced login method must be cleared before switching a native bearer route.	请先清除 Codex 强制登录方式，再切换第三方。	請先清除 Codex 強制登入方式，再切換第三方。	外部プロバイダーへ切替前に Codex の強制ログイン方式を解除してください。
+Codex profile overrides must be cleared before switching official mode.	请先清除 Codex 的 profile 覆盖，再切回官方。	請先清除 Codex 的 profile 覆寫，再切回官方。	公式へ戻す前に Codex の profile 上書きを解除してください。
+Configured model selector must be a string.	模型选择项必须是字符串。	模型選擇項必須是字串。	モデル選択値は文字列である必要があります。
+Configured provider must be a string.	Provider 选择项必须是字符串。	Provider 選擇項必須是字串。	プロバイダー選択値は文字列である必要があります。
+Custom openai table overrides the native route; remove it in Codex first.	自定义 openai 表覆盖了原生路由；请先在 Codex 中移除。	自訂 openai 表覆寫了原生路由；請先在 Codex 中移除。	カスタム openai テーブルが標準接続を上書きしています。Codex で先に削除してください。
+DSH CLI and Web have different route settings. Configure a common home-level route first; PPS preserves both profiles.	DSH 的 CLI 和 Web 路由不同；请先配置共同的 home 层路由。	DSH 的 CLI 和 Web 路由不同；請先設定共同的 home 層路由。	DSH の CLI と Web の接続設定が異なります。先に共通のホーム設定を指定してください。
+DSH YAML must be a single valid document without duplicate keys, aliases, anchors or tags.	DSH YAML 须为单个有效文档，不能含重复键、别名、锚点或标签。	DSH YAML 須為單個有效文件，不能含重複鍵、別名、錨點或標籤。	DSH YAML は重複キー・エイリアス・アンカー・タグのない単一文書である必要があります。
+DSH credentials must use version 1.	DSH 凭据格式必须为 version 1。	DSH 憑證格式必須為 version 1。	DSH 資格情報形式は version 1 である必要があります。
+DSH has an inherited URL/key environment override. Clear it before switching.	DSH 存在环境变量覆盖；请先清除再切换。	DSH 存在環境變數覆寫；請先清除再切換。	DSH の接続を環境変数が上書きしています。切替前に解除してください。
+DSH patch contains duplicate entry IDs.	DSH patch 存在重复条目 ID。	DSH patch 存在重複項目 ID。	DSH patch に重複した項目 ID があります。
+DSH patch operations outside id/config overrides are unsupported.	仅支持 DSH patch 的 id/config 覆盖。	僅支援 DSH patch 的 id/config 覆寫。	DSH patch は id/config の上書きのみ対応しています。
+DSH routes with custom headers are unsupported; use an explicit API-key reference.	DSH 不支持自定义认证头；请使用明确的 API Key 引用。	DSH 不支援自訂認證標頭；請使用明確的 API Key 參照。	DSH のカスタム認証ヘッダーには非対応です。明示的な API キー参照を使用してください。
+DSH shared patches must use a block-style list when adding an inherited override.	新增继承覆盖时，DSH 共同 patch 必须使用块式列表。	新增繼承覆寫時，DSH 共同 patch 必須使用區塊式清單。	継承設定を追加する際は DSH 共通 patch をブロック形式のリストにしてください。
+DSH uses an external credential store; only the default home store is supported.	DSH 仅支持默认 home 目录内的凭据存储。	DSH 僅支援預設 home 目錄內的憑證儲存。	DSH は標準ホーム内の資格情報ストアのみ対応しています。
+DSH uses native account authentication.	DSH 当前使用原生账号认证。	DSH 目前使用原生帳號認證。	DSH は現在、標準アカウント認証を使用しています。
+Gemini alternate URL/key sources must be cleared before switching.	请先清除 Gemini 的其他地址或 Key 来源，再切换。	請先清除 Gemini 的其他位址或 Key 來源，再切換。	切替前に Gemini の別の URL・キー設定を解除してください。
+Gemini cloud/external authentication is outside official switching scope.	不支持切换 Gemini 的云端或外部认证模式。	不支援切換 Gemini 的雲端或外部認證模式。	Gemini のクラウド・外部認証方式の切替には非対応です。
+Gemini model/environment overrides must be cleared before restoring official mode.	请先清除 Gemini 的模型环境覆盖，再切回官方。	請先清除 Gemini 的模型環境覆寫，再切回官方。	公式へ戻す前に Gemini のモデル環境変数の上書きを解除してください。
+Grok models must be a table.	Grok models 必须是配置表。	Grok models 必須是設定表。	Grok の models はテーブルである必要があります。
+Initialize DSH headless and web profiles with the base bundle first.	请先初始化含 base bundle 的 DSH headless 和 web profile。	請先初始化含 base bundle 的 DSH headless 和 web profile。	先に base bundle を含む DSH headless と web profile を初期化してください。
+Managed PPS route has an incompatible protocol or auth mode.	PPS 路由的协议或认证方式不兼容。	PPS 路由的協定或認證方式不相容。	PPS 接続のプロトコルまたは認証方式に互換性がありません。
+Managed PPS route uses an external credential source; restore its API-key setup first.	PPS 路由使用了外部凭据；请先恢复 API Key 配置。	PPS 路由使用了外部憑證；請先還原 API Key 設定。	PPS 接続が外部資格情報を使用しています。先に API キー設定へ戻してください。
+Provider catalog must be a table.	Provider 目录必须是配置表。	Provider 目錄必須是設定表。	プロバイダーカタログはテーブルである必要があります。
+Set a default model before switching Grok from official mode.	从官方切换 Grok 前，请先填写默认模型。	從官方切換 Grok 前，請先填寫預設模型。	Grok を公式から切り替える前に既定モデルを指定してください。
+Store a DSH API key first; PPS does not initialize credentials.	请先保存 DSH API Key；普通路由切换不初始化凭据。	請先儲存 DSH API Key；一般路由切換不初始化憑證。	先に DSH API キーを保存してください。通常接続の切替では資格情報を初期化しません。
+Store the selected DSH API-key reference first; PPS preserves account records.	请先保存所选 DSH API Key 引用；账号记录会保留。	請先儲存所選 DSH API Key 參照；帳號紀錄會保留。	先に選択した DSH API キー参照を保存してください。アカウント記録は維持します。
+Grok Build selected profile is missing.	Grok Build 所选 profile 不存在。	Grok Build 所選 profile 不存在。	Grok Build の選択したプロファイルがありません。
+Codex forced login method is unsupported.	不支持此 Codex 登录方式限制。	不支援此 Codex 登入方式限制。	この Codex ログイン方式の制限は非対応です。
+Codex authentication mode is unsupported.	不支持此 Codex 认证方式。	不支援此 Codex 認證方式。	この Codex 認証方式は非対応です。

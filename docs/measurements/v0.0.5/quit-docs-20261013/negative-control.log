@@ -1,0 +1,8 @@
+compile exit: 0
+
+menu: OLD CANCELLATION REPRODUCED: callback ran but native wait stayed alive until 6s timeout
+PPS quit callback
+
+appleevent: OLD CANCELLATION REPRODUCED: callback ran but native wait stayed alive until 6s timeout
+PPS quit callback
+

@@ -1,0 +1,13 @@
+{
+  "name": "behavior-final",
+  "command": [
+    "rtk",
+    "proxy",
+    "/Users/mimiko/.cargo/bin/cargo",
+    "test",
+    "--locked"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 22.34,
+  "log": "docs/measurements/v0.0.5/official-20261013/behavior-final.log"
+}

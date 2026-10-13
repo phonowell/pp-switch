@@ -4,9 +4,9 @@
 
 # pp-switch
 
-**Pure Provider Switch. 只切地址和 Key，配置始终归你。**
+**Pure Provider Switch. 明确切换连接，配置始终归你。**
 
-为 Claude Code、Codex 和 Gemini CLI 准备的极简服务商切换器。
+极简原生服务商切换器，0.0.5 开发版支持五个 harness。
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
@@ -18,31 +18,20 @@
 
 </div>
 
-![pp-switch 的真实中文窗口：顶部选择客户端，列表选择服务商，一键切换](assets/screenshot-zh.png)
+![v0.0.5 主窗口浅色与深色示意图，非原生截图](docs/illustrations/v0.0.5/main-zh.svg)
 
 ## 为什么选 pp-switch？
 
-**好不容易调好的客户端，不应该因为换个 API 服务就重配一遍。**
+切换连接，保留已经调好的客户端配置。PPS 只管理地址、Key、明确填写的可选模型
+及限定的官方/API 路由；保留其他设置、注释和格式，拒绝不受支持的配置。
 
-模型、推理参数、项目权限、MCP、Skills 都已经顺手了。你现在只想换一个地址和 Key。pp-switch 保存这些连接，切换时只修改这两个值；无关配置的原始字节、注释和格式都保留。不支持的配置会明确提示，不会替你重新搭一套。
+一个原生窗口，每行提供 Lucide 编辑/切换按钮，没有托盘或常驻助手。
+更新只在手动检查并确认后执行。Rust + FLTK、系统字体和矢量路径，
+不捆绑 WebView、数据库或 JavaScript 运行时。
 
-**切换器，用完就该结束。** 一个窗口，没有托盘、开机启动、服务探测和用量轮询。关掉窗口，进程退出。更新也只在你点击「检查更新」并确认安装后执行。Rust + FLTK，原生矢量绘制与系统字体，不捆绑 WebView、数据库或 JavaScript 运行时。
-
-
-这不是凭空想象的需求：[cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) 明确希望提供「纯净版 / Lite 模式」，提出「CC Switch 只负责‘切换’，其他配置完全交给对应 CLI / IDE / 用户自己管理」。pp-switch 采用这个配置归属原则，并进一步收窄到地址和 Key。该讨论是需求来源，不代表社区背书；具体来源和限制见[调研记录](docs/verification.md#community-sources)。
-
-## 边界小，差异明确
-
-| | pp-switch | cc-switch |
-| --- | --- | --- |
-| 定位 | 为已经配好的客户端切换地址和 Key | 更全面的服务商与客户端管理 |
-| 写入范围 | 仅当前生效的 Base URL 和 API Key | 根据启用功能管理更多配置 |
-| 服务商链接 | 仅预览 URL / Key（0.0.5 开发版） | 完整深链工作流 |
-| 模型、路由、用量、MCP、提示词、Skills | 不在产品范围内 | 提供相应管理能力 |
-| 运行方式 | 关闭窗口，进程退出 | 支持托盘及更多工作流 |
-| 更新 | 手动检查 → 确认 → 下载、安装、重启 | 自有更新工作流 |
-
-需要综合管理面板时，[cc-switch](https://github.com/farion1231/cc-switch) 更合适。pp-switch 是独立项目，面向已经配置好客户端、希望切换动作更小、更可控的人。
+开发版支持 Claude Code、Codex CLI/App、Gemini CLI、Grok Build 和 DSH CLI/Web。
+**已发布的 0.0.4 仅支持前三者；0.0.5 尚未发布。**
+[产品边界与 cc-switch 调研](docs/verification.md#community-sources)。
 
 ## 下载
 
@@ -59,34 +48,25 @@
 
 无需安装 Rust 或 Node.js。macOS 包声明支持 macOS 11+，**未进行 Apple Developer 签名或公证**。Windows 要求 Windows 10+；Linux 需要 X11/XWayland、系统 X11/fontconfig 库及覆盖所选语言的系统字体。声明最低系统版本不代表每个版本均已测试；原生验收环境见[验证记录](docs/verification.md)。
 
-macOS 0.0.2 用户需手动下载这次更新：旧版更新器会拒绝新增的图标资源，0.0.3 已将它纳入更新文件列表。
-
 ## 使用
 
-1. 选择 Claude Code、Codex 或 Gemini CLI。
-2. 点击「添加」，填写名称、Base URL 和 Key，保存。
-3. 点击该行编辑按钮后面的切换图标；客户端若未重读配置，请重启。
+1. 选择 harness，点击「添加」，填写名称、地址和 Key，保存。
+2. 检查可选模型；Claude 没有具体模型时预填 `claude-sonnet-5`，清空则保留客户端模型。
+3. 点击该行切换图标；客户端未重读配置时，请重启客户端。
 
-每行提供 Lucide 编辑和切换图标，取消独立选中态。标签右侧的小齿轮进入设置页，
-管理语言与手动更新。移除了全部悬浮提示、内容标题、底部状态与全局切换区。
-匹配的重复条目均显示「使用中」。界面跟随系统浅色／深色模式。保存只改本地列表。
-界面语言：**English、简体中文、繁體中文、日本語**，首次跟随系统语言。
+保存只存入服务商列表。蓝色「使用中」检查受支持的用户级配置文件，
+不证明运行中的会话或请求成功。名称在每个客户端内唯一，导入同名时自动追加
+` (2)`、` (3)`。相同连接可以用不同名称保存。
 
+0.0.5 的五个 harness 均有「官方」条目，用于限定范围的原生配置还原。
+Codex CLI/App 共用配置；DSH CLI/Web 共用已初始化的 home profile。
+CCS/Sub2API 链接打开未保存的预览；明确导入的模型优先于编辑器建议。请确认服务商支持建议的模型。
+外部密钥助手、云认证模式和不支持的密钥来源会被拒绝。
+[初始化、精确写入与排错](docs/user-guide-zh.md)。
 
-| 客户端 | 已有配置要求 | 修改字段 |
-| --- | --- | --- |
-| Claude Code | API Key 配置，无外部 Key helper、云平台模式或冲突凭据 | `settings.json` 中的 `ANTHROPIC_BASE_URL` 和既有 Key/token 字段 |
-| Codex | 已选自定义服务商，已初始化 API Key 认证 | 当前服务商的 `base_url`，以及既有 bearer token 或 `auth.json.OPENAI_API_KEY` |
-| Gemini CLI | 已通过 `/auth` 选择 API Key 模式 | `.env` 的 `GOOGLE_GEMINI_BASE_URL` 和 `GEMINI_API_KEY` |
-
-不改变模型、认证方式或协议，也不做客户端首次初始化。只操作用户级文件；项目配置、启动参数和另一个终端的环境变量仍可能覆盖它。支持 `CLAUDE_CONFIG_DIR` 和 `CODEX_HOME`。[配置与排错 →](docs/user-guide-zh.md)
-
-## 兼容与信任
-
-- 0.0.5 开发版恢复仅提取服务商 URL / Key 的链接预览与显式 URL 注册；保存不会应用客户端配置。0.0.4 下载版不含此流程。
-- 密钥保存在本地用户专属文件中（Unix 0600 / Windows 当前用户 ACL）。界面遮罩**不是加密**。不自动读取剪贴板、不输出密钥诊断、不请求服务商接口。
-- 更新须手动确认，安装目录须可写。只下载本仓库发布包并校验 SHA-256；包未签名，更新不修改服务商和客户端配置。[更新详情](docs/user-guide-zh.md#手动更新)。
-- 完整行为见 [SPEC.md](SPEC.md)；文件位置与数据目录见[指南](docs/user-guide-zh.md)。
+设置提供语言、手动链接注册和检查更新。界面支持 English、简体中文、繁體中文、
+日本語，跟随系统浅色/深色。密钥保存在仅当前用户可访问的本地文件，遮罩不等于加密。
+不自动请求服务商；更新校验本仓库包的 SHA-256，只替换应用文件。[行为规范](SPEC.md)。
 
 ## 性能：预算与实测分开
 

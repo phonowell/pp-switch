@@ -341,6 +341,25 @@ impl Store {
         self.commit_locked(changes)
     }
 
+    /// Validate read-only configuration inputs under the same write lock.
+    pub(crate) fn commit_guarded(
+        &self,
+        changes: Vec<Change>,
+        guards: &[(PathBuf, Option<String>)],
+    ) -> Result<()> {
+        let _lock = self.lock()?;
+        self.recover_locked()?;
+        for (path, expected) in guards {
+            if read(path)? != *expected {
+                return Err(
+                    "Configuration changed while preparing this operation. Reload and try again."
+                        .into(),
+                );
+            }
+        }
+        self.commit_locked(changes)
+    }
+
     fn decode_providers(text: Option<&str>) -> Result<Vec<Provider>> {
         let providers: Vec<Provider> = serde_json::from_str(text.unwrap_or("[]"))
             .map_err(|_| "Provider store is invalid; it was not overwritten.")?;
@@ -385,6 +404,9 @@ impl Store {
     pub fn save(&self, provider: Provider) -> Result<()> {
         provider.validate()?;
         self.update(|providers| {
+            if providers.iter().any(|p| p.id != provider.id && p.same_name(provider.client, &provider.name)) {
+                return Err("A provider with this name already exists for this client. Choose a different name.".into());
+            }
             if let Some(existing) = providers.iter_mut().find(|p| p.id == provider.id) {
                 *existing = provider;
             } else {
@@ -399,5 +421,37 @@ impl Store {
             providers.retain(|p| p.id != id);
             Ok(())
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn pp09_changed_read_only_guard_prevents_every_destination_write() {
+        let dir = tempfile::tempdir().unwrap();
+        let store = Store {
+            root: dir.path().join("store"),
+        };
+        let input = dir.path().join("profile.yml");
+        let destination = dir.path().join("home.yml");
+        fs::write(&input, "external change").unwrap();
+        fs::write(&destination, "old").unwrap();
+        assert!(
+            store
+                .commit_guarded(
+                    vec![Change {
+                        path: destination.clone(),
+                        before: Some("old".into()),
+                        after: "new".into()
+                    }],
+                    &[(input.clone(), Some("snapshot".into()))]
+                )
+                .is_err()
+        );
+        assert_eq!(fs::read_to_string(&input).unwrap(), "external change");
+        assert_eq!(fs::read_to_string(&destination).unwrap(), "old");
+        assert!(!store.root.join("pending.json").exists());
     }
 }

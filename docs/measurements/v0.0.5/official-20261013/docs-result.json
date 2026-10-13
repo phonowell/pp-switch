@@ -1,0 +1,12 @@
+{
+  "name": "docs",
+  "command": [
+    "rtk",
+    "proxy",
+    "python3",
+    "scripts/docs_check.py"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.64,
+  "log": "docs/measurements/v0.0.5/official-20261013/docs.log"
+}

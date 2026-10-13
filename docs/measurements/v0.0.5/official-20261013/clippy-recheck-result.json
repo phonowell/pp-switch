@@ -1,0 +1,17 @@
+{
+  "name": "clippy-recheck",
+  "command": [
+    "rtk",
+    "proxy",
+    "/Users/mimiko/.cargo/bin/cargo",
+    "clippy",
+    "--locked",
+    "--all-targets",
+    "--",
+    "-D",
+    "warnings"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 9.73,
+  "log": "docs/measurements/v0.0.5/official-20261013/clippy-recheck.log"
+}

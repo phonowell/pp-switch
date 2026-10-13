@@ -1,0 +1,13 @@
+{
+  "name": "client-icon-parity",
+  "command": [
+    "rtk",
+    "proxy",
+    "/tmp/pps-v005-tools/bin/python",
+    "scripts/client_icons.py",
+    "--check"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 1.05,
+  "log": "docs/measurements/v0.0.5/official-20261013/client-icon-parity.log"
+}

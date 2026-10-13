@@ -18,9 +18,13 @@ parser.add_argument("--output", type=Path)
 parser.add_argument("--allow-desktop-input", action="store_true", help="explicitly allow measurement windows on an idle or isolated desktop")
 parser.add_argument("--enforce", action="store_true")
 parser.add_argument("--editor", dest="editor", action="store_true", help="measure provider editor with fake data")
+parser.add_argument("--native-ready", action="store_true", help="binary emits READY only after native event action + displayed frame")
+parser.add_argument("--scenario", choices=("empty", "editor", "import"), help="scenario for mac_acceptance (requires --native-ready)")
 args = parser.parse_args()
 if not 1 <= args.runs <= 20:
     raise SystemExit("runs must be between 1 and 20")
+if args.scenario and not args.native_ready:
+    raise SystemExit("--scenario requires --native-ready")
 
 if not args.allow_desktop_input and os.environ.get("CI") != "true":
     raise SystemExit("SKIPPED: measurement windows require --allow-desktop-input or a dedicated CI session")
@@ -59,7 +63,8 @@ def terminate(process):
 samples = []
 for _ in range(args.runs):
     start = time.perf_counter()
-    process = subprocess.Popen([str(args.binary.resolve())] + (["--editor"] if args.editor else []) + ["--allow-desktop-input"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    command = [str(args.binary.resolve())] + (["--editor"] if args.editor else []) + ([f"--scenario={args.scenario}"] if args.scenario else []) + ["--allow-desktop-input"]
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     ready = queue.Queue()
     threading.Thread(target=lambda: ready.put(process.stdout.readline().strip()), daemon=True).start()
     try:
@@ -102,11 +107,16 @@ for _ in range(args.runs):
     if returncode != 0 or not idle:
         raise SystemExit(f"Measurement process failed: {process.stderr.read()}")
     samples.append({"startup_ms": round(startup, 2), "idle_rss_bytes": int(statistics.median(idle)), "peak_rss_bytes": peak})
-report = {"os": platform.platform(), "machine": platform.machine(), "scenario": "provider-editor" if args.editor else "empty-window", "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+report = {"os": platform.platform(), "machine": platform.machine(), "scenario": args.scenario or ("provider-editor" if args.editor else "empty-window"),
+          "binary": str(args.binary.resolve()), "command": command,
+          "method": "fresh processes; OS cache not cleared; " + ("READY after native event action and displayed frame" if args.native_ready else "READY on first event-loop timer") + "; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+          "native_action_readiness": args.native_ready, "cold_start_verified": False,
           "samples": samples, "startup_median_ms": round(statistics.median(s["startup_ms"] for s in samples), 2),
           "startup_max_ms": max(s["startup_ms"] for s in samples),
           "idle_max_bytes": max(s["idle_rss_bytes"] for s in samples), "peak_max_bytes": max(s["peak_rss_bytes"] for s in samples)}
-report["budget_pass"] = report["startup_max_ms"] <= 300 and report["idle_max_bytes"] <= 20 * 1024 * 1024 and report["peak_max_bytes"] <= 30 * 1024 * 1024
+report["measured_threshold_pass"] = report["startup_max_ms"] <= 300 and report["idle_max_bytes"] <= 20 * 1024 * 1024 and report["peak_max_bytes"] <= 30 * 1024 * 1024
+# Cache-retaining launches cannot certify the complete cold-start requirement.
+report["budget_pass"] = report["measured_threshold_pass"] and report["native_action_readiness"] and report["cold_start_verified"]
 text = json.dumps(report, indent=2) + "\n"
 print(text)
 if args.output:

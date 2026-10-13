@@ -1,0 +1,42 @@
+[
+  {
+    "name": "package",
+    "command": [
+      "rtk",
+      "proxy",
+      "python3",
+      "scripts/package.py",
+      "aarch64-apple-darwin",
+      "--binary",
+      "target/release/pp-switch"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.3,
+    "log": "package.log"
+  },
+  {
+    "name": "archive-validation",
+    "command": [
+      "rtk",
+      "proxy",
+      "target/release/examples/update_smoke",
+      "--archive",
+      "target/package/pp-switch-v0.0.5-aarch64-apple-darwin.zip"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.619,
+    "log": "archive-validation.log"
+  },
+  {
+    "name": "release-prefill",
+    "command": [
+      "rtk",
+      "proxy",
+      "target/release/examples/mac_quit_background",
+      "model-prefill"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 1.561,
+    "log": "release-prefill.log"
+  }
+]

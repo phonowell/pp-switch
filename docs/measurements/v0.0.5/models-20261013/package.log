@@ -1,0 +1,8 @@
+COMMAND ["/private/tmp/pps-v005-tools/bin/python", "scripts/package.py", "aarch64-apple-darwin", "--binary", "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/release/pp-switch"]
+{
+  "version": "0.0.5",
+  "target": "aarch64-apple-darwin",
+  "installed_bytes": 2566386,
+  "archive_bytes": 1314857,
+  "sha256": "2e6aec92274116f78450fc408d6d6aa46c0e415e675282ce4d3898a32d873a0b"
+}

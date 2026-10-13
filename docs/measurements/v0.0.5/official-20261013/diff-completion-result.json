@@ -1,0 +1,13 @@
+{
+  "name": "diff-completion",
+  "command": [
+    "rtk",
+    "proxy",
+    "git",
+    "diff",
+    "--check"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.37,
+  "log": "docs/measurements/v0.0.5/official-20261013/diff-completion.log"
+}

@@ -1,0 +1,18 @@
+{
+  "time_utc": "2026-10-13T07:31:59.649496+00:00",
+  "destination": "/Users/mimiko/Applications/pp-switch.app",
+  "backup": "/Users/mimiko/.codex/backups/pp-switch/compact-tabs-v005-20261013T073159609628Z/pp-switch-previous.app",
+  "archive_sha256": "9fabe246b14548b48d89a538ab3e988aa4c9e5bf7d8ad4fb5f030954884ab7bd",
+  "installed_bytes": 2754975,
+  "installed_sha256": {
+    "Contents/Info.plist": "76be48b7093bafc84acbac6f1ebff55b1ab2118e1cc4048efdb1241492be6ebd",
+    "Contents/MacOS/pp-switch": "239e8ae29e911e6e3fa2945358131faf8a6675a27ba310b5b4b708ffadc4697a",
+    "Contents/Resources/AppIcon.icns": "cf2b68a2bf9fe6636110b5e7a590117d78df84dd8800bc2ae55626741074d28b",
+    "Contents/Resources/LICENSE": "18e5e3ed3e28b653178943cc38f54f3bc2dd883fbec46fcbc8d07aa72a7ecc97",
+    "Contents/Resources/README.txt": "03843ac76fa7ca3a7a9ba8782990079b21b8984cf8a9fc01831b3d2322708f26",
+    "Contents/Resources/THIRD_PARTY_NOTICES.txt": "d4b6f3fc239f7150997f212f2ca319318b3a00d993583d2fe45f5219783ba5b7"
+  },
+  "launched": false,
+  "client_files_modified": false,
+  "native_gui_acceptance": "unverified; foreground preserved"
+}

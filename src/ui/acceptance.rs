@@ -107,7 +107,7 @@ fn badge_reference(language: Language, output: &Path) -> Result<()> {
     window.set_color(theme::selected());
     let mut label = Frame::new(0, 0, 100, 69, "");
     label.draw(move |f| {
-        draw::set_draw_color(theme::active_badge());
+        draw::set_draw_color(theme::active_text());
         draw::set_font(Font::Helvetica, 10);
         draw::draw_text2(
             tr(language, "In use"),
@@ -309,12 +309,13 @@ fn visual_locale(
         &output.join(format!("{}-chrome.png", language.code())),
     )?;
     badge_reference(language, output)?;
-    let provider = Provider::new(
+    let mut provider = Provider::new(
         Client::Claude,
         tr(language, "Everyday"),
         "https://api.example.com",
         "visual-fake-key",
     )?;
+    provider.models.model = Some("visual-model".into());
     for (index, client) in Client::ALL.into_iter().enumerate() {
         let mut sample = provider.clone();
         sample.client = client;
@@ -327,17 +328,27 @@ fn visual_locale(
     c.client.set(Client::Claude);
     refresh(&mut c, state.clone(), &store, &paths)?;
     snapshot(&mut c.window, &shot("rows"))?;
-    state.borrow_mut().current = Some((provider.base_url.clone(), provider.api_key.clone()));
+    paths.apply(&store, &provider)?;
+    read_current(&mut state.borrow_mut(), &paths, Client::Claude);
     row_status(&mut c, &state.borrow());
     snapshot(&mut c.window, &shot("active"))?;
-    open_editor(&mut c, &mut state.borrow_mut(), None);
+    open_editor(&mut c, &mut state.borrow_mut(), None, &paths);
     pump();
+    require(
+        c.model.value() == crate::client::CLAUDE_EDITOR_DEFAULT,
+        "Claude Add did not contain the visible default model.",
+    )?;
     c.name.set_value(&provider.name);
     c.url.set_value(&provider.base_url);
     c.key.set_value(&provider.api_key);
     snapshot(&mut c.editor, &shot("add"))?;
-    open_editor(&mut c, &mut state.borrow_mut(), Some(&provider));
+    open_editor(&mut c, &mut state.borrow_mut(), Some(&provider), &paths);
     snapshot(&mut c.editor, &shot("edit"))?;
+    c.model.set_value("custom-default");
+    c.model_layout(true);
+    c.model_aliases[0].set_value("custom-fast");
+    pump();
+    snapshot(&mut c.editor, &shot("model-mappings"))?;
     close_editor(&mut c, &mut state.borrow_mut());
     for index in 0..7 {
         store.save(Provider::new(
@@ -348,7 +359,6 @@ fn visual_locale(
         )?)?;
     }
     refresh(&mut c, state.clone(), &store, &paths)?;
-    state.borrow_mut().current = Some((provider.base_url.clone(), provider.api_key.clone()));
     row_status(&mut c, &state.borrow());
     snapshot(&mut c.window, &shot("overflow"))?;
     c.list.scroll_to(0, 24);
@@ -418,12 +428,22 @@ pub fn interaction_regression(
         "Back did not restore the list.",
     )?;
     let before = paths.current(Client::Claude)?;
-    // Add duplicates through native controls; saving never applies.
+    // Identical connections under distinct names; saving never applies.
     for expected in 1..=2 {
         click(driver.as_ref(), &c.window, &c.new);
-        type_field(driver.as_ref(), &c.editor, &c.name, "Same");
+        require(
+            c.model.value() == crate::client::CLAUDE_EDITOR_DEFAULT,
+            "Claude Add did not prefill its default model.",
+        )?;
+        type_field(
+            driver.as_ref(),
+            &c.editor,
+            &c.name,
+            &format!("Same {expected}"),
+        );
         type_field(driver.as_ref(), &c.editor, &c.url, "https://same.example");
         type_field(driver.as_ref(), &c.editor, &c.key, "fake");
+        type_field(driver.as_ref(), &c.editor, &c.model, "fixture-model");
         click(driver.as_ref(), &c.editor, &c.save);
         require(
             store.load()?.len() == expected && paths.current(Client::Claude)? == before,
@@ -448,7 +468,9 @@ pub fn interaction_regression(
     let switch = row_action(&c, 0, false);
     click(driver.as_ref(), &c.window, &switch);
     require(
-        paths.current(Client::Claude)? == Some(("https://same.example".into(), "fake".into())),
+        !c.editor.shown()
+            && paths.current(Client::Claude)?
+                == Some(("https://same.example".into(), "fake".into())),
         "Switch did not target its own row.",
     )?;
     require(
@@ -476,7 +498,9 @@ pub fn interaction_regression(
         driver.close(&c.editor);
         pump();
         require(
-            !c.editor.shown() && app::modal().is_none() && store.load()?[index].name == "Same",
+            !c.editor.shown()
+                && app::modal().is_none()
+                && store.load()?[index].name == format!("Same {}", index + 1),
             "Editor title-close saved a draft or left a modal.",
         )?;
     }
@@ -484,6 +508,34 @@ pub fn interaction_regression(
         paths.current(Client::Claude)? == current,
         "Editing duplicates applied configuration.",
     )?;
+    // Clearing a default opts out; a model-less record switches directly and
+    // preserves every model byte in the client fixture.
+    let model_before =
+        std::fs::read(paths.settings(Client::Claude)).map_err(|_| "Cannot read model fixture.")?;
+    click(driver.as_ref(), &c.window, &row_action(&c, 2, true));
+    require(
+        c.model.value() == crate::client::CLAUDE_EDITOR_DEFAULT,
+        "Different connection inherited a stale model.",
+    )?;
+    c.model.set_value("");
+    click(driver.as_ref(), &c.editor, &c.save);
+    require(
+        store.load()?[2].models.is_empty()
+            && std::fs::read(paths.settings(Client::Claude)).ok().as_ref() == Some(&model_before),
+        "Clearing a model applied client files or persisted a default.",
+    )?;
+    click(driver.as_ref(), &c.window, &row_action(&c, 2, false));
+    require(
+        !c.editor.shown()
+            && c.rows.borrow()[2].active.get()
+            && paths.current_models(Client::Claude)?.matches(
+                Client::Claude,
+                &Models::from_fields("fixture-model", "", "", ""),
+            ),
+        "Model-less Switch was blocked or changed retained models.",
+    )?;
+    click(driver.as_ref(), &c.window, &row_action(&c, 0, false));
+    let current = paths.current(Client::Claude)?;
     snapshot(&mut c.window, &output.join("zh-duplicate-active.ppm"))?;
     println!(
         "INPUT zh: startup focus/Tab/Space, in-window settings/back, duplicate save, passive row click, record-specific switch/edit passed"
@@ -494,6 +546,7 @@ pub fn interaction_regression(
         ("", "https://safe.example", "fake"),
         ("Valid", "file:///tmp/fake", "fake"),
         ("Valid", "https://safe.example", ""),
+        ("Same 1", "https://safe.example", "fake"),
     ] {
         c.name.set_value(name);
         c.url.set_value(url);
@@ -534,6 +587,74 @@ pub fn interaction_regression(
         !c.editor.shown() && store.load()?.len() == 2 && paths.current(Client::Claude)? == current,
         "Delete wrote client files or failed.",
     )?;
+    // Explicit models are saved as a draft and applied only by that row's Switch.
+    click(driver.as_ref(), &c.window, &c.new);
+    type_field(driver.as_ref(), &c.editor, &c.name, "Models");
+    type_field(driver.as_ref(), &c.editor, &c.url, "https://model.example");
+    type_field(driver.as_ref(), &c.editor, &c.key, "model-fake");
+    type_field(driver.as_ref(), &c.editor, &c.model, "model-default");
+    click(driver.as_ref(), &c.editor, &c.model_toggle);
+    require(
+        c.model_group.visible(),
+        "Model mapping section did not expand.",
+    )?;
+    type_field(
+        driver.as_ref(),
+        &c.editor,
+        &c.model_aliases[0],
+        "model-fast",
+    );
+    click(driver.as_ref(), &c.editor, &c.save);
+    let model_provider = store
+        .load()?
+        .last()
+        .cloned()
+        .ok_or("Missing model fixture.")?;
+    require(
+        model_provider.models == Models::from_fields("model-default", "model-fast", "", "")
+            && paths.current(Client::Claude)? == current,
+        "Model Save failed or applied before Switch.",
+    )?;
+    click(driver.as_ref(), &c.window, &row_action(&c, 2, false));
+    require(
+        paths
+            .current_models(Client::Claude)?
+            .matches(Client::Claude, &model_provider.models)
+            && c.rows.borrow()[2].active.get(),
+        "Model Switch failed or status omitted the models.",
+    )?;
+    click(driver.as_ref(), &c.window, &row_action(&c, 2, true));
+    require(
+        c.model_aliases[0].value() == "model-fast" && c.model_group.visible(),
+        "Edit lost model mappings.",
+    )?;
+    type_field(driver.as_ref(), &c.editor, &c.model, "discard-model");
+    click(driver.as_ref(), &c.editor, &c.cancel);
+    require(
+        store.load()?[2].models == model_provider.models,
+        "Model Cancel persisted a draft.",
+    )?;
+    let mut another = model_provider.clone();
+    another.id = "same-url-key-different-model".into();
+    another.name = "Different model".into();
+    another.models = Models::from_fields("another-model", "", "", "");
+    store.save(another.clone())?;
+    refresh(&mut c, state.clone(), &store, &paths)?;
+    require(
+        c.rows.borrow()[3].switch.active(),
+        "Different model with same URL/key cannot switch.",
+    )?;
+    click(driver.as_ref(), &c.window, &row_action(&c, 3, false));
+    require(
+        c.rows.borrow()[3].active.get() && !c.rows.borrow()[2].active.get(),
+        "Model-specific status did not update.",
+    )?;
+    store.delete(&another.id)?;
+    store.delete(&model_provider.id)?;
+    refresh(&mut c, state.clone(), &store, &paths)?;
+    // Restore an existing URL/key-only fixture for subsequent assertions.
+    click(driver.as_ref(), &c.window, &row_action(&c, 0, false));
+    let current = paths.current(Client::Claude)?;
     // Real tab routing and row Switch for each supported client.
     std::fs::create_dir_all(&paths.codex).map_err(|_| "Cannot initialize Codex fixture.")?;
     std::fs::write(paths.codex.join("config.toml"),"# preserve\nmodel_provider='fixture'\n[model_providers.fixture]\nbase_url='https://old.example'\nexperimental_bearer_token='old-fake'\nwire_api='responses'\n").map_err(|_|"Cannot write fixture.")?;
@@ -543,13 +664,33 @@ pub fn interaction_regression(
         r#"{"security":{"auth":{"selectedType":"gemini-api-key"}},"fixture":true}"#,
     )
     .map_err(|_| "Cannot write fixture.")?;
-    for index in [1, 2] {
-        store.save(Provider::new(
+    std::fs::create_dir_all(&paths.grok).map_err(|_| "Cannot initialize Grok fixture.")?;
+    std::fs::write(paths.grok.join("config.toml"), "[models]\ndefault='fixture'\n[model.fixture]\nmodel='old-model'\nbase_url='https://old.example'\napi_key='old-fake'\napi_backend='openai-responses'\n").map_err(|_| "Cannot write fixture.")?;
+    for name in ["headless", "web"] {
+        let profile = paths.dsh.join("profiles").join(name);
+        std::fs::create_dir_all(&profile).map_err(|_| "Cannot initialize DSH fixture.")?;
+        std::fs::write(
+            profile.join("package.json"),
+            r#"{"dsh":{"profile":{"bundles":["@deepseek-ai/dsh-base"]}}}"#,
+        )
+        .map_err(|_| "Cannot write DSH fixture.")?;
+        std::fs::write(profile.join("cordis.patch.yml"), "# preserve\n[]\n")
+            .map_err(|_| "Cannot write DSH fixture.")?;
+    }
+    std::fs::write(
+        paths.dsh.join(".credentials.yaml"),
+        "version: 1\nrefs:\n  DEEPSEEK_API_KEY: old-fake\n",
+    )
+    .map_err(|_| "Cannot write DSH fixture.")?;
+    for index in [1, 2, 3, 4] {
+        let mut provider = Provider::new(
             Client::ALL[index],
             "Fixture",
             "https://fixture.example",
             "fixture-fake",
-        )?)?;
+        )?;
+        provider.models = Models::from_fields("fixture-model", "", "", "");
+        store.save(provider.clone())?;
         click(driver.as_ref(), &c.window, &c.clients[index]);
         require(
             c.client.get() == Client::ALL[index] && c.rows.borrow().len() == 1,
@@ -559,10 +700,44 @@ pub fn interaction_regression(
         click(driver.as_ref(), &c.window, &switch);
         require(
             paths.current(Client::ALL[index])?
-                == Some(("https://fixture.example".into(), "fixture-fake".into())),
+                == Some(("https://fixture.example".into(), "fixture-fake".into()))
+                && paths
+                    .current_models(Client::ALL[index])?
+                    .matches(Client::ALL[index], &provider.models),
             "Client row Switch failed.",
         )?;
     }
+    for index in 0..5 {
+        click(driver.as_ref(), &c.window, &c.clients[index]);
+        let restore = c
+            .official
+            .borrow()
+            .as_ref()
+            .ok_or("Missing Official row.")?
+            .switch
+            .clone();
+        click(driver.as_ref(), &c.window, &restore);
+        require(
+            paths.status(Client::ALL[index], true)?.official
+                && c.official
+                    .borrow()
+                    .as_ref()
+                    .is_some_and(|r| r.active.get() && !r.switch.active())
+                && c.rows.borrow().iter().all(|r| !r.active.get()),
+            "Official Switch did not restore native configuration/status.",
+        )?;
+        click(driver.as_ref(), &c.window, &row_action(&c, 0, false));
+        require(
+            !c.editor.shown()
+                && paths.current(Client::ALL[index])?.is_some()
+                && c.official
+                    .borrow()
+                    .as_ref()
+                    .is_some_and(|r| !r.active.get() && r.switch.active()),
+            "Provider Switch did not work after restoring Official.",
+        )?;
+    }
+    println!("INPUT zh: all five Official/Provider round trips and native status passed");
     click(driver.as_ref(), &c.window, &c.clients[0]);
     for index in 0..7 {
         store.save(Provider::new(
@@ -602,7 +777,7 @@ pub fn interaction_regression(
     click(driver.as_ref(), &c.editor, &c.cancel);
     c.list.scroll_to(0, 0);
     println!(
-        "INPUT zh: validation, save/cancel, delete confirm/cancel, three clients and overflow actions passed"
+        "INPUT zh: validation, unique names, model save/cancel/switch, delete confirm/cancel, five clients and overflow actions passed"
     );
     click(driver.as_ref(), &c.window, &c.settings);
     // Actual Choice popup navigation, rather than callback invocation.
@@ -710,6 +885,9 @@ pub fn callback_smoke(
     c.name.set_value("Fixture");
     c.url.set_value("https://fixture.example");
     c.key.set_value("fake");
+    c.model.set_value("fixture-model");
+    c.model_toggle.do_callback();
+    c.model_aliases[0].set_value("fixture-fast");
     let before = paths.current(Client::Claude)?;
     c.save.do_callback();
     require(
@@ -718,7 +896,11 @@ pub fn callback_smoke(
     )?;
     row_action(&c, 0, false).do_callback();
     require(
-        c.rows.borrow()[0].active.get() && !c.rows.borrow()[0].switch.active(),
+        c.rows.borrow()[0].active.get()
+            && !c.rows.borrow()[0].switch.active()
+            && paths
+                .current_models(Client::Claude)?
+                .matches(Client::Claude, &store.load()?[0].models),
         "Callback Switch failed.",
     )?;
     row_action(&c, 0, true).do_callback();
@@ -728,6 +910,9 @@ pub fn callback_smoke(
     c.languages.do_callback();
     require(
         c.name.value() == "Draft"
+            && c.model.value() == "fixture-model"
+            && c.model_aliases[0].value() == "fixture-fast"
+            && c.model_group.visible()
             && state.borrow().editing == editing
             && store.language()? == Language::Ja,
         "Language lost draft or edited record.",
@@ -743,12 +928,14 @@ pub fn callback_smoke(
     c.back.do_callback();
     let current = paths.current(Client::Claude)?;
     let count = store.load()?.len();
-    let link = "ccswitch://v1/import?resource=provider&app=claude&name=Imported&endpoint=https%3A%2F%2Fimport.example&apiKey=import-fake";
+    let link = "ccswitch://v1/import?resource=provider&app=claude&name=Imported&endpoint=https%3A%2F%2Fimport.example&apiKey=import-fake&model=import-model&haikuModel=import-fast";
     preview_link(&mut c, state.clone(), &store, &paths, link)?;
     require(
         c.editor.shown()
             && !c.delete.visible()
             && c.key.value() == "import-fake"
+            && c.model.value() == "import-model"
+            && c.model_aliases[0].value() == "import-fast"
             && store.load()?.len() == count
             && paths.current(Client::Claude)? == current,
         "Import preview persisted or applied without Save.",
@@ -770,6 +957,23 @@ pub fn callback_smoke(
         store.load()?.len() == count + 1 && paths.current(Client::Claude)? == current,
         "Import Save applied client configuration.",
     )?;
+    preview_link(&mut c, state.clone(), &store, &paths, link)?;
+    require(
+        c.name.value() == "Imported (2)",
+        "Import collision did not receive numeric suffix.",
+    )?;
+    c.save.do_callback();
+    require(
+        store.load()?.len() == count + 2 && paths.current(Client::Claude)? == current,
+        "Renamed import Save failed or applied configuration.",
+    )?;
+    let model_free = "ccswitch://v1/import?resource=provider&app=claude&name=Sub2API&endpoint=https%3A%2F%2Ffixture.example&apiKey=fake";
+    preview_link(&mut c, state.clone(), &store, &paths, model_free)?;
+    require(
+        c.model.value() == "fixture-model",
+        "Model-free Claude import did not prefill the matching connection's model.",
+    )?;
+    c.cancel.do_callback();
 
     no_tooltips(&c.window)?;
     no_tooltips(&c.editor)?;
@@ -811,6 +1015,14 @@ pub fn appearance_regression(
     )?;
     let edit = c.rows.borrow()[0].edit.clone();
     click(driver.as_ref(), &c.window, &edit);
+    type_field(driver.as_ref(), &c.editor, &c.model, "draft-model");
+    click(driver.as_ref(), &c.editor, &c.model_toggle);
+    type_field(
+        driver.as_ref(),
+        &c.editor,
+        &c.model_aliases[0],
+        "draft-fast",
+    );
     type_field(driver.as_ref(), &c.editor, &c.name, "Unsaved theme draft");
     let editing = state.borrow().editing.clone();
     let current = paths.current(Client::Claude)?;
@@ -829,11 +1041,16 @@ pub fn appearance_regression(
                 && c.name.mark() == mark
                 && c.name.has_focus()
                 && c.key.value() == "theme-fake"
+                && c.model.value() == "draft-model"
+                && c.model_aliases[0].value() == "draft-fast"
+                && c.model_group.visible()
                 && state.borrow().editing == editing,
             "Appearance change lost draft, cursor, focus or selection.",
         )?;
         require(
             c.name.color() == theme::field_fill()
+                && c.model.color() == theme::field_fill()
+                && c.model_aliases[0].text_color() == theme::ink()
                 && c.name.text_color() == theme::ink()
                 && c.status.label_color() == theme::muted()
                 && c.languages.text_color() == theme::ink(),

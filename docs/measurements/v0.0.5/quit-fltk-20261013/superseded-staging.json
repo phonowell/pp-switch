@@ -1,0 +1,13 @@
+{
+  "source": "/Users/mimiko/Applications/pp-switch-0.0.5-quit-fix.app",
+  "destination": "/Users/mimiko/.codex/backups/pp-switch/quit-fltk-v005-20261013T103141783001Z/superseded-quit-fix.app",
+  "reason": "Superseded task-owned staged app; avoid opening stale candidate.",
+  "sha256": {
+    "Contents/Info.plist": "76be48b7093bafc84acbac6f1ebff55b1ab2118e1cc4048efdb1241492be6ebd",
+    "Contents/MacOS/pp-switch": "72f7026971bfc4850024d6dc16bda7eafc848fa5f9ca63c794881107b2ae345d",
+    "Contents/Resources/LICENSE": "18e5e3ed3e28b653178943cc38f54f3bc2dd883fbec46fcbc8d07aa72a7ecc97",
+    "Contents/Resources/AppIcon.icns": "cf2b68a2bf9fe6636110b5e7a590117d78df84dd8800bc2ae55626741074d28b",
+    "Contents/Resources/THIRD_PARTY_NOTICES.txt": "d4b6f3fc239f7150997f212f2ca319318b3a00d993583d2fe45f5219783ba5b7",
+    "Contents/Resources/README.txt": "1cc67447aebfa4b5dc84987fbb75a35f76a2a17fdfa807310fd0e2fdf48cdf37"
+  }
+}

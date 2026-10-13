@@ -1,0 +1,54 @@
+COMMAND ["rtk", "proxy", "/Users/mimiko/.cargo/bin/cargo", "test", "--locked", "theme::tests::readable_text_in_both_appearances"]
+   Compiling fltk-sys v1.5.23
+   Compiling fltk v1.5.23
+   Compiling pp-switch v0.0.5 (/Users/mimiko/.codex/worktrees/v005/pp-switch)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 11.98s
+     Running unittests src/lib.rs (target/debug/deps/pp_switch-47943a0d6d949e75)
+     Running unittests src/main.rs (target/debug/deps/pp_switch-86d2e0379aa5b32a)
+
+running 1 test
+test theme::tests::readable_text_in_both_appearances ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/behavior.rs (target/debug/deps/behavior-8a0f021470d7633b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 23 filtered out; finished in 0.00s
+
+     Running tests/dsh.rs (target/debug/deps/dsh-6b0bf7922ea0a4bc)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 7 filtered out; finished in 0.00s
+
+     Running tests/localization.rs (target/debug/deps/localization-f88bc35e229d95c6)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.00s
+
+     Running tests/provider_models.rs (target/debug/deps/provider_models-fdc47a613e8f1bef)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 15 filtered out; finished in 0.00s
+
+     Running tests/provider_names.rs (target/debug/deps/provider_names-475409d76adb0426)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 3 filtered out; finished in 0.00s
+
+     Running tests/sub2api.rs (target/debug/deps/sub2api-0a048e1c2cbc6e54)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 1 filtered out; finished in 0.00s
+

@@ -1,0 +1,366 @@
+{
+  "time_utc": "2026-10-13T09:23:02.076382+00:00",
+  "branch": "codex/v0.0.5",
+  "base_commit": "c93afa5ec2f14f5a07eee79460f1a38701d98068",
+  "implementation": "Task-owned working-tree changes, uncommitted and not published",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "hardware": "Apple M4",
+  "checks": [
+    {
+      "name": "format-completion",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.96,
+      "log": "docs/measurements/v0.0.5/official-20261013/format-completion.log"
+    },
+    {
+      "name": "clippy-completion-recheck",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "clippy",
+        "--locked",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 17.09,
+      "log": "docs/measurements/v0.0.5/official-20261013/clippy-completion-recheck.log"
+    },
+    {
+      "name": "behavior-final",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "test",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 22.34,
+      "log": "docs/measurements/v0.0.5/official-20261013/behavior-final.log"
+    },
+    {
+      "name": "official-recheck",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "test",
+        "--locked",
+        "--test",
+        "official"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 25.83,
+      "log": "docs/measurements/v0.0.5/official-20261013/official-recheck.log"
+    },
+    {
+      "name": "completion-status",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "test",
+        "--locked",
+        "status_tests"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 30.76,
+      "log": "docs/measurements/v0.0.5/official-20261013/completion-status.log"
+    },
+    {
+      "name": "python-tests",
+      "command": [
+        "rtk",
+        "proxy",
+        "/tmp/pps-v005-tools/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "*_test.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 21.41,
+      "log": "docs/measurements/v0.0.5/official-20261013/python-tests.log"
+    },
+    {
+      "name": "lucide-parity",
+      "command": [
+        "rtk",
+        "proxy",
+        "/tmp/pps-v005-tools/bin/python",
+        "scripts/lucide.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.07,
+      "log": "docs/measurements/v0.0.5/official-20261013/lucide-parity.log"
+    },
+    {
+      "name": "client-icon-parity",
+      "command": [
+        "rtk",
+        "proxy",
+        "/tmp/pps-v005-tools/bin/python",
+        "scripts/client_icons.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 1.05,
+      "log": "docs/measurements/v0.0.5/official-20261013/client-icon-parity.log"
+    },
+    {
+      "name": "release-final",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--bins",
+        "--examples"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 358.91,
+      "log": "docs/measurements/v0.0.5/official-20261013/release-final.log"
+    },
+    {
+      "name": "package",
+      "command": [
+        "rtk",
+        "proxy",
+        "python3",
+        "scripts/package.py",
+        "aarch64-apple-darwin",
+        "--binary",
+        "target/release/pp-switch"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.87,
+      "log": "docs/measurements/v0.0.5/official-20261013/package.log"
+    },
+    {
+      "name": "archive",
+      "command": [
+        "rtk",
+        "proxy",
+        "target/release/examples/update_smoke",
+        "--archive",
+        "target/package/pp-switch-v0.0.5-aarch64-apple-darwin.zip"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.57,
+      "log": "docs/measurements/v0.0.5/official-20261013/archive.log"
+    },
+    {
+      "name": "config-read-comparison",
+      "command": [
+        "rtk",
+        "proxy",
+        "target/release/examples/measure_config"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 13.86,
+      "log": "docs/measurements/v0.0.5/official-20261013/config-read-comparison.log"
+    },
+    {
+      "name": "docs-completion",
+      "command": [
+        "rtk",
+        "proxy",
+        "python3",
+        "scripts/docs_check.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.53,
+      "log": "docs/measurements/v0.0.5/official-20261013/docs-completion.log"
+    },
+    {
+      "name": "diff-completion",
+      "command": [
+        "rtk",
+        "proxy",
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.37,
+      "log": "docs/measurements/v0.0.5/official-20261013/diff-completion.log"
+    },
+    {
+      "name": "docs-installed",
+      "command": [
+        "rtk",
+        "proxy",
+        "python3",
+        "scripts/docs_check.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.73,
+      "log": "docs/measurements/v0.0.5/official-20261013/docs-installed.log"
+    },
+    {
+      "name": "format-installed",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.0,
+      "log": "docs/measurements/v0.0.5/official-20261013/format-installed.log"
+    },
+    {
+      "name": "diff-installed",
+      "command": [
+        "rtk",
+        "proxy",
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.65,
+      "log": "docs/measurements/v0.0.5/official-20261013/diff-installed.log"
+    }
+  ],
+  "rust_test_count": 80,
+  "rust_test_scope": "79 full-suite tests plus 1 affected UI status regression after the completion correction; unchanged core inputs reused.",
+  "python_test_count": 13,
+  "python_scope": "Full detector/release/native-bridge tests; later documentation gate and package-note corrections validated by the actual docs/archive checks.",
+  "package": {
+    "version": "0.0.5",
+    "target": "aarch64-apple-darwin",
+    "installed_bytes": 2788493,
+    "archive_bytes": 1408567,
+    "sha256": "e006309c5ece945b62f7d396d35a54dd181e91c8c7cf4434214c1632a27d53ad",
+    "path": "target/package/pp-switch-v0.0.5-aarch64-apple-darwin.zip"
+  },
+  "installation_record": "installation-20261013T092106776611Z.json",
+  "source_sha256": {
+    ".cargo/config.toml": "0ed1e82e9db6676b678b442b9fc5229ac7e5ae717c209374738e5ce7571aec2d",
+    "CONTRIBUTING.md": "ecfe3949f42b3511e27e2731f78e1b075430bf8f6c84cc74785bb5f47d4ab6fe",
+    "Cargo.lock": "91708fa555cc0d2fcbdff3ed3e6d2cf8abe8908955d837087d0dbe9eaeaceb98",
+    "Cargo.toml": "2f4eabe07d445af5b485ed9f802b6d310cc5be97d190cd4c662ae75747fc93f8",
+    "SPEC.md": "72180484715e4245c0f4a87e26e77d61dfbac926bbbfecb1ce24afc07f354bf3",
+    "THIRD_PARTY_NOTICES.txt": "d4b6f3fc239f7150997f212f2ca319318b3a00d993583d2fe45f5219783ba5b7",
+    "assets/clients/LICENSE": "add9d7531d1b21646317a8958e38fc727506fa39d24bdecb44154d943c82753a",
+    "assets/clients/README.md": "0e28e0b06de1928d91937c7c4fccfcda59d64d8368168a3f2efa87758f1377b6",
+    "assets/clients/claude.svg": "365a70a7eb3956d9b9a96086058ebe04e1dbd8e291a756ad964e8a283fbd6d38",
+    "assets/clients/deepseek.svg": "8f9443e351b6dacce71871790201b799d92e8bf96a45ef79aeb5e9bf4db423e2",
+    "assets/clients/gemini.svg": "87d5b3c4be75a66f54c1936482a263df68185545b741129badd1b7c2449c18d3",
+    "assets/clients/grok.svg": "9175fc90c22655160231976c849f25a03b888d7cc0e04c5f1b987b659bb07c95",
+    "assets/clients/openai.svg": "a595df6b423920c67a7f8f73c063e4bfb72d415948097b6cac063a2366bb5186",
+    "assets/clients/sources.json": "113bbf9a9b7e9ff83ad354e054e76485759f586f825d3821b61ee90e036d47f1",
+    "assets/icon-64.rgba": "9f06fe7f83522fd1ff34c8d7eff50bd3e181a05ee30f0c29e6fffbe8d265651f",
+    "assets/icon.icns": "cf2b68a2bf9fe6636110b5e7a590117d78df84dd8800bc2ae55626741074d28b",
+    "assets/icon.ico": "44a0ddc5be05ea37864fc6049d7430ea93aa8937ca2ad48c10523bb68cb18e65",
+    "assets/icon.png": "8e52aa5231a7005a2e8b8d0cd4f04bf41c6d40911a24a3a7802fbba1271bf857",
+    "assets/icon.svg": "13d2c6c9dbdb0ebd8f3fedd480bb4a355e40aff3872848eaf022b72c97bcc094",
+    "assets/lucide/LICENSE": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "assets/lucide/README.md": "b70157f5be3274a34ec215f8506be5d9b2efddd8294b8d7fbd4df19c091ec943",
+    "assets/lucide/arrow-left.svg": "c5f4b88076108eb1a0d95336e1aa7e7bb1419a3a92af96f6247d88cd3456f933",
+    "assets/lucide/arrow-right-left.svg": "c32f61f0ea5aea4f11592db61e42774977a95086a4fa40656d00289a9604b9ad",
+    "assets/lucide/chevron-down.svg": "66ea878e72ed3488bb3b464c39dfdccee8d1f78e560dccea40e5e12da0e87e87",
+    "assets/lucide/circle-dot.svg": "c263f6a08a089c06ad40f408ad5da9100359ab52d379e6c571cd7c5bd74eaa87",
+    "assets/lucide/circle.svg": "3a991bd47beaf9874fba6fdf87bbba442970a89b5e6aa391558bc8b0a00a0513",
+    "assets/lucide/pencil.svg": "7e1ca7a6f5c1eb949671df762f2baadd32f5bd841d43153c3a15279af7d78d0c",
+    "assets/lucide/plus.svg": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17",
+    "assets/lucide/settings.svg": "0ae27fd0f81999229e3127ac96c5b32edfea448e291d509e76212b917551d66b",
+    "assets/screenshot-edit-zh.png": "46e42f0ff61dfe7d215c8f50649a71b70faefbe712e3bad34057ccc62bb1362d",
+    "assets/screenshot-ja.png": "88972afa84fc3f64d5ddd23f8a2a6a47f83f345f61ae9ab5fb3af57136a4690d",
+    "assets/screenshot-linux-zh.png": "3adec54cc5140ebc43a553ea30b8583718f8d9dc2401b56d6f1f4d567d71429a",
+    "assets/screenshot-windows-zh.png": "2078593357a023da7ea375579773dbb0f54d00cf89e6b3585171e1df13548f1f",
+    "assets/screenshot-zh-TW.png": "e90534636de77de9bc119e47c71b772b33de8a813b172e82bd4e6fdfc51e44da",
+    "assets/screenshot-zh.png": "b0624533d608531bb0bda0e3602a01f3a81319588856f71b1b3b228aedcc7678",
+    "assets/screenshot.png": "e52f7a0bc33f5ae411957f1e4a0345bc947b8e189c4986de5d60e9dca931e639",
+    "build.rs": "ee0cc3ce556003bb3b419b929c45a0f764a782d1be0f53c706ea0ca5117bf08a",
+    "cmake/minimal.cmake": "7f480fa641acd45f553acbbf388b068a6514e1a7cc68aff78bdadc37a1231fb9",
+    "cmake/static-crt.cmake": "cd402adfe6954eb2f3edcc2693761c024c0e80bbc2b2b7c722b5a7f38dbe7852",
+    "examples/input_smoke.rs": "c485827993530003f0a8089fcd04ac08d5b40ed41e85f70d22995e586a7830f8",
+    "examples/mac_acceptance.rs": "2c1141d0785c2e75437c02fb35abe529e4abdaf5d525aeafae95205d8dcf150c",
+    "examples/macos_input.m": "a0959b3cb3aa1f9f03c7cb6207c970cd96f84c3bd2260fa1f4b21fe19a552fad",
+    "examples/measure_cocoa.m": "e832a3d4fe3b8e42ec92af6b4c66984e37fa7f83be31422ba9d2d17a3bef59fd",
+    "examples/measure_config.rs": "3ab0fde4bdfa7d7dcae6a1a6ccdfff91743888d7ac5e89969c3b93885e95bff1",
+    "examples/measure_ui.rs": "0b396f30a10fd6ae35a8565eb014a2039a089b3eb6906dc40e7edb44509fa834",
+    "examples/protocol_smoke.rs": "77746e88629bacd74e5e868b8fd07ba2e4dfd25f9f64166c5fd352624cbf04e7",
+    "examples/support/mod.rs": "b8b98891731747559a59544aa1a59d3be3c5aeb67ccd7115d3473a71786fc7be",
+    "examples/ui_smoke.rs": "9c668cb435762cf77802f12cb6fd7f0dba05e34aacbcbea650062656593b8cfe",
+    "examples/update_smoke.rs": "12896f395079dc16c61d1f692ea8aebfd824f61dadd227986bd34c7dc7f89652",
+    "scripts/client_icons.py": "cbf273ba6ec2637e3d22f97852a3849d3d2e584254dd304a5000bbd7a6dfab23",
+    "scripts/desktop_test.py": "975777cd1853c0a146e35e50adcc8ad770f0a28bdba15e63d3727347d2c1d74a",
+    "scripts/docs_check.py": "16e1dd3384902836e6d2615369332d6533292ee6a4b09c75b17c2bb69052644c",
+    "scripts/generate_icons.py": "d401be38068587422560ee4c4b63c21adcd22774254b4531c0540126e6f2078a",
+    "scripts/gui_smoke.py": "d13a16208d33262440b717cb0f7c2fb6ace4b41880fa406deebf8c866c0a6c39",
+    "scripts/lucide.py": "2eb9c49fb6e37912f64836354d818587787db97ea4e9166157cc119e3d9f3881",
+    "scripts/mac_performance.py": "676a29f2ec624318cac21a08bf491f4b323817298f391617df4b05a38eb0d70a",
+    "scripts/measure.py": "71b5738ca441d226fae9b0b63073c17f8ee29824c5f884278d51dd81a1368b13",
+    "scripts/native_quit_test.py": "f0916a8695bfcef228aed07f14886d0bd1870a5c52c08e5d88f844beb97a56d7",
+    "scripts/package.py": "7c7e4194bcc28f5400b634971375d73a30a5941df9de81dc434df80cc232ad16",
+    "scripts/protocol_smoke.py": "4f09706c6a0eeb3e6fa8ed801fee2529463ccda512e0eef581598462da3de4c0",
+    "scripts/release.py": "a2da906998806c7e04ad6b61b093404729d8e07ac11c0e845fe107fe3a5e1402",
+    "scripts/release_test.py": "0e7a8d54362c5118a29678568b2d715c9c918866dc0bb0a49931b89da0d6dde0",
+    "scripts/smoke.py": "74a98824d4a99d3aa9974a7f792539d2005a4e28d98fb62dc41ac1b52e661274",
+    "scripts/visual_check.py": "7a573200f8d06a78f3a8c0f4e2766f78f156daa4794cd36c5a6281712ab62160",
+    "scripts/visual_test.py": "0d206d6e02105c2498d4fdf080743e0fd868584c843795df326ab9f6612a704e",
+    "src/client/dsh.rs": "7ada600c5f87d1a6b02b289fc70b2df5ca6aed18952af055aa5e0a7223ba8a5f",
+    "src/client/models.rs": "98a7c745d43080ba40bcc193616863fa76c992e3c4b32d31433102a30e45f904",
+    "src/client/official.rs": "2f78052ef37ff9a56944b0d488bb4354855d25e8b91c2de4965bc201ad30b6e5",
+    "src/client.rs": "d5948caca29accf5a39a5b6c41709b1929d7f0dab1174273d0f728cfa24efef1",
+    "src/config.rs": "d68d16b142a18d60bcddb49df866fd0dcba718636134d1ad1982a9c0633ddf0f",
+    "src/i18n.rs": "0a8eba1e5b558f3a200f4ccda18c154654670222da590caaa3b51162ad8df479",
+    "src/lib.rs": "6e47c2cd56fcc00e01b77b09f154474a437f65afec5b1a0d60f33b69ec76e091",
+    "src/locales.tsv": "1f4296e8cd8110546827d4e6a98b8f59bf6216e13e8f7bb8cbdccd01a2830436",
+    "src/macos.m": "51d73b895177afb13883a8ad051ca7415bd03e7d3101c287af3aaddd8081f2e9",
+    "src/main.rs": "a8acac5ac831b3daecdb303454168008c38fcc5af712c335cdd855fad6f9fb20",
+    "src/protocol.rs": "98034ec6df806204e07ca33a77242efa2c79616cbd12af9208dc10bcfc12f9e3",
+    "src/provider.rs": "3cad6a7017f1b398851e67edf3728e45e14ef5100e88f6342b6cd74414b3cea3",
+    "src/storage.rs": "712ae6a57ed62b33ecf2d15de284d04e9b6ca0b7b77ac80d8915b114bf6cfdde",
+    "src/theme/system.rs": "5bdccce096e5b923df61a26e5c27a9ab5ca1b5e04f186b42f76a67fd63c147b1",
+    "src/theme.rs": "c4289d7b8838d70b38ce64b4a781e9a1a9cce210dfd5d2f2dd092aeed021d3a5",
+    "src/ui/acceptance.rs": "2c3aedddc121ebdb255878179e82c76ca81dee7c5e227c629476ae1072e72a6f",
+    "src/ui/client_icons.rs": "16f5f70157788fab9a1f2f23a41fdb7d23fd65cfbfd90efa71fbd16eff9ca1dc",
+    "src/ui/lucide.rs": "209dc0e8d21f4c06d307cfec88fa8f5ee6aa41a1086d9f90c44668cbc253f27a",
+    "src/ui.rs": "304f34f49a459cc17c14f2d4ef351fb3acf802c5f9f5ffe6ab317e87a31f5ae6",
+    "src/update.rs": "7f14fb464c6d231a99c0391212a85f0adf79f2241177fc9790974946c2da69e9"
+  },
+  "binary_sha256": {
+    "target/release/pp-switch": "9ab149028035027e3f0a46d758e2f12508437665b78b13746f4deb37bdafb9ec",
+    "target/release/examples/measure_config": "05e266ce35f626fe9b804195fad0d3ff459d0787c221d01bb281d28b7c3fda7f",
+    "target/release/examples/update_smoke": "9ba0465f5ea23057efa37820c688e854b6fe75486b86f4f3729cf55c2119a205"
+  },
+  "initial_failures_retained": [
+    "initial-test-failure.txt",
+    "clippy.log",
+    "clippy-completion.log"
+  ],
+  "superseded_build": "release-build.log precedes the final UI completion correction; release-final.log is the installed build.",
+  "unverified": [
+    "CodeGraph unavailable: prior explore attempt returned exit 1 because this worktree has no .codegraph index. Bounded source/direct-consumer inspection used; index not initialized.",
+    "Native Chinese GUI actions and four-language light/dark pixel/screenshot acceptance for the new Official/default-model flows were compiled but not run on this shared desktop.",
+    "Actual macOS Dock Quit/menu behavior remains unverified on a dedicated desktop; only background delegate bridge regression has passed.",
+    "Whole-app total idle/peak RSS, verified cold interactive startup and Windows/Linux native acceptance were not measured by these checks. No new memory/startup budget pass claimed."
+  ],
+  "foreground_input_preserved": true,
+  "application_launched": false,
+  "network_provider_tests_added": false,
+  "live_claude_repair": "../claude-live-20261013/report.json",
+  "evidence_integrity": "Final source, release binaries, validated archive and all six installed file hashes and installed byte count passed."
+}

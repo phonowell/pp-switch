@@ -1,0 +1,33 @@
+{
+  "time_utc": "2026-10-13T07:16:17.352054+00:00",
+  "os": "macOS-27.0.1-arm64-arm-64bit",
+  "machine": "arm64",
+  "hardware": "Mac16,1\n17179869184\nApple M4",
+  "checks": [
+    {
+      "command": [
+        "rtk",
+        "proxy",
+        "/tmp/pps-v005-tools/bin/python",
+        "scripts/docs_check.py"
+      ],
+      "exit_code": 0,
+      "log": "final-documentation-0.log"
+    },
+    {
+      "command": [
+        "rtk",
+        "proxy",
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "final-documentation-1.log"
+    }
+  ],
+  "binary_sha256": "3839d326447c0fe17980b348ee480ef413c1fd67f46a361d1fa67cb8d98bd829",
+  "installed_binary_sha256": "3839d326447c0fe17980b348ee480ef413c1fd67f46a361d1fa67cb8d98bd829",
+  "native_and_cold_acceptance": "unrun; shared workstation foreground preserved",
+  "issue_1_status": "open; performance budgets unchanged; no complete RSS/cold-start pass claimed"
+}

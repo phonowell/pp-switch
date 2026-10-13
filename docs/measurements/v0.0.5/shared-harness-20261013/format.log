@@ -1,0 +1,1 @@
+COMMAND ["/Users/mimiko/.cargo/bin/cargo", "fmt", "--check"]

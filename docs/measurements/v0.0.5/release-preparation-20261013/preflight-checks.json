@@ -1,0 +1,82 @@
+[
+  {
+    "name": "documentation",
+    "command": [
+      "rtk",
+      "proxy",
+      "python3",
+      "scripts/docs_check.py"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.391,
+    "log": "documentation.log"
+  },
+  {
+    "name": "illustrations",
+    "command": [
+      "rtk",
+      "proxy",
+      "/tmp/pps-v005-tools/bin/python",
+      "design/render_docs.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.225,
+    "log": "illustrations.log"
+  },
+  {
+    "name": "lucide",
+    "command": [
+      "rtk",
+      "proxy",
+      "/tmp/pps-v005-tools/bin/python",
+      "scripts/lucide.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.451,
+    "log": "lucide.log"
+  },
+  {
+    "name": "client-icons",
+    "command": [
+      "rtk",
+      "proxy",
+      "/tmp/pps-v005-tools/bin/python",
+      "scripts/client_icons.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.123,
+    "log": "client-icons.log"
+  },
+  {
+    "name": "release-tag",
+    "command": [
+      "rtk",
+      "proxy",
+      "python3",
+      "scripts/release.py",
+      "--check-tag",
+      "v0.0.5",
+      "--event",
+      "tag"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.04,
+    "log": "release-tag.log"
+  },
+  {
+    "name": "whitespace",
+    "command": [
+      "rtk",
+      "proxy",
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.034,
+    "log": "whitespace.log"
+  }
+]

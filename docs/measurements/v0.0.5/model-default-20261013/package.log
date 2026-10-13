@@ -1,0 +1,7 @@
+{
+  "version": "0.0.5",
+  "target": "aarch64-apple-darwin",
+  "installed_bytes": 2788557,
+  "archive_bytes": 1408828,
+  "sha256": "a7231f8edb5382b5701511be34d405b1df70cbf2805d563a277d8935ea4b8445"
+}

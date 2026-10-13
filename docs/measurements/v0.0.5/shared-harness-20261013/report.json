@@ -1,0 +1,144 @@
+{
+  "desktop_input_allowed": false,
+  "started_utc": "20261013T070637Z",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "target": "aarch64-apple-darwin",
+  "published": false,
+  "checks": [
+    {
+      "name": "lucide-parity",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.12,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/shared-harness-20261013/lucide-parity.log"
+    },
+    {
+      "name": "client-icon-parity",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.13,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/shared-harness-20261013/client-icon-parity.log"
+    },
+    {
+      "name": "format",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.12,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/shared-harness-20261013/format.log"
+    },
+    {
+      "name": "clippy",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.24,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/shared-harness-20261013/clippy.log"
+    },
+    {
+      "name": "behavior",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 7.6,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/shared-harness-20261013/behavior.log"
+    },
+    {
+      "name": "release-tests",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.26,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/shared-harness-20261013/release-tests.log"
+    },
+    {
+      "name": "release-build",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 34.23,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/shared-harness-20261013/release-build.log"
+    },
+    {
+      "name": "config-read-comparison",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 4.67,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/shared-harness-20261013/config-read-comparison.log"
+    },
+    {
+      "name": "documentation",
+      "status": "failed",
+      "exit_code": 1,
+      "seconds": 0.08,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/shared-harness-20261013/documentation.log"
+    },
+    {
+      "name": "package",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.18,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/shared-harness-20261013/package.log"
+    },
+    {
+      "name": "update-package",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.34,
+      "log": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/shared-harness-20261013/update-package.log"
+    }
+  ],
+  "source_sha256": {
+    "Cargo.toml": "2f4eabe07d445af5b485ed9f802b6d310cc5be97d190cd4c662ae75747fc93f8",
+    "Cargo.lock": "91708fa555cc0d2fcbdff3ed3e6d2cf8abe8908955d837087d0dbe9eaeaceb98",
+    "build.rs": "ee0cc3ce556003bb3b419b929c45a0f764a782d1be0f53c706ea0ca5117bf08a",
+    "src/ui.rs": "26d8525b5c3525041540d8b77a1d16eedcf2558b3e1b296eb655746f184bd129",
+    "src/protocol.rs": "98034ec6df806204e07ca33a77242efa2c79616cbd12af9208dc10bcfc12f9e3",
+    "src/client.rs": "564139365bf74189bcaf8b7ebd5822b7d5b70a4a28f2623512a5844abd6cb2c8",
+    "src/config.rs": "1812c4f83987d94b7549a983521624d982fad9846fe5ecab5be5c59df989639a",
+    "src/lib.rs": "6e47c2cd56fcc00e01b77b09f154474a437f65afec5b1a0d60f33b69ec76e091",
+    "src/locales.tsv": "9bb59e7a7c49d8372d84c65f1b18743c7ff2109b7f1d4e7b8475bc881598cdc6",
+    "src/provider.rs": "3cad6a7017f1b398851e67edf3728e45e14ef5100e88f6342b6cd74414b3cea3",
+    "src/theme.rs": "26b5efa049540ae76f2a904e81912c469c350c7166ee4d52fb8d29f443f0948a",
+    "src/update.rs": "7f14fb464c6d231a99c0391212a85f0adf79f2241177fc9790974946c2da69e9",
+    "src/main.rs": "a8acac5ac831b3daecdb303454168008c38fcc5af712c335cdd855fad6f9fb20",
+    "src/storage.rs": "712ae6a57ed62b33ecf2d15de284d04e9b6ca0b7b77ac80d8915b114bf6cfdde",
+    "src/i18n.rs": "0a8eba1e5b558f3a200f4ccda18c154654670222da590caaa3b51162ad8df479",
+    "src/macos.m": "51d73b895177afb13883a8ad051ca7415bd03e7d3101c287af3aaddd8081f2e9",
+    "src/ui/acceptance.rs": "99b9dba6874e5bf6e203eda8ad7fec399bda489d04fcf82185b8efd9062a2f9f",
+    "src/ui/lucide.rs": "209dc0e8d21f4c06d307cfec88fa8f5ee6aa41a1086d9f90c44668cbc253f27a",
+    "src/ui/client_icons.rs": "16f5f70157788fab9a1f2f23a41fdb7d23fd65cfbfd90efa71fbd16eff9ca1dc",
+    "src/theme/system.rs": "5bdccce096e5b923df61a26e5c27a9ab5ca1b5e04f186b42f76a67fd63c147b1",
+    "src/client/models.rs": "79a065864ba063ed9a7f97c42b6e553d35a0371812a984eaaa80e2ffcf658eb0",
+    "src/client/dsh.rs": "3c966ae72052fd9c9d225805472fb9b9b7eda8e182499b77e5fc65d664544a53",
+    "examples/measure_cocoa.m": "e832a3d4fe3b8e42ec92af6b4c66984e37fa7f83be31422ba9d2d17a3bef59fd",
+    "examples/macos_input.m": "a0959b3cb3aa1f9f03c7cb6207c970cd96f84c3bd2260fa1f4b21fe19a552fad",
+    "examples/mac_acceptance.rs": "2c1141d0785c2e75437c02fb35abe529e4abdaf5d525aeafae95205d8dcf150c",
+    "examples/protocol_smoke.rs": "77746e88629bacd74e5e868b8fd07ba2e4dfd25f9f64166c5fd352624cbf04e7",
+    "examples/ui_smoke.rs": "9c668cb435762cf77802f12cb6fd7f0dba05e34aacbcbea650062656593b8cfe",
+    "examples/measure_config.rs": "3ab0fde4bdfa7d7dcae6a1a6ccdfff91743888d7ac5e89969c3b93885e95bff1",
+    "examples/update_smoke.rs": "12896f395079dc16c61d1f692ea8aebfd824f61dadd227986bd34c7dc7f89652",
+    "examples/input_smoke.rs": "c485827993530003f0a8089fcd04ac08d5b40ed41e85f70d22995e586a7830f8",
+    "examples/measure_ui.rs": "0b396f30a10fd6ae35a8565eb014a2039a089b3eb6906dc40e7edb44509fa834",
+    "examples/support/mod.rs": "b8b98891731747559a59544aa1a59d3be3c5aeb67ccd7115d3473a71786fc7be",
+    "scripts/package.py": "83182c4bed1f6ba2bc40226c8853749f8e9bdfbf235c90e0ffbf03a657df605b",
+    "scripts/measure.py": "71b5738ca441d226fae9b0b63073c17f8ee29824c5f884278d51dd81a1368b13",
+    "scripts/docs_check.py": "3e1c79f7acde4131162dd723aa2ada8d524eb79b6da23f7d9183ea6e6ae0d22d",
+    "scripts/native_quit_test.py": "f0916a8695bfcef228aed07f14886d0bd1870a5c52c08e5d88f844beb97a56d7",
+    "scripts/release.py": "5c33081b65877412de08e270b9f451b8ba047eb322f0ebb803ae7928d149c530",
+    "scripts/generate_icons.py": "d401be38068587422560ee4c4b63c21adcd22774254b4531c0540126e6f2078a",
+    "scripts/release_test.py": "b2b2ee29a0a110f114d6e43691b645f6193e76f2ed56768e31139feca4717cb8",
+    "scripts/protocol_smoke.py": "4f09706c6a0eeb3e6fa8ed801fee2529463ccda512e0eef581598462da3de4c0",
+    "scripts/visual_check.py": "47665b8cf74df572b8cbf339daad82a6e544fb87dbbd607088db86e14c5145ce",
+    "scripts/desktop_test.py": "975777cd1853c0a146e35e50adcc8ad770f0a28bdba15e63d3727347d2c1d74a",
+    "scripts/mac_performance.py": "676a29f2ec624318cac21a08bf491f4b323817298f391617df4b05a38eb0d70a",
+    "scripts/gui_smoke.py": "d13a16208d33262440b717cb0f7c2fb6ace4b41880fa406deebf8c866c0a6c39",
+    "scripts/client_icons.py": "47f5dd9a13d172aba1c8e46f189fd1c07762a79d0975f980f102c761a5bd7409",
+    "scripts/lucide.py": "2eb9c49fb6e37912f64836354d818587787db97ea4e9166157cc119e3d9f3881",
+    "scripts/visual_test.py": "b2ede34436ac0cba13a51f1f6cfb5d787d41a6b11b7a7831ace665396179b9fd",
+    "scripts/smoke.py": "74a98824d4a99d3aa9974a7f792539d2005a4e28d98fb62dc41ac1b52e661274",
+    "design/UI.md": "9dadaabe1d62f009dfa58b00459a52176e23df78f8006920e4ae53bf8d21ea46",
+    "design/icon-pps-refined.svg": "13d2c6c9dbdb0ebd8f3fedd480bb4a355e40aff3872848eaf022b72c97bcc094",
+    "design/minimal.html": "42f1edbfed8ebf5a1f58cbe86254fb2cd3b0563bd71629b2025be5d6e76ed55c"
+  },
+  "unrun": "GUI, native links/input/appearance, restart and measurements skipped to preserve the shared desktop; use --allow-desktop-input only with user authorization or a dedicated CI session.",
+  "background_pass": false,
+  "automated_pass": false,
+  "visual_review": "pending: inspect newly captured images against design/UI.md; automation does not approve visuals",
+  "acceptance_complete": false
+}

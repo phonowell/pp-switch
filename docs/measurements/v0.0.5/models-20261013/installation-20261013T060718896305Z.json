@@ -1,0 +1,30 @@
+{
+  "installed_utc": "20261013T060718896305Z",
+  "app_path": "/Users/mimiko/Applications/pp-switch.app",
+  "backup_path": "/Users/mimiko/.codex/backups/pp-switch/install-models-v005-20261013T060718896305Z/pp-switch-previous.app",
+  "version": "0.0.5",
+  "archive_path": "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/package/pp-switch-v0.0.5-aarch64-apple-darwin.zip",
+  "archive_sha256": "1004b233d181c203ad1251bdcc3ae87c436da2f61098d1edfc92c775f4f9bddb",
+  "owned_file_sha256": {
+    "Contents/Info.plist": "76be48b7093bafc84acbac6f1ebff55b1ab2118e1cc4048efdb1241492be6ebd",
+    "Contents/MacOS/pp-switch": "18dfe87417b9e3ac5abd716e9540e9ccb9f85292581c87249eabffa505cf4ee9",
+    "Contents/Resources/LICENSE": "18e5e3ed3e28b653178943cc38f54f3bc2dd883fbec46fcbc8d07aa72a7ecc97",
+    "Contents/Resources/AppIcon.icns": "cf2b68a2bf9fe6636110b5e7a590117d78df84dd8800bc2ae55626741074d28b",
+    "Contents/Resources/THIRD_PARTY_NOTICES.txt": "b5cd70800378e3e60e2fa8d73d00fc044594d5029b2a5935f82a90b1fb74ed0f",
+    "Contents/Resources/README.txt": "7451c742c074d5d9e99c633485a93ba3ee4e8e6c7850c69645221a311583919e"
+  },
+  "previous_binary_sha256": "88fd4c3e45861755a666dd13293f0a0bf18a63a0e9c1814bfd28ad52f95cafa2",
+  "installed_owned_bytes": 2566386,
+  "binary_mode": "0755",
+  "binary_architecture": "Mach-O 64-bit executable arm64",
+  "source_hashes_match_validation": true,
+  "validation_report": "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/models-20261013/report.json",
+  "launched": false,
+  "desktop_input_used": false,
+  "client_configuration_modified": false,
+  "limitations": [
+    "Native GUI, Dock quit, appearance, URL delivery, input acceptance and runtime performance not re-run on shared workstation.",
+    "Only macOS ARM64 background validation performed; Windows, Linux and Intel CI not run.",
+    "Configured confirms files, not a live connection or model support."
+  ]
+}

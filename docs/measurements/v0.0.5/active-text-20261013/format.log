@@ -1,0 +1,1 @@
+COMMAND ["rtk", "proxy", "/Users/mimiko/.cargo/bin/cargo", "fmt", "--check"]

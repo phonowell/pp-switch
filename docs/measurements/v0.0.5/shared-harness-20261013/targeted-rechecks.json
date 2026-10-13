@@ -1,0 +1,113 @@
+{
+  "time_utc": "2026-10-13T07:13:19.553190+00:00",
+  "checks": [
+    {
+      "name": "documentation-recheck",
+      "command": [
+        "rtk",
+        "proxy",
+        "/tmp/pps-v005-tools/bin/python",
+        "scripts/docs_check.py"
+      ],
+      "exit_code": 0,
+      "log": "documentation-recheck.log"
+    },
+    {
+      "name": "release-tests-recheck",
+      "command": [
+        "rtk",
+        "proxy",
+        "/tmp/pps-v005-tools/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts",
+        "-p",
+        "*_test.py"
+      ],
+      "exit_code": 0,
+      "log": "release-tests-recheck.log"
+    },
+    {
+      "name": "client-icon-parity-recheck",
+      "command": [
+        "rtk",
+        "proxy",
+        "/tmp/pps-v005-tools/bin/python",
+        "scripts/client_icons.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "client-icon-parity-recheck.log"
+    },
+    {
+      "name": "diff-check",
+      "command": [
+        "rtk",
+        "proxy",
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "diff-check.log"
+    }
+  ],
+  "source_sha256": {
+    "src/ui.rs": "26d8525b5c3525041540d8b77a1d16eedcf2558b3e1b296eb655746f184bd129",
+    "src/protocol.rs": "98034ec6df806204e07ca33a77242efa2c79616cbd12af9208dc10bcfc12f9e3",
+    "src/client.rs": "564139365bf74189bcaf8b7ebd5822b7d5b70a4a28f2623512a5844abd6cb2c8",
+    "src/config.rs": "1812c4f83987d94b7549a983521624d982fad9846fe5ecab5be5c59df989639a",
+    "src/lib.rs": "6e47c2cd56fcc00e01b77b09f154474a437f65afec5b1a0d60f33b69ec76e091",
+    "src/locales.tsv": "9bb59e7a7c49d8372d84c65f1b18743c7ff2109b7f1d4e7b8475bc881598cdc6",
+    "src/provider.rs": "3cad6a7017f1b398851e67edf3728e45e14ef5100e88f6342b6cd74414b3cea3",
+    "src/theme.rs": "26b5efa049540ae76f2a904e81912c469c350c7166ee4d52fb8d29f443f0948a",
+    "src/update.rs": "7f14fb464c6d231a99c0391212a85f0adf79f2241177fc9790974946c2da69e9",
+    "src/main.rs": "a8acac5ac831b3daecdb303454168008c38fcc5af712c335cdd855fad6f9fb20",
+    "src/storage.rs": "712ae6a57ed62b33ecf2d15de284d04e9b6ca0b7b77ac80d8915b114bf6cfdde",
+    "src/i18n.rs": "0a8eba1e5b558f3a200f4ccda18c154654670222da590caaa3b51162ad8df479",
+    "src/macos.m": "51d73b895177afb13883a8ad051ca7415bd03e7d3101c287af3aaddd8081f2e9",
+    "src/ui/acceptance.rs": "99b9dba6874e5bf6e203eda8ad7fec399bda489d04fcf82185b8efd9062a2f9f",
+    "src/ui/lucide.rs": "209dc0e8d21f4c06d307cfec88fa8f5ee6aa41a1086d9f90c44668cbc253f27a",
+    "src/ui/client_icons.rs": "16f5f70157788fab9a1f2f23a41fdb7d23fd65cfbfd90efa71fbd16eff9ca1dc",
+    "src/theme/system.rs": "5bdccce096e5b923df61a26e5c27a9ab5ca1b5e04f186b42f76a67fd63c147b1",
+    "src/client/models.rs": "79a065864ba063ed9a7f97c42b6e553d35a0371812a984eaaa80e2ffcf658eb0",
+    "src/client/dsh.rs": "3c966ae72052fd9c9d225805472fb9b9b7eda8e182499b77e5fc65d664544a53",
+    "examples/measure_cocoa.m": "e832a3d4fe3b8e42ec92af6b4c66984e37fa7f83be31422ba9d2d17a3bef59fd",
+    "examples/macos_input.m": "a0959b3cb3aa1f9f03c7cb6207c970cd96f84c3bd2260fa1f4b21fe19a552fad",
+    "examples/mac_acceptance.rs": "2c1141d0785c2e75437c02fb35abe529e4abdaf5d525aeafae95205d8dcf150c",
+    "examples/protocol_smoke.rs": "77746e88629bacd74e5e868b8fd07ba2e4dfd25f9f64166c5fd352624cbf04e7",
+    "examples/ui_smoke.rs": "9c668cb435762cf77802f12cb6fd7f0dba05e34aacbcbea650062656593b8cfe",
+    "examples/measure_config.rs": "3ab0fde4bdfa7d7dcae6a1a6ccdfff91743888d7ac5e89969c3b93885e95bff1",
+    "examples/update_smoke.rs": "12896f395079dc16c61d1f692ea8aebfd824f61dadd227986bd34c7dc7f89652",
+    "examples/input_smoke.rs": "c485827993530003f0a8089fcd04ac08d5b40ed41e85f70d22995e586a7830f8",
+    "examples/measure_ui.rs": "0b396f30a10fd6ae35a8565eb014a2039a089b3eb6906dc40e7edb44509fa834",
+    "examples/support/mod.rs": "b8b98891731747559a59544aa1a59d3be3c5aeb67ccd7115d3473a71786fc7be",
+    "scripts/package.py": "83182c4bed1f6ba2bc40226c8853749f8e9bdfbf235c90e0ffbf03a657df605b",
+    "scripts/measure.py": "71b5738ca441d226fae9b0b63073c17f8ee29824c5f884278d51dd81a1368b13",
+    "scripts/docs_check.py": "6c6e2970c67e83291f76d47f49d3d2843078750ecd3cae4d865efc3493170ce8",
+    "scripts/native_quit_test.py": "f0916a8695bfcef228aed07f14886d0bd1870a5c52c08e5d88f844beb97a56d7",
+    "scripts/release.py": "a2da906998806c7e04ad6b61b093404729d8e07ac11c0e845fe107fe3a5e1402",
+    "scripts/generate_icons.py": "d401be38068587422560ee4c4b63c21adcd22774254b4531c0540126e6f2078a",
+    "scripts/release_test.py": "0e7a8d54362c5118a29678568b2d715c9c918866dc0bb0a49931b89da0d6dde0",
+    "scripts/protocol_smoke.py": "4f09706c6a0eeb3e6fa8ed801fee2529463ccda512e0eef581598462da3de4c0",
+    "scripts/visual_check.py": "47665b8cf74df572b8cbf339daad82a6e544fb87dbbd607088db86e14c5145ce",
+    "scripts/desktop_test.py": "975777cd1853c0a146e35e50adcc8ad770f0a28bdba15e63d3727347d2c1d74a",
+    "scripts/mac_performance.py": "676a29f2ec624318cac21a08bf491f4b323817298f391617df4b05a38eb0d70a",
+    "scripts/gui_smoke.py": "d13a16208d33262440b717cb0f7c2fb6ace4b41880fa406deebf8c866c0a6c39",
+    "scripts/client_icons.py": "cbf273ba6ec2637e3d22f97852a3849d3d2e584254dd304a5000bbd7a6dfab23",
+    "scripts/lucide.py": "2eb9c49fb6e37912f64836354d818587787db97ea4e9166157cc119e3d9f3881",
+    "scripts/visual_test.py": "b2ede34436ac0cba13a51f1f6cfb5d787d41a6b11b7a7831ace665396179b9fd",
+    "scripts/smoke.py": "74a98824d4a99d3aa9974a7f792539d2005a4e28d98fb62dc41ac1b52e661274",
+    "assets/clients/gemini.svg": "87d5b3c4be75a66f54c1936482a263df68185545b741129badd1b7c2449c18d3",
+    "assets/clients/claude.svg": "365a70a7eb3956d9b9a96086058ebe04e1dbd8e291a756ad964e8a283fbd6d38",
+    "assets/clients/sources.json": "113bbf9a9b7e9ff83ad354e054e76485759f586f825d3821b61ee90e036d47f1",
+    "assets/clients/LICENSE": "add9d7531d1b21646317a8958e38fc727506fa39d24bdecb44154d943c82753a",
+    "assets/clients/openai.svg": "a595df6b423920c67a7f8f73c063e4bfb72d415948097b6cac063a2366bb5186",
+    "assets/clients/deepseek.svg": "8f9443e351b6dacce71871790201b799d92e8bf96a45ef79aeb5e9bf4db423e2",
+    "assets/clients/README.md": "0e28e0b06de1928d91937c7c4fccfcda59d64d8368168a3f2efa87758f1377b6",
+    "assets/clients/grok.svg": "9175fc90c22655160231976c849f25a03b888d7cc0e04c5f1b987b659bb07c95"
+  },
+  "reuse": "Earlier background core/build/package/config benchmark checks retained; only docs, script tests and icon provenance changed. Native/UI/full RSS/cold-start acceptance remains unrun."
+}

@@ -6,7 +6,7 @@
 
 **Pure Provider Switch. Your setup stays yours.**
 
-Switch API base URLs and keys for Claude Code, Codex and Gemini CLI.
+A compact native provider switcher. Five harnesses in v0.0.5 development.
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
@@ -18,30 +18,21 @@ Switch API base URLs and keys for Claude Code, Codex and Gemini CLI.
 
 </div>
 
-![pp-switch: a compact flat native window with client tabs, providers and one switch action](assets/screenshot.png)
+![v0.0.5 main-window schematic, light and dark; not a native screenshot](docs/illustrations/v0.0.5/main-en.svg)
 
 ## Why pp-switch?
 
-**You spent time getting your client right. Changing API services should not make you do it again.**
+Switch connections while keeping your client configuration. PPS owns URL/key,
+explicit optional models and scoped native/API routing; it preserves unrelated
+settings, comments and formatting, and refuses unsupported configurations.
 
-Your models, reasoning settings, project permissions, MCP and skills already work. You just need a different endpoint and key. pp-switch saves those connections and patches exactly those two values, preserving unrelated configuration bytes—including comments and formatting. It refuses unsupported setups instead of silently rebuilding them.
+One native window, per-row Lucide Edit/Switch, no tray or resident helper.
+Updates run only after a manual check and confirmation. Rust + FLTK, system fonts
+and vector paths; no bundled WebView, database or JavaScript runtime.
 
-**A switcher should finish when you do.** One window, no tray, no startup agent, no provider probes or usage polling. Close it and the process exits. Updates happen only when you click **Check for updates** and confirm installation. Rust + FLTK, native vector drawing, system fonts; no bundled WebView, database or JavaScript runtime.
-
-This need is visible in the community: [cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) asks for a Pure/Lite mode and says “CC Switch only manages fields it owns. Everything else belongs to the target application/user.” pp-switch takes that ownership principle and narrows it to URL + key. The discussion is motivation, not an endorsement. [Research notes](docs/verification.md#community-sources) record the sources and their limits.
-
-## Small scope, clear differences
-
-| | pp-switch | cc-switch |
-| --- | --- | --- |
-| Purpose | URL/key switching for an already configured client | Broader provider and client management |
-| Writes | Only the effective base URL and API key | More configuration, according to enabled features |
-| Provider links | URL/key preview only (0.0.5 development) | Full deep-link workflows |
-| Models, routing, usage, MCP, prompts, skills | Outside the product boundary | Offers corresponding management features |
-| Lifecycle | Close window → process exits | Supports tray and broader workflows |
-| Updates | Explicit check → confirm → download, install, restart | Its own update workflow |
-
-[cc-switch](https://github.com/farion1231/cc-switch) is a better fit when you want a full management dashboard. pp-switch is an independent project for people who have already configured their clients and want a small, predictable switching tool.
+The development branch supports Claude Code, Codex CLI/App, Gemini CLI, Grok Build
+and DSH CLI/Web. **Published v0.0.4 supports the first three; v0.0.5 is not released.**
+[Scope and cc-switch research](docs/verification.md#community-sources).
 
 ## Download
 
@@ -58,35 +49,27 @@ This need is visible in the community: [cc-switch #7649](https://github.com/fari
 
 No Rust or Node.js installation required. macOS packages declare macOS 11+ and are **not Apple Developer-signed or notarized**. Windows requires Windows 10+. Linux requires X11/XWayland, X11/fontconfig libraries and a system font covering your selected language. Native test environments are listed in [verification](docs/verification.md); a declared minimum is not evidence of testing every OS version.
 
-macOS 0.0.2 users: download this version manually once. The older updater rejects the new icon resource; 0.0.3 includes it in the update layout.
-
 ## Use
 
-1. Choose Claude Code, Codex or Gemini CLI.
-2. Click **Add**, enter name/base URL/key and **Save**.
-3. Click that row's Switch icon, after Edit. Restart the client if needed.
+1. Choose a harness, click **Add**, enter name/URL/key and Save.
+2. Review the optional model. Claude prefills `claude-sonnet-5` when no specific model is available; clear it to keep client models.
+3. Click the row’s Switch icon. Restart the client if it does not reload configuration.
 
-Each row has Lucide Edit and Switch icons; rows have no separate selection state.
-The smaller gear beside the tabs opens Settings for language and manual updates.
-All hover tips, the in-content heading, bottom status/Switch area are removed. Matching duplicates all show In use. The interface follows
-system light/dark appearance. Saving only changes the local store. UI languages:
-**English, 简体中文, 繁體中文 and 日本語**, initially matching the system.
+Save only stores a Provider. **In use** is blue and checks supported user-level
+files, not a running session or successful request. Names are unique per client;
+imports add ` (2)`, ` (3)` on collision. Identical connections may have different names.
 
+In v0.0.5 each harness has an **Official** row for scoped native restoration.
+Codex CLI/App share configuration; DSH CLI/Web share initialized home profiles.
+CCS/Sub2API links open an unsaved preview; explicit models take priority over editor suggestions. Verify the suggested model is supported by your provider.
+External helpers/cloud modes and unsupported key sources are refused.
+[Setup, exact writes and troubleshooting](docs/user-guide.md).
 
-| Client | Existing setup required | Fields changed |
-| --- | --- | --- |
-| Claude Code | API-key setup without external key helper, cloud-provider mode or ambiguous credentials | `ANTHROPIC_BASE_URL` + existing key/token field in `settings.json` |
-| Codex | Selected custom provider, initialized API-key auth | Selected provider's `base_url` + existing bearer token or `auth.json.OPENAI_API_KEY` |
-| Gemini CLI | API-key mode already selected through `/auth` | `GOOGLE_GEMINI_BASE_URL` + `GEMINI_API_KEY` in `.env` |
-
-No model/auth-mode/protocol changes or first-time client setup. User-level files only; project config, launch arguments and another terminal's environment may override them. `CLAUDE_CONFIG_DIR` and `CODEX_HOME` are respected. [Setup and troubleshooting →](docs/user-guide.md)
-
-## Compatibility and trust
-
-- 0.0.5 development restores scoped Provider-link previews and explicit URL registration; Save does not apply client files. 0.0.4 downloads do not include this flow.
-- Secrets stay in local user-only files (Unix 0600 / Windows current-user ACL). Masking is **not encryption**. No automatic clipboard reads, secret diagnostics or provider requests.
-- Updates require your confirmation and a writable installation. Only this repository's release packages are downloaded and SHA-256 checked. Packages are unsigned; provider/client files are outside the updater. [Update details](docs/user-guide.md#manual-update).
-- Full behavior contract: [SPEC.md](SPEC.md). Exact write locations and storage paths: [guide](docs/user-guide.md).
+Settings contains language, explicit link registration and manual updates. UI
+languages: English, 简体中文, 繁體中文, 日本語; follows system light/dark appearance.
+Secrets remain in user-only local files; masking is not encryption. No automatic
+provider requests. Updates verify this repository’s SHA-256 packages and replace
+only application-owned files. [Behavior contract](SPEC.md).
 
 ## Performance, with evidence
 

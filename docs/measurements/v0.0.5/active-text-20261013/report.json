@@ -1,0 +1,104 @@
+{
+  "time_utc": "2026-10-13T07:47:28.886418+00:00",
+  "checks": [
+    {
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "format.log"
+    },
+    {
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "clippy",
+        "--locked",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "log": "clippy.log"
+    },
+    {
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "test",
+        "--locked",
+        "theme::tests::readable_text_in_both_appearances"
+      ],
+      "exit_code": 0,
+      "log": "contrast.log"
+    },
+    {
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--bins",
+        "--examples"
+      ],
+      "exit_code": 0,
+      "log": "release-build.log"
+    },
+    {
+      "command": [
+        "rtk",
+        "proxy",
+        "/tmp/pps-v005-tools/bin/python",
+        "scripts/docs_check.py"
+      ],
+      "exit_code": 0,
+      "log": "docs.log"
+    },
+    {
+      "command": [
+        "rtk",
+        "proxy",
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "diff.log"
+    },
+    {
+      "command": [
+        "rtk",
+        "proxy",
+        "/tmp/pps-v005-tools/bin/python",
+        "scripts/package.py",
+        "aarch64-apple-darwin",
+        "--binary",
+        "target/release/pp-switch"
+      ],
+      "exit_code": 0,
+      "log": "package.log"
+    },
+    {
+      "command": [
+        "rtk",
+        "proxy",
+        "target/release/examples/update_smoke",
+        "--archive",
+        "target/package/pp-switch-v0.0.5-aarch64-apple-darwin.zip"
+      ],
+      "exit_code": 0,
+      "log": "archive.log"
+    }
+  ],
+  "reused": "64 Rust / 13 Python behavior tests and icons unchanged, except contrast test rerun",
+  "unverified": "Native GUI/style acceptance unrun; shared workstation focus preserved. CodeGraph no index; prior source evidence reused."
+}

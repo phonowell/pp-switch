@@ -1,0 +1,5 @@
+COMMAND ["rtk", "proxy", "/Users/mimiko/.cargo/bin/cargo", "build", "--locked", "--release", "--bins", "--examples"]
+   Compiling fltk-sys v1.5.23
+   Compiling fltk v1.5.23
+   Compiling pp-switch v0.0.5 (/Users/mimiko/.codex/worktrees/v005/pp-switch)
+    Finished `release` profile [optimized] target(s) in 41.32s

@@ -1,0 +1,2 @@
+COMMAND ["rtk", "proxy", "target/release/examples/update_smoke", "--archive", "target/package/pp-switch-v0.0.5-aarch64-apple-darwin.zip"]
+PP-15: real release package passed layout, bounds and executable architecture validation.

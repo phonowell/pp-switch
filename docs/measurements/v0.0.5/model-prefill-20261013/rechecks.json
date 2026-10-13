@@ -1,0 +1,37 @@
+[
+  {
+    "name": "python-recheck",
+    "command": [
+      "rtk",
+      "proxy",
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts",
+      "-p",
+      "*_test.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 8.218,
+    "log": "python-recheck.log"
+  },
+  {
+    "name": "release",
+    "command": [
+      "rtk",
+      "proxy",
+      "/Users/mimiko/.cargo/bin/cargo",
+      "build",
+      "--locked",
+      "--release",
+      "--bins",
+      "--examples"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 123.465,
+    "log": "release.log"
+  }
+]

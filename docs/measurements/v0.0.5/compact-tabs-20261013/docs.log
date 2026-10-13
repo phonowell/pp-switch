@@ -1,0 +1,8 @@
+COMMAND ["rtk", "proxy", "/tmp/pps-v005-tools/bin/python", "scripts/docs_check.py"]
+{
+  "markdown_files": 16,
+  "local_links_and_anchors": 253,
+  "translation_coverage": "4 READMEs / 3 guides aligned with Settings/Lucide/unique names/DSH/imports",
+  "evidence": "not requested",
+  "exit_code": 0
+}

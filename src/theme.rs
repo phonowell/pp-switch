@@ -11,7 +11,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 
 static DARK: AtomicBool = AtomicBool::new(false);
 type Rgb = (u8, u8, u8);
-const LIGHT: [Rgb; 14] = [
+const LIGHT: [Rgb; 15] = [
     (247, 248, 250),
     (40, 45, 56),
     (97, 106, 121),
@@ -23,11 +23,12 @@ const LIGHT: [Rgb; 14] = [
     (240, 242, 246),
     (219, 227, 245),
     (183, 190, 202),
-    (57, 121, 95),
+    (54, 93, 216),
     (116, 125, 139),
     (46, 83, 200),
+    (54, 93, 216),
 ];
-const DARK_PALETTE: [Rgb; 14] = [
+const DARK_PALETTE: [Rgb; 15] = [
     (30, 32, 38),
     (235, 238, 245),
     (169, 177, 192),
@@ -39,9 +40,10 @@ const DARK_PALETTE: [Rgb; 14] = [
     (39, 43, 52),
     (68, 89, 132),
     (121, 132, 153),
-    (120, 204, 166),
+    (143, 170, 255),
     (133, 143, 162),
     (62, 91, 190),
+    (143, 170, 255),
 ];
 // FLTK's 16 user color slots retain their identity in existing widgets. Changing
 // their RGB values recolors open dialogs without rebuilding widgets or drafts.
@@ -52,7 +54,7 @@ macro_rules! colors {
 }
 colors! { background=0, ink=1, muted=2, accent=3, line=4, selected=5,
 hover=6, danger=7, field_fill=8,
-active_badge=11, disabled_text=12, pressed_accent=13 }
+disabled_text=12, pressed_accent=13, active_text=14 }
 
 pub fn is_dark() -> bool {
     DARK.load(Ordering::Relaxed)
@@ -246,7 +248,8 @@ mod tests {
                 (p[1], p[0]),
                 (p[2], p[0]),
                 (p[1], p[8]),
-                (p[11], p[5]),
+                (p[14], p[5]),
+                (p[14], p[0]),
                 ((255, 255, 255), p[3]),
             ] {
                 assert!(

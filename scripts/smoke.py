@@ -66,15 +66,20 @@ def main():
         return code == 0
 
     run("lucide-parity", [python, "scripts/lucide.py", "--check"])
+    run("client-icon-parity", [python, "scripts/client_icons.py", "--check"])
     run("format", [cargo, "fmt", "--check"])
     run("clippy", [cargo, "clippy", "--locked", "--all-targets", "--", "-D", "warnings"])
     run("behavior", [cargo, "test", "--locked"])
     run("release-tests", [python, "-m", "unittest", "discover", "-s", "scripts", "-p", "*_test.py"])
     built = run("release-build", [cargo, "build", "--locked", "--release", "--bins", "--examples"], timeout=900)
+    if built:
+        run("config-read-comparison", [str(examples / ("measure_config" + suffix))])
+    run("documentation", [python, "scripts/docs_check.py"])
     if built and desktop:
         run("gui-callback", [python, "scripts/gui_smoke.py", "--allow-desktop-input", str(examples / ("ui_smoke" + suffix)), str(output / "gui.ppm")], graphical=True)
         if platform.system() == "Darwin":
             run("native-links", [python, "scripts/protocol_smoke.py", str(examples / "protocol_smoke"), str(output / "links"), "--allow-desktop-input"], timeout=100, graphical=True)
+            run("mac-performance", [python, "scripts/mac_performance.py", str(examples / "mac_acceptance"), str(output / "mac-performance"), "--allow-desktop-input"], timeout=180, graphical=True)
             run("native-input", [python, "scripts/gui_smoke.py", "--allow-desktop-input", "--timeout", "180", str(examples / "input_smoke"), str(output / "input")], timeout=190, graphical=True)
             run("visual-pixels", [python, "scripts/visual_check.py", str(output / "input")])
             run("native-appearance", [python, "scripts/gui_smoke.py", "--allow-desktop-input", "--timeout", "90", str(examples / "input_smoke"), str(output / "themes"), "--themes-only"], timeout=100, graphical=True)

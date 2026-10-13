@@ -6,7 +6,7 @@
 
 **Pure Provider Switch. Deine Konfiguration bleibt deine.**
 
-API-URL und Schlüssel für Claude Code, Codex und Gemini CLI wechseln.
+Kleiner nativer Anbieterwechsler. Fünf Harnesses in der Entwicklungsversion 0.0.5.
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
@@ -18,31 +18,22 @@ API-URL und Schlüssel für Claude Code, Codex und Gemini CLI wechseln.
 
 </div>
 
-![Natives Fenster mit Anbieterliste und Verbindungsdaten; englische Oberfläche](assets/screenshot.png)
+![v0.0.5 main-window schematic, light and dark; not a native screenshot](docs/illustrations/v0.0.5/main-en.svg)
 
 ## Warum pp-switch?
 
-**Ein anderer API-Anbieter sollte keine neue Einrichtung deines Clients erfordern.**
+Verbindungen wechseln und die bestehende Clientkonfiguration behalten. PPS verwaltet
+URL/Schlüssel, ausdrücklich angegebene Modelle und begrenzte native/API-Wechsel.
+Andere Einstellungen, Kommentare und Formatierung bleiben erhalten; nicht unterstützte
+Konfigurationen werden abgelehnt.
 
-Modelle, Denkparameter, Projektberechtigungen, MCP und Skills sind bereits eingerichtet. Du möchtest nur eine andere URL und einen anderen Schlüssel. pp-switch speichert diese Verbindungen und ändert beim Wechsel genau diese beiden Werte. Alle anderen Konfigurationsbytes, Kommentare und Formatierungen bleiben erhalten. Nicht unterstützte Konfigurationen werden ausdrücklich abgelehnt, statt sie stillschweigend neu aufzubauen.
+Ein natives Fenster mit Lucide Bearbeiten/Wechseln je Zeile, ohne Tray oder Dauerprozess.
+Updates nur nach manueller Prüfung und Bestätigung. Rust + FLTK, Systemschriften und
+Vektorpfade; kein gebündeltes WebView, keine Datenbank oder JavaScript-Laufzeit.
 
-**Fertig mit dem Wechsel? Fertig mit der App.** Ein Fenster, kein Tray, kein Autostart, keine Anbieterabfragen oder regelmäßigen Nutzungsabfragen. Beim Schließen endet der Prozess. Updates erfolgen nur nach einem Klick auf „Check for updates“ und deiner Bestätigung. Rust + FLTK, native Vektorzeichnung und Systemschriften; kein mitgeliefertes WebView, keine Datenbank und keine JavaScript-Laufzeit.
-
-
-[cc-switch #7649](https://github.com/farion1231/cc-switch/issues/7649) fordert einen Pure-/Lite-Modus: „CC Switch only manages fields it owns. Everything else belongs to the target application/user.“ pp-switch setzt dieses Prinzip mit einem noch engeren Umfang um: URL und Schlüssel. Die Diskussion begründet den Bedarf, ist aber keine Empfehlung für dieses Projekt. [Quellen und Grenzen](docs/verification.md#community-sources).
-
-## Kleiner Umfang, klare Unterschiede
-
-| | pp-switch | cc-switch |
-| --- | --- | --- |
-| Zweck | URL-/Schlüsselwechsel für bereits eingerichtete Clients | Umfassendere Anbieter- und Clientverwaltung |
-| Schreibzugriffe | Nur wirksame Base URL und API-Schlüssel | Weitere Einstellungen je nach aktivierter Funktion |
-| Anbieterlinks | Nur URL-/Schlüsselvorschau (Entwicklung 0.0.5) | Vollständige Deep-Link-Abläufe |
-| Modelle, Routing, Nutzung, MCP, Prompts, Skills | Außerhalb des Produktumfangs | Entsprechende Verwaltungsfunktionen |
-| Lebenszyklus | Fenster schließen → Prozess endet | Tray und weitere Arbeitsabläufe |
-| Updates | Manuell prüfen → bestätigen → herunterladen, installieren, neu starten | Eigener Updateablauf |
-
-Für eine umfassende Verwaltungsoberfläche eignet sich [cc-switch](https://github.com/farion1231/cc-switch) besser. pp-switch ist unabhängig und richtet sich an Menschen, deren Clients bereits eingerichtet sind und die einen kleinen, vorhersehbaren Wechsel wünschen.
+Entwicklung: Claude Code, Codex CLI/App, Gemini CLI, Grok Build und DSH CLI/Web.
+**Die veröffentlichte Version 0.0.4 unterstützt die ersten drei; 0.0.5 ist unveröffentlicht.**
+[Umfang und cc-switch-Quellen](docs/verification.md#community-sources).
 
 ## Download
 
@@ -59,34 +50,28 @@ Für eine umfassende Verwaltungsoberfläche eignet sich [cc-switch](https://gith
 
 Rust oder Node.js werden zum Ausführen nicht benötigt. macOS-Pakete deklarieren macOS 11+, sind aber **nicht mit Apple Developer signiert oder notarisiert**. Windows benötigt Windows 10+. Linux benötigt X11/XWayland, X11-/fontconfig-Bibliotheken und Systemschriften für die gewählte Sprache. Mindestversionen bedeuten nicht, dass jede OS-Version getestet wurde; siehe [Testumgebungen](docs/verification.md).
 
-Unter macOS ist von 0.0.2 einmal ein manueller Download nötig: Der alte Updater lehnt die neue Icon-Ressource ab. 0.0.3 berücksichtigt sie bei Updates.
-
 ## Verwendung
 
-1. Claude Code, Codex oder Gemini CLI wählen.
-2. „Add“ wählen, Name, Base URL und Schlüssel eingeben und speichern.
-3. Das Wechselsymbol rechts neben dem Stift in derselben Zeile anklicken.
+1. Harness wählen, **Add** anklicken, Name/URL/Schlüssel eingeben und speichern.
+2. Optionales Modell prüfen. Ohne konkretes Modell trägt Claude `claude-sonnet-5` ein; ein leeres Feld behält Client-Modelle bei.
+3. Das Wechsel-Symbol der Zeile anklicken; den Client bei Bedarf neu starten.
 
-Jede Zeile hat Lucide-Symbole zum Bearbeiten und Wechseln; Zeilen haben keinen eigenen Auswahlzustand. Das kleine Zahnrad neben den Tabs öffnet Einstellungen für Sprache und
-manuelle Updates. Tooltips, Inhaltsüberschrift, unterer Status/Wechselbereich entfallen. Alle passenden Duplikate zeigen „In use“. Die Oberfläche
-folgt dem hellen/dunklen Systemmodus. Speichern betrifft nur die lokale Liste.
-UI: **English, 简体中文, 繁體中文 und 日本語**; Deutsch ist eine Dokumentationssprache.
+Speichern ändert nur die Anbieterliste. Blaues **In use** prüft unterstützte
+Benutzerdateien, keine laufende Sitzung oder erfolgreiche Anfrage. Namen sind pro
+Client eindeutig; Importkollisionen erhalten ` (2)`, ` (3)`. Gleiche Verbindungen
+können verschiedene Namen haben.
 
+In 0.0.5 hat jeder Harness eine **Official**-Zeile für begrenzte native Wiederherstellung.
+Codex CLI/App teilen ihre Konfiguration; DSH CLI/Web teilen initialisierte Home-Profile.
+CCS/Sub2API-Links öffnen ungespeicherte Vorschauen; explizite Modelle haben Vorrang vor Editorvorschlägen. Prüfen Sie, ob Ihr Anbieter das vorgeschlagene Modell unterstützt.
+Externe Key-Helper, Cloud-Modi und nicht unterstützte Schlüsselquellen werden abgelehnt.
+[Einrichtung, genaue Schreibzugriffe und Fehlerhilfe](docs/user-guide.md).
 
-| Client | Erforderliche bestehende Einrichtung | Geänderte Werte |
-| --- | --- | --- |
-| Claude Code | API-Schlüssel ohne externen Key-Helper, Cloudmodus oder mehrdeutige Zugangsdaten | `ANTHROPIC_BASE_URL` und vorhandenes Schlüssel-/Tokenfeld in `settings.json` |
-| Codex | Benutzerdefinierter Anbieter ausgewählt, API-Schlüsselauthentifizierung eingerichtet | Aktueller `base_url` und vorhandenes Bearer-Token oder `auth.json.OPENAI_API_KEY` |
-| Gemini CLI | API-Schlüsselmodus bereits über `/auth` gewählt | `GOOGLE_GEMINI_BASE_URL` und `GEMINI_API_KEY` in `.env` |
-
-Keine Änderungen an Modellen, Authentifizierungsart oder Protokoll, keine Ersteinrichtung. Nur Benutzerdateien; Projektkonfiguration, Startargumente und Umgebungsvariablen eines anderen Terminals können Vorrang haben. `CLAUDE_CONFIG_DIR` und `CODEX_HOME` werden berücksichtigt. [Einrichtung und Fehlerhilfe (Englisch) →](docs/user-guide.md)
-
-## Kompatibilität und Vertrauen
-
-- Die Entwicklungsversion 0.0.5 stellt begrenzte Anbieterlink-Vorschauen und ausdrückliche URL-Registrierung wieder her. Speichern wendet keine Clientkonfiguration an; Downloads von 0.0.4 enthalten diesen Ablauf nicht.
-- Geheimnisse bleiben in lokalen Benutzerdateien (Unix 0600 / Windows-ACL für den aktuellen Benutzer). Maskierung ist **keine Verschlüsselung**. Keine automatischen Zwischenablagezugriffe, Geheimnisse in Diagnosen oder Anfragen an Anbieter.
-- Updates benötigen deine Bestätigung und einen beschreibbaren Installationsort. Nur Pakete dieses Repositorys werden heruntergeladen und per SHA-256 geprüft. Sie sind unsigniert; Anbieter- und Clientdateien bleiben außerhalb des Updaters. [Updatedetails (Englisch)](docs/user-guide.md#manual-update).
-- Vollständiger Vertrag: [SPEC.md](SPEC.md); Datei- und Datenpfade: [Anleitung](docs/user-guide.md).
+Settings enthält Sprache, explizite Linkregistrierung und manuelle Updates. Oberfläche:
+English, 简体中文, 繁體中文, 日本語; System-Hell/Dunkel. Schlüssel liegen in lokalen,
+benutzerbeschränkten Dateien; Maskierung ist keine Verschlüsselung. Keine automatischen
+Anbieteranfragen. Updates prüfen SHA-256 dieses Repositorys und ersetzen nur App-Dateien.
+[Verhaltensvertrag](SPEC.md).
 
 ## Leistung mit Belegen
 

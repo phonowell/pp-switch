@@ -1,0 +1,176 @@
+{
+  "time_utc": "2026-10-13T08:22:40.783551+00:00",
+  "scope": "User-authorized local Claude diagnosis. Read existing configuration; all Claude test writes sandboxed to temporary files. No GUI/input activity. No credentials retained.",
+  "file_match": {
+    "provider_name": "OpenToken",
+    "base_url": "https://otokapi.com",
+    "saved_url_and_key_match_claude_settings": true,
+    "default_model": "claude-sonnet-5-5",
+    "tier_models": [
+      "claude-sonnet-5-5",
+      "claude-sonnet-5-5",
+      "claude-sonnet-5-5"
+    ],
+    "apiKeyHelper": false,
+    "top_level_model": null
+  },
+  "http_results": [
+    {
+      "route": "/v1/models",
+      "authenticated": true,
+      "status": 200,
+      "configured_model_listed": true
+    },
+    {
+      "route": "/v1/models",
+      "authenticated": false,
+      "status": 401,
+      "error": "API_KEY_REQUIRED"
+    },
+    {
+      "route": "/v1/messages",
+      "authenticated": false,
+      "status": 401,
+      "error": "API_KEY_REQUIRED"
+    },
+    {
+      "route": "/v1/messages",
+      "authenticated": true,
+      "model": "claude-sonnet-5-5",
+      "stream": false,
+      "status": 502
+    },
+    {
+      "route": "/v1/messages",
+      "authenticated": true,
+      "model": "claude-sonnet-5-5",
+      "stream": true,
+      "status": 502
+    },
+    {
+      "route": "/v1/messages",
+      "authenticated": true,
+      "model": "claude-sonnet-4-6",
+      "stream": false,
+      "status": 502
+    },
+    {
+      "route": "/v1/messages/count_tokens",
+      "authenticated": true,
+      "status": 404,
+      "error": "Upstream request failed"
+    },
+    {
+      "route": "/v1/messages",
+      "authenticated": true,
+      "model": "claude-sonnet-5",
+      "status": 200,
+      "response": "OK"
+    },
+    {
+      "route": "/v1/messages",
+      "authenticated": true,
+      "model": "claude-opus-5-5",
+      "status": 200,
+      "response": "OK"
+    },
+    {
+      "route": "/v1/messages",
+      "authenticated": true,
+      "model": "claude-haiku-4-5-20251001",
+      "result": "20-second timeout"
+    },
+    {
+      "route": "/v1/messages",
+      "authenticated": true,
+      "model": "claude-sonnet-5",
+      "stream": true,
+      "status": 200,
+      "response": "OK",
+      "time_to_headers_seconds": 2.9
+    }
+  ],
+  "native_cli": {
+    "mode": "Isolated real Claude print, no tools, safe mode, no session persistence; macOS sandbox denies writes outside temporary fixture.",
+    "timeout_seconds": 45,
+    "init_model": "claude-sonnet-5-5",
+    "target_endpoint_confirmed": true,
+    "api_error_attempt": "1/11",
+    "http_status": 502,
+    "cloudflare_error": {
+      "error_name": "origin_bad_gateway",
+      "error_category": "origin",
+      "zone": "otokapi.com",
+      "owner_action_required": true,
+      "retry_after_seconds": 60,
+      "detail": "The origin web server returned an invalid or incomplete response to Cloudflare."
+    },
+    "result": "No successful response. CLI entered API retry.",
+    "isolation_limits": "Sandbox denied process lstart probe and temporary UDS/fswatch writes; CLI initialized and reached the target API."
+  },
+  "network_limits": "Requests used the existing macOS local proxy. Direct connections timed out/failed; no claim of direct connectivity.",
+  "conclusion": "Working isolated native Claude confirmed: Sonnet 5 and the existing local proxy return OK. Sonnet 5.5 failed with gateway origin 502. Without explicitly supplying the system proxy to Claude, a Sonnet 5 request timed out; settings.env HTTP_PROXY/HTTPS_PROXY was independently verified to work.",
+  "pending": "Official item draft for all five harnesses remains paused; no app code behavior changed by the local repair.",
+  "native_sonnet5_without_explicit_proxy": {
+    "timeout_seconds": 50,
+    "init_model": "claude-sonnet-5",
+    "result": "Request did not complete"
+  },
+  "native_sonnet5_with_process_proxy": {
+    "is_error": false,
+    "result": "OK",
+    "modelUsage": [
+      "claude-sonnet-5"
+    ],
+    "elapsed_seconds": 4.8,
+    "explicit_system_proxy": true
+  },
+  "native_sonnet5_with_settings_proxy": {
+    "exit": 0,
+    "is_error": false,
+    "result": "OK",
+    "modelUsage": [
+      "claude-sonnet-5"
+    ],
+    "elapsed_seconds": 3.7,
+    "proxy_source": "settings.env only"
+  },
+  "deployment": {
+    "status": "applied",
+    "backup_directory": "/Users/mimiko/.codex/backups/pp-switch/claude-working-1791880231",
+    "changed_settings": [
+      "model",
+      "env.ANTHROPIC_DEFAULT_HAIKU_MODEL",
+      "env.ANTHROPIC_DEFAULT_OPUS_MODEL",
+      "env.ANTHROPIC_DEFAULT_SONNET_MODEL",
+      "env.ANTHROPIC_MODEL",
+      "env.HTTPS_PROXY",
+      "env.HTTP_PROXY"
+    ],
+    "provider_models": {
+      "model": "claude-sonnet-5"
+    },
+    "unrelated_settings_preserved": true,
+    "other_providers_preserved": true,
+    "transaction": "Existing Store.commit recoverable two-file operation",
+    "helper": "One-time repair source privately backed up and removed from product examples"
+  },
+  "deployed_configuration_confirmation": {
+    "exit": 0,
+    "is_error": false,
+    "result": "OK",
+    "modelUsage": [
+      "claude-sonnet-5"
+    ],
+    "elapsed_seconds": 3.7,
+    "source": "Disposable clone of deployed connection/model/proxy settings"
+  },
+  "verification": {
+    "cargo_fmt_check": 0,
+    "docs_check": 0,
+    "git_diff_check": 0,
+    "repair_helper_release_build": 0,
+    "full_user_interactive_session": "Not exercised; existing user sessions were not interrupted. Native request checks disabled hooks/tools."
+  },
+  "design_followup": "Missing Claude import models cannot be extracted when Sub2API omits them; explicit user-selected compatible defaults and visibility of retained values must precede a reliable switch. No automatic model discovery or proxy-switching feature was added."
+}

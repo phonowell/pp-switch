@@ -1,0 +1,37 @@
+{
+  "cc_switch": {
+    "repository": "https://github.com/farion1231/cc-switch.git",
+    "revision": "d9a62313c8a276216ed40245c638753606831e95",
+    "sources": [
+      "src-tauri/src/deeplink/parser.rs",
+      "src-tauri/src/deeplink/provider.rs",
+      "src/components/providers/forms/hooks/useModelState.ts",
+      "src/config/claudeProviderPresets.ts"
+    ],
+    "findings": [
+      "Claude link model is optional.",
+      "Claude settings builder writes ANTHROPIC_MODEL only when supplied.",
+      "Provider presets may supply endpoint-specific models; there is no blanket mandatory-model rule."
+    ],
+    "source_sha256": {
+      "src-tauri/src/deeplink/parser.rs": "80c035b8f3d2655ceab453dd4661c84fd5c39b7a1b1b39807c8799ba959a5a65",
+      "src-tauri/src/deeplink/provider.rs": "6340a1d35ed449c450e6306cb098855f8dbb3789090204dfd3754e2e2b7e77e8",
+      "src/components/providers/forms/hooks/useModelState.ts": "c9ce28e52ec0c11b33cad994a5a9cf2aa32852ee436660e4ba6090b3427977d8",
+      "src/config/claudeProviderPresets.ts": "8de8188a528603dd9f21dc3c854a9525378267b3d8f95f6de74572fa1e39eb08"
+    }
+  },
+  "sub2api": {
+    "repository": "https://github.com/Wei-Shaw/sub2api.git",
+    "revision": "ab80abc6d1f929a6864c8804fd077b509d21fda2",
+    "sources": [
+      "frontend/src/utils/ccswitchImport.ts"
+    ],
+    "findings": [
+      "Default Claude URL/key imports omit models."
+    ],
+    "source_sha256": {
+      "frontend/src/utils/ccswitchImport.ts": "87f431140cb5c6542af588019a6b1ff73e2c737d50c75bd6c4affbbc97cdc435"
+    }
+  },
+  "pps_correction": "Remove mandatory model gating; actual editable Claude editor fallback claude-sonnet-5 after explicit/mapped/same-connection values. Clearing opts out. No new live requests."
+}

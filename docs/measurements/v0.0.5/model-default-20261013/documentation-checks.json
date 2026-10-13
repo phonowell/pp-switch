@@ -1,0 +1,42 @@
+[
+  {
+    "name": "documentation-evidence",
+    "command": [
+      "rtk",
+      "proxy",
+      "python3",
+      "scripts/docs_check.py",
+      "--record",
+      "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/model-default-20261013/report.json"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.482,
+    "log": "documentation-evidence.log"
+  },
+  {
+    "name": "diagram-parity",
+    "command": [
+      "rtk",
+      "proxy",
+      "/tmp/pps-v005-tools/bin/python",
+      "design/render_docs.py",
+      "--check"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.217,
+    "log": "diagram-parity.log"
+  },
+  {
+    "name": "diff-whitespace",
+    "command": [
+      "rtk",
+      "proxy",
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.084,
+    "log": "diff-whitespace.log"
+  }
+]

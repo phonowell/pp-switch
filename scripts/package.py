@@ -46,8 +46,10 @@ if macos:
 shutil.copy2(root / "LICENSE", resources / "LICENSE")
 shutil.copy2(root / "THIRD_PARTY_NOTICES.txt", resources / "THIRD_PARTY_NOTICES.txt")
 (resources / "README.txt").write_text(f"pp-switch {version} — Pure Provider Switch\n\n"
-    "Switch only API base URLs and keys. Close the window to exit.\n"
-    "Clients must already use a supported API-key configuration.\n"
+    "Switch API base URLs, keys and explicitly supplied optional models. Close the window to exit.\n"
+    "Official restores scoped native routing; sign in through the client if needed.\n"
+    "Claude suggests claude-sonnet-5 when unspecified; models are optional.\n"
+    "DSH requires initialized headless/web base-bundle profiles.\n"
     "Source, setup and limits: https://github.com/phonowell/pp-switch\n"
     "Secrets are stored in local user-only files; they are not encrypted.\n"
     "Based in part on the work of the FLTK project (https://www.fltk.org).\n"

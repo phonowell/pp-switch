@@ -1,0 +1,5 @@
+COMMAND ["rtk", "proxy", "/Users/mimiko/.cargo/bin/cargo", "clippy", "--locked", "--all-targets", "--", "-D", "warnings"]
+   Compiling fltk-sys v1.5.23
+    Checking fltk v1.5.23
+    Checking pp-switch v0.0.5 (/Users/mimiko/.codex/worktrees/v005/pp-switch)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 12.84s

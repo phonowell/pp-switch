@@ -1,0 +1,8 @@
+COMMAND ["rtk", "proxy", "/tmp/pps-v005-tools/bin/python", "scripts/package.py", "aarch64-apple-darwin", "--binary", "target/release/pp-switch"]
+{
+  "version": "0.0.5",
+  "target": "aarch64-apple-darwin",
+  "installed_bytes": 2754975,
+  "archive_bytes": 1384247,
+  "sha256": "9fabe246b14548b48d89a538ab3e988aa4c9e5bf7d8ad4fb5f030954884ab7bd"
+}

@@ -1,6 +1,6 @@
 # Pure Provider Switch — agent instructions
 
-Keep the product limited to URL/key switching, scoped Provider import, UI language
+Keep the product limited to URL/key switching with explicit optional Provider models, scoped Provider import, UI language
 and strictly user-triggered updates. Preserve user configuration and secrets;
 never test writes against real client files. Commit only task-owned changes;
 do not discard others' edits, rewrite history or force-push.
@@ -56,7 +56,7 @@ Documentation-only tasks do not require a code graph query.
 | Scope changes | [Purpose](SPEC.md#purpose), [boundaries](SPEC.md#product-boundaries) and the affected PP entries. |
 
 Current UI: per-row Edit/Switch and in-window Settings; no hover tips, More menu,
-content branding or bottom status/Switch. Use pinned Lucide icons, never handmade
-substitutes or font glyphs. Preserve native OS chrome and the PPS app logo.
+content branding or bottom status/Switch. Use pinned Lucide action icons and pinned Lobe Icons brand SVG shapes for client tabs;
+never handmade substitutes or font glyphs. Preserve native OS chrome and the PPS app logo.
 Chinese functional checks only; other locales style only. Reuse passed checks
 when inputs are unchanged; visual review is the last fallback.

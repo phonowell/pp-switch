@@ -3,8 +3,8 @@
 Agents start with [AGENTS.md](AGENTS.md), then read only the task's relevant
 PP requirements and chapters here. [SPEC.md](SPEC.md) is the behavior contract:
 update the relevant requirement before changing intended behavior, then implement
-the smallest change and verify its observable result. Keep URL/key switching,
-scoped Provider import, language selection and strictly manual updates as the
+the smallest change and verify its observable result. Keep URL/key switching with explicit optional Provider models,
+scoped native restoration and Provider import, language selection and strictly manual updates as the
 entire product scope. Run the shell examples below through `rtk proxy`.
 
 ## Build
@@ -28,9 +28,8 @@ cache must show `-Oz` on macOS and filesystem/print/SVG options OFF.
 `cargo run` opens the actual app and uses your local data. Use the isolated
 harnesses below for verification; never test writes against real client files.
 Rust + FLTK is the UI implementation. Use existing dependencies, system fonts
-and bounded native drawing. [The approved layout](design/minimal.html) remains
-the visual reference; [current screenshots](docs/verification.md#screenshots)
-show the shipped implementation.
+and bounded native drawing. [UI rules](design/UI.md) define the layout; [versioned images](docs/images.md)
+separate illustrative layouts from versioned native evidence.
 
 ## Shared workstation testing
 
@@ -95,6 +94,8 @@ blocked gates. It does not install the app, change URL associations, tag or publ
 The [smoke matrix](docs/smoke.md) and [UI design](design/UI.md) define acceptance;
 human screenshot inspection remains a separate mandatory gate.
 
+Toolkit regression context: [native UI failure lessons](docs/history/native-ui-lessons.md).
+
 ## Incremental verification
 
 Use the full smoke suite for a baseline or a change spanning multiple subsystems.
@@ -137,46 +138,9 @@ UI icons must come from the pinned [Lucide sources](assets/lucide/README.md).
 `python3 scripts/lucide.py --check` verifies native-path parity (development-only
 `fonttools==4.60.1`). Do not redraw approximate icons or substitute font glyphs.
 Keep Lucide ISC/MIT notices in the packaged third-party notice file.
-
-## Native UI failure lessons
-
-For Choice popups, set `menu_frame` explicitly. `down_frame` affects selection
-paint, not the popup window; using it alone loses native corner clipping/shadow.
-Capture/inspect the actual popup and assert its native properties. Paint the
-parent background before a rounded custom control to avoid stale corner pixels.
-
-More/footer observations below are historical toolkit lessons; those UI
-components were removed. Apply relevant lessons to the remaining language popup.
-
-These observations apply to FLTK/fltk-sys 1.5.23 and the tested macOS build.
-Verify them again when upgrading the toolkit. Observable behavior is the gate;
-source inspection or callback invocation alone is insufficient.
-
-| Failure | Cause and correction | Automated guard |
-| --- | --- | --- |
-| More ignored left click | `NoBox` makes MenuButton a right-click context menu. Use `FlatBox` with custom drawing. | Actual left-click/Space/Escape events; a NoBox negative control must fail |
-| Language marker or update disable state did nothing | This version's `MenuExt::set_mode` binding ignores its item index. Use `at(index).set_flag(flags)`. | Selected radio value and active/inactive native item assertions |
-| Rounded drawing still produced a rectangular menu | An opaque rectangular native window remains rectangular. macOS menus need transparent background and layer corner clipping, while retaining `hasShadow`. | Native radius/clipping/shadow assertions, transparent corner and opaque center pixels; border-edge pixels |
-| Three dots differed between languages | Use fixed integer-position filled circles rather than a font glyph or outlined floating-point circles. | Compare More interior pixels across all four locales and require filled centers |
-| In use was cut off | Edit draws after the row and covered the badge's last 2 pixels. Measure localized text and leave an 8-pixel gap before Edit. | Compare rendered badge ink with a complete same-system reference, including narrower/scrolling rows |
-| Screenshot crashed input_smoke | Escape closes the whole popup; a second Escape can hide its parent. Cocoa `make_current` assumes a mapped window. | One Escape, parent visibility assertion, capture guard and normal error exit |
-| Exact-color text checks failed on valid captures | Cocoa text rendering changes paint RGB; antialiased edges also depend on selected/unselected backgrounds. | Compare same-run solid glyph ink silhouettes; test detector sensitivity against missing ink |
-| More focused on initial activation | FLTK Group focuses its first interactive child. Accept initial focus at the main window until user input, preserving normal subsequent navigation. | Native initial-focus and Tab/Space assertions in all locale captures / Chinese input |
-| Undesigned status dialog/tooltip | An output field had a release callback and copied its text into a tooltip. Replace it with a passive Frame. | Tooltip property and native click window/modal counts; watchdog fails an unexpected nested dialog |
-
-When a personal app hangs, preserve a bounded process sample before ending the
-identified process if possible. A main thread waiting inside a nested event loop
-does not by itself prove a deadlock or identify its trigger. Record unknown causes
-as unresolved; test native title-close and Escape dismissal and parent recovery.
-Do not reproduce using the user's real keys/configuration. Duplicate active badges
-are intentional: client URL/key cannot identify one saved record among identical
-records. Never arbitrarily choose one active ID or silently delete duplicates.
-
-macOS title-icon removal must stay behind `cfg(target_os = "macos")`; Windows/
-Linux window icons and installed package icons remain. Popup styling must target
-only the application's menu frame, preserving normal native window chrome.
-Layer PNGs prove rounded transparency but exclude the external compositor
-shadow; native properties supply that part of the evidence.
+Client marks use one pinned [Lobe Icons revision](assets/clients/README.md).
+`python3 scripts/client_icons.py --check` verifies normalized native path parity;
+original SVGs and SHA-256 provenance are retained without a runtime SVG parser.
 
 ## Package and measure
 
@@ -197,7 +161,26 @@ smoke checks the actual package against the updater's whitelist and architecture
 Keep [PP-11](SPEC.md#pp-11-performance-budgets) thresholds unchanged. The measurement
 script can fail after functional checks pass; preserve its JSON and report the
 failure. Its event-loop marker does not certify cold interactive startup or
-editor/update peaks. [Verification](docs/verification.md) defines the method
+editor/update peaks. For macOS issue #1 use `python3 scripts/mac_performance.py
+target/release/examples/mac_acceptance target/mac-performance` on a dedicated
+desktop. It interleaves a compiled bare Cocoa window with PPS empty/editor/import
+scenarios, measures total RSS and OS high-water marks, and requires a dispatched
+Cocoa keyboard action plus a displayed frame for READY. Import exercises eight
+near-256-KiB synthetic previews. Native termination tests cover main/Settings/editor
+through NSApplication's Quit entry point; actual Dock clicks remain separate.
+`python3 -m unittest scripts.native_quit_test -v` additionally runs real FLTK
+main/Settings/editor lifecycle cases with test-only ordering and activation
+suppressed. It sends menu and Dock-format quit AppleEvents and checks the real
+delegate, termination, unchanged fixture files and unchanged foreground process.
+The missing-handler negative control must reproduce `errAEEventNotHandled`.
+These background tests do not replace visual or native pointer acceptance.
+All commands, hashes and raw records are retained. Cached launches are explicitly
+not a verified cold start: `budget_pass` remains false without that evidence.
+Do not purge shared-machine caches; a separately documented reboot/first-launch
+experiment is still required. `measure_config` compares separate vs single-snapshot
+connection/model reads in the same release binary and synthetic files; cumulative
+requested allocation bytes are not RSS or live heap.
+[Verification](docs/verification.md) defines the method
 and records current and historical evidence. Passing checks need not be rerun
 when their inputs are unchanged.
 
@@ -210,20 +193,24 @@ when their inputs are unchanged.
 | `SPEC.md` | The single English behavior contract and budget definitions. |
 | `AGENTS.md` | Short agent workflow and task reading routes. |
 | `CONTRIBUTING.md` | Build, validation, packaging, documentation maintenance and tool recovery. |
-| `docs/verification.md` | Versioned evidence, measurement method, limitations and dated community sources. |
+| `docs/verification.md` | Current evidence, measurement method and release summaries. |
+| `docs/README.md`, `docs/images.md` | Documentation navigation and image provenance/version labels. |
+| `docs/history/` | Superseded checkpoint narratives, acceptance and research; never current instructions. |
+| `design/UI.md` | Current UI rules; generated SVG illustrations explain them without certifying native behavior. |
 | `docs/measurements/` | Immutable raw results by version; keep historical files. |
 
 `python3 scripts/docs_check.py` checks current Markdown links/anchors and
-translated UI rules. Add `--record docs/measurements/v0.0.4/settings-lucide-review-20261012.json`
-to verify the current local package/install evidence (historical installations
-are preserved as records, not expected to match the current installed app).
+translated UI rules. Use `python3 design/render_docs.py --check` for deterministic illustration parity.
+`--record PATH` verifies a matching current source/package/install report; archived
+installations are records and must not be checked against today’s installed app.
 
 For documentation-only changes, check local links and heading anchors, Markdown
 structure, translation coverage and numerical claims against raw measurements.
 Do not rebuild the app solely for wording changes. Update affected translations
 together, keep sample credentials fake and distinguish document languages from
-the four interface languages. Use Git tags and release pages for superseded
-development narratives rather than copying them into current instructions.
+the four interface languages. Keep superseded narratives in `docs/history/` or at immutable Git tags. Keep raw
+evidence paths stable. Replace stale README images with explicitly versioned
+illustrations or current native captures; a schematic never proves GUI acceptance.
 
 ## Tool and output recovery
 

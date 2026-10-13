@@ -5,11 +5,26 @@ use crate::{
 };
 use std::path::PathBuf;
 
+mod dsh;
+mod models;
+mod official;
+pub use models::{CLAUDE_EDITOR_DEFAULT, ModelState};
+
+/// One file snapshot for row badges, never a live connection check.
+#[derive(Default)]
+pub struct ConfigStatus {
+    pub connection: Option<(String, String)>,
+    pub models: Option<ModelState>,
+    pub official: bool,
+}
+
 #[derive(Clone)]
 pub struct Paths {
     pub claude: PathBuf,
     pub codex: PathBuf,
     pub gemini: PathBuf,
+    pub grok: PathBuf,
+    pub dsh: PathBuf,
 }
 
 impl Paths {
@@ -18,6 +33,8 @@ impl Paths {
             claude: home.join(".claude"),
             codex: home.join(".codex"),
             gemini: home.join(".gemini"),
+            grok: home.join(".grok"),
+            dsh: home.join(".dsh"),
         }
     }
 
@@ -28,6 +45,9 @@ impl Paths {
         }
         if let Some(dir) = std::env::var_os("CODEX_HOME").filter(|s| !s.is_empty()) {
             paths.codex = PathBuf::from(dir);
+        }
+        if let Some(dir) = std::env::var_os("DSH_HOME").filter(|s| !s.is_empty()) {
+            paths.dsh = PathBuf::from(dir);
         }
         Ok(paths)
     }
@@ -45,20 +65,55 @@ impl Paths {
             }
             Client::Codex => self.codex.join("config.toml"),
             Client::Gemini => self.gemini.join(".env"),
+            Client::Grok => self.grok.join("config.toml"),
+            Client::Dsh => self.dsh.join("cordis.patch.yml"),
         }
     }
 
+    pub fn status(&self, client: Client, include_models: bool) -> Result<ConfigStatus> {
+        if client == Client::Dsh {
+            return self.dsh_status(include_models);
+        }
+        if client == Client::Claude {
+            let Some(text) = storage::read(&self.settings(client))? else {
+                return Ok(ConfigStatus {
+                    official: true,
+                    ..ConfigStatus::default()
+                });
+            };
+            let (root, env, field) = claude_config(&text)?;
+            return Ok(ConfigStatus {
+                connection: env.string("ANTHROPIC_BASE_URL")?.zip(env.string(field)?),
+                models: include_models.then(|| ModelState::claude(&root, &env)),
+                official: official::claude_native(&env),
+            });
+        }
+        if self.is_official(client)? {
+            return Ok(ConfigStatus {
+                official: true,
+                ..ConfigStatus::default()
+            });
+        }
+        Ok(ConfigStatus {
+            connection: self.current(client)?,
+            models: include_models
+                .then(|| self.current_models(client).ok())
+                .flatten(),
+            official: false,
+        })
+    }
+
     pub fn current(&self, client: Client) -> Result<Option<(String, String)>> {
+        if client == Client::Dsh {
+            return self.dsh_current();
+        }
         let Some(text) = storage::read(&self.settings(client))? else {
             return Ok(None);
         };
         let values = match client {
             Client::Claude => {
-                let field = claude_key_field(&text)?;
-                (
-                    config::json_string(&text, &["env", "ANTHROPIC_BASE_URL"])?,
-                    config::json_string(&text, &["env", field])?,
-                )
+                let (_, env, field) = claude_config(&text)?;
+                (env.string("ANTHROPIC_BASE_URL")?, env.string(field)?)
             }
             Client::Codex => {
                 let doc = toml_edit::Document::parse(text.as_str())
@@ -87,6 +142,23 @@ impl Paths {
                     config::dotenv_value(&text, "GEMINI_API_KEY")?,
                 )
             }
+            Client::Dsh => unreachable!("DSH uses its shared configuration reader"),
+            Client::Grok => {
+                let doc = toml_edit::Document::parse(text.as_str())
+                    .map_err(|_| "Grok Build config is not valid TOML.")?;
+                let id = grok_profile(&doc)?;
+                let table = &doc["model"][id];
+                (
+                    table
+                        .get("base_url")
+                        .and_then(toml_edit::Item::as_str)
+                        .map(str::to_owned),
+                    table
+                        .get("api_key")
+                        .and_then(toml_edit::Item::as_str)
+                        .map(str::to_owned),
+                )
+            }
         };
         Ok(values.0.zip(values.1))
     }
@@ -107,6 +179,18 @@ impl Paths {
     pub fn apply(&self, store: &Store, provider: &Provider) -> Result<()> {
         provider.validate()?;
         store.recover()?;
+        environment_conflict(provider.client)?;
+        if matches!(provider.client, Client::Codex | Client::Grok)
+            && self.native_route(provider.client)?
+        {
+            return self.apply_from_native(store, provider);
+        }
+        if provider.client == Client::Gemini {
+            return self.apply_gemini(store, provider);
+        }
+        if provider.client == Client::Dsh {
+            return self.apply_dsh(store, provider);
+        }
         let path = self.settings(provider.client);
         let before = storage::read(&path)?;
         let text = before.as_deref().unwrap_or(match provider.client {
@@ -116,7 +200,11 @@ impl Paths {
         let mut changes = Vec::new();
         let after = match provider.client {
             Client::Claude => {
-                let field = claude_key_field(text)?;
+                let (_, env, field) = claude_config(text)?;
+                // Refuse malformed destinations before preparing any changes,
+                // consistently with the configuration status reader.
+                env.string("ANTHROPIC_BASE_URL")?;
+                env.string(field)?;
                 let next =
                     config::patch_json(text, &["env", "ANTHROPIC_BASE_URL"], &provider.base_url)?;
                 config::patch_json(&next, &["env", field], &provider.api_key)?
@@ -161,7 +249,25 @@ impl Paths {
                     config::patch_dotenv(text, "GOOGLE_GEMINI_BASE_URL", &provider.base_url)?;
                 config::patch_dotenv(&next, "GEMINI_API_KEY", &provider.api_key)?
             }
+            Client::Dsh => unreachable!("DSH uses a recoverable shared configuration write"),
+            Client::Grok => {
+                let doc = toml_edit::Document::parse(text)
+                    .map_err(|_| "Grok Build config is not valid TOML.")?;
+                let id = grok_profile(&doc)?;
+                let next =
+                    config::patch_toml(text, &["model", id, "base_url"], &provider.base_url)?;
+                config::patch_toml(&next, &["model", id, "api_key"], &provider.api_key)?
+            }
         };
+        let mut after = after;
+        if !provider.models.is_empty() {
+            let (modeled, model_change) =
+                self.apply_models(provider.client, &provider.models, &after)?;
+            after = modeled;
+            if let Some(change) = model_change {
+                changes.push(change);
+            }
+        }
         changes.push(Change {
             path,
             before,
@@ -171,18 +277,56 @@ impl Paths {
     }
 }
 
-fn claude_key_field(text: &str) -> Result<&'static str> {
-    if config::json_value(text, &["apiKeyHelper"])?.is_some() {
+fn grok_profile<'a>(doc: &'a toml_edit::Document<&str>) -> Result<&'a str> {
+    let id = doc.get("models").and_then(|m| m.get("default"))
+        .and_then(toml_edit::Item::as_str)
+        .ok_or("Initialize a custom Grok Build API-key profile first; pp-switch never changes models.default.")?;
+    let table = doc
+        .get("model")
+        .and_then(|profiles| profiles.get(id))
+        .ok_or("Selected Grok Build profile has no custom configuration.")?;
+    for field in [
+        "env_key",
+        "auth_provider",
+        "env_http_headers",
+        "mtls_cert_dir",
+    ] {
+        if table.get(field).is_some() {
+            return Err("Grok Build uses an external credential source; only an existing inline API-key profile is supported.".into());
+        }
+    }
+    for field in ["base_url", "api_key"] {
+        if table
+            .get(field)
+            .and_then(toml_edit::Item::as_str)
+            .filter(|s| !s.trim().is_empty())
+            .is_none()
+        {
+            return Err(
+                "Initialize a custom Grok Build API-key profile with base_url and api_key first."
+                    .into(),
+            );
+        }
+    }
+    Ok(id)
+}
+
+fn claude_config(
+    text: &str,
+) -> Result<(config::JsonObject<'_>, config::JsonObject<'_>, &'static str)> {
+    let root = config::JsonObject::parse(text)?;
+    if root.get("apiKeyHelper").is_some() {
         return Err(
             "Claude uses apiKeyHelper; pp-switch does not change external key sources.".into(),
         );
     }
+    let env = root.object("env")?;
     for flag in [
         "CLAUDE_CODE_USE_BEDROCK",
         "CLAUDE_CODE_USE_VERTEX",
         "CLAUDE_CODE_USE_FOUNDRY",
     ] {
-        if let Some(raw) = config::json_value(text, &["env", flag])? {
+        if let Some(raw) = env.get(flag) {
             let value: serde_json::Value = serde_json::from_str(raw.get())
                 .map_err(|_| "Invalid Claude cloud-provider flag.")?;
             if !matches!(
@@ -196,14 +340,14 @@ fn claude_key_field(text: &str) -> Result<&'static str> {
             }
         }
     }
-    let token = config::json_value(text, &["env", "ANTHROPIC_AUTH_TOKEN"])?.is_some();
-    let key = config::json_value(text, &["env", "ANTHROPIC_API_KEY"])?.is_some();
+    let token = env.get("ANTHROPIC_AUTH_TOKEN").is_some();
+    let key = env.get("ANTHROPIC_API_KEY").is_some();
     match (token, key) {
         (true, true) => Err(
             "Claude has both AUTH_TOKEN and API_KEY. Resolve the credential source first.".into(),
         ),
-        (false, true) => Ok("ANTHROPIC_API_KEY"),
-        _ => Ok("ANTHROPIC_AUTH_TOKEN"),
+        (false, true) => Ok((root, env, "ANTHROPIC_API_KEY")),
+        _ => Ok((root, env, "ANTHROPIC_AUTH_TOKEN")),
     }
 }
 
@@ -292,6 +436,9 @@ pub fn environment_conflict(client: Client) -> Result<()> {
             "GOOGLE_API_KEY",
             "GOOGLE_GENAI_USE_VERTEXAI",
         ],
+        // Grok's env_key is rejected at profile validation. Do not assume that
+        // an unrelated XAI_API_KEY overrides an explicit inline api_key.
+        Client::Grok | Client::Dsh => &[],
     };
     if let Some(name) = names
         .iter()

@@ -3,7 +3,7 @@
 Original SVGs from [Lucide](https://github.com/lucide-icons/lucide/tree/70562c1ee1c4fdcf736fe97bc893fb8511927934/icons),
 commit `70562c1ee1c4fdcf736fe97bc893fb8511927934` (2026-10-09).
 Settings, Pencil, Arrow right left, Arrow left, Plus and
-Chevron down cover every application-drawn UI icon. The PPC application logo and
+Chevron down cover every application-drawn UI icon. The PPS application logo and
 OS-owned window chrome are separate. Licenses: [ISC/MIT](LICENSE), also included
 in every package's [third-party notices](../../THIRD_PARTY_NOTICES.txt).
 

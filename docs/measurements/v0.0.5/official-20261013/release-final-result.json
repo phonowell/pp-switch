@@ -1,0 +1,16 @@
+{
+  "name": "release-final",
+  "command": [
+    "rtk",
+    "proxy",
+    "/Users/mimiko/.cargo/bin/cargo",
+    "build",
+    "--locked",
+    "--release",
+    "--bins",
+    "--examples"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 358.91,
+  "log": "docs/measurements/v0.0.5/official-20261013/release-final.log"
+}

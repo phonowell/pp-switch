@@ -1,0 +1,100 @@
+[
+  {
+    "bundled": false,
+    "scenario": "menu-main",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 1 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": ""
+  },
+  {
+    "bundled": false,
+    "scenario": "dock-main",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 1 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": ""
+  },
+  {
+    "bundled": false,
+    "scenario": "menu-settings",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 1 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": ""
+  },
+  {
+    "bundled": false,
+    "scenario": "dock-settings",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 1 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": ""
+  },
+  {
+    "bundled": false,
+    "scenario": "menu-editor",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 2 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": ""
+  },
+  {
+    "bundled": false,
+    "scenario": "dock-editor",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 2 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": ""
+  },
+  {
+    "bundled": false,
+    "scenario": "dock-unhandled-main",
+    "exit_code": 2,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 1 HIDDEN NATIVE WINDOWS\n",
+    "stderr": "quit AppleEvent delivery: Error Domain=NSOSStatusErrorDomain Code=-1708 \"errAEEventNotHandled: the AppleEvent was not handled by any handler\"\n"
+  },
+  {
+    "bundled": true,
+    "scenario": "menu-main",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 1 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": "sandbox_extension_issue_file_to_process failed for /var/folders/5r/6r2gtz9x05s81070rs3swlw80000gn/T/pps-quit-bundle-_o3xs_i8/QuitFixture.app: 1 (Operation not permitted)\n"
+  },
+  {
+    "bundled": true,
+    "scenario": "dock-main",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 1 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": "sandbox_extension_issue_file_to_process failed for /var/folders/5r/6r2gtz9x05s81070rs3swlw80000gn/T/pps-quit-bundle-_o3xs_i8/QuitFixture.app: 1 (Operation not permitted)\n"
+  },
+  {
+    "bundled": true,
+    "scenario": "menu-settings",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 1 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": "sandbox_extension_issue_file_to_process failed for /var/folders/5r/6r2gtz9x05s81070rs3swlw80000gn/T/pps-quit-bundle-_o3xs_i8/QuitFixture.app: 1 (Operation not permitted)\n"
+  },
+  {
+    "bundled": true,
+    "scenario": "dock-settings",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 1 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": "sandbox_extension_issue_file_to_process failed for /var/folders/5r/6r2gtz9x05s81070rs3swlw80000gn/T/pps-quit-bundle-_o3xs_i8/QuitFixture.app: 1 (Operation not permitted)\n"
+  },
+  {
+    "bundled": true,
+    "scenario": "menu-editor",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 2 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": "sandbox_extension_issue_file_to_process failed for /var/folders/5r/6r2gtz9x05s81070rs3swlw80000gn/T/pps-quit-bundle-_o3xs_i8/QuitFixture.app: 1 (Operation not permitted)\n"
+  },
+  {
+    "bundled": true,
+    "scenario": "dock-editor",
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 2 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": "sandbox_extension_issue_file_to_process failed for /var/folders/5r/6r2gtz9x05s81070rs3swlw80000gn/T/pps-quit-bundle-_o3xs_i8/QuitFixture.app: 1 (Operation not permitted)\n"
+  },
+  {
+    "bundled": true,
+    "scenario": "dock-unhandled-main",
+    "exit_code": 2,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 1 HIDDEN NATIVE WINDOWS\n",
+    "stderr": "sandbox_extension_issue_file_to_process failed for /var/folders/5r/6r2gtz9x05s81070rs3swlw80000gn/T/pps-quit-bundle-_o3xs_i8/QuitFixture.app: 1 (Operation not permitted)\nquit AppleEvent delivery: Error Domain=NSOSStatusErrorDomain Code=-1708 \"errAEEventNotHandled: the AppleEvent was not handled by any handler\"\n"
+  }
+]

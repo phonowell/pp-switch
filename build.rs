@@ -16,6 +16,11 @@ fn main() {
             .file("examples/macos_input.m")
             .flag("-fobjc-arc")
             .compile("pp_smoke_input");
+        println!("cargo:rerun-if-changed=examples/macos_quit_background.m");
+        cc::Build::new()
+            .file("examples/macos_quit_background.m")
+            .flag("-fobjc-arc")
+            .compile("pp_quit_background");
         println!("cargo:rustc-link-lib=framework=QuartzCore");
         println!("cargo:rustc-link-lib=framework=CoreServices");
     }

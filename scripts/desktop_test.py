@@ -23,11 +23,11 @@ class DesktopLaunchGuards(unittest.TestCase):
             self.assertFalse(marker.exists())
 
     def test_url_and_measurement_wrappers_refuse_before_launch(self):
-        for script in ("protocol_smoke.py", "measure.py"):
+        for script in ("protocol_smoke.py", "measure.py", "mac_performance.py"):
             with self.subTest(script=script), tempfile.TemporaryDirectory() as directory:
                 result = subprocess.run(
                     [sys.executable, str(ROOT / "scripts" / script), "missing-binary", directory]
-                    if script == "protocol_smoke.py" else
+                    if script in ("protocol_smoke.py", "mac_performance.py") else
                     [sys.executable, str(ROOT / "scripts" / script), "missing-binary"],
                     env=dict(os.environ, CI=""), capture_output=True, text=True, timeout=10,
                 )

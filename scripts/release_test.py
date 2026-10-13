@@ -11,6 +11,20 @@ import release
 
 
 class PublicationGates(unittest.TestCase):
+    def test_cache_retaining_native_readiness_cannot_pass_cold_start_budget(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "metrics.json"
+            data = {"samples": [{"startup_ms": 100, "idle_rss_bytes": 100, "peak_rss_bytes": 100}],
+                    "startup_max_ms": 100, "idle_max_bytes": 100, "peak_max_bytes": 100,
+                    "measured_threshold_pass": True, "native_action_readiness": True,
+                    "cold_start_verified": False, "budget_pass": False}
+            path.write_text(json.dumps(data))
+            self.assertFalse(release.metrics(path)["budget_pass"])
+            data["budget_pass"] = True
+            path.write_text(json.dumps(data))
+            with self.assertRaisesRegex(ValueError, "Inconsistent budget"):
+                release.metrics(path)
+
     def fixture(self, root):
         for target in release.TARGETS:
             artifact = root / f"pp-switch-{target}"

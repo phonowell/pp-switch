@@ -1,0 +1,28 @@
+{
+  "time_utc": "2026-10-13T07:14:37.920088+00:00",
+  "destination": "/Users/mimiko/Applications/pp-switch.app",
+  "backup": "/Users/mimiko/.codex/backups/pp-switch/shared-harness-v005-20261013T071437872003Z/pp-switch-previous.app",
+  "archive": "/Users/mimiko/.codex/worktrees/v005/pp-switch/target/package/pp-switch-v0.0.5-aarch64-apple-darwin.zip",
+  "archive_sha256": "dcc6b42a3c918a491f9b636d5c348b252a1009f7559428375a647d0f0589cdf1",
+  "binary_sha256": "3839d326447c0fe17980b348ee480ef413c1fd67f46a361d1fa67cb8d98bd829",
+  "installed_bytes": 2754975,
+  "installed_sha256": {
+    "Contents/Info.plist": "76be48b7093bafc84acbac6f1ebff55b1ab2118e1cc4048efdb1241492be6ebd",
+    "Contents/MacOS/pp-switch": "3839d326447c0fe17980b348ee480ef413c1fd67f46a361d1fa67cb8d98bd829",
+    "Contents/Resources/AppIcon.icns": "cf2b68a2bf9fe6636110b5e7a590117d78df84dd8800bc2ae55626741074d28b",
+    "Contents/Resources/LICENSE": "18e5e3ed3e28b653178943cc38f54f3bc2dd883fbec46fcbc8d07aa72a7ecc97",
+    "Contents/Resources/README.txt": "03843ac76fa7ca3a7a9ba8782990079b21b8984cf8a9fc01831b3d2322708f26",
+    "Contents/Resources/THIRD_PARTY_NOTICES.txt": "d4b6f3fc239f7150997f212f2ca319318b3a00d993583d2fe45f5219783ba5b7"
+  },
+  "previous_sha256": {
+    "Contents/Info.plist": "76be48b7093bafc84acbac6f1ebff55b1ab2118e1cc4048efdb1241492be6ebd",
+    "Contents/MacOS/pp-switch": "18dfe87417b9e3ac5abd716e9540e9ccb9f85292581c87249eabffa505cf4ee9",
+    "Contents/Resources/AppIcon.icns": "cf2b68a2bf9fe6636110b5e7a590117d78df84dd8800bc2ae55626741074d28b",
+    "Contents/Resources/LICENSE": "18e5e3ed3e28b653178943cc38f54f3bc2dd883fbec46fcbc8d07aa72a7ecc97",
+    "Contents/Resources/README.txt": "7451c742c074d5d9e99c633485a93ba3ee4e8e6c7850c69645221a311583919e",
+    "Contents/Resources/THIRD_PARTY_NOTICES.txt": "b5cd70800378e3e60e2fa8d73d00fc044594d5029b2a5935f82a90b1fb74ed0f"
+  },
+  "launched": false,
+  "client_files_modified": false,
+  "gui_native_acceptance": "unverified on shared workstation"
+}

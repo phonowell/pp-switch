@@ -1,9 +1,9 @@
 use crate::{
     Result,
-    client::{Paths, environment_conflict},
+    client::{ModelState, Paths, environment_conflict},
     i18n::{self, Language, tr},
     protocol,
-    provider::{Client, Provider, import_link},
+    provider::{Client, Models, Provider, import_link},
     storage::Store,
     theme, update,
 };
@@ -25,6 +25,7 @@ use std::{
 };
 
 pub mod acceptance;
+mod client_icons;
 mod lucide;
 use lucide::Icon;
 
@@ -38,9 +39,16 @@ struct Row {
 }
 
 #[derive(Clone)]
+struct OfficialRow {
+    surface: Frame,
+    switch: Button,
+    active: Rc<Cell<bool>>,
+}
+
+#[derive(Clone)]
 struct Controls {
     window: Window,
-    clients: [Button; 3],
+    clients: [Button; 5],
     client: Rc<Cell<Client>>,
     language: Rc<Cell<Language>>,
     main_page: Group,
@@ -55,11 +63,18 @@ struct Controls {
     updating: Rc<Cell<bool>>,
     list: Scroll,
     rows: Rc<RefCell<Vec<Row>>>,
+    official: Rc<RefCell<Option<OfficialRow>>>,
     empty: Frame,
     editor: Window,
     name: Input,
     url: Input,
     key: SecretInput,
+    model: Input,
+    model_aliases: [Input; 3],
+    model_group: Group,
+    model_toggle: Button,
+    model_hint: Frame,
+    models_expanded: Rc<Cell<bool>>,
     new: Button,
     save: Button,
     cancel: Button,
@@ -72,7 +87,9 @@ struct State {
     providers: Vec<Provider>,
     editing: Option<String>,
     current: Option<(String, String)>,
+    current_models: Option<ModelState>,
     setup_error: Option<String>,
+    official: bool,
 }
 
 impl Controls {
@@ -110,6 +127,7 @@ impl Controls {
         ));
         self.languages.set_value(lang.index() as i32);
         self.empty.set_label(tr(lang, "Nothing here yet."));
+        self.model_layout(self.models_expanded.get());
         let message = self.raw_status.borrow().clone();
         self.message(&message);
         self.window.redraw();
@@ -117,6 +135,70 @@ impl Controls {
     }
     fn hide_dialogs(&mut self) {
         self.editor.hide();
+    }
+    fn model_layout(&mut self, expanded: bool) {
+        let claude = self.client.get() == Client::Claude;
+        self.models_expanded.set(expanded && claude);
+        self.model_hint.set_label(tr(
+            self.lang(),
+            if claude {
+                "Blank keeps models. Mappings follow a supplied default."
+            } else {
+                "Blank keeps the client's model."
+            },
+        ));
+        let y = if claude {
+            self.model_toggle.show();
+            self.model_toggle.set_label(tr(
+                self.lang(),
+                if expanded {
+                    "Hide model mappings"
+                } else {
+                    "Claude model mappings"
+                },
+            ));
+            if expanded {
+                self.model_group.show();
+                518
+            } else {
+                self.model_group.hide();
+                432
+            }
+        } else {
+            self.model_toggle.hide();
+            self.model_group.hide();
+            394
+        };
+        for b in [&mut self.delete, &mut self.cancel, &mut self.save] {
+            b.set_pos(b.x(), y);
+        }
+        self.editor.set_size(386, y + 60);
+        self.position_editor();
+        self.editor.redraw();
+    }
+    fn position_editor(&mut self) {
+        let (x, y, w, h) = app::screen_work_area(app::screen_num(self.window.x(), self.window.y()));
+        if w > 0 && h > 0 {
+            self.editor.set_pos(
+                (self.window.x() + 27).clamp(x, (x + w - self.editor.w()).max(x)),
+                (self.window.y() + 53).clamp(y + 28, (y + h - self.editor.h() - 8).max(y + 28)),
+            );
+        }
+    }
+    fn model_fields(&mut self, models: &Models) {
+        self.model.set_value(models.model.as_deref().unwrap_or(""));
+        for (input, value) in
+            self.model_aliases
+                .iter_mut()
+                .zip([&models.haiku, &models.sonnet, &models.opus])
+        {
+            input.set_value(value.as_deref().unwrap_or(""));
+        }
+        self.model_layout(
+            [&models.haiku, &models.sonnet, &models.opus]
+                .iter()
+                .any(|v| v.is_some()),
+        );
     }
 }
 
@@ -254,16 +336,20 @@ fn controls(language: Language) -> Controls {
         draw::set_draw_color(theme::hover());
         draw::draw_rounded_rectf(f.x(), f.y(), f.w(), f.h(), 7);
     });
-    let clients = ["Claude Code", "Codex", "Gemini CLI"].map(|name| {
-        let index = ["Claude Code", "Codex", "Gemini CLI"]
+    let clients = Client::ALL.map(|kind| {
+        let index = Client::ALL
             .iter()
-            .position(|s| *s == name)
+            .position(|client| *client == kind)
             .unwrap();
-        let mut b = Button::new(24 + index as i32 * 116, 24, 116, 38, name);
+        let left = 24 + index as i32 * 348 / 5;
+        let right = 24 + (index as i32 + 1) * 348 / 5;
+        // Only our clipped short caption is drawn. A native full-name label can
+        // be painted separately by the toolkit and overflow the compact tab.
+        let mut b = Button::new(left, 24, right - left, 38, "");
         button(&mut b, false);
         b.set_frame(FrameType::NoBox);
         b.set_down_frame(FrameType::NoBox);
-        b.set_label_size(12);
+        b.set_label_size(11);
         let client = client.clone();
         b.draw(move |b| {
             draw::push_clip(b.x(), b.y(), b.w(), b.h());
@@ -280,13 +366,24 @@ fn controls(language: Language) -> Controls {
                 });
                 draw::draw_rounded_rectf(b.x() + 3, b.y() + 3, b.w() - 6, b.h() - 6, 5);
             }
-            draw::set_font(Font::Helvetica, 12);
+            draw::set_font(Font::Helvetica, 11);
             draw::set_draw_color(if selected {
                 theme::ink()
             } else {
                 theme::muted()
             });
-            draw::draw_text2(&b.label(), b.x(), b.y(), b.w(), b.h(), Align::Center);
+            let text = ["Claude", "Codex", "Gemini", "Grok", "DSH"][index];
+            let width = draw::measure(text, false).0;
+            let left = b.x() + (b.w() - width - 19) / 2;
+            client_icons::draw(kind, left, b.y() + (b.h() - 14) / 2, 14);
+            draw::draw_text2(
+                text,
+                left + 19,
+                b.y(),
+                width,
+                b.h(),
+                Align::Left | Align::Inside,
+            );
             if b.has_focus() {
                 draw::set_draw_color(theme::accent());
                 draw::draw_rounded_rect(b.x() + 3, b.y() + 3, b.w() - 6, b.h() - 6, 5);
@@ -319,12 +416,6 @@ fn controls(language: Language) -> Controls {
     let mut back = Button::new(24, 24, 88, 32, "Back");
     theme::button(&mut back, theme::ButtonStyle::Quiet);
     text_icon_button(&mut back, Icon::Back);
-    let mut heading = Frame::new(124, 24, 292, 32, "Settings");
-    heading.set_label_size(15);
-    heading.set_label_font(Font::HelveticaBold);
-    heading.set_label_color(theme::ink());
-    heading.set_align(Align::Left | Align::Inside);
-    labels.push((heading, "Settings"));
     labels.push(label(24, 94, 180, "Language"));
     let mut languages = Choice::new(196, 84, 220, 36, "");
     languages.add_choice("English|简体中文|繁體中文|日本語");
@@ -391,6 +482,29 @@ fn controls(language: Language) -> Controls {
     labels.push(label(24, 188, 338, "API key"));
     let mut key = SecretInput::new(24, 213, 338, 40, "");
     field(&mut key);
+    labels.push(label(24, 270, 338, "Default model (optional)"));
+    let mut model = Input::new(24, 295, 338, 40, "");
+    field(&mut model);
+    let mut model_hint = Frame::new(24, 346, 338, 28, "");
+    model_hint.set_label_size(11);
+    model_hint.set_label_color(theme::muted());
+    model_hint.set_align(Align::Left | Align::Inside | Align::Wrap);
+    let mut model_toggle = Button::new(24, 382, 338, 28, "");
+    button(&mut model_toggle, false);
+    let mut model_group = Group::new(24, 422, 338, 69, "");
+    let model_aliases = ["Haiku (optional)", "Sonnet (optional)", "Opus (optional)"].map(|name| {
+        let index = ["Haiku (optional)", "Sonnet (optional)", "Opus (optional)"]
+            .iter()
+            .position(|s| *s == name)
+            .unwrap();
+        let x = 24 + index as i32 * 116;
+        labels.push(label(x, 422, 106, name));
+        let mut input = Input::new(x, 445, 106, 40, "");
+        field(&mut input);
+        input
+    });
+    model_group.end();
+    model_group.hide();
     let mut delete = Button::new(24, 328, 66, 36, "Delete");
     theme::button(&mut delete, theme::ButtonStyle::Danger);
     let mut cancel = Button::new(168, 328, 88, 36, "Cancel");
@@ -416,11 +530,18 @@ fn controls(language: Language) -> Controls {
         updating: Rc::new(Cell::new(false)),
         list,
         rows: Rc::new(RefCell::new(vec![])),
+        official: Rc::new(RefCell::new(None)),
         empty,
         editor,
         name,
         url,
         key,
+        model,
+        model_aliases,
+        model_group,
+        model_toggle,
+        model_hint,
+        models_expanded: Rc::new(Cell::new(false)),
         new,
         save,
         cancel,
@@ -436,8 +557,24 @@ fn matching(state: &State, p: &Provider) -> bool {
         .current
         .as_ref()
         .is_some_and(|(url, key)| *url == p.base_url && *key == p.api_key)
+        && (p.models.is_empty()
+            || state
+                .current_models
+                .as_ref()
+                .is_some_and(|m| m.matches(p.client, &p.models)))
 }
+
 fn row_status(c: &mut Controls, state: &State) {
+    if let Some(row) = c.official.borrow_mut().as_mut() {
+        row.active.set(state.official);
+        if state.official {
+            row.switch.deactivate();
+        } else {
+            row.switch.activate();
+        }
+        row.surface.redraw();
+        row.switch.redraw();
+    }
     for row in c.rows.borrow_mut().iter_mut() {
         row.active.set(
             state
@@ -463,12 +600,25 @@ fn close_editor(c: &mut Controls, state: &mut State) {
     c.name.set_value("");
     c.url.set_value("");
     c.key.set_value("");
+    c.model_fields(&Models::default());
 }
-fn open_editor(c: &mut Controls, state: &mut State, p: Option<&Provider>) {
+fn open_editor(c: &mut Controls, state: &mut State, p: Option<&Provider>, paths: &Paths) {
     state.editing = p.map(|p| p.id.clone());
     c.name.set_value(p.map_or("", |p| &p.name));
     c.url.set_value(p.map_or("", |p| &p.base_url));
     c.key.set_value(p.map_or("", |p| &p.api_key));
+    let models = p.map_or_else(
+        || {
+            let mut models = Models::default();
+            if c.client.get() == Client::Claude {
+                models.model = Some(crate::client::CLAUDE_EDITOR_DEFAULT.into());
+            }
+            models
+        },
+        |p| paths.editor_models(p),
+    );
+    c.model_fields(&models);
+    c.model_layout(c.models_expanded.get());
     if p.is_some() {
         c.delete.show();
     } else {
@@ -482,17 +632,107 @@ fn open_editor(c: &mut Controls, state: &mut State, p: Option<&Provider>) {
             "Add provider"
         },
     ));
-    c.editor.set_pos(c.window.x() + 27, c.window.y() + 53);
+    c.position_editor();
     c.editor.show();
     let _ = c.name.take_focus();
 }
 fn read_current(state: &mut State, paths: &Paths, client: Client) {
-    let current = paths.current(client);
+    let status = paths.status(
+        client,
+        state
+            .providers
+            .iter()
+            .any(|p| p.client == client && !p.models.is_empty()),
+    );
     state.setup_error = environment_conflict(client)
         .err()
-        .or_else(|| current.as_ref().err().cloned());
-    state.current = current.ok().flatten();
+        .or_else(|| status.as_ref().err().cloned());
+    let status = status.unwrap_or_default();
+    state.official = status.official && state.setup_error.is_none();
+    state.current = status.connection;
+    state.current_models = status.models;
 }
+
+fn provider_surface(
+    y: i32,
+    width: i32,
+    language: Rc<Cell<Language>>,
+    name: String,
+    url: String,
+    active: Rc<Cell<bool>>,
+    official: bool,
+) -> Frame {
+    let mut surface = Frame::new(24, y, width, 69, "");
+    surface.set_frame(FrameType::NoBox);
+    let active_draw = active;
+    surface.draw(move |b| {
+        draw::set_draw_color(theme::background());
+        draw::draw_rectf(b.x(), b.y(), b.w(), b.h());
+        draw::set_font(Font::Helvetica, 10);
+        let badge = tr(language.get(), "In use");
+        let badge_width = draw::measure(badge, false).0 + 6;
+        // Reserve both icon hit targets and an 8px gap before the badge.
+        let actions = if official { 39 } else { 75 };
+        let badge_left = b.w() - actions - 8 - badge_width;
+        let text_width = if active_draw.get() {
+            badge_left - 12 - 16
+        } else {
+            b.w() - actions - 28
+        };
+        draw::push_clip(b.x() + 16, b.y() + 12, text_width, 46);
+        draw::set_draw_color(if active_draw.get() {
+            theme::active_text()
+        } else {
+            theme::ink()
+        });
+        draw::set_font(Font::HelveticaBold, 14);
+        draw::draw_text2(
+            if official {
+                tr(language.get(), "Official")
+            } else {
+                &name
+            },
+            b.x() + 16,
+            b.y() + 12,
+            text_width,
+            23,
+            Align::Left | Align::Inside,
+        );
+        draw::set_draw_color(if active_draw.get() {
+            theme::active_text()
+        } else {
+            theme::muted()
+        });
+        draw::set_font(Font::Helvetica, 11);
+        draw::draw_text2(
+            if official {
+                tr(language.get(), "Native login")
+            } else {
+                &url
+            },
+            b.x() + 16,
+            b.y() + 37,
+            text_width,
+            18,
+            Align::Left | Align::Inside,
+        );
+        draw::pop_clip();
+        if active_draw.get() {
+            draw::set_font(Font::Helvetica, 10);
+            draw::set_draw_color(theme::active_text());
+            draw::draw_text2(
+                badge,
+                b.x() + badge_left,
+                b.y(),
+                badge_width,
+                b.h(),
+                Align::Right | Align::Inside,
+            );
+        }
+    });
+    surface
+}
+
 fn refresh(
     c: &mut Controls,
     state: Rc<RefCell<State>>,
@@ -505,6 +745,7 @@ fn refresh(
         read_current(&mut s, paths, c.client.get());
     }
     c.rows.borrow_mut().clear();
+    c.official.borrow_mut().take();
     c.list.clear();
     c.list.scroll_to(0, 0);
     c.list.begin();
@@ -514,72 +755,58 @@ fn refresh(
         .iter()
         .filter(|p| p.client == c.client.get())
         .collect();
-    let row_width = if providers.len() * 74 > c.list.h() as usize {
+    let row_width = if (providers.len() + 1) * 74 > c.list.h() as usize {
         380
     } else {
         392
     };
+    let official_active = Rc::new(Cell::new(current_state.official));
+    let official_surface = provider_surface(
+        124,
+        row_width,
+        c.language.clone(),
+        String::new(),
+        String::new(),
+        official_active.clone(),
+        true,
+    );
+    let mut restore = Button::new(24 + row_width - 39, 143, 30, 30, "");
+    icon_button(&mut restore, Icon::Switch);
+    let mut view = c.clone();
+    let restore_state = state.clone();
+    let restore_store = store.clone();
+    let restore_paths = paths.clone();
+    restore.set_callback(move |_| {
+        if let Err(error) = restore_paths.apply_official(&restore_store, view.client.get()) {
+            i18n::alert(view.lang(), &error);
+            return;
+        }
+        let mut s = restore_state.borrow_mut();
+        read_current(&mut s, &restore_paths, view.client.get());
+        row_status(&mut view, &s);
+    });
+    *c.official.borrow_mut() = Some(OfficialRow {
+        surface: official_surface,
+        switch: restore,
+        active: official_active,
+    });
     for (index, p) in providers.iter().enumerate() {
         let active = Rc::new(Cell::new(matching(&state.borrow(), p)));
-        let active_draw = active.clone();
-        let mut surface = Frame::new(24, 124 + index as i32 * 74, row_width, 69, "");
-        surface.set_frame(FrameType::NoBox);
-        let language = c.language.clone();
-        let name = p.name.clone();
-        let url = p.base_url.clone();
-        surface.draw(move |b| {
-            draw::set_draw_color(theme::background());
-            draw::draw_rectf(b.x(), b.y(), b.w(), b.h());
-            draw::set_font(Font::Helvetica, 10);
-            let badge = tr(language.get(), "In use");
-            let badge_width = draw::measure(badge, false).0 + 6;
-            // Reserve both icon hit targets and an 8px gap before the badge.
-            let badge_left = b.w() - 75 - 8 - badge_width;
-            let text_width = if active_draw.get() {
-                badge_left - 12 - 16
-            } else {
-                b.w() - 103
-            };
-            draw::push_clip(b.x() + 16, b.y() + 12, text_width, 46);
-            draw::set_draw_color(theme::ink());
-            draw::set_font(Font::HelveticaBold, 14);
-            draw::draw_text2(
-                &name,
-                b.x() + 16,
-                b.y() + 12,
-                text_width,
-                23,
-                Align::Left | Align::Inside,
-            );
-            draw::set_draw_color(theme::muted());
-            draw::set_font(Font::Helvetica, 11);
-            draw::draw_text2(
-                &url,
-                b.x() + 16,
-                b.y() + 37,
-                text_width,
-                18,
-                Align::Left | Align::Inside,
-            );
-            draw::pop_clip();
-            if active_draw.get() {
-                draw::set_font(Font::Helvetica, 10);
-                draw::set_draw_color(theme::active_badge());
-                draw::draw_text2(
-                    badge,
-                    b.x() + badge_left,
-                    b.y(),
-                    badge_width,
-                    b.h(),
-                    Align::Right | Align::Inside,
-                );
-            }
-        });
-        let y = 124 + index as i32 * 74 + 19;
+        let surface = provider_surface(
+            198 + index as i32 * 74,
+            row_width,
+            c.language.clone(),
+            p.name.clone(),
+            p.base_url.clone(),
+            active.clone(),
+            false,
+        );
+        let y = 198 + index as i32 * 74 + 19;
         let mut edit = Button::new(24 + row_width - 75, y, 30, 30, "");
         icon_button(&mut edit, Icon::Edit);
         let mut view = c.clone();
         let edit_state = state.clone();
+        let edit_paths = paths.clone();
         let id = p.id.clone();
         edit.set_callback(move |_| {
             let provider = edit_state
@@ -589,7 +816,12 @@ fn refresh(
                 .find(|p| p.id == id)
                 .cloned();
             if let Some(provider) = provider {
-                open_editor(&mut view, &mut edit_state.borrow_mut(), Some(&provider));
+                open_editor(
+                    &mut view,
+                    &mut edit_state.borrow_mut(),
+                    Some(&provider),
+                    &edit_paths,
+                );
             }
         });
         let mut switch = Button::new(24 + row_width - 39, y, 30, 30, "");
@@ -630,11 +862,7 @@ fn refresh(
         });
     }
     c.list.end();
-    if providers.is_empty() {
-        c.empty.show();
-    } else {
-        c.empty.hide();
-    }
+    c.empty.hide();
     row_status(c, &state.borrow());
     Ok(())
 }
@@ -649,19 +877,22 @@ fn preview_link(
     if c.editor.shown() {
         return Err("Finish or cancel your edits, then open the import link again.".into());
     }
-    let p = import_link(link)?;
+    let mut p = import_link(link)?;
     c.client.set(p.client);
     refresh(c, state.clone(), store, paths)?;
+    p.import_name(&state.borrow().providers);
     c.settings_page.hide();
     c.main_page.show();
     c.window.show();
     for b in &mut c.clients {
         b.redraw();
     }
-    open_editor(c, &mut state.borrow_mut(), None);
+    open_editor(c, &mut state.borrow_mut(), None, paths);
     c.name.set_value(&p.name);
     c.url.set_value(&p.base_url);
     c.key.set_value(&p.api_key);
+    c.model_fields(&paths.editor_models(&p));
+    c.model_layout(c.models_expanded.get());
     Ok(())
 }
 
@@ -676,11 +907,21 @@ fn wire_with_updates(
     paths: Paths,
     check_update: fn() -> Result<Option<update::Update>>,
 ) {
+    #[cfg(target_os = "macos")]
+    {
+        unsafe extern "C" {
+            fn pp_listen_quit(callback: extern "C" fn());
+        }
+        extern "C" fn native_quit() {
+            quit();
+        }
+        unsafe { pp_listen_quit(native_quit) };
+    }
     let mut view = c.clone();
     c.window.set_callback(move |w| {
         view.hide_dialogs();
         w.hide();
-        app::quit();
+        quit();
     });
     let mut view = c.clone();
     let editor_state = state.clone();
@@ -692,8 +933,16 @@ fn wire_with_updates(
         .set_callback(move |_| close_editor(&mut view, &mut editor_state.borrow_mut()));
     let mut view = c.clone();
     let new_state = state.clone();
-    c.new
-        .set_callback(move |_| open_editor(&mut view, &mut new_state.borrow_mut(), None));
+    let new_paths = paths.clone();
+    c.new.set_callback(move |_| {
+        open_editor(&mut view, &mut new_state.borrow_mut(), None, &new_paths)
+    });
+    let mut view = c.clone();
+    c.model_toggle.set_callback(move |_| {
+        let expanded = !view.models_expanded.get();
+        view.model_layout(expanded);
+        let _ = view.model_toggle.take_focus();
+    });
     for (i, mut b) in c.clients.clone().into_iter().enumerate() {
         let mut view = c.clone();
         let state = state.clone();
@@ -767,6 +1016,13 @@ fn wire_with_updates(
                 &view.url.value(),
                 &view.key.value(),
             )?;
+            p.models = Models::from_fields(
+                &view.model.value(),
+                &view.model_aliases[0].value(),
+                &view.model_aliases[1].value(),
+                &view.model_aliases[2].value(),
+            );
+            p.validate()?;
             if let Some(id) = &state_save.borrow().editing {
                 p.id.clone_from(id);
             }
@@ -813,6 +1069,15 @@ fn wire_with_updates(
             i18n::alert(view.lang(), &e);
         }
     });
+}
+
+fn quit() {
+    app::program_should_quit(true);
+    app::quit();
+}
+
+fn event_loop() {
+    while !app::should_program_quit() && app::wait() {}
 }
 
 enum UpdateEvent {
@@ -950,7 +1215,7 @@ pub fn run_with_link(store: Store, paths: Paths, link: Option<&str>) -> Result<(
     {
         i18n::alert(c.lang(), &error);
     }
-    while app::wait() {}
+    event_loop();
     Ok(())
 }
 
@@ -964,11 +1229,249 @@ pub fn run_measure_editor(store: Store, paths: Paths) -> Result<()> {
     let state = Rc::new(RefCell::new(State::default()));
     let mut c = controls(store.language()?);
     refresh(&mut c, state.clone(), &store, &paths)?;
-    wire(&mut c, state.clone(), store, paths);
+    wire(&mut c, state.clone(), store, paths.clone());
     c.window.show();
     let provider = state.borrow().providers.first().cloned();
-    open_editor(&mut c, &mut state.borrow_mut(), provider.as_ref());
-    while app::wait() {}
+    open_editor(&mut c, &mut state.borrow_mut(), provider.as_ref(), &paths);
+    event_loop();
+    Ok(())
+}
+
+/// Dedicated macOS fixture: READY requires real Cocoa key dispatch to the
+/// shipped Settings action, followed by a displayed frame. Never moves pointer.
+#[cfg(target_os = "macos")]
+pub fn mac_acceptance(store: Store, paths: Paths, scenario: &str) -> Result<()> {
+    use std::{ffi::c_void, io::Write};
+    unsafe extern "C" {
+        fn pp_smoke_key(
+            handle: *mut c_void,
+            key: u16,
+            modifiers: u32,
+            text: *const std::ffi::c_char,
+        );
+        fn pp_smoke_display(handle: *mut c_void);
+        fn pp_smoke_terminate(apple_event: i32);
+    }
+    let state = Rc::new(RefCell::new(State::default()));
+    let mut c = controls(Language::Zh);
+    refresh(&mut c, state.clone(), &store, &paths)?;
+    wire(&mut c, state.clone(), store.clone(), paths.clone());
+    c.window.show();
+    let scenario = scenario.to_owned();
+    let view = c.clone();
+    // Posting events differs from invoking a callback or a READY timer. The
+    // marker below waits for the shipped action's observable page transition.
+    app::add_timeout3(0.0, move |_| unsafe {
+        pp_smoke_display(view.window.raw_handle());
+        pp_smoke_key(view.window.raw_handle(), 48, 0, c"\t".as_ptr());
+        pp_smoke_key(view.window.raw_handle(), 49, 0, c" ".as_ptr());
+    });
+    let mut view = c.clone();
+    let started = std::time::Instant::now();
+    app::add_timeout3(0.01, move |timer| {
+        if !view.settings_page.visible() {
+            assert!(
+                started.elapsed().as_secs() < 10,
+                "native Settings key dispatch did not respond"
+            );
+            app::repeat_timeout3(0.01, timer);
+            return;
+        }
+        if !scenario.ends_with("settings") {
+            view.back.do_callback();
+        }
+        if scenario == "editor" || scenario.ends_with("editor") {
+            view.new.do_callback();
+        } else if scenario == "import" {
+            // Eight maximum-bound links, valid scoped credentials plus ignored
+            // inline JSON. Preview/cancel exercise the production import path.
+            let mut url = url::Url::parse("ccswitch://v1/import").unwrap();
+            let prefix = "ccswitch://v1/import?resource=provider&app=claude&name=Stress&endpoint=https%3A%2F%2Ffixture.example&apiKey=fake&configFormat=json&config=";
+            let payload = serde_json::json!({"ignored": "x".repeat(196_000)}).to_string();
+            use base64::Engine;
+            url.set_query(Some(&format!(
+                "{}{}",
+                prefix.split_once('?').unwrap().1,
+                base64::engine::general_purpose::STANDARD.encode(payload)
+            )));
+            assert!(url.as_str().len() <= 256 * 1024);
+            for index in 0..8 {
+                preview_link(&mut view, state.clone(), &store, &paths, url.as_str())
+                    .expect("bounded import fixture");
+                assert!(view.editor.shown() && view.name.value() == "Stress");
+                assert_eq!(view.model.value(), crate::client::CLAUDE_EDITOR_DEFAULT);
+                if index != 7 {
+                    view.cancel.do_callback();
+                }
+            }
+            assert!(store.load().unwrap().is_empty());
+        }
+        unsafe {
+            pp_smoke_display(if view.editor.shown() {
+                view.editor.raw_handle()
+            } else {
+                view.window.raw_handle()
+            });
+        }
+        println!("READY");
+        std::io::stdout().flush().unwrap();
+        if scenario.starts_with("quit-") {
+            assert!(store.load().unwrap().is_empty());
+            for client in Client::ALL {
+                assert!(!paths.settings(client).exists());
+            }
+            println!("QUIT FIXTURES UNCHANGED");
+            std::io::stdout().flush().unwrap();
+            unsafe { pp_smoke_terminate(i32::from(scenario.starts_with("quit-dock-"))) };
+        } else {
+            app::add_timeout3(3.0, |_| quit());
+        }
+    });
+    event_loop();
+    Ok(())
+}
+
+/// Background lifecycle fixture; example-only native code suppresses ordering
+/// and activation. Uses shipped widgets, Quit callback and real FLTK event wait.
+#[cfg(target_os = "macos")]
+pub fn mac_quit_background(store: Store, paths: Paths, scenario: &str) -> Result<()> {
+    unsafe extern "C" {
+        fn pp_quit_background_request(apple_event: i32);
+    }
+    assert!(
+        [
+            "menu-main",
+            "dock-main",
+            "menu-settings",
+            "dock-settings",
+            "menu-editor",
+            "dock-editor",
+            "dock-unhandled-main"
+        ]
+        .contains(&scenario)
+    );
+    let state = Rc::new(RefCell::new(State::default()));
+    let mut c = controls(Language::Zh);
+    refresh(&mut c, state.clone(), &store, &paths)?;
+    wire(&mut c, state.clone(), store.clone(), paths.clone());
+    c.window.show();
+    if scenario.ends_with("settings") {
+        c.settings.do_callback();
+    } else if scenario.ends_with("editor") {
+        c.new.do_callback();
+    }
+    let apple_event = if scenario == "dock-unhandled-main" {
+        2
+    } else {
+        i32::from(scenario.starts_with("dock-"))
+    };
+    app::add_timeout3(0.1, move |_| {
+        assert!(store.load().unwrap().is_empty());
+        for client in Client::ALL {
+            assert!(!paths.settings(client).exists());
+        }
+        println!("QUIT FIXTURES UNCHANGED");
+        unsafe { pp_quit_background_request(apple_event) };
+    });
+    event_loop();
+    Ok(())
+}
+
+/// Example-only isolated callback regression; presentation suppression is
+/// installed by mac_quit_background before entering this fixture.
+#[cfg(target_os = "macos")]
+pub fn mac_model_prefill_background(store: Store, paths: Paths) -> Result<()> {
+    unsafe extern "C" {
+        fn pp_quit_background_request(apple_event: i32);
+    }
+    let provider = Provider::new(Client::Claude, "Fixture", "https://fixture.example", "fake")?;
+    let config = r#"{"model":"sonnet","env":{"ANTHROPIC_BASE_URL":"https://fixture.example","ANTHROPIC_AUTH_TOKEN":"fake","ANTHROPIC_DEFAULT_SONNET_MODEL":"fixture-default"},"hooks":{}}"#;
+    let file = paths.settings(Client::Claude);
+    std::fs::create_dir_all(file.parent().unwrap()).unwrap();
+    std::fs::write(&file, config).unwrap();
+    store.save(provider.clone())?;
+    let state = Rc::new(RefCell::new(State::default()));
+    let mut c = controls(Language::Zh);
+    refresh(&mut c, state.clone(), &store, &paths)?;
+    wire(&mut c, state.clone(), store.clone(), paths.clone());
+    c.window.show();
+    let mut action = c.rows.borrow()[0].switch.clone();
+    assert!(!action.active());
+    action.do_callback();
+    assert!(!c.editor.shown());
+    let mut action = c.rows.borrow()[0].edit.clone();
+    action.do_callback();
+    assert!(c.editor.shown());
+    assert_eq!(c.model.value(), "fixture-default");
+    c.cancel.do_callback();
+    assert!(store.load()?[0].models.is_empty());
+    let mut action = c.rows.borrow()[0].edit.clone();
+    action.do_callback();
+    assert_eq!(c.model.value(), "fixture-default");
+    c.save.do_callback();
+    assert_eq!(
+        store.load()?[0].models.model.as_deref(),
+        Some("fixture-default")
+    );
+    let make_link = |endpoint: &str, model: Option<&str>| {
+        let mut link = url::Url::parse("ccswitch://v1/import").unwrap();
+        link.query_pairs_mut().extend_pairs([
+            ("resource", "provider"),
+            ("app", "claude"),
+            ("name", "Import"),
+            ("endpoint", endpoint),
+            ("apiKey", "fake"),
+        ]);
+        if let Some(model) = model {
+            link.query_pairs_mut().append_pair("model", model);
+        }
+        link.to_string()
+    };
+    for (endpoint, model, expected) in [
+        ("https://fixture.example", None, "fixture-default"),
+        (
+            "https://fixture.example",
+            Some("link-default"),
+            "link-default",
+        ),
+        (
+            "https://different.example",
+            None,
+            crate::client::CLAUDE_EDITOR_DEFAULT,
+        ),
+    ] {
+        preview_link(
+            &mut c,
+            state.clone(),
+            &store,
+            &paths,
+            &make_link(endpoint, model),
+        )?;
+        assert_eq!(c.model.value(), expected);
+        c.cancel.do_callback();
+    }
+    c.new.do_callback();
+    assert_eq!(c.model.value(), crate::client::CLAUDE_EDITOR_DEFAULT);
+    c.cancel.do_callback();
+    let mut action = c.rows.borrow()[0].edit.clone();
+    action.do_callback();
+    c.model.set_value("");
+    c.save.do_callback();
+    assert!(store.load()?[0].models.is_empty());
+    let mut action = c.rows.borrow()[0].switch.clone();
+    action.do_callback();
+    assert!(!c.editor.shown());
+    for index in 1..Client::ALL.len() {
+        c.clients[index].do_callback();
+        c.new.do_callback();
+        assert!(c.model.value().is_empty());
+        c.cancel.do_callback();
+    }
+    assert_eq!(store.load()?.len(), 1);
+    assert_eq!(std::fs::read_to_string(file).unwrap(), config);
+    println!("MODEL PREFILL EDIT SWITCH IMPORT SAVE CANCEL PASSED; CLIENT FIXTURE UNCHANGED");
+    app::add_timeout3(0.1, |_| unsafe { pp_quit_background_request(0) });
+    event_loop();
     Ok(())
 }
 
@@ -1037,7 +1540,7 @@ pub fn protocol_smoke(store: Store, paths: Paths, output: std::path::PathBuf) ->
             app::quit();
         }
     });
-    while app::wait() {}
+    event_loop();
     if finished.join("error.txt").exists()
         || std::fs::read_to_string(finished.join("step.txt"))
             .ok()
@@ -1047,4 +1550,25 @@ pub fn protocol_smoke(store: Store, paths: Paths, output: std::path::PathBuf) ->
         return Err("Native URL acceptance did not finish.".into());
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod status_tests {
+    use super::*;
+
+    #[test]
+    fn pp18_model_less_claude_matches_connection_but_explicit_model_requires_a_match() {
+        let mut provider =
+            Provider::new(Client::Claude, "Fixture", "https://fixture.example", "fake").unwrap();
+        let state = State {
+            current: Some((provider.base_url.clone(), provider.api_key.clone())),
+            ..State::default()
+        };
+        assert!(matching(&state, &provider));
+        provider.models.model = Some("compatible-model".into());
+        assert!(!matching(&state, &provider));
+        provider.client = Client::Codex;
+        provider.models = Models::default();
+        assert!(matching(&state, &provider));
+    }
 }

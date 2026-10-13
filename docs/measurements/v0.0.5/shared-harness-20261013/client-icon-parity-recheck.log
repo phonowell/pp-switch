@@ -1,0 +1,2 @@
+COMMAND ["rtk", "proxy", "/tmp/pps-v005-tools/bin/python", "scripts/client_icons.py", "--check"]
+Client SVG/native path parity passed

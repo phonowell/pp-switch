@@ -26,8 +26,8 @@ class VisualDetectorTests(unittest.TestCase):
         self.assertNotEqual(icon(original,388,31,24,24), icon(changed,388,31,24,24))
 
     def test_missing_action_has_no_ink(self):
-        self.assertEqual(len(set(icon(image(440,502),346,148,20,20))), 1)
-        self.assertGreater(len(set(icon(image(440,502,[(355,158)]),346,148,20,20))), 1)
+        self.assertEqual(len(set(icon(image(440,502),346,222,20,20))), 1)
+        self.assertGreater(len(set(icon(image(440,502,[(355,232)]),346,222,20,20))), 1)
 
     def test_badge_position_is_allowed_but_missing_ink_is_rejected(self):
         original = badge_mask(image(20, 20, [(3, 4), (5, 4), (5, 5)]))

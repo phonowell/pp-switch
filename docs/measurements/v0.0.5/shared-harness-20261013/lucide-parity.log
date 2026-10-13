@@ -1,0 +1,2 @@
+COMMAND ["/private/tmp/pps-v005-tools/bin/python", "scripts/lucide.py", "--check"]
+Lucide SVG/native path parity passed

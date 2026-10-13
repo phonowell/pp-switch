@@ -1,0 +1,8 @@
+test_application_menu_terminates_inside_native_wait (scripts.native_quit_test.NativeQuitBridge) ... ok
+test_delegate_registration_preserves_other_methods (scripts.native_quit_test.NativeQuitBridge) ... ok
+test_dock_quit_appleevent_terminates_inside_native_wait (scripts.native_quit_test.NativeQuitBridge) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 4.150s
+
+OK

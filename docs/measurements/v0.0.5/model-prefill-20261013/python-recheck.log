@@ -1,0 +1,23 @@
+test_gui_wrapper_does_not_execute_without_desktop_opt_in (desktop_test.DesktopLaunchGuards) ... ok
+test_url_and_measurement_wrappers_refuse_before_launch (desktop_test.DesktopLaunchGuards) ... ok
+test_application_menu_terminates_inside_native_wait (native_quit_test.NativeQuitBridge) ... ok
+test_delegate_registration_preserves_other_methods (native_quit_test.NativeQuitBridge) ... ok
+test_dock_quit_appleevent_terminates_inside_native_wait (native_quit_test.NativeQuitBridge) ... ok
+test_missing_handler_negative_control_reproduces_dock_failure (native_quit_test.RealFltkQuit) ... ok
+test_model_prefill_editor_and_import_callbacks_preserve_client_files (native_quit_test.RealFltkQuit) ... ok
+test_real_widgets_quit_from_each_page_without_activation (native_quit_test.RealFltkQuit) ... ok
+test_cache_retaining_native_readiness_cannot_pass_cold_start_budget (release_test.PublicationGates) ... ok
+test_complete_native_build_retains_failed_budgets_and_checksums (release_test.PublicationGates) ... ok
+test_mismatched_tag_blocks_build_and_remote_digest_blocks_publication (release_test.PublicationGates) ... ok
+test_missing_target_tampered_archive_and_missing_measurement_block_release (release_test.PublicationGates) ... ok
+test_verified_draft_is_visible_before_publication (release_test.PublicationGates) ... ok
+test_added_popup_border_is_rejected (visual_test.VisualDetectorTests) ... ok
+test_badge_position_is_allowed_but_missing_ink_is_rejected (visual_test.VisualDetectorTests) ... ok
+test_locale_icon_changes_are_detected (visual_test.VisualDetectorTests) ... ok
+test_missing_action_has_no_ink (visual_test.VisualDetectorTests) ... ok
+test_removed_footer_ink_is_rejected (visual_test.VisualDetectorTests) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 8.053s
+
+OK

@@ -1,0 +1,15 @@
+{
+  "name": "official-recheck",
+  "command": [
+    "rtk",
+    "proxy",
+    "/Users/mimiko/.cargo/bin/cargo",
+    "test",
+    "--locked",
+    "--test",
+    "official"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 25.83,
+  "log": "docs/measurements/v0.0.5/official-20261013/official-recheck.log"
+}

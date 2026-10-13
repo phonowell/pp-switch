@@ -1,0 +1,12 @@
+{
+  "source_sha256": {
+    "src/ui.rs": "911b52e587338973e70c6832b58dc6d06b388c5d2d3b0d9ae041fb1987cb0083",
+    "SPEC.md": "9ac829a3351bd78437d435774cb778030aaad9afb399d1c3624fec2f33ffd26b",
+    "design/UI.md": "79375df4c2e17ebc45bd4dfc8f265958d9ea10891a9eab0aa893e497622171b0"
+  },
+  "release_binary_sha256": "239e8ae29e911e6e3fa2945358131faf8a6675a27ba310b5b4b708ffadc4697a",
+  "installed_binary_sha256": "239e8ae29e911e6e3fa2945358131faf8a6675a27ba310b5b4b708ffadc4697a",
+  "docs_check_exit_code": 0,
+  "installation_record": "installation-20261013T073159609628Z.json",
+  "gui_acceptance": "unrun to preserve shared workstation focus"
+}

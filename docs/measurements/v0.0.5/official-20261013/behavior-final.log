@@ -1,0 +1,141 @@
+   Compiling pp-switch v0.0.5 (/Users/mimiko/.codex/worktrees/v005/pp-switch)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 12.54s
+     Running unittests src/lib.rs (target/debug/deps/pp_switch-47943a0d6d949e75)
+
+running 13 tests
+test protocol::tests::pp06_desktop_path_cannot_inject_exec_fields ... ok
+test protocol::tests::pp06_only_one_scheme_argument_is_delivered ... ok
+test theme::tests::readable_text_in_both_appearances ... ok
+test client::dsh::tests::appended_common_overrides_reparse ... ok
+test update::tests::pp15_selects_newest_platform_release_and_rejects_unverified_metadata ... ok
+test client::dsh::tests::appended_inherited_config_reparses ... ok
+test storage::tests::pp09_changed_read_only_guard_prevents_every_destination_write ... ok
+test update::tests::pp15_archive_whitelist_paths_links_and_architecture ... ok
+test update::tests::pp15_rollback_preserves_external_changes_and_backups ... ok
+test update::tests::pp15_symlink_destination_and_staging_are_refused ... ok
+test update::tests::pp15_fault_after_first_replace_restores_previous_version ... ok
+test update::tests::pp15_changed_destination_or_tampered_payload_never_installs ... ok
+test update::tests::pp15_installs_owned_files_and_preserves_unrelated_files ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+     Running unittests src/main.rs (target/debug/deps/pp_switch-86d2e0379aa5b32a)
+     Running tests/behavior.rs (target/debug/deps/behavior-8a0f021470d7633b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 23 tests
+test pp01_validation_rejects_control_characters_and_embedded_credentials ... ok
+test pp02_pp03_claude_preserves_unrelated_bytes_and_is_idempotent ... ok
+test pp03_pp10_claude_config_match_preserves_provider_specific_models ... ok
+test pp03_claude_uses_existing_api_key_field_and_can_add_missing_containers ... ok
+test pp02_pp05_gemini_preserves_settings_and_dotenv_comments ... ok
+test pp06_import_explicit_fields_win_and_extras_are_not_retained ... ok
+test pp06_import_base64_variants_and_all_supported_clients ... ok
+test pp06_unsupported_or_incomplete_imports_return_no_secret_in_errors ... ok
+test pp04_codex_bearer_key_preserves_oauth_cache ... ok
+test pp04_codex_null_oauth_placeholders_are_preserved_in_api_key_mode ... ok
+test pp09_lock_prevents_a_second_writer_and_invalid_store_is_not_overwritten ... ok
+test pp05_gemini_cloud_auth_and_duplicate_env_are_refused_without_writes ... ok
+test pp02_pp04_codex_changes_only_selected_url_and_auth_key ... ok
+test pp08_credentials_and_journal_use_private_files ... ok
+test pp09_every_input_is_validated_before_the_first_write ... ok
+test pp09_recovery_conflict_preserves_every_file_and_journal ... ok
+test pp09_symlink_destinations_are_preserved_without_writing_the_target ... ok
+test pp03_claude_read_and_apply_refuse_ambiguous_or_malformed_fields ... ok
+test pp09_stale_snapshot_never_overwrites_external_changes ... ok
+test pp03_unsupported_claude_modes_never_write ... ok
+test pp01_local_provider_crud_does_not_touch_client_config ... ok
+test pp09_restart_recovers_a_partially_published_multi_file_operation ... ok
+test pp04_codex_unsupported_auth_or_selector_never_writes ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+     Running tests/dsh.rs (target/debug/deps/dsh-6b0bf7922ea0a4bc)
+
+running 7 tests
+test pp17_symlink_failure_is_validated_before_either_file_changes ... ok
+test pp17_conflicting_profiles_refused_but_explicit_common_selection_is_effective ... ok
+test pp17_shared_pi_route_preserves_catalog_protocol_other_routes_and_crlf ... ok
+test pp17_inherited_config_is_copied_whole_not_deep_merged ... ok
+test pp17_shared_native_connection_and_model_preserve_both_profiles_and_credentials ... ok
+test pp17_invalid_credentials_and_uninitialized_profiles_never_write ... ok
+test pp17_ambiguous_executable_and_external_setups_never_write ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+
+     Running tests/localization.rs (target/debug/deps/localization-f88bc35e229d95c6)
+
+running 2 tests
+test pp13_system_locale_mapping_and_catalog_coverage ... ok
+test pp13_preferences_are_private_and_do_not_touch_provider_data ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/official.rs (target/debug/deps/official-7289bd02803f6a3c)
+
+running 15 tests
+test pp19_json_deletion_preserves_unicode_escaped_names_commas_and_other_bytes ... ok
+test pp19_gemini_and_codex_symlink_failures_leave_all_real_files_intact ... ok
+test pp19_dsh_inherited_account_endpoint_is_cleared_without_dropping_catalog ... ok
+test pp19_codex_official_removes_only_api_auth_preserves_native_tokens ... ok
+test pp19_native_status_refuses_missing_grok_profile_and_bad_codex_auth ... ok
+test pp19_claude_roundtrip_cleans_models_preserves_login_hooks_proxy_and_context ... ok
+test pp19_codex_native_bearer_roundtrip_never_loses_oauth_or_other_tables ... ok
+test pp19_grok_roundtrip_preserves_login_inactive_profiles_and_advanced_settings ... ok
+test pp19_reserved_route_collision_and_active_codex_profile_never_write ... ok
+test pp19_dsh_can_return_from_account_without_an_api_key_or_credential_file ... ok
+test pp19_gemini_roundtrip_changes_mode_preserves_oauth_and_unrelated_bytes ... ok
+test pp19_malformed_modes_and_fields_refuse_official_without_writes ... ok
+test pp19_dsh_account_api_roundtrip_keeps_account_records_and_profile_bytes ... ok
+test pp19_missing_native_setup_for_first_four_is_initialized_minimally ... ok
+test pp19_toml_roundtrips_preserve_crlf_and_unrelated_bytes ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.74s
+
+     Running tests/provider_models.rs (target/debug/deps/provider_models-fdc47a613e8f1bef)
+
+running 15 tests
+test pp06_ccs_tier_only_links_get_a_visible_default_without_losing_mappings ... ok
+test pp02_pp03_pp18_claude_default_replaces_stale_models_and_preserves_other_bytes ... ok
+test pp09_pp18_gemini_model_symlink_is_refused_before_env_changes ... ok
+test pp06_pp18_import_models_are_reviewed_and_direct_values_win ... ok
+test pp04_pp18_codex_can_minimally_add_a_missing_root_model ... ok
+test pp10_combined_claude_status_matches_readers_and_rejects_invalid_connections ... ok
+test pp18_invalid_models_or_cross_client_mappings_never_write ... ok
+test pp01_pp18_legacy_records_and_optional_model_saves_do_not_apply ... ok
+test pp05_pp09_pp18_gemini_model_switch_preserves_auth_and_recovers_two_files ... ok
+test pp18_partial_mapping_ignores_unmanaged_model_fields_in_status ... ok
+test pp10_pp18_matching_url_key_does_not_hide_a_different_model_switch ... ok
+test pp18_claude_partial_and_explicit_mappings_preserve_unspecified_destinations ... ok
+test pp04_pp16_pp18_toml_model_switch_keeps_selection_protocol_comments_and_other_profiles ... ok
+test pp09_pp18_bad_model_destinations_never_partially_switch_url_key ... ok
+test pp18_process_model_override_blocks_only_explicit_model_writes ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.41s
+
+     Running tests/provider_names.rs (target/debug/deps/provider_names-475409d76adb0426)
+
+running 3 tests
+test pp06_import_names_skip_existing_suffixes_and_bound_unicode ... ok
+test pp01_existing_duplicates_remain_readable_without_a_silent_migration ... ok
+test pp01_uniqueness_is_client_scoped_trimmed_casefolded_and_id_aware ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+     Running tests/sub2api.rs (target/debug/deps/sub2api-0a048e1c2cbc6e54)
+
+running 1 test
+test pp06_sub2api_links_preserve_supplied_models_without_inventing_claude_defaults ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+   Doc-tests pp_switch
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

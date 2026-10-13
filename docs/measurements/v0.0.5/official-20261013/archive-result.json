@@ -1,0 +1,13 @@
+{
+  "name": "archive",
+  "command": [
+    "rtk",
+    "proxy",
+    "target/release/examples/update_smoke",
+    "--archive",
+    "target/package/pp-switch-v0.0.5-aarch64-apple-darwin.zip"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.57,
+  "log": "docs/measurements/v0.0.5/official-20261013/archive.log"
+}

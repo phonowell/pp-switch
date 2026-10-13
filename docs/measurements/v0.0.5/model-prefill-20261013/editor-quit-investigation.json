@@ -1,0 +1,32 @@
+[
+  {
+    "attempt": 1,
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 2 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": ""
+  },
+  {
+    "attempt": 2,
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 2 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": ""
+  },
+  {
+    "attempt": 3,
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 2 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": ""
+  },
+  {
+    "attempt": 4,
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 2 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": ""
+  },
+  {
+    "attempt": 5,
+    "exit_code": 0,
+    "stdout": "QUIT FIXTURES UNCHANGED\nREAL DELEGATE FLAppDelegate; 2 HIDDEN NATIVE WINDOWS\nREAL FLTK COCOA TERMINATED WITHOUT PRESENTATION\n",
+    "stderr": ""
+  }
+]

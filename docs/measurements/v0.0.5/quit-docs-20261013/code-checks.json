@@ -1,0 +1,76 @@
+[
+  {
+    "name": "format",
+    "command": [
+      "rtk",
+      "proxy",
+      "/Users/mimiko/.cargo/bin/cargo",
+      "fmt",
+      "--check"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.22,
+    "log": "format.log"
+  },
+  {
+    "name": "clippy",
+    "command": [
+      "rtk",
+      "proxy",
+      "/Users/mimiko/.cargo/bin/cargo",
+      "clippy",
+      "--locked",
+      "--all-targets",
+      "--",
+      "-D",
+      "warnings"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 6.976,
+    "log": "clippy.log"
+  },
+  {
+    "name": "behavior",
+    "command": [
+      "rtk",
+      "proxy",
+      "/Users/mimiko/.cargo/bin/cargo",
+      "test",
+      "--locked"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 16.742,
+    "log": "behavior.log"
+  },
+  {
+    "name": "native-quit",
+    "command": [
+      "rtk",
+      "proxy",
+      "python3",
+      "-m",
+      "unittest",
+      "scripts.native_quit_test",
+      "-v"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 4.361,
+    "log": "native-quit.log"
+  },
+  {
+    "name": "release",
+    "command": [
+      "rtk",
+      "proxy",
+      "/Users/mimiko/.cargo/bin/cargo",
+      "build",
+      "--locked",
+      "--release",
+      "--bins",
+      "--examples"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 82.878,
+    "log": "release.log"
+  }
+]

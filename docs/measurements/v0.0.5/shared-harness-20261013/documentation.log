@@ -1,0 +1,9 @@
+COMMAND ["/private/tmp/pps-v005-tools/bin/python", "scripts/docs_check.py"]
+Traceback (most recent call last):
+  File "/Users/mimiko/.codex/worktrees/v005/pp-switch/scripts/docs_check.py", line 88, in <module>
+    print(json.dumps(check(args.record), ensure_ascii=False, indent=2))
+  File "/Users/mimiko/.codex/worktrees/v005/pp-switch/scripts/docs_check.py", line 78, in check
+    raise ValueError("\n".join(errors))
+ValueError: Missing translated UI rules: user-guide.md
+Missing translated UI rules: user-guide-zh.md
+Missing translated UI rules: user-guide-ja.md

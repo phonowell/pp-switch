@@ -7,6 +7,39 @@ use std::ops::Range;
 
 struct Entries<'a>(Vec<(String, &'a RawValue)>);
 
+/// Borrow values from one parsed object for repeated status/credential reads.
+/// Keep duplicate-property rejection, including in nested credential objects.
+pub(crate) struct JsonObject<'a>(Entries<'a>);
+
+impl<'a> JsonObject<'a> {
+    pub(crate) fn parse(text: &'a str) -> Result<Self> {
+        serde_json::from_str(text)
+            .map(Self)
+            .map_err(|_| "Configuration must be a JSON object without duplicate properties.".into())
+    }
+
+    pub(crate) fn get(&self, key: &str) -> Option<&'a RawValue> {
+        self.0
+            .0
+            .iter()
+            .find(|(name, _)| name == key)
+            .map(|(_, value)| *value)
+    }
+
+    pub(crate) fn object(&self, key: &str) -> Result<Self> {
+        Self::parse(self.get(key).map_or("{}", RawValue::get))
+    }
+
+    pub(crate) fn string(&self, key: &str) -> Result<Option<String>> {
+        self.get(key)
+            .map(|v| {
+                serde_json::from_str(v.get())
+                    .map_err(|_| "Configured URL/key must be a string.".into())
+            })
+            .transpose()
+    }
+}
+
 impl<'de> Deserialize<'de> for Entries<'de> {
     fn deserialize<D: Deserializer<'de>>(deserializer: D) -> std::result::Result<Self, D::Error> {
         struct ObjectVisitor;
@@ -87,6 +120,37 @@ pub fn patch_json(text: &str, path: &[&str], value: &str) -> Result<String> {
         serde_json::to_string(path[0]).unwrap()
     );
     replace(text, end..end, &insert)
+}
+
+/// Delete only the named property and its separator; keep unrelated bytes.
+pub fn remove_json(text: &str, path: &[&str]) -> Result<String> {
+    let key = path.first().ok_or("Empty JSON property path.")?;
+    let Entries(entries) = serde_json::from_str::<Entries<'_>>(text)
+        .map_err(|_| "Configuration must be a JSON object without duplicate properties.")?;
+    let Some(index) = entries.iter().position(|(name, _)| name == key) else {
+        return Ok(text.to_owned());
+    };
+    let raw = entries[index].1.get();
+    let start = raw.as_ptr() as usize - text.as_ptr() as usize;
+    if path.len() > 1 {
+        let next = remove_json(raw, &path[1..])?;
+        return replace(text, start..start + raw.len(), &next);
+    }
+    let end = start + raw.len();
+    let range = if index > 0 {
+        let previous = entries[index - 1].1.get();
+        let previous_end = previous.as_ptr() as usize - text.as_ptr() as usize + previous.len();
+        previous_end..end
+    } else {
+        let begin = text.find('{').ok_or("Invalid JSON object.")? + 1;
+        let end = if entries.len() > 1 {
+            end + text[end..].find(',').ok_or("Invalid JSON separator.")? + 1
+        } else {
+            end
+        };
+        begin..end
+    };
+    replace(text, range, "")
 }
 
 pub fn patch_toml(text: &str, path: &[&str], value: &str) -> Result<String> {
@@ -199,4 +263,15 @@ pub fn patch_dotenv(text: &str, name: &str, value: &str) -> Result<String> {
             newline
         }
     ))
+}
+
+pub fn remove_dotenv(text: &str, name: &str) -> Result<String> {
+    dotenv_value(text, name)?;
+    Ok(text
+        .split_inclusive('\n')
+        .filter(|line| {
+            dotenv_assignment(line.trim_end_matches(['\r', '\n']))
+                .is_none_or(|(key, _)| key != name)
+        })
+        .collect())
 }

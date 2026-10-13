@@ -1,0 +1,14 @@
+{
+  "name": "completion-status",
+  "command": [
+    "rtk",
+    "proxy",
+    "/Users/mimiko/.cargo/bin/cargo",
+    "test",
+    "--locked",
+    "status_tests"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 30.76,
+  "log": "docs/measurements/v0.0.5/official-20261013/completion-status.log"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "format-installed",
+  "command": [
+    "rtk",
+    "proxy",
+    "/Users/mimiko/.cargo/bin/cargo",
+    "fmt",
+    "--check"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 4.0,
+  "log": "docs/measurements/v0.0.5/official-20261013/format-installed.log"
+}

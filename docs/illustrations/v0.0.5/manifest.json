@@ -1,0 +1,26 @@
+{
+  "version": "0.0.5 development",
+  "kind": "schematic, not native GUI evidence",
+  "source_sha256": {
+    "src/theme.rs": "49343424b0a2a5b6edf80bf05db519aca090524f8680beb0a7a137fa1b138059",
+    "design/render_docs.py": "592b6fc9e7604f2e633af32aa0585852bc7ea191383392a8048bcce2ba7fe8cc",
+    "assets/clients/claude.svg": "365a70a7eb3956d9b9a96086058ebe04e1dbd8e291a756ad964e8a283fbd6d38",
+    "assets/clients/deepseek.svg": "8f9443e351b6dacce71871790201b799d92e8bf96a45ef79aeb5e9bf4db423e2",
+    "assets/clients/gemini.svg": "87d5b3c4be75a66f54c1936482a263df68185545b741129badd1b7c2449c18d3",
+    "assets/clients/grok.svg": "9175fc90c22655160231976c849f25a03b888d7cc0e04c5f1b987b659bb07c95",
+    "assets/clients/openai.svg": "a595df6b423920c67a7f8f73c063e4bfb72d415948097b6cac063a2366bb5186",
+    "assets/lucide/arrow-left.svg": "c5f4b88076108eb1a0d95336e1aa7e7bb1419a3a92af96f6247d88cd3456f933",
+    "assets/lucide/arrow-right-left.svg": "c32f61f0ea5aea4f11592db61e42774977a95086a4fa40656d00289a9604b9ad",
+    "assets/lucide/chevron-down.svg": "66ea878e72ed3488bb3b464c39dfdccee8d1f78e560dccea40e5e12da0e87e87",
+    "assets/lucide/circle-dot.svg": "c263f6a08a089c06ad40f408ad5da9100359ab52d379e6c571cd7c5bd74eaa87",
+    "assets/lucide/circle.svg": "3a991bd47beaf9874fba6fdf87bbba442970a89b5e6aa391558bc8b0a00a0513",
+    "assets/lucide/pencil.svg": "7e1ca7a6f5c1eb949671df762f2baadd32f5bd841d43153c3a15279af7d78d0c",
+    "assets/lucide/plus.svg": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17",
+    "assets/lucide/settings.svg": "0ae27fd0f81999229e3127ac96c5b32edfea448e291d509e76212b917551d66b"
+  },
+  "illustration_sha256": {
+    "main-en.svg": "ab7728ab28d0aa0be7a6e4f25765083b08744d0153eb8e9cd5f2380387b645ea",
+    "main-zh.svg": "0e47b87cfad06a349e3a7aba95eccc0da159cf19ae3a4a867e43e12cdedcae59",
+    "main-ja.svg": "ba28d10dcc8be268fdddad7a4961318ad862979893fea805058c48f3e7a243b2"
+  }
+}

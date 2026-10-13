@@ -13,31 +13,31 @@ name: pp-switch. Main window title: Pure Provider Switch. The application icon u
 macOS window title bars show the title without an application icon. Windows/Linux window
 icons and all platforms' installed application icons retain the PPS logo.
 
-A small desktop application that saves API providers and switches only a
-client's base URL and API key. Supported clients: Claude Code, Codex, Gemini CLI.
+A small desktop application that saves API providers and switches a
+client's base URL and API key, plus explicitly configured optional models. Supported clients: Claude Code, Codex, Gemini CLI, Grok Build and DeepSeek Harness (CLI/Web).
 Supported desktop platforms: macOS (Apple Silicon / Intel), Windows x64, Linux x64.
 
 ## Product boundaries
 
-- One main window: three client tabs, provider list and per-row edit/switch actions. Add/edit/delete
+- One main window: client tabs, provider list and per-row edit/switch actions. Add/edit/delete
   use a compact dialog; a small gear opens an in-window settings page for language
   and strictly manual updates.
-- A provider has an ID, client, display name, base URL and API key. Nothing else.
+- A provider has an ID, client, display name, base URL, API key and optional model settings defined by PP-18.
 - Closing the window exits the process. No tray, startup agent or background work.
-- No models, OAuth management, proxy, protocol translation, failover, network probes,
+- No model discovery, catalog management, OAuth management, proxy, protocol translation, failover, network probes,
   usage queries, scripts, MCP, prompts, skills or cloud sync.
-- Providers must use the client's existing protocol, models and API-key mode.
+- Providers use the existing protocol. PP-19 permits scoped native/API-key transitions; preserve models unless explicitly configured or restoring Official.
 - No command-line management interface. Development checks are separate tools.
 
 ## Acceptance contract
 
 ### PP-01: Provider CRUD
 
-Create, edit and delete a provider. Saving does not change client files. Names, HTTP(S) URLs and nonempty keys are validated; credentials are masked in the UI and excluded from diagnostics.
+Create, edit and delete a provider. Saving does not change client files. Names are unique within each client after trimming and case folding. Imports preview the first unused numeric suffix ` (2)`, ` (3)`, etc., within the 128-byte name limit; saving rechecks uniqueness under the storage lock. Editing excludes the same record ID. Existing duplicate records remain readable and are never silently renamed. Names, HTTP(S) URLs and nonempty keys are validated; credentials are masked in the UI and excluded from diagnostics.
 
 ### PP-02: URL/key writes
 
-Apply modifies only the effective base URL and API key. Preserve all unrelated bytes, including comments, whitespace, ordering and line endings. Idempotent apply makes no file changes.
+Apply modifies only the effective base URL and API key, plus optional PP-18 model fields explicitly configured on the Provider and the scoped PP-19 native/API routing changes. Preserve all unrelated bytes, including comments, whitespace, ordering and line endings. Idempotent apply makes no file changes.
 
 ### PP-03: Claude Code
 
@@ -45,19 +45,23 @@ Claude: patch `env.ANTHROPIC_BASE_URL` and the existing `ANTHROPIC_AUTH_TOKEN` o
 
 ### PP-04: Codex
 
-Codex: patch the currently selected custom provider's `base_url` in `config.toml`; patch its existing `experimental_bearer_token`, or `auth.json.OPENAI_API_KEY` for an existing file-based API-key setup. Do not create/change `model_provider`, auth mode, `wire_api`, OAuth tokens or models. Refuse unsupported key sources or an uninitialized provider.
+Codex: patch the currently selected custom provider's `base_url` in `config.toml`; patch its existing `experimental_bearer_token`, or `auth.json.OPENAI_API_KEY` for an existing file-based API-key setup. For an existing custom route preserve selection and auth mode. From the native route, select a reserved `pps` Responses/bearer table without changing OAuth tokens or credential-store settings; refuse a pre-existing unrelated `pps` table and active profile overrides. Models follow PP-18. Refuse unsupported key sources. PP-19 defines restoration to the native route.
 
 ### PP-05: Gemini CLI
 
-Gemini: patch only `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` in `.env`. Require existing `security.auth.selectedType = gemini-api-key`; never change `settings.json`. Preserve unrelated dotenv lines.
+Gemini: patch `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` in `.env`. Allow `gemini-api-key`, `oauth-personal` or an unset native mode; set `gemini-api-key` for Provider use and refuse cloud modes. Only an explicitly configured PP-18 model may change `settings.json.model.name`. Preserve unrelated dotenv lines and settings bytes.
 
 ### PP-06: Provider links
 
 Accept `ccswitch://v1/import` and `ppswitch://v1/import` links for
 `resource=provider` only. Extract client, name, base URL and API key from direct
-parameters or bounded inline JSON/TOML; discard unrelated settings. Never fetch
+parameters or bounded inline JSON/TOML, including optional PP-18 model fields;
+discard unrelated settings. For a Claude link containing only tier mappings, use
+Sonnet, then Opus, then Haiku as its visible default. A supplied default always
+wins. When a Claude link contains no models, use the visible PP-18 editor default.
+Blank fields keep PP-18 preservation semantics. Never fetch
 remote config URLs. Bound each link to 256 KiB and the native pending queue to
-8 links. Show the three-field editor as an unsaved preview; only Save persists a
+8 links. Show the provider editor as an unsaved preview, including supplied models; only Save persists a
 provider, and saving never applies client files. A new link must not replace an
 open editor's draft; report that the user must finish/cancel and reopen the link.
 Accept OS URL events on both cold and running macOS launches. Packaged macOS
@@ -79,7 +83,7 @@ Before writing, validate every involved file. Refuse symbolic-link file destinat
 
 ### PP-10: Current status
 
-Display current status by reading client configuration, rather than trusting a stored active-provider ID. Allow duplicate saved providers, including identical records; every record for the selected client matching the effective URL and key displays In use and cannot be switched again. Editing identifies individual records; rows have no independent selection state. There is no bottom Current/status or global Switch area; status is represented by row badges. Setup errors are reported when switching is attempted. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration.
+Display configuration status by reading supported user-level client files, rather than trusting a stored active-provider ID. Allow duplicate connection settings under different names; every record for the selected client matching the configured URL, key and supplied PP-18 model fields displays In use and cannot be switched again. This is a file match, not verification of a running session, connection, credentials or model compatibility. Project settings, launch arguments and a separately launched client's environment can override these files. Editing identifies individual records; rows have no independent selection state. There is no bottom Current/status or global Switch area; status is represented by row badges. Setup errors are reported when switching is attempted. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration. Documentation must distinguish provider configuration from live usage and explain that retained model settings must be supported by the new provider.
 
 ### PP-11: Performance budgets
 
@@ -102,17 +106,23 @@ Match cc-switch's interface languages: English, Simplified Chinese, Traditional 
 
 ### PP-14: Minimal interface
 
-Follow [design/UI.md](design/UI.md): three client tabs and a smaller Settings
+Follow [design/UI.md](design/UI.md): client tabs and a smaller Settings
 gear at the top, a provider list below, and visible Edit then Switch icon buttons
 on each row. Do not show an in-content product heading, More menu, bottom status
 or global Switch button. Rows have no selection circle or selected background; Edit and Switch each
 target their own record by ID. Matching records show In use and have
-disabled Switch. Add/edit use a three-field dialog; saving never applies.
+disabled Switch. Add/edit show name, URL, masked key and an optional default model;
+Matching row names, addresses and In use badges share the blue active-text color
+for visible emphasis; there is no green status role. PP-19 Official rows precede
+saved Providers and expose Switch only.
+Claude mappings use an expandable section. Saving never applies.
 Settings replaces the list within the same window and contains language, import-link registration and
-manual updates, with a Back action. No hover tooltips anywhere. Initial activation
+manual updates, with a Back action and no redundant Settings page heading. No hover tooltips anywhere. Initial activation
 focuses no control; later keyboard navigation retains visible focus. Preserve
 pressed/disabled states, contrast, masked credentials and unsaved drafts. Closing
-or cancelling an editor discards its draft without writing. Use system fonts and
+or cancelling an editor discards its draft without writing. Client tabs pair compact brand labels (Claude, Codex, Gemini, Grok, DSH) with
+pinned brand SVG shapes, rendered in the current text color. Use the pinned Lobe Icons
+brand marks for clients and Lucide for actions. Use system fonts and
 bounded vector icons, without new UI dependencies or background rendering.
 The application icon remains the flat blue PPS switch mark in OS packages; macOS
 window titles omit it, while other platforms retain their window icons.
@@ -127,6 +137,132 @@ PP-11 budgets remain unchanged.
 
 Updates are strictly user-triggered: no startup, scheduled or background checks. A compact Check for updates action queries only this repository's GitHub Releases over verified HTTPS; preview builds may receive newer previews. Show version and request confirmation before download/install/restart, warning about unsaved edits. Keep the GUI responsive during network work. Select only the current OS/architecture package, bound download/extraction size and whitelist application-owned files. Verify the archive against GitHub's SHA-256 asset digest before staging. Reject malformed metadata, path traversal, symlinks, unsupported layouts and unwritable installations without editing provider/client files. A temporary helper waits for the app to exit, checks the destination has not changed, replaces owned files with backups, rolls back failed installs and restarts. Report failures in the selected language. Release assets remain unsigned; a GitHub digest verifies download integrity, not an independent publisher signature.
 
+### PP-16: Grok Build
+
+Grok Build: patch only `base_url` and existing `api_key` in the custom
+`[model.<profile>]` selected by `[models].default` in `~/.grok/config.toml`.
+For an existing custom route, require an initialized API-key profile; refuse `env_key`, `auth_provider`,
+`env_http_headers` and `mtls_cert_dir` credential sources. Preserve other
+profiles, profile selection, API backend, headers, MCP and
+`auth.json` unchanged. From an unselected native route, select a reserved `pps` inline-key profile using the Provider's explicit default model; refuse collisions. PP-19 defines restoration; never edit OAuth credentials.
+Accept the cc-switch client identifier `grokbuild` and its `grok-build`,
+`grok_build`, `grok` aliases in bounded Provider links. Inline TOML and JSON
+wrapping a TOML `config` extract URL/key and the optional upstream model from the selected profile; a single
+unselected profile may be imported, but ambiguous multiple profiles are refused.
+
+### PP-17: DeepSeek Harness CLI/Web
+
+One DSH tab and Provider list controls both CLI and Web through the common
+`$DSH_HOME/cordis.patch.yml` (default `~/.dsh`), loaded after their profile patches.
+Do not create profiles or modify their manifests, bundles or individual patches.
+Require initialized `headless` and `web` profiles with the base bundle. Support
+an explicit, unambiguous shared API-key route or the PP-19 native account route, with matching effective
+provider and credential reference in both profiles. An untouched native
+`deepseek-official` route may inherit the base bundle's API-key defaults; PPS
+may add minimal common connection overrides for that existing route.
+
+For `llm-deepseek` or `llm-pi-ai`, change only the route's `baseURL` and its
+existing `refs.<apiKeyEnv>` in `$DSH_HOME/.credentials.yaml`. Common overrides
+may be minimally added for supported values inherited from a profile. Preserve
+provider selection except for PP-19 transitions, wire protocol, catalogs, account/OAuth records, unrelated
+patches and credentials. Optional models follow PP-18. Refuse external credential
+stores, conflicting selections/references, disabled/replaced target entries,
+unsupported patch operations, malformed YAML, duplicate keys/entry IDs, aliases,
+anchors, tags and unsupported destination scalars. Never execute YAML expressions.
+Refuse relevant inherited environment overrides visible to PPS. Separately
+launched environment, custom bundle overrides, `--patch` and session-specific
+model selections remain outside file-match status. Shared changes affect every
+profile inheriting this home layer; CLI/Web are not separate PPS Providers.
+Use PP-09 recovery for the common-patch/credential update. Reload may require
+restarting dsh when its HMR is disabled.
+
+### PP-18: Optional Provider models
+
+Persist an optional `models` object with `model`, and Claude-only `haiku`,
+`sonnet`, `opus` overrides. Old records without it retain URL/key-only behavior.
+Empty editor inputs mean no explicit value, not deletion. Models are optional for
+Claude too: model-less saved records can switch URL/key directly and display In use
+when their managed fields match. Saving never applies; a separate Switch applies.
+The low-level URL/key patch contract remains available for legacy fixtures. Validate each supplied
+model as 1–512 UTF-8 bytes with no whitespace or control characters; never
+query a model catalog or test credentials. Save/cancel/import preview do not
+modify client files. The editor explains exactly which values follow the default.
+For existing records and import previews, keep explicit Provider/link values.
+When its default is absent, Claude may use its supplied Sonnet/Opus/Haiku mapping
+(in that order); otherwise prefill from supported client files only when both
+URL and key match that Provider. Resolve Claude tier aliases through their
+configured mappings. Apply the same connection-scoped default prefill to all five
+clients. Never copy models from a different connection. Claude editors (including
+new Providers and model-less import previews) fall back to the visible, editable
+`claude-sonnet-5` when no explicit/mapped/same-connection model exists. This is a
+product default, not a compatibility guarantee or catalog query. Clearing it
+opts out of model writes. Other clients retain connection-scoped prefill and their
+existing native/API transition rules. Prefill is an unsaved draft; Save and a
+separate Switch remain required.
+
+For Claude, a supplied default synchronizes top-level `model` and
+`env.ANTHROPIC_MODEL`. Its Haiku/Sonnet/Opus mappings follow that default unless
+explicitly overridden. With no default, patch only supplied mappings; leave
+other model settings intact. Update existing `ANTHROPIC_SMALL_FAST_MODEL` only
+when setting the Haiku mapping. Preserve modelPicker, modelOverrides, context
+window, reasoning, plugins and all other settings. Do not invent `behavesAs` or
+claim an unknown-model catalog warning has been fixed.
+
+Codex changes only top-level `config.toml.model` (minimally add it if absent).
+Gemini synchronizes `.env.GEMINI_MODEL` and `settings.json.model.name`, using
+PP-09 recovery for the two-file update. Grok changes only the selected custom
+profile's existing `model` string; PP-19 native transitions may also change `[models].default`. DSH changes the common `agent-default-model.config.model`; preserve its selected provider except for PP-19 native transitions, and preserve all model catalogs. Apply validates model
+destinations before any writes; malformed or ambiguous destinations are refused.
+
+In use badges must match URL/key and every model destination this Provider
+would write. A Provider without model settings ignores model differences. A
+different supplied model must keep Switch available even for matching URL/key.
+Project settings, launch arguments and process environment remain outside this
+file-match status. Detect relevant model environment overrides visible to PPS
+only when applying optional model settings; never change shell configuration.
+
+### PP-19: Fixed Official items
+
+Claude, Codex, Gemini, Grok and DSH each have a fixed first Official row, with Switch
+only, no editing/deletion and no fake Provider record or credential. Official restores
+native connection/login mode, not a historical whole-file backup or a login.
+The user may need to sign in and restart the client. No network request is made.
+
+Claude removes only `env.ANTHROPIC_BASE_URL`, `ANTHROPIC_AUTH_TOKEN`,
+`ANTHROPIC_API_KEY`, the five PP-18 model env fields and top-level `model`.
+External helpers/cloud modes remain unsupported. Preserve hooks, permissions,
+modelPicker/modelOverrides and native credential files. Codex removes root
+`model_provider`, `model`, API-only `forced_login_method`, and
+`auth.json.OPENAI_API_KEY` plus API-only `auth_mode`; keep OAuth tokens,
+keyring/login files and inactive custom provider tables. Refuse active profile
+routing overrides. Switching from native uses a dedicated bearer table so it
+never needs to overwrite native login credentials.
+
+Gemini removes `GOOGLE_GEMINI_BASE_URL`, `GEMINI_BASE_URL`, `GEMINI_API_KEY`,
+`GOOGLE_API_KEY`, `GEMINI_MODEL`, sets `security.auth.selectedType` to
+`oauth-personal`, and removes `settings.json.model.name`. Preserve OAuth cache,
+other settings and comments. Grok removes `[models].default` and a
+`session_summary` selector only when it references that same custom profile;
+keep inactive profiles and `auth.json`. Returning to a new PPS Grok profile
+requires an explicit default model; do not guess a model.
+
+Validate all destinations and visible relevant environment overrides before
+writes; use PP-09 locking, conflict detection, permissions and recovery. Missing
+native config does not prove login but may be initialized minimally. Official
+badges derive from native file routing/auth state, never a saved active ID. An
+ordinary native model selection does not imply a third-party connection. Status
+cannot certify credentials or override precedence in separately launched clients.
+DSH Official selects `deepseek-account` / `deepseek-flash` in the common
+`agent-default-model` patch, clears only the account adapter's inherited `baseURL`
+into a common complete config, and preserves account records, API-key references,
+catalogs and both profile patches. Require initialized base-bundle CLI/Web
+profiles. From account mode, a Provider selects `deepseek-official` with the
+explicit default (or the native `deepseek-flash` default when blank), changes
+`llm-deepseek.baseURL` and its existing local API-key reference (default `DEEPSEEK_API_KEY`), initializing
+only a missing version-1 `refs` API-key container while preserving account data.
+Normal API-key routes keep existing selectors/references. No login credential
+stash, account manager or permanent additional PPS state.
+
 ## Implementation decisions
 
 Rust core, FLTK native UI and a local JSON provider store. Use mature parsers;
@@ -134,7 +270,7 @@ do not write a general-purpose JSON/TOML parser. Patch only validated value
 ranges. Keep the dependency graph small and omit unused FLTK features.
 
 Inside the app's data directory, the only persistent state beyond providers is a
-bounded recovery journal, an advisory lock and one UI language preference. No
+bounded recovery journal, an advisory lock and UI language preferences. No
 plugin system, daemon, database or adapter SDK. User-triggered updates may use bounded temporary staging and
 rollback files, plus a temporary copy of the app as an installation helper.
 There is no permanent helper process. Translations are compiled text. Native
@@ -162,3 +298,8 @@ A GUI smoke harness exercises the same widgets/callbacks as the shipped window.
 Record release size, actual process RSS and startup measurements in
 [verification](docs/verification.md). Build and validation commands live in
 [CONTRIBUTING.md](CONTRIBUTING.md). Update this contract before changing behavior.
+
+Grok Build compatibility and brand assets reference cc-switch commit
+`d9a62313c8a276216ed40245c638753606831e95`. DeepSeek Harness is absent from
+that revision; the shared CLI/Web integration separately references deepseek-harness
+`d743267388641bc76f17c45ce8b4c231aed1d32c`.

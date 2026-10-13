@@ -80,7 +80,7 @@ def validate(directory):
         active = ppm(directory / f"{locale}-active.ppm")
         for name, image in (("rows", rows), ("active", active)):
             for left in (341, 377):
-                pixels = icon(image, left+5, 148, 20, 20)
+                pixels = icon(image, left+5, 222, 20, 20)
                 assert len(set(pixels)) > 1, f"{locale}/{name}: missing row action at {left}"
             assert clean_margin(image), f"{locale}/{name}: removed footer remains"
         reference = badge_mask(ppm(directory / f"{locale}-badge-reference.ppm"))

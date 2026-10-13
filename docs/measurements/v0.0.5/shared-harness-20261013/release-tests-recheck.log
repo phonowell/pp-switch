@@ -1,0 +1,6 @@
+COMMAND ["rtk", "proxy", "/tmp/pps-v005-tools/bin/python", "-m", "unittest", "discover", "-s", "scripts", "-p", "*_test.py"]
+.............
+----------------------------------------------------------------------
+Ran 13 tests in 2.028s
+
+OK

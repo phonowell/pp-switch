@@ -49,10 +49,11 @@ jobs:
         run: cargo clippy --locked --all-targets -- -D warnings
       - name: Behavior tests
         run: cargo test --locked
-      - name: Lucide SVG/native parity
+      - name: Action and client SVG/native parity
         run: |
           python -m pip install fonttools==4.60.1
           python scripts/lucide.py --check
+          python scripts/client_icons.py --check
       - name: Release automation tests
         run: python -m unittest discover -s scripts -p '*_test.py'
       - name: Release application and measurement harness
@@ -75,6 +76,9 @@ jobs:
       - name: Native mouse and keyboard acceptance (macOS)
         if: runner.os == 'macOS'
         run: python scripts/gui_smoke.py --timeout 180 target/${{ matrix.target }}/release/examples/input_smoke target/input-smoke
+      - name: Bare Cocoa comparison, native readiness, import stress and Quit (macOS)
+        if: runner.os == 'macOS'
+        run: python scripts/mac_performance.py target/${{ matrix.target }}/release/examples/mac_acceptance target/mac-performance
       - name: Rendered UI regression checks (macOS)
         if: runner.os == 'macOS'
         run: python scripts/visual_check.py target/input-smoke
@@ -149,6 +153,7 @@ jobs:
             target/input-smoke/results.json
             target/theme-smoke/**
             target/native-links/**
+            target/mac-performance/**
             target/input-smoke/interaction-results.json
             target/gui-hang.txt
             target/measure-hang.txt

@@ -1,0 +1,15 @@
+{
+  "name": "package",
+  "command": [
+    "rtk",
+    "proxy",
+    "python3",
+    "scripts/package.py",
+    "aarch64-apple-darwin",
+    "--binary",
+    "target/release/pp-switch"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 0.87,
+  "log": "docs/measurements/v0.0.5/official-20261013/package.log"
+}

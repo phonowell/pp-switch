@@ -1,0 +1,27 @@
+{
+  "time_utc": "2026-10-13T11:25:36.910106+00:00",
+  "installed": true,
+  "destination": "/Users/mimiko/Applications/pp-switch.app",
+  "backup": "/Users/mimiko/.codex/backups/pp-switch/model-default-v005-20261013T112536853762Z/pp-switch-previous.app",
+  "archive_sha256": "a7231f8edb5382b5701511be34d405b1df70cbf2805d563a277d8935ea4b8445",
+  "installed_bytes": 2788557,
+  "installed_sha256": {
+    "Contents/Info.plist": "76be48b7093bafc84acbac6f1ebff55b1ab2118e1cc4048efdb1241492be6ebd",
+    "Contents/MacOS/pp-switch": "5b59842adeb9cfa235f00532fd9910592b09ec4e86ba307f5175894f54d142f5",
+    "Contents/Resources/LICENSE": "18e5e3ed3e28b653178943cc38f54f3bc2dd883fbec46fcbc8d07aa72a7ecc97",
+    "Contents/Resources/AppIcon.icns": "cf2b68a2bf9fe6636110b5e7a590117d78df84dd8800bc2ae55626741074d28b",
+    "Contents/Resources/THIRD_PARTY_NOTICES.txt": "d4b6f3fc239f7150997f212f2ca319318b3a00d993583d2fe45f5219783ba5b7",
+    "Contents/Resources/README.txt": "1cc67447aebfa4b5dc84987fbb75a35f76a2a17fdfa807310fd0e2fdf48cdf37"
+  },
+  "previous_sha256": {
+    "Contents/Info.plist": "76be48b7093bafc84acbac6f1ebff55b1ab2118e1cc4048efdb1241492be6ebd",
+    "Contents/MacOS/pp-switch": "4600861cecfc5e0b1b0b75691054f7162bc28c8f744333f66098ed5c788519f7",
+    "Contents/Resources/LICENSE": "18e5e3ed3e28b653178943cc38f54f3bc2dd883fbec46fcbc8d07aa72a7ecc97",
+    "Contents/Resources/AppIcon.icns": "cf2b68a2bf9fe6636110b5e7a590117d78df84dd8800bc2ae55626741074d28b",
+    "Contents/Resources/THIRD_PARTY_NOTICES.txt": "d4b6f3fc239f7150997f212f2ca319318b3a00d993583d2fe45f5219783ba5b7",
+    "Contents/Resources/README.txt": "1cc67447aebfa4b5dc84987fbb75a35f76a2a17fdfa807310fd0e2fdf48cdf37"
+  },
+  "launched": false,
+  "client_files_modified": false,
+  "native_gui_acceptance": "unverified; shared workstation focus preserved"
+}

@@ -1,0 +1,6 @@
+COMMAND ["/Users/mimiko/.cargo/bin/cargo", "build", "--locked", "--release", "--bins", "--examples"]
+   Compiling fltk-sys v1.5.23
+   Compiling pp-switch v0.0.5 (/Users/mimiko/.codex/worktrees/v005/pp-switch)
+   Compiling yaml-edit v0.3.2
+   Compiling fltk v1.5.23
+    Finished `release` profile [optimized] target(s) in 34.18s

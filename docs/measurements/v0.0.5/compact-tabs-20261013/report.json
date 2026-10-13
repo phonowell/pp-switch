@@ -1,0 +1,99 @@
+{
+  "time_utc": "2026-10-13T07:31:11.485311+00:00",
+  "checks": [
+    {
+      "name": "format",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "format.log"
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "clippy",
+        "--locked",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "log": "clippy.log"
+    },
+    {
+      "name": "release-build",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--bins",
+        "--examples"
+      ],
+      "exit_code": 0,
+      "log": "release-build.log"
+    },
+    {
+      "name": "docs",
+      "command": [
+        "rtk",
+        "proxy",
+        "/tmp/pps-v005-tools/bin/python",
+        "scripts/docs_check.py"
+      ],
+      "exit_code": 0,
+      "log": "docs.log"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "rtk",
+        "proxy",
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "diff.log"
+    },
+    {
+      "name": "package",
+      "command": [
+        "rtk",
+        "proxy",
+        "/tmp/pps-v005-tools/bin/python",
+        "scripts/package.py",
+        "aarch64-apple-darwin",
+        "--binary",
+        "target/release/pp-switch"
+      ],
+      "exit_code": 0,
+      "log": "package.log"
+    },
+    {
+      "name": "archive",
+      "command": [
+        "rtk",
+        "proxy",
+        "target/release/examples/update_smoke",
+        "--archive",
+        "target/package/pp-switch-v0.0.5-aarch64-apple-darwin.zip"
+      ],
+      "exit_code": 0,
+      "log": "archive.log"
+    }
+  ],
+  "reused": "64 Rust / 13 Python core tests, SVG parity and performance evidence unchanged by tab label/title removal",
+  "unverified": "Native GUI/style acceptance skipped to preserve foreground; CodeGraph unavailable (no index)"
+}

@@ -2,6 +2,8 @@
 #import <Cocoa/Cocoa.h>
 #import <ApplicationServices/ApplicationServices.h>
 #import <QuartzCore/QuartzCore.h>
+#import <CoreServices/CoreServices.h>
+#include <unistd.h>
 
 static NSPoint savedMouse;
 static BOOL saved;
@@ -103,6 +105,30 @@ int pp_smoke_windows(void) {
     int count = 0;
     for (NSWindow *window in [NSApp windows]) if ([window isVisible]) count++;
     return count;
+}
+
+// Dedicated fixture only: cover both native menu and Dock-format AppleEvent.
+// Cocoa exits before the Rust loop can return after NSTerminateNow.
+void pp_smoke_terminate(int appleEvent) {
+    [[NSNotificationCenter defaultCenter] addObserverForName:NSApplicationWillTerminateNotification
+        object:NSApp queue:nil usingBlock:^(NSNotification *notification) {
+            (void)notification;
+            puts("NATIVE QUIT ACCEPTED"); fflush(stdout);
+        }];
+    if (!appleEvent) { [NSApp terminate:nil]; return; }
+    pid_t pid = getpid();
+    NSAppleEventDescriptor *target = [NSAppleEventDescriptor descriptorWithDescriptorType:typeKernelProcessID
+        bytes:&pid length:sizeof(pid)];
+    NSAppleEventDescriptor *event = [NSAppleEventDescriptor appleEventWithEventClass:kCoreEventClass
+        eventID:kAEQuitApplication targetDescriptor:target returnID:kAutoGenerateReturnID
+        transactionID:kAnyTransactionID];
+    NSError *error = nil;
+    [event sendEventWithOptions:kAENoReply timeout:1 error:&error];
+    if (error) { fputs("native quit event delivery failed\n", stderr); exit(2); }
+}
+
+void pp_smoke_display(void *handle) {
+    [[[target(handle) contentView] superview] displayIfNeeded];
 }
 
 void pp_smoke_restore_mouse(void) {

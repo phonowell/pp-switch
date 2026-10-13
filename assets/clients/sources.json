@@ -1,0 +1,13 @@
+{
+  "repository": "https://github.com/lobehub/lobe-icons",
+  "commit": "67c955577316c56c276dd406c4c5b7c2b9715b4b",
+  "source_directory": "packages/static-svg/icons",
+  "license": "MIT",
+  "sha256": {
+    "claude": "365a70a7eb3956d9b9a96086058ebe04e1dbd8e291a756ad964e8a283fbd6d38",
+    "openai": "a595df6b423920c67a7f8f73c063e4bfb72d415948097b6cac063a2366bb5186",
+    "gemini": "87d5b3c4be75a66f54c1936482a263df68185545b741129badd1b7c2449c18d3",
+    "grok": "9175fc90c22655160231976c849f25a03b888d7cc0e04c5f1b987b659bb07c95",
+    "deepseek": "8f9443e351b6dacce71871790201b799d92e8bf96a45ef79aeb5e9bf4db423e2"
+  }
+}

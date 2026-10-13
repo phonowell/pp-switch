@@ -1,0 +1,45 @@
+{
+  "measurement": "same release binary, synthetic temporary client files, warm cache, 10 alternating rounds of 100 reads",
+  "metric_limit": "Requested allocation bytes are cumulative; these are neither RSS/live heap nor whole-app startup measurements. Shared workstation load is uncontrolled.",
+  "results": [
+    {
+      "file_bytes": 1174,
+      "separate_connection_and_models": {
+        "median_microseconds": 221.11,
+        "requested_bytes_per_read": 19450,
+        "allocation_calls_per_read": 127
+      },
+      "single_snapshot": {
+        "median_microseconds": 139.88,
+        "requested_bytes_per_read": 9776,
+        "allocation_calls_per_read": 67
+      }
+    },
+    {
+      "file_bytes": 7502,
+      "separate_connection_and_models": {
+        "median_microseconds": 711.69,
+        "requested_bytes_per_read": 119626,
+        "allocation_calls_per_read": 591
+      },
+      "single_snapshot": {
+        "median_microseconds": 357.47,
+        "requested_bytes_per_read": 59864,
+        "allocation_calls_per_read": 299
+      }
+    },
+    {
+      "file_bytes": 29774,
+      "separate_connection_and_models": {
+        "median_microseconds": 7078.88,
+        "requested_bytes_per_read": 478282,
+        "allocation_calls_per_read": 2139
+      },
+      "single_snapshot": {
+        "median_microseconds": 3861.04,
+        "requested_bytes_per_read": 239192,
+        "allocation_calls_per_read": 1073
+      }
+    }
+  ]
+}

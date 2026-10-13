@@ -1,0 +1,259 @@
+{
+  "time_utc": "2026-10-13T10:11:18.509810+00:00",
+  "branch": "codex/v0.0.5",
+  "published": false,
+  "source_sha256": {
+    "Cargo.lock": "91708fa555cc0d2fcbdff3ed3e6d2cf8abe8908955d837087d0dbe9eaeaceb98",
+    "Cargo.toml": "2f4eabe07d445af5b485ed9f802b6d310cc5be97d190cd4c662ae75747fc93f8",
+    "build.rs": "ee0cc3ce556003bb3b419b929c45a0f764a782d1be0f53c706ea0ca5117bf08a",
+    "examples/input_smoke.rs": "c485827993530003f0a8089fcd04ac08d5b40ed41e85f70d22995e586a7830f8",
+    "examples/mac_acceptance.rs": "294740d513598605bc755a1bee71d4fe6cdff2c39e1090e8aaa0f472ac5cfbc7",
+    "examples/macos_input.m": "1bcb9a5caa13c043714e9207bd657d929dfb83b2af9894c78260c10952ef3dcf",
+    "examples/measure_cocoa.m": "e832a3d4fe3b8e42ec92af6b4c66984e37fa7f83be31422ba9d2d17a3bef59fd",
+    "examples/measure_config.rs": "3ab0fde4bdfa7d7dcae6a1a6ccdfff91743888d7ac5e89969c3b93885e95bff1",
+    "examples/measure_ui.rs": "0b396f30a10fd6ae35a8565eb014a2039a089b3eb6906dc40e7edb44509fa834",
+    "examples/protocol_smoke.rs": "77746e88629bacd74e5e868b8fd07ba2e4dfd25f9f64166c5fd352624cbf04e7",
+    "examples/support/mod.rs": "b8b98891731747559a59544aa1a59d3be3c5aeb67ccd7115d3473a71786fc7be",
+    "examples/ui_smoke.rs": "9c668cb435762cf77802f12cb6fd7f0dba05e34aacbcbea650062656593b8cfe",
+    "examples/update_smoke.rs": "12896f395079dc16c61d1f692ea8aebfd824f61dadd227986bd34c7dc7f89652",
+    "scripts/docs_check.py": "7d44a3e3ad590774239eb3e6712e87b68474a41683a2e9e08118cbfb51194b90",
+    "scripts/mac_performance.py": "ff4935ed053bed90970bcd3e4be8529f5108b7126ec6b83f813cc7b1e110ee5e",
+    "scripts/native_quit_test.py": "63585e7d993fd5cf73182699f65d3f6db308538686915e19940289d76bb0ed96",
+    "src/client/dsh.rs": "7ada600c5f87d1a6b02b289fc70b2df5ca6aed18952af055aa5e0a7223ba8a5f",
+    "src/client/models.rs": "98a7c745d43080ba40bcc193616863fa76c992e3c4b32d31433102a30e45f904",
+    "src/client/official.rs": "2f78052ef37ff9a56944b0d488bb4354855d25e8b91c2de4965bc201ad30b6e5",
+    "src/client.rs": "d5948caca29accf5a39a5b6c41709b1929d7f0dab1174273d0f728cfa24efef1",
+    "src/config.rs": "d68d16b142a18d60bcddb49df866fd0dcba718636134d1ad1982a9c0633ddf0f",
+    "src/i18n.rs": "0a8eba1e5b558f3a200f4ccda18c154654670222da590caaa3b51162ad8df479",
+    "src/lib.rs": "6e47c2cd56fcc00e01b77b09f154474a437f65afec5b1a0d60f33b69ec76e091",
+    "src/locales.tsv": "7855648cca08fd32279d552303a725f412430c25ca38ba7adf4fed3c1a17806e",
+    "src/macos.m": "f5f92538819d8c255be22ee8fb36579f4205ce6b308ad804777116d7156a651b",
+    "src/main.rs": "a8acac5ac831b3daecdb303454168008c38fcc5af712c335cdd855fad6f9fb20",
+    "src/protocol.rs": "98034ec6df806204e07ca33a77242efa2c79616cbd12af9208dc10bcfc12f9e3",
+    "src/provider.rs": "3cad6a7017f1b398851e67edf3728e45e14ef5100e88f6342b6cd74414b3cea3",
+    "src/storage.rs": "712ae6a57ed62b33ecf2d15de284d04e9b6ca0b7b77ac80d8915b114bf6cfdde",
+    "src/theme/system.rs": "5bdccce096e5b923df61a26e5c27a9ab5ca1b5e04f186b42f76a67fd63c147b1",
+    "src/theme.rs": "49343424b0a2a5b6edf80bf05db519aca090524f8680beb0a7a137fa1b138059",
+    "src/ui/acceptance.rs": "93215fe63431abed56251bbfd5b5a7f5745cdd19a04f7eed83e7148ff41f10f4",
+    "src/ui/client_icons.rs": "16f5f70157788fab9a1f2f23a41fdb7d23fd65cfbfd90efa71fbd16eff9ca1dc",
+    "src/ui/lucide.rs": "209dc0e8d21f4c06d307cfec88fa8f5ee6aa41a1086d9f90c44668cbc253f27a",
+    "src/ui.rs": "786a42d9d13d2d07ed4ee56a7b7a581b85bb2fc461c1238cdacfbbc47a20942f",
+    "src/update.rs": "7f14fb464c6d231a99c0391212a85f0adf79f2241177fc9790974946c2da69e9",
+    "tests/behavior.rs": "c5fc269f39f2cd7d68e899a8838af7831d78d7fa03fd592bb250ac292d45d2b3",
+    "tests/dsh.rs": "55d47f025543023d4b695d05d6199bd39565d7b4b50628ba14f5aad186c167ec",
+    "tests/localization.rs": "b6819b768caef07f93ba14a17755a33e6beb1cb2281f2b51be5524a5de5d3347",
+    "tests/official.rs": "8e3340d002f65e58630be141be794687cffb869348937e856fcee7bb85409a60",
+    "tests/provider_models.rs": "ffa3733871701144436563acf3034d23e907759f89d8cf638cc85cd1d5e01466",
+    "tests/provider_names.rs": "c776f9395aa6f3bcb5339dcbd6ff63ab11db77a6c2ab5969c781a824d0dafb3f",
+    "tests/sub2api.rs": "73004cfa00e245c119270fd6d46f8411bde33a1aa57476d600a0af49ce67a45d"
+  },
+  "documentation_sha256": {
+    "CONTRIBUTING.md": "edb888a271d455585ef3772c7610ba63c832c421be550ab0f3eb720fe0b389d1",
+    "README.md": "dc4fd93fe1432ab9e178b93ddfadce7a2f083409c69eba2524c50670bcd655de",
+    "README_DE.md": "c2e1f61f6766ede2068fa504c02052899cd2fae10501f36688eba803daca7e71",
+    "README_JA.md": "b042eb6f29794f7dad417211e3c0e0ea204eda131206e5cb95aff6ce0b60cda0",
+    "README_ZH.md": "ee480de56891cce730fcfa5aa4db6c9c85de8e0feb2382e6ea9a2582a25915d5",
+    "SPEC.md": "18d7d0f824313d00b11fe90fa51c308440fa28e43fe1d07538679d274535534b",
+    "design/UI.md": "ebff3f7a0c2939c3e7041df5ee063bfa3228bfd5ebdad1029a1d19b010228ea9",
+    "design/render_docs.py": "592b6fc9e7604f2e633af32aa0585852bc7ea191383392a8048bcce2ba7fe8cc",
+    "docs/README.md": "15f41b7cec05e045f1af1bcd5142d2857ee20ef8368af18abfb6840b4d450b91",
+    "docs/development-0.0.5.md": "cead3711f28b0ac110b78b112794b27db6b55c2e8fda09e704435da3eb53ca5f",
+    "docs/history/README.md": "2351d0f3544c26a6e1094cfb05bee3f3061c0a38f1ebf48783eb7d2b252f4ac3",
+    "docs/history/acceptance-0.0.4.md": "64bd2984caa7fbcf953b8c066ef569c78f4a021efc4eeed8c3c574520a777d2e",
+    "docs/history/minimal-0.0.4.html": "88149600e5941138f5d8938627a08663dda1f0e88c23f9dca200f8fb918408a7",
+    "docs/history/native-ui-lessons.md": "feecdab1ba394d96896b8ba042f624cfa84753758e85cf692d4a60fa6f48404d",
+    "docs/history/v0.0.5-checkpoints-20261013.md": "17462c9635793df0304d58976dff95158c0f914515c8a05264c718696199f989",
+    "docs/history/verification-through-0.0.4.md": "cac7694d19af64f05d513b078c46c856b578cd869a60655c685090fad9e7fcfa",
+    "docs/illustrations/v0.0.5/main-en.svg": "ab7728ab28d0aa0be7a6e4f25765083b08744d0153eb8e9cd5f2380387b645ea",
+    "docs/illustrations/v0.0.5/main-ja.svg": "ba28d10dcc8be268fdddad7a4961318ad862979893fea805058c48f3e7a243b2",
+    "docs/illustrations/v0.0.5/main-zh.svg": "0e47b87cfad06a349e3a7aba95eccc0da159cf19ae3a4a867e43e12cdedcae59",
+    "docs/illustrations/v0.0.5/manifest.json": "019a231639c8977acc9c358ac6d83aca8dc3870f25b81c9a9b7446dcc999db15",
+    "docs/images.json": "734a005909a0ad4dff484531c961b15896f174dd2ff2d97ed3f12a79f8466727",
+    "docs/images.md": "56eaa98d8c75f573e6ca4f627d611bb7562251ad7e4f7836b7f3893587abc0a0",
+    "docs/smoke.md": "af1bf44306c6719a22ed5800b1a61fd0575762ee21afc0730a2979fc6ca0a42b",
+    "docs/user-guide-ja.md": "e5cc5383422053e05fd4a0458402b628e5de445c5d5df9dfec2d56861f4a25b6",
+    "docs/user-guide-zh.md": "989970dd7ed5514d9764c44856a92b50e552507d5023fc08ef143d2e7063c166",
+    "docs/user-guide.md": "cf0581f9c56b7444960a8e2560bd772511240a8105a2c802f1e7727b523ff49e",
+    "docs/verification.md": "d0a5f1d23fbbaa065452f1c41bd9a392147fd063b0ee546ab518fae73b7b92c2"
+  },
+  "screenshots_sha256": {
+    "docs/measurements/v0.0.5/quit-docs-20261013/doc-schematic-en.png": "b4429c5bc53bfa93e99e9a10c93e265180843be80a739490028312b146ce0731",
+    "docs/measurements/v0.0.5/quit-docs-20261013/doc-schematic-ja.png": "f06744abd353a85bbb5916124c111ae8df9f059ae2b04a421cd7f90b27cc110c",
+    "docs/measurements/v0.0.5/quit-docs-20261013/doc-schematic-zh.png": "91cd565fdfc060d7cd43f43e653249ff85059ebb39bd0e89fbf6b1be06e40daa"
+  },
+  "binary_sha256": "72f7026971bfc4850024d6dc16bda7eafc848fa5f9ca63c794881107b2ae345d",
+  "package": {
+    "path": "target/package/pp-switch-v0.0.5-aarch64-apple-darwin.zip",
+    "sha256": "475ee73d7a2a0f589fca6660649ffb7d10ba55395b1a27984edd187a3cf810e2",
+    "archive_bytes": 1408597,
+    "installed_bytes": 2788493,
+    "archive_validation": {
+      "exit_code": 0,
+      "command": [
+        "rtk",
+        "proxy",
+        "target/release/examples/update_smoke",
+        "--archive",
+        "target/package/pp-switch-v0.0.5-aarch64-apple-darwin.zip"
+      ],
+      "stdout": "PP-15: real release package passed layout, bounds and executable architecture validation."
+    }
+  },
+  "checks": [
+    {
+      "name": "format",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.22,
+      "log": "format.log"
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "clippy",
+        "--locked",
+        "--all-targets",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 6.976,
+      "log": "clippy.log"
+    },
+    {
+      "name": "behavior",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "test",
+        "--locked"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 16.742,
+      "log": "behavior.log"
+    },
+    {
+      "name": "native-quit",
+      "command": [
+        "rtk",
+        "proxy",
+        "python3",
+        "-m",
+        "unittest",
+        "scripts.native_quit_test",
+        "-v"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 4.361,
+      "log": "native-quit.log"
+    },
+    {
+      "name": "release",
+      "command": [
+        "rtk",
+        "proxy",
+        "/Users/mimiko/.cargo/bin/cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--bins",
+        "--examples"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 82.878,
+      "log": "release.log"
+    }
+  ],
+  "rust_tests_passed": 80,
+  "native_quit_tests_passed": 3,
+  "python_suite": {
+    "passed": 15,
+    "exit_code": 0,
+    "command": [
+      "rtk",
+      "proxy",
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "scripts",
+      "-p",
+      "*_test.py"
+    ],
+    "evidence": "Previous tool result in this task; includes native Quit tests."
+  },
+  "quit_negative_control": {
+    "path": "negative-control.log",
+    "old_implementation": "NSTerminateCancel",
+    "menu": "callback ran, native wait timed out at 6s",
+    "dock_format_appleevent": "callback ran, native wait timed out at 6s"
+  },
+  "staging_record": "installation-pending.json",
+  "staging_hash_verification": "passed",
+  "installed": false,
+  "launched": false,
+  "illustration_review": {
+    "record": "schematic-browser.json",
+    "locales": [
+      "en",
+      "zh",
+      "ja"
+    ],
+    "light_dark": true,
+    "out_of_bounds_text": 0,
+    "native_acceptance": false
+  },
+  "unverified": [
+    "Actual Dock pointer Quit and affected native main/Settings/editor scenarios",
+    "Four-language native light/dark blue status pixels",
+    "Current whole-app memory and cold startup",
+    "Windows/Linux/Intel native gates",
+    "CodeGraph unavailable: no worktree index; bounded source and consumer reads used"
+  ],
+  "user_client_files_modified": false,
+  "foreground_input_preserved": true,
+  "asset_sha256": {
+    "assets/clients/LICENSE": "add9d7531d1b21646317a8958e38fc727506fa39d24bdecb44154d943c82753a",
+    "assets/clients/README.md": "0e28e0b06de1928d91937c7c4fccfcda59d64d8368168a3f2efa87758f1377b6",
+    "assets/clients/claude.svg": "365a70a7eb3956d9b9a96086058ebe04e1dbd8e291a756ad964e8a283fbd6d38",
+    "assets/clients/deepseek.svg": "8f9443e351b6dacce71871790201b799d92e8bf96a45ef79aeb5e9bf4db423e2",
+    "assets/clients/gemini.svg": "87d5b3c4be75a66f54c1936482a263df68185545b741129badd1b7c2449c18d3",
+    "assets/clients/grok.svg": "9175fc90c22655160231976c849f25a03b888d7cc0e04c5f1b987b659bb07c95",
+    "assets/clients/openai.svg": "a595df6b423920c67a7f8f73c063e4bfb72d415948097b6cac063a2366bb5186",
+    "assets/clients/sources.json": "113bbf9a9b7e9ff83ad354e054e76485759f586f825d3821b61ee90e036d47f1",
+    "assets/icon-64.rgba": "9f06fe7f83522fd1ff34c8d7eff50bd3e181a05ee30f0c29e6fffbe8d265651f",
+    "assets/icon.icns": "cf2b68a2bf9fe6636110b5e7a590117d78df84dd8800bc2ae55626741074d28b",
+    "assets/icon.ico": "44a0ddc5be05ea37864fc6049d7430ea93aa8937ca2ad48c10523bb68cb18e65",
+    "assets/icon.png": "8e52aa5231a7005a2e8b8d0cd4f04bf41c6d40911a24a3a7802fbba1271bf857",
+    "assets/icon.svg": "13d2c6c9dbdb0ebd8f3fedd480bb4a355e40aff3872848eaf022b72c97bcc094",
+    "assets/lucide/LICENSE": "b495047bd93a9b06913511076f504daba17d5bbeb3e0650f3bb53a4220329c57",
+    "assets/lucide/README.md": "58c849c386e0308562f7fcef55d7fb0ccd9e864828674a49c8b0fdce2ade307c",
+    "assets/lucide/arrow-left.svg": "c5f4b88076108eb1a0d95336e1aa7e7bb1419a3a92af96f6247d88cd3456f933",
+    "assets/lucide/arrow-right-left.svg": "c32f61f0ea5aea4f11592db61e42774977a95086a4fa40656d00289a9604b9ad",
+    "assets/lucide/chevron-down.svg": "66ea878e72ed3488bb3b464c39dfdccee8d1f78e560dccea40e5e12da0e87e87",
+    "assets/lucide/circle-dot.svg": "c263f6a08a089c06ad40f408ad5da9100359ab52d379e6c571cd7c5bd74eaa87",
+    "assets/lucide/circle.svg": "3a991bd47beaf9874fba6fdf87bbba442970a89b5e6aa391558bc8b0a00a0513",
+    "assets/lucide/pencil.svg": "7e1ca7a6f5c1eb949671df762f2baadd32f5bd841d43153c3a15279af7d78d0c",
+    "assets/lucide/plus.svg": "7f6af73bf1ff6c4bca3f18351c8d1bdec6749c0c2530c4de5da85d520c21df17",
+    "assets/lucide/settings.svg": "0ae27fd0f81999229e3127ac96c5b32edfea448e291d509e76212b917551d66b",
+    "assets/screenshot-edit-zh.png": "46e42f0ff61dfe7d215c8f50649a71b70faefbe712e3bad34057ccc62bb1362d",
+    "assets/screenshot-ja.png": "88972afa84fc3f64d5ddd23f8a2a6a47f83f345f61ae9ab5fb3af57136a4690d",
+    "assets/screenshot-linux-zh.png": "3adec54cc5140ebc43a553ea30b8583718f8d9dc2401b56d6f1f4d567d71429a",
+    "assets/screenshot-windows-zh.png": "2078593357a023da7ea375579773dbb0f54d00cf89e6b3585171e1df13548f1f",
+    "assets/screenshot-zh-TW.png": "e90534636de77de9bc119e47c71b772b33de8a813b172e82bd4e6fdfc51e44da",
+    "assets/screenshot-zh.png": "b0624533d608531bb0bda0e3602a01f3a81319588856f71b1b3b228aedcc7678",
+    "assets/screenshot.png": "e52f7a0bc33f5ae411957f1e4a0345bc947b8e189c4986de5d60e9dca931e639"
+  }
+}

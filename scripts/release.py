@@ -27,6 +27,12 @@ def metrics(path):
         raise ValueError(f"Missing/invalid measurement samples: {path}")
     expected = (data["startup_max_ms"] <= 300 and data["idle_max_bytes"] <= 20 * 1024**2
                 and data["peak_max_bytes"] <= 30 * 1024**2)
+    if "cold_start_verified" in data or "native_action_readiness" in data:
+        if type(data.get("cold_start_verified")) is not bool or type(data.get("native_action_readiness")) is not bool:
+            raise ValueError(f"Missing/invalid readiness provenance: {path}")
+        if data.get("measured_threshold_pass") is not expected:
+            raise ValueError(f"Inconsistent measured thresholds: {path}")
+        expected = expected and data["native_action_readiness"] and data["cold_start_verified"]
     if data["budget_pass"] is not expected:
         raise ValueError(f"Inconsistent budget result: {path}")
     if (data["startup_max_ms"] != max(s["startup_ms"] for s in samples)
@@ -44,13 +50,19 @@ def assemble(artifacts, output):
     evidence = {"version": VERSION, "tag": tag, "commit": os.environ["RELEASE_COMMIT"],
                 "ci_run": os.environ["RELEASE_RUN_URL"], "signed": False, "platforms": []}
     notes = [f"Pure Provider Switch {VERSION}", "",
-             "- Native URL/key switcher for Claude Code, Codex and Gemini CLI.",
-             "- Row Edit/Switch actions and an in-window settings page; no Provider-link import.",
-             "- Size-focused native build and fewer provider/key copies; raw measurements below.",
+             "- Switch URLs, keys and explicitly supplied optional models for Claude, Codex, Gemini, Grok and shared DSH CLI/Web.",
+             "- Row Edit/Switch, in-window Settings and scoped Provider-link previews with numeric name suffixes.",
+             "- Each harness has an Official row to restore native routing while preserving credentials.",
+             "- Claude imports read supplied model fields; Add/Edit/import suggest claude-sonnet-5 when absent. Models remain optional; clear the field to retain client models.",
+             "- macOS application-menu and Dock-format Quit handling repaired; full window title, consistent harness icons and blue In use emphasis.",
+             "- Single-snapshot Claude/DSH configuration status; raw measurements below.",
              "- Tag builds validate all four native targets before publishing.", "",
              "Packages are unsigned (macOS is not notarized). Full PP-11 is not certified:",
              "OS caches are retained; readiness is an event-loop marker, not cold input latency.",
              "RSS includes system/shared pages. Update download/install peaks are unverified.", "",
+             "Migration: saved providers remain readable. Save never applies client files; use the row's Switch action. Models must be supported by your endpoint.",
+             "Codex CLI/App share configuration. DSH CLI/Web share initialized headless/web home profiles; external credential stores and unsupported overrides are refused.",
+             "Official restores routing, not account login. Native Dock pointer clicks and true cold-start performance are not certified by these automated checks.", "",
              "| Target | Installed MiB | Idle / peak MiB | Readiness max ms | Editor peak MiB | Budget |",
              "| --- | ---: | ---: | ---: | ---: | --- |"]
     for target in TARGETS:
@@ -69,6 +81,9 @@ def assemble(artifacts, output):
             raise ValueError(f"Missing measurement scenario: {target}")
         report.update(measurement=idle, editor_measurement=editor,
                       functional_checks="passed (required native CI job)")
+        native = root / "mac-performance" / "report.json"
+        if native.exists():
+            report["mac_native_performance"] = json.loads(native.read_text(encoding="utf-8"))
         evidence["platforms"].append(report)
         shutil.copy2(package, output / package.name)
         passed = idle["budget_pass"] and editor["budget_pass"]

@@ -120,6 +120,44 @@ fn pp03_unsupported_claude_modes_never_write() {
     }
 }
 
+#[test]
+fn pp03_pp10_claude_config_match_preserves_provider_specific_models() {
+    let (_dir, paths, store) = setup();
+    let file = paths.settings(Client::Claude);
+    let text = r#"{"env":{"ANTHROPIC_BASE_URL":"https://old.example","ANTHROPIC_AUTH_TOKEN":"old-key","ANTHROPIC_MODEL":"custom-model","ANTHROPIC_DEFAULT_HAIKU_MODEL":"custom-fast","ANTHROPIC_DEFAULT_SONNET_MODEL":"custom-model","ANTHROPIC_DEFAULT_OPUS_MODEL":"custom-large"},"modelPicker":[{"id":"custom-model","behavesAs":"sonnet"}]}"#;
+    put(&file, text);
+    let p = provider(Client::Claude);
+    paths.apply(&store, &p).unwrap();
+    assert_eq!(
+        paths.current(Client::Claude).unwrap(),
+        Some((p.base_url.clone(), p.api_key.clone()))
+    );
+    assert_eq!(
+        fs::read_to_string(file).unwrap(),
+        text.replace("https://old.example", &p.base_url)
+            .replace("old-key", &p.api_key)
+    );
+}
+
+#[test]
+fn pp03_claude_read_and_apply_refuse_ambiguous_or_malformed_fields() {
+    for text in [
+        r#"{"env":{},"env":{}}"#,
+        r#"{"env":{"ANTHROPIC_BASE_URL":"https://first.example","ANTHROPIC_BASE_URL":"https://second.example","ANTHROPIC_AUTH_TOKEN":"old-key"}}"#,
+        r#"{"env":{"ANTHROPIC_AUTH_TOKEN":"first","ANTHROPIC_AUTH_TOKEN":"second"}}"#,
+        r#"{"env":{"ANTHROPIC_BASE_URL":42,"ANTHROPIC_AUTH_TOKEN":"old-key"}}"#,
+        r#"{"env":{"ANTHROPIC_BASE_URL":"https://old.example","ANTHROPIC_AUTH_TOKEN":false}}"#,
+        r#"{"env":[]}"#,
+    ] {
+        let (_dir, paths, store) = setup();
+        let file = paths.settings(Client::Claude);
+        put(&file, text);
+        assert!(paths.current(Client::Claude).is_err());
+        assert!(paths.apply(&store, &provider(Client::Claude)).is_err());
+        assert_eq!(fs::read_to_string(file).unwrap(), text);
+    }
+}
+
 fn codex_config() -> &'static str {
     "# keep\r\nmodel_provider = 'active'\r\nmodel = \"my-model\"\r\nmodel_reasoning_effort = 'medium'\r\n\r\n[model_providers.stale]\r\nbase_url = 'https://stale.example'\r\n\r\n[model_providers.active]\r\nname = 'My API'\r\nbase_url = 'https://old.example/v1' # keep comment\r\nwire_api = 'responses'\r\nrequires_openai_auth = true\r\n"
 }
@@ -182,7 +220,7 @@ fn pp04_codex_null_oauth_placeholders_are_preserved_in_api_key_mode() {
 #[test]
 fn pp04_codex_unsupported_auth_or_selector_never_writes() {
     for (text, auth) in [
-        ("model='x'", "{}"),
+        ("profile='x'", "{}"),
         (
             codex_config(),
             "{\"tokens\":{\"access_token\":\"oauth\"},\"OPENAI_API_KEY\":\"key\"}",
@@ -232,14 +270,14 @@ fn pp02_pp05_gemini_preserves_settings_and_dotenv_comments() {
 }
 
 #[test]
-fn pp05_gemini_oauth_and_duplicate_env_are_refused_without_writes() {
+fn pp05_gemini_cloud_auth_and_duplicate_env_are_refused_without_writes() {
     let (_dir, paths, store) = setup();
     let file = paths.settings(Client::Gemini);
     let settings = paths.gemini.join("settings.json");
     put(&file, "GEMINI_API_KEY='old'\n");
     put(
         &settings,
-        "{\"security\":{\"auth\":{\"selectedType\":\"oauth-personal\"}}}",
+        "{\"security\":{\"auth\":{\"selectedType\":\"vertex-ai\"}}}",
     );
     assert!(paths.apply(&store, &provider(Client::Gemini)).is_err());
     assert_eq!(fs::read_to_string(&file).unwrap(), "GEMINI_API_KEY='old'\n");
@@ -426,7 +464,8 @@ fn pp06_import_explicit_fields_win_and_extras_are_not_retained() {
     assert_eq!(p.base_url, "https://explicit.example");
     assert_eq!(p.api_key, "explicit-key");
     let serialized = serde_json::to_string(&p).unwrap();
-    assert!(!serialized.contains("ignored"));
+    assert_eq!(p.models.model.as_deref(), Some("ignored"));
+    assert!(!serialized.contains("usageScript"));
     assert!(!serialized.contains("apiKeyHelper"));
 }
 

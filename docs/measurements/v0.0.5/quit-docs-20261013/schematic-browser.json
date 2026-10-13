@@ -1,0 +1,193 @@
+{
+  "headless": true,
+  "native_gui_acceptance": false,
+  "commands": [
+    {
+      "locale": "en",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "open",
+        "file:///Users/mimiko/.codex/worktrees/v005/pp-switch/docs/illustrations/v0.0.5/main-en.svg"
+      ],
+      "exit_code": 0,
+      "stdout": "\u2713 Pure Provider Switch \u00b7 v0.0.5\n  file:///Users/mimiko/.codex/worktrees/v005/pp-switch/docs/illustrations/v0.0.5/main-en.svg\n",
+      "stderr": ""
+    },
+    {
+      "locale": "en",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "get",
+        "url"
+      ],
+      "exit_code": 0,
+      "stdout": "file:///Users/mimiko/.codex/worktrees/v005/pp-switch/docs/illustrations/v0.0.5/main-en.svg\n",
+      "stderr": ""
+    },
+    {
+      "locale": "en",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "eval",
+        "--stdin"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"badges\": [\n    {\n      \"color\": \"#365dd8\",\n      \"text\": \"In use\"\n    },\n    {\n      \"color\": \"#8faaff\",\n      \"text\": \"In use\"\n    }\n  ],\n  \"outsideBounds\": 0,\n  \"texts\": 29,\n  \"title\": \"Pure Provider Switch \u00b7 v0.0.5\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "locale": "en",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "screenshot",
+        "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/quit-docs-20261013/doc-schematic-en.png"
+      ],
+      "exit_code": 0,
+      "stdout": "\u2713 Screenshot saved to /Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/quit-docs-20261013/doc-schematic-en.png\n",
+      "stderr": ""
+    },
+    {
+      "locale": "zh",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "open",
+        "file:///Users/mimiko/.codex/worktrees/v005/pp-switch/docs/illustrations/v0.0.5/main-zh.svg"
+      ],
+      "exit_code": 0,
+      "stdout": "\u2713 Pure Provider Switch \u00b7 v0.0.5\n  file:///Users/mimiko/.codex/worktrees/v005/pp-switch/docs/illustrations/v0.0.5/main-zh.svg\n",
+      "stderr": ""
+    },
+    {
+      "locale": "zh",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "get",
+        "url"
+      ],
+      "exit_code": 0,
+      "stdout": "file:///Users/mimiko/.codex/worktrees/v005/pp-switch/docs/illustrations/v0.0.5/main-zh.svg\n",
+      "stderr": ""
+    },
+    {
+      "locale": "zh",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "eval",
+        "--stdin"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"badges\": [\n    {\n      \"color\": \"#365dd8\",\n      \"text\": \"\u4f7f\u7528\u4e2d\"\n    },\n    {\n      \"color\": \"#8faaff\",\n      \"text\": \"\u4f7f\u7528\u4e2d\"\n    }\n  ],\n  \"outsideBounds\": 0,\n  \"texts\": 29,\n  \"title\": \"Pure Provider Switch \u00b7 v0.0.5\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "locale": "zh",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "screenshot",
+        "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/quit-docs-20261013/doc-schematic-zh.png"
+      ],
+      "exit_code": 0,
+      "stdout": "\u2713 Screenshot saved to /Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/quit-docs-20261013/doc-schematic-zh.png\n",
+      "stderr": ""
+    },
+    {
+      "locale": "ja",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "open",
+        "file:///Users/mimiko/.codex/worktrees/v005/pp-switch/docs/illustrations/v0.0.5/main-ja.svg"
+      ],
+      "exit_code": 0,
+      "stdout": "\u2713 Pure Provider Switch \u00b7 v0.0.5\n  file:///Users/mimiko/.codex/worktrees/v005/pp-switch/docs/illustrations/v0.0.5/main-ja.svg\n",
+      "stderr": ""
+    },
+    {
+      "locale": "ja",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "get",
+        "url"
+      ],
+      "exit_code": 0,
+      "stdout": "file:///Users/mimiko/.codex/worktrees/v005/pp-switch/docs/illustrations/v0.0.5/main-ja.svg\n",
+      "stderr": ""
+    },
+    {
+      "locale": "ja",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "eval",
+        "--stdin"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"badges\": [\n    {\n      \"color\": \"#365dd8\",\n      \"text\": \"\u4f7f\u7528\u4e2d\"\n    },\n    {\n      \"color\": \"#8faaff\",\n      \"text\": \"\u4f7f\u7528\u4e2d\"\n    }\n  ],\n  \"outsideBounds\": 0,\n  \"texts\": 29,\n  \"title\": \"Pure Provider Switch \u00b7 v0.0.5\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "locale": "ja",
+      "command": [
+        "rtk",
+        "proxy",
+        "agent-browser",
+        "--session",
+        "pps-docs-quit-20261013",
+        "screenshot",
+        "/Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/quit-docs-20261013/doc-schematic-ja.png"
+      ],
+      "exit_code": 0,
+      "stdout": "\u2713 Screenshot saved to /Users/mimiko/.codex/worktrees/v005/pp-switch/docs/measurements/v0.0.5/quit-docs-20261013/doc-schematic-ja.png\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "close"
+      ],
+      "exit_code": 0,
+      "stdout": "\u2713 Browser closed\n"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+    Blocking waiting for file lock on package cache
+   Compiling pp-switch v0.0.5 (/Users/mimiko/.codex/worktrees/v005/pp-switch)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.60s
+     Running tests/official.rs (target/debug/deps/official-7289bd02803f6a3c)
+
+running 15 tests
+test pp19_json_deletion_preserves_unicode_escaped_names_commas_and_other_bytes ... ok
+test pp19_gemini_and_codex_symlink_failures_leave_all_real_files_intact ... ok
+test pp19_codex_official_removes_only_api_auth_preserves_native_tokens ... ok
+test pp19_dsh_inherited_account_endpoint_is_cleared_without_dropping_catalog ... ok
+test pp19_claude_roundtrip_cleans_models_preserves_login_hooks_proxy_and_context ... ok
+test pp19_codex_native_bearer_roundtrip_never_loses_oauth_or_other_tables ... ok
+test pp19_grok_roundtrip_preserves_login_inactive_profiles_and_advanced_settings ... ok
+test pp19_native_status_refuses_missing_grok_profile_and_bad_codex_auth ... ok
+test pp19_dsh_can_return_from_account_without_an_api_key_or_credential_file ... ok
+test pp19_reserved_route_collision_and_active_codex_profile_never_write ... ok
+test pp19_gemini_roundtrip_changes_mode_preserves_oauth_and_unrelated_bytes ... ok
+test pp19_dsh_account_api_roundtrip_keeps_account_records_and_profile_bytes ... ok
+test pp19_malformed_modes_and_fields_refuse_official_without_writes ... ok
+test pp19_missing_native_setup_for_first_four_is_initialized_minimally ... ok
+test pp19_toml_roundtrips_preserve_crlf_and_unrelated_bytes ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.77s
+

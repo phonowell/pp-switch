@@ -1,0 +1,18 @@
+    Blocking waiting for file lock on package cache
+    Blocking waiting for file lock on build directory
+    Checking fltk-sys v1.5.23
+    Checking fltk v1.5.23
+    Checking pp-switch v0.0.5 (/Users/mimiko/.codex/worktrees/v005/pp-switch)
+error: deref which would be done by auto-deref
+   --> src/ui.rs:145:83
+    |
+145 |                 frame.set_label(tr(language, if claude { "Default model" } else { *key }));
+    |                                                                                   ^^^^ help: try: `key`
+    |
+    = help: for further information visit https://rust-lang.github.io/rust-clippy/rust-1.99.0/index.html#explicit_auto_deref
+    = note: `-D clippy::explicit-auto-deref` implied by `-D warnings`
+    = help: to override `-D warnings` add `#[allow(clippy::explicit_auto_deref)]`
+
+error: could not compile `pp-switch` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: could not compile `pp-switch` (lib test) due to 1 previous error

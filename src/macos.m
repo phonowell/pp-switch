@@ -2,6 +2,7 @@
 #import <Cocoa/Cocoa.h>
 #import <CoreServices/CoreServices.h>
 #import <QuartzCore/QuartzCore.h>
+#import <objc/runtime.h>
 
 int pp_dark_appearance(void) {
     NSAppearance *appearance = [[NSApplication sharedApplication] effectiveAppearance];
@@ -63,6 +64,42 @@ void pp_listen_urls(void (*callback)(const char *)) {
     [[NSAppleEventManager sharedAppleEventManager] setEventHandler:receiver
         andSelector:@selector(openURL:reply:) forEventClass:kInternetEventClass
         andEventID:kAEGetURL];
+}
+
+// Application-menu Quit reaches this delegate. Register Dock Quit explicitly:
+// appearance/URL setup can create NSApp before FLTK opens its display, so FLTK
+// skips finishLaunching and Cocoa's default quit AppleEvent handler is absent.
+// PPS has no resident mode or deferred configuration writes. Accept Cocoa's
+// termination request instead of relying on FLTK to unwind a native wait after
+// NSTerminateCancel (adding an FLTK timeout cannot wake an existing Cocoa wait).
+static void (*request_quit)(void);
+static NSApplicationTerminateReply pp_should_terminate(id delegate, SEL selector,
+    NSApplication *sender) {
+    (void)delegate; (void)selector; (void)sender;
+    if (request_quit) request_quit();
+    return NSTerminateNow;
+}
+
+@interface PPQuitReceiver : NSObject
+- (void)quit:(NSAppleEventDescriptor *)event reply:(NSAppleEventDescriptor *)reply;
+@end
+@implementation PPQuitReceiver
+- (void)quit:(NSAppleEventDescriptor *)event reply:(NSAppleEventDescriptor *)reply {
+    (void)event; (void)reply;
+    [NSApp terminate:nil];
+}
+@end
+
+void pp_listen_quit(void (*callback)(void)) {
+    request_quit = callback;
+    Class delegate = NSClassFromString(@"FLAppDelegate");
+    Method terminate = class_getInstanceMethod(delegate, @selector(applicationShouldTerminate:));
+    if (terminate) method_setImplementation(terminate, (IMP)pp_should_terminate);
+    static PPQuitReceiver *receiver;
+    if (!receiver) receiver = [PPQuitReceiver new];
+    [[NSAppleEventManager sharedAppleEventManager] setEventHandler:receiver
+        andSelector:@selector(quit:reply:) forEventClass:kCoreEventClass
+        andEventID:kAEQuitApplication];
 }
 
 // Test the installed handler, not just a stale bundle identifier left in LS.
