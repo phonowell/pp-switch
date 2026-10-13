@@ -1,0 +1,10 @@
+{
+  "run": "https://github.com/phonowell/pp-switch/actions/runs/38391365065",
+  "tag": "v0.0.5",
+  "tag_sha": "80c460c0c543da703e77225b8f66a5b220b9ad2d",
+  "failed_job": "check (macos-15, aarch64-apple-darwin)",
+  "failed_step": "Release automation tests",
+  "error": "FileNotFoundError: No such file or directory: rtk",
+  "fix": "Test subprocess invokes Cargo directly; RTK is a local agent wrapper, not a CI/runtime dependency.",
+  "history": "v0.0.5 tag remains immutable and unpublished; next preview version is v0.0.6."
+}

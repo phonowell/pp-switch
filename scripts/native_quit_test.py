@@ -117,7 +117,7 @@ class RealFltkQuit(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cargo = str(Path.home() / ".cargo/bin/cargo")
-        subprocess.run(["rtk", "proxy", cargo, "build", "--locked", "--example", "mac_quit_background"],
+        subprocess.run([cargo, "build", "--locked", "--example", "mac_quit_background"],
                        cwd=ROOT, check=True, capture_output=True, text=True, timeout=120)
         target = Path(os.environ.get("CARGO_TARGET_DIR", ROOT / "target"))
         cls.binary = target / "debug/examples/mac_quit_background"

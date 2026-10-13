@@ -3,7 +3,10 @@
 Branch `codex/v0.0.5`, based on merged v0.0.4 (`58a299c`); not released.
 [Spec](../SPEC.md) owns behavior, [UI rules](../design/UI.md) presentation,
 [guides](user-guide.md) usage. This page records current evidence and open work.
-The v0.0.5 preview is prepared for tag-driven native CI. Publication requires all
+The v0.0.5 tag failed at a CI test bootstrap; it remains unpublished and immutable.
+The corrected candidate uses v0.0.6 without changing the product feature scope.
+[Failure record](measurements/v0.0.5/release-preparation-20261013/ci-rtk-failure.json).
+Publication requires all
 four targets and uploaded checksum verification; existing v0.0.4 remains the
 download until that completes. [Release preparation](measurements/v0.0.5/release-preparation-20261013/code-checks.json)
 adds native acceptance assertions for visible Claude defaults and clearing before

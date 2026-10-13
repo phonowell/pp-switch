@@ -10,7 +10,11 @@ certify later Grok/DSH, model, Official, compact-tab or blue-status changes.
 
 The `v0.0.5` preview tag points to `80c460c0c543da703e77225b8f66a5b220b9ad2d`.
 [Tag-driven native CI](https://github.com/phonowell/pp-switch/actions/runs/38391365065)
-is in progress; publication and public package verification are not yet complete.
+failed at the macOS test bootstrap because it depended on the local-only `rtk`
+wrapper. [Failure and correction](measurements/v0.0.5/release-preparation-20261013/ci-rtk-failure.json).
+That tag remains immutable and unpublished. The next preview is v0.0.6, retaining
+the v0.0.5 product changes and correcting the portable test bootstrap. Native CI
+and public package verification must complete before publication.
 
 The [current installed candidate](measurements/v0.0.5/model-default-20261013/report.json)
 has 2,788,557 owned bytes (2.66 MiB), 82 Rust tests and 18 Python tests.
