@@ -6,7 +6,7 @@
 
 **Pure Provider Switch. Deine Konfiguration bleibt deine.**
 
-Kleiner nativer Anbieterwechsler. Fünf Harnesses in der Entwicklungsversion 0.0.5.
+Kleiner nativer Anbieterwechsler. Fünf Harnesses in der Vorschau 0.0.6.
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
@@ -31,22 +31,20 @@ Ein natives Fenster mit Lucide Bearbeiten/Wechseln je Zeile, ohne Tray oder Daue
 Updates nur nach manueller Prüfung und Bestätigung. Rust + FLTK, Systemschriften und
 Vektorpfade; kein gebündeltes WebView, keine Datenbank oder JavaScript-Laufzeit.
 
-Entwicklung: Claude Code, Codex CLI/App, Gemini CLI, Grok Build und DSH CLI/Web.
-**Die veröffentlichte Version 0.0.4 unterstützt die ersten drei; 0.0.5 ist unveröffentlicht.**
+Vorschau 0.0.6: Claude Code, Codex CLI/App, Gemini CLI, Grok Build und DSH CLI/Web.
+Die ältere Version 0.0.4 unterstützt die ersten drei.
 [Umfang und cc-switch-Quellen](docs/verification.md#community-sources).
 
 ## Download
 
-**0.0.4 wurde am 2026-10-12 abgenommen und veröffentlicht.** Chinesische Funktionstests und alle Sprachstile sind geprüft; [Nachweise](docs/smoke.md).
-
-**[v0.0.4 Funktionsvorschau](https://github.com/phonowell/pp-switch/releases/tag/v0.0.4)**. macOS überschreitet das Speicherbudget; [Messwerte](docs/verification.md) sind öffentlich.
+**[Vorschau v0.0.6](https://github.com/phonowell/pp-switch/releases/tag/v0.0.6) ist veröffentlicht.** Vier native CI-Ziele bestanden, einschließlich chinesischer macOS-Eingabe und Hell-/Dunkel-Pixelprüfungen in vier Sprachen. [Prüfungen und Grenzen](docs/smoke.md). macOS-Speicher bleibt über Budget; echter Kaltstart ist ungeprüft.
 
 | Plattform | Paket | Start |
 | --- | --- | --- |
-| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-aarch64-apple-darwin.zip) | Entpacken, `.app` nach Applications verschieben |
-| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-apple-darwin.zip) | Ebenso |
-| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-pc-windows-msvc.zip) | Entpacken, `pp-switch.exe` starten |
-| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-unknown-linux-gnu.tar.gz) | Entpacken, `pp-switch` auf einem Desktop starten |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.6/pp-switch-v0.0.6-aarch64-apple-darwin.zip) | Entpacken, `.app` nach Applications verschieben |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.6/pp-switch-v0.0.6-x86_64-apple-darwin.zip) | Ebenso |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.6/pp-switch-v0.0.6-x86_64-pc-windows-msvc.zip) | Entpacken, `pp-switch.exe` starten |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.6/pp-switch-v0.0.6-x86_64-unknown-linux-gnu.tar.gz) | Entpacken, `pp-switch` auf einem Desktop starten |
 
 Rust oder Node.js werden zum Ausführen nicht benötigt. macOS-Pakete deklarieren macOS 11+, sind aber **nicht mit Apple Developer signiert oder notarisiert**. Windows benötigt Windows 10+. Linux benötigt X11/XWayland, X11-/fontconfig-Bibliotheken und Systemschriften für die gewählte Sprache. Mindestversionen bedeuten nicht, dass jede OS-Version getestet wurde; siehe [Testumgebungen](docs/verification.md).
 
@@ -61,7 +59,7 @@ Benutzerdateien, keine laufende Sitzung oder erfolgreiche Anfrage. Namen sind pr
 Client eindeutig; Importkollisionen erhalten ` (2)`, ` (3)`. Gleiche Verbindungen
 können verschiedene Namen haben.
 
-In 0.0.5 hat jeder Harness eine **Official**-Zeile für begrenzte native Wiederherstellung.
+In 0.0.6 hat jeder Harness eine **Official**-Zeile für begrenzte native Wiederherstellung.
 Codex CLI/App teilen ihre Konfiguration; DSH CLI/Web teilen initialisierte Home-Profile.
 CCS/Sub2API-Links öffnen ungespeicherte Vorschauen; explizite Modelle haben Vorrang vor Editorvorschlägen. Prüfen Sie, ob Ihr Anbieter das vorgeschlagene Modell unterstützt.
 Externe Key-Helper, Cloud-Modi und nicht unterstützte Schlüsselquellen werden abgelehnt.
@@ -75,16 +73,16 @@ Anbieteranfragen. Updates prüfen SHA-256 dieses Repositorys und ersetzen nur Ap
 
 ## Leistung mit Belegen
 
-**Native CI-Messungen für 0.0.4:**
+**Native CI-Messungen für 0.0.6:**
 
 | Native CI | Installiert MiB | Leerlauf-RSS MiB | Skriptbudget |
 | --- | ---: | ---: | --- |
-| macOS 15 · ARM64 | 2.43 | 48.44 | Nicht bestanden |
-| macOS 15 · Intel | 2.67 | 31.97 | Nicht bestanden |
-| Windows Server 2022 · x64 | 2.78 | 15.08 | Bestanden |
-| Ubuntu 22.04 · x64 · Xvfb | 3.01 | 16.96 | Nicht bestanden |
+| macOS 15 · ARM64 | 2.66 | 48.55 | Nicht bestanden |
+| macOS 15 · Intel | 2.95 | 32.41 | Nicht bestanden |
+| Windows Server 2022 · x64 | 3.12 | 15.21 | Nicht bestanden |
+| Ubuntu 22.04 · x64 · Xvfb | 3.40 | 21.20 | Nicht bestanden |
 
-Windows besteht beide Szenarien; macOS überschreitet das Speicherbudget. Linux besteht das leere Fenster, überschreitet aber das Leerlaufbudget im Editor. Echter Kaltstart und Updatespitzen sind ungeprüft. [SPEC PP-11](SPEC.md#acceptance-contract) · [Raw data](docs/verification.md#release-004).
+Alle Pakete sind kleiner als 5 MiB. macOS-RSS überschreitet das Speicherbudget; echter Kaltstart und Updatespitzen sind ungeprüft. Keine allgemeine Speicher- oder Startzeitverbesserung wird behauptet. [SPEC PP-11](SPEC.md#acceptance-contract) · [Messdaten](docs/verification.md#release-006).
 
 ## Mitwirken
 

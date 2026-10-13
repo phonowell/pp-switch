@@ -1,0 +1,5 @@
+d0909b879d922ec36f6ab163a05f0ba4c370e8bb76e899b7573bc426b9eac3df  pp-switch-v0.0.6-aarch64-apple-darwin.zip
+24c54a69de67a05cf8815b4e0da6dd62facb89f08f354bdf7219a2699ef08fd9  pp-switch-v0.0.6-x86_64-apple-darwin.zip
+d385d37300013a861e98d56a5bdfe29d3198df1dfaccf127f05179ee73c9a1cc  pp-switch-v0.0.6-x86_64-pc-windows-msvc.zip
+e91b39e5639a45b68435ffe1366059d67df91e73c5d7873d63641fd8a3b43d2c  pp-switch-v0.0.6-x86_64-unknown-linux-gnu.tar.gz
+e3d2117f12cb5bfd58b1106664e0f8c7a0f02d007bcb35070f37f6484c1c736c  verification.json

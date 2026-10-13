@@ -1,0 +1,26 @@
+[
+  {
+    "captured": true,
+    "error": null,
+    "language": "en",
+    "scope": "visual capture only"
+  },
+  {
+    "captured": true,
+    "error": null,
+    "language": "zh",
+    "scope": "visual capture only"
+  },
+  {
+    "captured": true,
+    "error": null,
+    "language": "zh-TW",
+    "scope": "visual capture only"
+  },
+  {
+    "captured": true,
+    "error": null,
+    "language": "ja",
+    "scope": "visual capture only"
+  }
+]

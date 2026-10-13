@@ -1,0 +1,32 @@
+{
+  "version": "0.0.6",
+  "tag": "v0.0.6",
+  "tag_object": "6271743a5919ac2bd6961c300e964af43bcfb0b9",
+  "implementation": "74ee93fedb2fc2c8deed846cb15d7310190a5a16",
+  "ci_run": "https://github.com/phonowell/pp-switch/actions/runs/38393449261",
+  "release_flow": "Reuse four successful workflow_dispatch native jobs at the exact immutable tag implementation SHA, then scripts/release.py assembly and verified draft publication. Tag ref created via GitHub API; no duplicate tag workflow or concurrent publisher.",
+  "artifacts": [
+    {
+      "target": "aarch64-apple-darwin",
+      "id": 11810963272,
+      "attempt": 1
+    },
+    {
+      "target": "x86_64-apple-darwin",
+      "id": 11812546869,
+      "attempt": 2
+    },
+    {
+      "target": "x86_64-pc-windows-msvc",
+      "id": 11811048258,
+      "attempt": 1
+    },
+    {
+      "target": "x86_64-unknown-linux-gnu",
+      "id": 11810967681,
+      "attempt": 1
+    }
+  ],
+  "failed_intel_artifact_excluded": 11811450509,
+  "budget_thresholds_unchanged": true
+}

@@ -1,0 +1,28 @@
+{
+  "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "scenario": "import",
+  "binary": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+  "command": [
+    "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+    "--scenario=import",
+    "--allow-desktop-input"
+  ],
+  "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+  "native_action_readiness": true,
+  "cold_start_verified": false,
+  "samples": [
+    {
+      "startup_ms": 298.56,
+      "idle_rss_bytes": 70320128,
+      "peak_rss_bytes": 70500352
+    }
+  ],
+  "startup_median_ms": 298.56,
+  "startup_max_ms": 298.56,
+  "idle_max_bytes": 70320128,
+  "peak_max_bytes": 70500352,
+  "measured_threshold_pass": false,
+  "budget_pass": false
+}
+

@@ -261,5 +261,13 @@ failed budgets, unsigned packages and migration limits in the release notes.
 Exercise public download/checksum/staging in a disposable fixture, and record
 network failures separately from authenticated metadata checks.
 
+A successful `workflow_dispatch` run at the exact implementation SHA can also
+supply those four native packages and checks. Reuse unchanged passing jobs;
+retain failed attempts and rerun only the affected jobs. Confirm the complete
+run succeeded before creating an immutable matching tag at that SHA. Assemble
+with `RELEASE_TAG`, `RELEASE_COMMIT` and `RELEASE_RUN_URL` set to that tag, SHA and
+successful run, then use the same draft/digest/publish flow. Record this reuse in
+the evidence. Do not race manual publication with an active tag release job.
+
 Only commit task-owned files. Preserve others' edits; do not rewrite history,
 force-push or discard work. Keep secrets out of diagnostics and screenshots.

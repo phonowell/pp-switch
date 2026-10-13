@@ -1,19 +1,21 @@
 # v0.0.5 development checkpoint
 
-Branch `codex/v0.0.5`, based on merged v0.0.4 (`58a299c`); not released.
+Development originated on `codex/v0.0.5`, based on merged v0.0.4 (`58a299c`).
+The v0.0.5 tag was not released; these product changes ship in v0.0.6.
+[Current published evidence](verification.md#release-006) supersedes this local checkpoint
+for release acceptance. The records below describe their original binaries.
 [Spec](../SPEC.md) owns behavior, [UI rules](../design/UI.md) presentation,
-[guides](user-guide.md) usage. This page records current evidence and open work.
+[guides](user-guide.md) usage. This page records historical evidence and open work.
 The v0.0.5 tag failed at a CI test bootstrap; it remains unpublished and immutable.
-The corrected candidate uses v0.0.6 without changing the product feature scope.
+The corrected v0.0.6 preview is published without changing the product feature scope.
 [Failure record](measurements/v0.0.5/release-preparation-20261013/ci-rtk-failure.json).
-Publication requires all
-four targets and uploaded checksum verification; existing v0.0.4 remains the
-download until that completes. [Release preparation](measurements/v0.0.5/release-preparation-20261013/code-checks.json)
+Publication passed all four native targets and uploaded checksum verification;
+the current download is v0.0.6. [Release preparation](measurements/v0.0.5/release-preparation-20261013/code-checks.json)
 adds native acceptance assertions for visible Claude defaults and clearing before
 direct Switch. Earlier acceptance logic still expected the removed compulsory
 model dialog; that fixture and the packaged README were corrected before tagging.
 
-## Current behavior
+## Behavior at the checkpoint
 
 - Five harnesses: Claude, shared Codex CLI/App, Gemini, Grok and shared DSH CLI/Web.
 - Per-row Edit/Switch, fixed Official first row, no independent row selection.
@@ -28,27 +30,27 @@ The badge checks supported user files, not a live session or request. Save store
 only. Official restores native routing while retaining credentials and unrelated
 settings; it does not log in. Full behavior belongs in the spec, not this checklist.
 
-## Current verification
+## Verification at the checkpoint
 
 [Default-model correction checks](measurements/v0.0.5/model-default-20261013/code-checks.json)
 record format, all-target Clippy, 82 Rust tests, 18 Python tests and a release build.
 The release background regression checks actual Claude Add/Edit/import field values,
 explicit and same-connection priorities, Cancel/Save isolation, clearing the model
 and direct model-less Switch. Other clients' new fields stay blank.
-[Current candidate and installation](measurements/v0.0.5/model-default-20261013/report.json)
+[Checkpoint candidate and installation](measurements/v0.0.5/model-default-20261013/report.json)
 record exact package validation and 2,788,557 owned bytes. The exited application
 was replaced with a private backup, without launching or writing client files.
 [Reference evidence](measurements/v0.0.5/model-default-20261013/research.json)
 records that cc-switch permits Claude imports without a model, while Sub2API
 omits it. PPS's previous compulsory completion was removed; the visible editor
 fallback is an editable suggestion, not universal endpoint compatibility.
-Native pointer and pixel acceptance remain pending.
+Native pointer and pixel acceptance were pending for this checkpoint binary.
 
 [Previous model-prefill code checks](measurements/v0.0.5/model-prefill-20261013/code-checks.json)
 retain commands, logs and exit codes. The isolated background callback regression
 covers Claude Edit/Switch/import/Save/Cancel and unchanged client fixture files;
 backend fixtures cover all five clients, connection mismatches and explicit values.
-Native pointer and pixel acceptance remain pending.
+Native pointer and pixel acceptance were pending for this checkpoint binary.
 [Previous candidate and installation](measurements/v0.0.5/model-prefill-20261013/report.json)
 record 82 Rust tests, 18 Python tests on recheck and release callback acceptance.
 The initial Python run retains a foreground-process equality assertion failure;
@@ -79,7 +81,7 @@ a compatible model through the existing proxy in isolated native Claude; the
 user-authorized deployment preserved unrelated configuration. No further live
 requests are needed for this correction.
 
-## Shared workstation and remaining work
+## Workstation constraints and remaining work at the checkpoint
 
 Preserve foreground focus, pointer, keyboard and running app drafts. Local smoke
 defaults to background checks. Native GUI/input, URL open/restart and window

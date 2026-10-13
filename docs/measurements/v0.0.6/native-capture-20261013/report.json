@@ -1,0 +1,13 @@
+{
+  "commit": "74ee93fedb2fc2c8deed846cb15d7310190a5a16",
+  "ci_run": "https://github.com/phonowell/pp-switch/actions/runs/38393449261",
+  "failed_attempt": 1,
+  "job": 115282656207,
+  "failure": "Intel native validation-dialog pixel capture returned no image after the preceding input checks passed.",
+  "previous_evidence": "The Intel native input gate passed on run 38391812689 with identical production source; only the separate pixel detector changed afterward.",
+  "action": "Rerun only the failed native Intel job at the same commit. All other target checks retained. No assertion removed or production source changed.",
+  "recheck": "passed",
+  "successful_attempt": 2,
+  "successful_job": 115288742949,
+  "successful_artifact": 11812546869
+}

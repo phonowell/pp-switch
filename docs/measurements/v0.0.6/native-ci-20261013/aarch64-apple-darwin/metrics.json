@@ -1,0 +1,36 @@
+{
+  "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "scenario": "empty-window",
+  "binary": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/measure_ui",
+  "command": [
+    "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/measure_ui",
+    "--allow-desktop-input"
+  ],
+  "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+  "native_action_readiness": false,
+  "cold_start_verified": false,
+  "samples": [
+    {
+      "startup_ms": 180.01,
+      "idle_rss_bytes": 50905088,
+      "peak_rss_bytes": 50954240
+    },
+    {
+      "startup_ms": 94.08,
+      "idle_rss_bytes": 50446336,
+      "peak_rss_bytes": 50462720
+    },
+    {
+      "startup_ms": 105.51,
+      "idle_rss_bytes": 50610176,
+      "peak_rss_bytes": 50626560
+    }
+  ],
+  "startup_median_ms": 105.51,
+  "startup_max_ms": 180.01,
+  "idle_max_bytes": 50905088,
+  "peak_max_bytes": 50954240,
+  "measured_threshold_pass": false,
+  "budget_pass": false
+}

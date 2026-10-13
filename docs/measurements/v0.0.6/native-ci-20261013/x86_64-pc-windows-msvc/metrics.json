@@ -1,0 +1,36 @@
+{
+  "os": "Windows-2022Server-10.0.20348-SP0",
+  "machine": "AMD64",
+  "scenario": "empty-window",
+  "binary": "D:\\a\\pp-switch\\pp-switch\\target\\x86_64-pc-windows-msvc\\release\\examples\\measure_ui.exe",
+  "command": [
+    "D:\\a\\pp-switch\\pp-switch\\target\\x86_64-pc-windows-msvc\\release\\examples\\measure_ui.exe",
+    "--allow-desktop-input"
+  ],
+  "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+  "native_action_readiness": false,
+  "cold_start_verified": false,
+  "samples": [
+    {
+      "startup_ms": 44.09,
+      "idle_rss_bytes": 15949824,
+      "peak_rss_bytes": 16359424
+    },
+    {
+      "startup_ms": 38.56,
+      "idle_rss_bytes": 15298560,
+      "peak_rss_bytes": 15691776
+    },
+    {
+      "startup_ms": 40.04,
+      "idle_rss_bytes": 15306752,
+      "peak_rss_bytes": 15704064
+    }
+  ],
+  "startup_median_ms": 40.04,
+  "startup_max_ms": 44.09,
+  "idle_max_bytes": 15949824,
+  "peak_max_bytes": 16359424,
+  "measured_threshold_pass": true,
+  "budget_pass": false
+}

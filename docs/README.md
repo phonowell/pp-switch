@@ -1,6 +1,6 @@
 # Documentation index
 
-Current source: v0.0.5 development. Published download: v0.0.4.
+Current source and published preview: v0.0.6. The v0.0.5 tag remains unpublished.
 Use each document for its assigned purpose; keep versioned evidence separate.
 
 | Need | Document |
@@ -10,7 +10,7 @@ Use each document for its assigned purpose; keep versioned evidence separate.
 | Behavior/write boundaries | [Canonical spec](../SPEC.md) |
 | UI geometry/colors | [UI rules](../design/UI.md) |
 | Build/validate/package | [Contributing](../CONTRIBUTING.md) |
-| Candidate/open work | [v0.0.5 checkpoint](development-0.0.5.md) |
+| Historical development | [v0.0.5 checkpoint](development-0.0.5.md) |
 | Acceptance/measurements | [Smoke matrix](smoke.md) · [Evidence](verification.md) |
 | Pictures/provenance | [Image inventory](images.md) |
 | Superseded narratives | [History](history/README.md) |

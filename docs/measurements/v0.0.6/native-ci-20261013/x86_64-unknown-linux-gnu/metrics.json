@@ -1,0 +1,36 @@
+{
+  "os": "Linux-6.8.0-1064-azure-x86_64-with-glibc2.35",
+  "machine": "x86_64",
+  "scenario": "empty-window",
+  "binary": "/home/runner/work/pp-switch/pp-switch/target/x86_64-unknown-linux-gnu/release/examples/measure_ui",
+  "command": [
+    "/home/runner/work/pp-switch/pp-switch/target/x86_64-unknown-linux-gnu/release/examples/measure_ui",
+    "--allow-desktop-input"
+  ],
+  "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+  "native_action_readiness": false,
+  "cold_start_verified": false,
+  "samples": [
+    {
+      "startup_ms": 16.68,
+      "idle_rss_bytes": 22224896,
+      "peak_rss_bytes": 22413312
+    },
+    {
+      "startup_ms": 16.93,
+      "idle_rss_bytes": 22171648,
+      "peak_rss_bytes": 22171648
+    },
+    {
+      "startup_ms": 19.28,
+      "idle_rss_bytes": 22126592,
+      "peak_rss_bytes": 22126592
+    }
+  ],
+  "startup_median_ms": 16.93,
+  "startup_max_ms": 19.28,
+  "idle_max_bytes": 22224896,
+  "peak_max_bytes": 22413312,
+  "measured_threshold_pass": false,
+  "budget_pass": false
+}

@@ -1,0 +1,27 @@
+{
+  "os": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+  "machine": "x86_64",
+  "scenario": "empty-window",
+  "binary": "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+  "command": [
+    "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+    "--allow-desktop-input"
+  ],
+  "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+  "native_action_readiness": true,
+  "cold_start_verified": false,
+  "samples": [
+    {
+      "startup_ms": 180.98,
+      "idle_rss_bytes": 33497088,
+      "peak_rss_bytes": 33513472
+    }
+  ],
+  "startup_median_ms": 180.98,
+  "startup_max_ms": 180.98,
+  "idle_max_bytes": 33497088,
+  "peak_max_bytes": 33513472,
+  "measured_threshold_pass": false,
+  "budget_pass": false
+}
+

@@ -1,0 +1,631 @@
+{
+  "issue": "https://github.com/phonowell/pp-switch/issues/1",
+  "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+  "machine": "arm64",
+  "hardware": "VirtualMac2,1\n7516192768\nApple M1 (Virtual)",
+  "boot_session": "{ sec = 1791892151, usec = 0 } Tue Oct 13 11:49:11 2026",
+  "binaries": {
+    "cocoa": {
+      "path": "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+      "sha256": "bfea18775cdc8fa2d50888ecfe0bfea42ac1788bff9e02bb1a6d0c1bdffdabf8"
+    },
+    "empty": {
+      "path": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+      "sha256": "710d8631fe3b35ab29dbfec9ebbc97dfefc1c620481770f90840078492a6f1b8"
+    },
+    "editor": {
+      "path": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+      "sha256": "710d8631fe3b35ab29dbfec9ebbc97dfefc1c620481770f90840078492a6f1b8"
+    },
+    "import": {
+      "path": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+      "sha256": "710d8631fe3b35ab29dbfec9ebbc97dfefc1c620481770f90840078492a6f1b8"
+    }
+  },
+  "commands": [
+    {
+      "command": [
+        "clang",
+        "-Oz",
+        "-fobjc-arc",
+        "/Users/runner/work/pp-switch/pp-switch/examples/measure_cocoa.m",
+        "-framework",
+        "Cocoa",
+        "-o",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa"
+      ],
+      "exit_code": 0,
+      "log": "build-cocoa.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/cocoa-0.json",
+        "--allow-desktop-input"
+      ],
+      "exit_code": 0,
+      "log": "cocoa-0.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/empty-0.json",
+        "--allow-desktop-input",
+        "--scenario",
+        "empty"
+      ],
+      "exit_code": 0,
+      "log": "empty-0.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/editor-0.json",
+        "--allow-desktop-input",
+        "--scenario",
+        "editor"
+      ],
+      "exit_code": 0,
+      "log": "editor-0.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/import-0.json",
+        "--allow-desktop-input",
+        "--scenario",
+        "import"
+      ],
+      "exit_code": 0,
+      "log": "import-0.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/import-1.json",
+        "--allow-desktop-input",
+        "--scenario",
+        "import"
+      ],
+      "exit_code": 0,
+      "log": "import-1.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/editor-1.json",
+        "--allow-desktop-input",
+        "--scenario",
+        "editor"
+      ],
+      "exit_code": 0,
+      "log": "editor-1.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/empty-1.json",
+        "--allow-desktop-input",
+        "--scenario",
+        "empty"
+      ],
+      "exit_code": 0,
+      "log": "empty-1.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/cocoa-1.json",
+        "--allow-desktop-input"
+      ],
+      "exit_code": 0,
+      "log": "cocoa-1.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/cocoa-2.json",
+        "--allow-desktop-input"
+      ],
+      "exit_code": 0,
+      "log": "cocoa-2.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/empty-2.json",
+        "--allow-desktop-input",
+        "--scenario",
+        "empty"
+      ],
+      "exit_code": 0,
+      "log": "empty-2.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/editor-2.json",
+        "--allow-desktop-input",
+        "--scenario",
+        "editor"
+      ],
+      "exit_code": 0,
+      "log": "editor-2.log"
+    },
+    {
+      "command": [
+        "/Library/Frameworks/Python.framework/Versions/3.14/bin/python",
+        "/Users/runner/work/pp-switch/pp-switch/scripts/measure.py",
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--native-ready",
+        "--runs",
+        "1",
+        "--output",
+        "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/import-2.json",
+        "--allow-desktop-input",
+        "--scenario",
+        "import"
+      ],
+      "exit_code": 0,
+      "log": "import-2.log"
+    },
+    {
+      "command": [
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--scenario=quit-main",
+        "--allow-desktop-input"
+      ],
+      "exit_code": 0,
+      "log": "quit-main.log"
+    },
+    {
+      "command": [
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--scenario=quit-settings",
+        "--allow-desktop-input"
+      ],
+      "exit_code": 0,
+      "log": "quit-settings.log"
+    },
+    {
+      "command": [
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--scenario=quit-editor",
+        "--allow-desktop-input"
+      ],
+      "exit_code": 0,
+      "log": "quit-editor.log"
+    },
+    {
+      "command": [
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--scenario=quit-dock-main",
+        "--allow-desktop-input"
+      ],
+      "exit_code": 0,
+      "log": "quit-dock-main.log"
+    },
+    {
+      "command": [
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--scenario=quit-dock-settings",
+        "--allow-desktop-input"
+      ],
+      "exit_code": 0,
+      "log": "quit-dock-settings.log"
+    },
+    {
+      "command": [
+        "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "--scenario=quit-dock-editor",
+        "--allow-desktop-input"
+      ],
+      "exit_code": 0,
+      "log": "quit-dock-editor.log"
+    }
+  ],
+  "measurements": {
+    "cocoa": [
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "empty-window",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 244.29,
+            "idle_rss_bytes": 56262656,
+            "peak_rss_bytes": 56295424
+          }
+        ],
+        "startup_median_ms": 244.29,
+        "startup_max_ms": 244.29,
+        "idle_max_bytes": 56262656,
+        "peak_max_bytes": 56295424,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      },
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "empty-window",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 221.5,
+            "idle_rss_bytes": 55918592,
+            "peak_rss_bytes": 55951360
+          }
+        ],
+        "startup_median_ms": 221.5,
+        "startup_max_ms": 221.5,
+        "idle_max_bytes": 55918592,
+        "peak_max_bytes": 55951360,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      },
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "empty-window",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/mac-performance/measure_cocoa",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 146.87,
+            "idle_rss_bytes": 55984128,
+            "peak_rss_bytes": 56016896
+          }
+        ],
+        "startup_median_ms": 146.87,
+        "startup_max_ms": 146.87,
+        "idle_max_bytes": 55984128,
+        "peak_max_bytes": 56016896,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      }
+    ],
+    "empty": [
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "empty",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+          "--scenario=empty",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 235.58,
+            "idle_rss_bytes": 59817984,
+            "peak_rss_bytes": 60342272
+          }
+        ],
+        "startup_median_ms": 235.58,
+        "startup_max_ms": 235.58,
+        "idle_max_bytes": 59817984,
+        "peak_max_bytes": 60342272,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      },
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "empty",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+          "--scenario=empty",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 237.86,
+            "idle_rss_bytes": 59539456,
+            "peak_rss_bytes": 60063744
+          }
+        ],
+        "startup_median_ms": 237.86,
+        "startup_max_ms": 237.86,
+        "idle_max_bytes": 59539456,
+        "peak_max_bytes": 60063744,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      },
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "empty",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+          "--scenario=empty",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 240.3,
+            "idle_rss_bytes": 59588608,
+            "peak_rss_bytes": 59932672
+          }
+        ],
+        "startup_median_ms": 240.3,
+        "startup_max_ms": 240.3,
+        "idle_max_bytes": 59588608,
+        "peak_max_bytes": 59932672,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      }
+    ],
+    "editor": [
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "editor",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+          "--scenario=editor",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 221.81,
+            "idle_rss_bytes": 66404352,
+            "peak_rss_bytes": 66519040
+          }
+        ],
+        "startup_median_ms": 221.81,
+        "startup_max_ms": 221.81,
+        "idle_max_bytes": 66404352,
+        "peak_max_bytes": 66519040,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      },
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "editor",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+          "--scenario=editor",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 208.02,
+            "idle_rss_bytes": 66076672,
+            "peak_rss_bytes": 66191360
+          }
+        ],
+        "startup_median_ms": 208.02,
+        "startup_max_ms": 208.02,
+        "idle_max_bytes": 66076672,
+        "peak_max_bytes": 66191360,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      },
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "editor",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+          "--scenario=editor",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 245.46,
+            "idle_rss_bytes": 66338816,
+            "peak_rss_bytes": 66453504
+          }
+        ],
+        "startup_median_ms": 245.46,
+        "startup_max_ms": 245.46,
+        "idle_max_bytes": 66338816,
+        "peak_max_bytes": 66453504,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      }
+    ],
+    "import": [
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "import",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+          "--scenario=import",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 298.56,
+            "idle_rss_bytes": 70320128,
+            "peak_rss_bytes": 70500352
+          }
+        ],
+        "startup_median_ms": 298.56,
+        "startup_max_ms": 298.56,
+        "idle_max_bytes": 70320128,
+        "peak_max_bytes": 70500352,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      },
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "import",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+          "--scenario=import",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 231.47,
+            "idle_rss_bytes": 70090752,
+            "peak_rss_bytes": 70189056
+          }
+        ],
+        "startup_median_ms": 231.47,
+        "startup_max_ms": 231.47,
+        "idle_max_bytes": 70090752,
+        "peak_max_bytes": 70189056,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      },
+      {
+        "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "scenario": "import",
+        "binary": "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+        "command": [
+          "/Users/runner/work/pp-switch/pp-switch/target/aarch64-apple-darwin/release/examples/mac_acceptance",
+          "--scenario=import",
+          "--allow-desktop-input"
+        ],
+        "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+        "native_action_readiness": true,
+        "cold_start_verified": false,
+        "samples": [
+          {
+            "startup_ms": 347.46,
+            "idle_rss_bytes": 70221824,
+            "peak_rss_bytes": 70500352
+          }
+        ],
+        "startup_median_ms": 347.46,
+        "startup_max_ms": 347.46,
+        "idle_max_bytes": 70221824,
+        "peak_max_bytes": 70500352,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      }
+    ]
+  },
+  "cold_start_verified": false,
+  "limitations": [
+    "OS caches retained; no true cold-start acceptance",
+    "Cocoa baseline is a blank window, not a feature-equivalent UI",
+    "Native terminate entry point checked; actual Dock/menu clicks require separate acceptance",
+    "Total RSS includes shared mappings; baseline subtraction is diagnostic, not the budget metric"
+  ]
+}

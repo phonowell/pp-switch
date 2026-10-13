@@ -1,0 +1,60 @@
+{
+  "version": "0.0.6",
+  "release": "https://github.com/phonowell/pp-switch/releases/tag/v0.0.6",
+  "authentication": "none (curl public HTTPS URLs)",
+  "checked_utc": "2026-10-13T12:22:34Z",
+  "downloads": [
+    {
+      "name": "pp-switch-v0.0.6-aarch64-apple-darwin.zip",
+      "bytes": 1408821,
+      "sha256": "d0909b879d922ec36f6ab163a05f0ba4c370e8bb76e899b7573bc426b9eac3df",
+      "github_digest_matches": true
+    },
+    {
+      "name": "pp-switch-v0.0.6-x86_64-apple-darwin.zip",
+      "bytes": 1482344,
+      "sha256": "24c54a69de67a05cf8815b4e0da6dd62facb89f08f354bdf7219a2699ef08fd9",
+      "github_digest_matches": true
+    },
+    {
+      "name": "pp-switch-v0.0.6-x86_64-pc-windows-msvc.zip",
+      "bytes": 1546301,
+      "sha256": "d385d37300013a861e98d56a5bdfe29d3198df1dfaccf127f05179ee73c9a1cc",
+      "github_digest_matches": true
+    },
+    {
+      "name": "pp-switch-v0.0.6-x86_64-unknown-linux-gnu.tar.gz",
+      "bytes": 1578465,
+      "sha256": "e91b39e5639a45b68435ffe1366059d67df91e73c5d7873d63641fd8a3b43d2c",
+      "github_digest_matches": true
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 524,
+      "sha256": "5b972bc1f188e3cbbb251d9ab7c71e232bc29c14f6b5cbad5d70ef5b25e94d54",
+      "github_digest_matches": true
+    },
+    {
+      "name": "verification.json",
+      "bytes": 66223,
+      "sha256": "e3d2117f12cb5bfd58b1106664e0f8c7a0f02d007bcb35070f37f6484c1c736c",
+      "github_digest_matches": true
+    }
+  ],
+  "failures": [],
+  "metadata": {
+    "tag": "v0.0.6",
+    "draft": false,
+    "prerelease": true,
+    "assets": 6,
+    "id": 411644790
+  },
+  "public_checksum_manifest": "passed for all five listed assets",
+  "isolated_arm64_archive_staging": {
+    "exit_code": 0,
+    "stdout": "PP-15: real release package passed layout, bounds and executable architecture validation.\n",
+    "stderr": "",
+    "scope": "Disposable fixture only; no launch, foreground input or real client writes."
+  },
+  "published_evidence_matches_local": true
+}

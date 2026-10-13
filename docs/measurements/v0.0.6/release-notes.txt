@@ -1,0 +1,34 @@
+Pure Provider Switch 0.0.6
+
+The unpublished v0.0.5 tag remains a failed CI candidate; its product changes ship here with corrected test tooling.
+
+- Switch URLs, keys and explicitly supplied optional models for Claude, Codex, Gemini, Grok and shared DSH CLI/Web.
+- Row Edit/Switch, in-window Settings and scoped Provider-link previews with numeric name suffixes.
+- Each harness has an Official row to restore native routing while preserving credentials.
+- Claude imports read supplied model fields; Add/Edit/import suggest claude-sonnet-5 when absent. Models remain optional; clear the field to retain client models.
+- macOS application-menu and Dock-format Quit handling repaired; full window title, consistent harness icons and blue In use emphasis.
+- Single-snapshot Claude/DSH configuration status; raw measurements below.
+- All four native targets passed at this immutable tag's exact implementation SHA; unchanged successful jobs were reused from the linked native CI run.
+
+Packages are unsigned (macOS is not notarized). Full PP-11 is not certified:
+OS caches are retained; readiness is an event-loop marker, not cold input latency.
+RSS includes system/shared pages. Update download/install peaks are unverified.
+
+Migration: saved providers remain readable. Save never applies client files; use the row's Switch action. Models must be supported by your endpoint.
+Codex CLI/App share configuration. DSH CLI/Web share initialized headless/web home profiles; external credential stores and unsupported overrides are refused.
+Official restores routing, not account login. Native Dock pointer clicks and true cold-start performance are not certified by these automated checks.
+
+| Target | Installed MiB | Idle / peak MiB | Readiness max ms | Editor peak MiB | Budget |
+| --- | ---: | ---: | ---: | ---: | --- |
+| aarch64-apple-darwin | 2.66 | 48.55 / 48.59 | 180.01 | 51.72 | **FAIL** |
+| x86_64-apple-darwin | 2.95 | 32.41 / 32.41 | 136.63 | 35.86 | **FAIL** |
+| x86_64-pc-windows-msvc | 3.12 | 15.21 / 15.60 | 44.09 | 16.16 | **FAIL** |
+| x86_64-unknown-linux-gnu | 3.40 | 21.20 / 21.38 | 19.28 | 22.38 | **FAIL** |
+
+Budget failures are disclosed; thresholds remain 5 MiB installed, 20 MiB idle RSS,
+30 MiB startup/editor peak RSS and 300 ms readiness. See verification.json for all samples.
+
+Implementation: `74ee93fedb2fc2c8deed846cb15d7310190a5a16`. [Native CI](https://github.com/phonowell/pp-switch/actions/runs/38393449261).
+
+macOS 0.0.2 users must download manually once (the old updater rejects the icon).
+Move the app to Applications and open it. Language and manual updates are in Settings.

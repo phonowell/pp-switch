@@ -2,48 +2,54 @@
 
 [Documentation](README.md) · [Acceptance](smoke.md) · [Reproduce](../CONTRIBUTING.md)
 
-## Development checkpoint: 0.0.5
+## Release: 0.0.6
 
-The branch is not published. [Current checkpoint](development-0.0.5.md) separates
-background validation from pending native acceptance. Earlier captures do not
-certify later Grok/DSH, model, Official, compact-tab or blue-status changes.
+[Published preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.6): implementation `74ee93fedb2fc2c8deed846cb15d7310190a5a16`.
+[Four native CI targets](https://github.com/phonowell/pp-switch/actions/runs/38393449261) passed format, all-target Clippy, behavior,
+packaging, GUI and update checks. macOS additionally passed Chinese native input,
+Provider URL delivery, six native termination scenarios and four-language
+light/dark pixel checks. Reviewed native captures show the actual Claude default,
+readable blue active rows and Settings without a redundant heading.
+[Retained job logs and reports](measurements/v0.0.6/native-ci-20261013/run.json) ·
+[Native capture provenance](screenshots/v0.0.6/aarch64-apple-darwin/provenance.json).
 
-The `v0.0.5` preview tag points to `80c460c0c543da703e77225b8f66a5b220b9ad2d`.
-[Tag-driven native CI](https://github.com/phonowell/pp-switch/actions/runs/38391365065)
-failed at the macOS test bootstrap because it depended on the local-only `rtk`
-wrapper. [Failure and correction](measurements/v0.0.5/release-preparation-20261013/ci-rtk-failure.json).
-That tag remains immutable and unpublished. The next preview is v0.0.6, retaining
-the v0.0.5 product changes and correcting the portable test bootstrap. Native CI
-and public package verification must complete before publication.
+The first Intel attempt failed while capturing a validation dialog. Its
+[raw failure and targeted recheck](measurements/v0.0.6/native-capture-20261013/report.json)
+are retained. Only that job was rerun at the same implementation SHA, with all
+assertions intact; its complete native gates passed on the second attempt.
+[Publication provenance](measurements/v0.0.6/release-process.json) identifies the
+four successful artifacts reused before creating the immutable matching tag.
 
-The [first v0.0.6 preflight](https://github.com/phonowell/pp-switch/actions/runs/38391812689)
-passed Windows/Linux and macOS native input, URL delivery and termination, then
-exposed a stale green-only pixel detector. The checker now isolates blue badges
-from blue row text and normalizes antialiasing against the captured background.
-[Both macOS screenshot sets pass the targeted correction](measurements/v0.0.6/pixel-checker-20261013/report.json).
-Light/dark CI gates and final publication remain pending.
+Grok and shared DSH CLI/Web, scoped Official rows, optional models, Sub2API
+previews and numeric name suffixes are included. Save remains separate from Switch.
+Claude Add/Edit/import fields suggest `claude-sonnet-5` when no explicit,
+mapped or same-connection model exists; clearing opts out of model writes.
+That suggestion does not guarantee endpoint compatibility.
 
-The [current installed candidate](measurements/v0.0.5/model-default-20261013/report.json)
-has 2,788,557 owned bytes (2.66 MiB), 82 Rust tests and 18 Python tests.
-It removes compulsory Claude model entry and verifies actual Add/Edit/import
-prefill plus blank-model switching through background production callbacks.
-Exact archive validation passed; no user client files or foreground input were changed.
-The [earlier Official baseline](measurements/v0.0.5/official-20261013/report.json)
-is historical for these inputs.
-The second Dock Quit failure supersedes the earlier isolated Cocoa regression.
-Real FLTK startup with a pre-created NSApp skips `finishLaunching`, leaving the
-default quit AppleEvent unhandled (`errAEEventNotHandled`, -1708). PPS now registers
-that event explicitly and accepts Cocoa termination. Background tests exercise
-the shipped widgets, real delegate and wait across main/Settings/editor, with
-native presentation suppressed. Removing the handler reproduces the failure.
-Actual Dock pointer acceptance remains pending.
-[Original quit-fix code checks](measurements/v0.0.5/quit-fltk-20261013/code-checks.json).
+| Native runner | Installed bytes | Idle / peak MiB | Readiness max ms | Editor peak MiB | Both script budgets |
+| --- | ---: | ---: | ---: | ---: | --- |
+| macOS 15 · ARM64 | 2,788,597 | 48.55 / 48.59 | 180.01 | 51.72 | Fail |
+| macOS 15 · Intel | 3,094,789 | 32.41 / 32.41 | 136.63 | 35.86 | Fail |
+| Windows Server 2022 · x64 | 3,276,633 | 15.21 / 15.60 | 44.09 | 16.16 | Fail |
+| Ubuntu 22.04 · x64 · Xvfb | 3,563,651 | 21.20 / 21.38 | 19.28 | 22.38 | Fail |
 
-The [earlier Mac M4 comparison](history/v0.0.5-checkpoints-20261013.md#memory-and-startup-comparison)
-found empty idle RSS 110.77 MiB for both versions and editor idle RSS 129.00 / 128.77 MiB.
-These are earlier candidates, not today's binary. Memory budgets failed; no material
-startup or memory gain was established. [Single-snapshot reads](measurements/v0.0.5/official-20261013/config-read-summary.json)
-reduce cumulative requested allocations in fixtures, not measured whole-app RSS.
+[Raw release evidence](measurements/v0.0.6/verification.json) ·
+[Public download and checksum validation](measurements/v0.0.6/publication-verification.json).
+All installed packages fit 5 MiB. macOS total RSS exceeds the original memory
+budget; native Cocoa comparison, import stress and action-readiness samples are
+retained. A bare Cocoa window is diagnostic, not a feature-equivalent baseline.
+Cold startup and update peaks remain unverified; no overall memory/startup gain
+is established. Packages are unsigned and macOS is not notarized. Actual Dock
+pointer clicks and local physical Windows/Linux/Intel desktops remain untested.
+Performance issue #1 stays open.
+
+The v0.0.5 tag remains an unpublished failed candidate. Its
+[test-bootstrap failure](measurements/v0.0.5/release-preparation-20261013/ci-rtk-failure.json)
+and the [blue pixel-detector correction](measurements/v0.0.6/pixel-checker-20261013/report.json)
+remain recorded without rewriting tag history. The
+[v0.0.5 local development checkpoint](development-0.0.5.md) retains earlier
+installations and pending checks for those specific binaries. Release CI resolves
+the automated native gates for v0.0.6; historical evidence is not today's installation.
 
 ## Release: 0.0.4
 

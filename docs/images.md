@@ -5,8 +5,9 @@ surrounding text; a picture cannot establish behavior beyond the recorded tests.
 
 | Role | Source | Meaning |
 | --- | --- | --- |
-| Current v0.0.5 illustrations | [English](illustrations/v0.0.5/main-en.svg) · [中文](illustrations/v0.0.5/main-zh.svg) · [日本語](illustrations/v0.0.5/main-ja.svg) | Paired light/dark **schematics**, not native screenshots or acceptance evidence |
+| Current layout, illustrated during v0.0.5 development | [English](illustrations/v0.0.5/main-en.svg) · [中文](illustrations/v0.0.5/main-zh.svg) · [日本語](illustrations/v0.0.5/main-ja.svg) | Reused for the unchanged v0.0.6 layout; paired light/dark **schematics**, not native screenshots or acceptance evidence |
 | Product logo / pinned icon sources | [PPS logo](../assets/icon.svg) · [Lucide](../assets/lucide/README.md) · [Lobe brand marks](../assets/clients/README.md) | Canonical source assets; application icons and native paths are derived |
+| v0.0.6 native CI captures | [Active row](screenshots/v0.0.6/aarch64-apple-darwin/zh-active.png) · [Add](screenshots/v0.0.6/aarch64-apple-darwin/zh-add.png) · [Settings](screenshots/v0.0.6/aarch64-apple-darwin/zh-settings.png) · [Dark](screenshots/v0.0.6/aarch64-apple-darwin/dark-zh-active.png) · [Provenance](screenshots/v0.0.6/aarch64-apple-darwin/provenance.json) | Isolated fake-provider fixtures; lossless PNG conversions, no retouching. Native automated checks are separate from local physical desktop acceptance. |
 | Historical capture evidence | [Versioned captures](screenshots) · [Hash inventory](images.json) | Recorded candidates only; original paths, bytes, labels and colors retained |
 
 ## Current illustrations

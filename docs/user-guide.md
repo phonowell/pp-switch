@@ -3,13 +3,13 @@
 English · [简体中文](user-guide-zh.md) · [日本語](user-guide-ja.md)
 
 pp-switch saves providers and switches **the configured base URL and API key**.
-0.0.5 development also manages explicit models and scoped native/API routing.
+0.0.6 preview also manages explicit models and scoped native/API routing.
 It does not manage accounts or translate protocols. Use a compatible model and
 protocol. [Downloads](https://github.com/phonowell/pp-switch/releases).
 
 ## First switch
 
-1. Initialize your client. 0.0.5 also supports the native routes described below.
+1. Initialize your client. 0.0.6 also supports the native routes described below.
 2. Open pp-switch and choose a client tab at the top.
 3. Click **Add**, enter a name, HTTP(S) base URL and nonempty key; review the optional model and click **Save**.
 4. Click the row’s **Switch** icon after its pencil icon. Restart the client if it does not reload its files.
@@ -29,7 +29,7 @@ changing appearance preserves unsaved edits, text selection and focus.
 
 **In use verifies only the supported user-level files.** It does not verify a running session or send a request. The new provider must support the retained model; a Claude unknown-model catalog warning alone does not mean that switching failed. Check a real request error separately from the startup model banner.
 
-## Optional models (0.0.5 development)
+## Optional models (0.0.6 preview)
 
 Models are optional, including for Claude. Model-less saved rows switch URL/key
 directly and show In use when those fields match. Existing records and imports
@@ -103,7 +103,7 @@ Account records, manifests, profile patches and complete inherited catalogs
 remain intact. Restart dsh if HMR is disabled. Launch patches, custom bundles and
 separate process environments can override file-match status.
 
-## Official restoration (0.0.5 development)
+## Official restoration (0.0.6 preview)
 
 Every client list begins with a fixed **Official** row, with Switch only. It
 restores native routing, not a historical file backup. It makes no login or
@@ -134,7 +134,7 @@ system environment variables.
 
 ## Provider entry
 
-Add providers manually with name, URL and key. In 0.0.5 development, browser
+Add providers manually with name, URL and key. In 0.0.6 preview, browser
 `ccswitch://v1/import` / `ppswitch://v1/import` Provider links open an unsaved
 preview. Review the name, URL, masked key and optional models, then Save; client files are unchanged.
 Remote configs and unrelated settings are never imported. An open draft is kept;

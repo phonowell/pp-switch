@@ -1,6 +1,6 @@
 # Pure Provider Switch (pp-switch) specification
 
-Status: v0.0.5 development contract. Changes to behavior start here.
+Status: v0.0.6 preview contract. Changes to behavior start here.
 
 Release policy: functional previews may be published with disclosed performance
 failures. Report functional and performance checks separately. PP-11 remains
@@ -87,7 +87,7 @@ Display configuration status by reading supported user-level client files, rathe
 
 ### PP-11: Performance budgets
 
-The primary v0.0.5 work is reducing macOS memory, startup time and package size,
+The primary work remains reducing macOS memory, startup time and package size,
 with comparable release-build measurements. Installed application-owned files ≤5 MiB; steady idle total RSS ≤20 MiB; startup/editor peak total RSS ≤30 MiB; cold interactive startup ≤300 ms. Measure a stripped release build on each platform, state hardware/method and report failures. These are budgets, not verified claims. No subprocess/runtime exclusions for memory.
 
 ### PP-12: Public evidence and CI

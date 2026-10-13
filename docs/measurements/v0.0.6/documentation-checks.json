@@ -1,0 +1,16 @@
+{
+  "markdown_files": 23,
+  "local_links_and_anchors": 343,
+  "translation_coverage": "4 READMEs / 3 guides aligned with versions/Settings/Lucide/names/DSH/imports/Official",
+  "historical_images_unchanged": 380,
+  "versioned_illustrations": 3,
+  "evidence": "not requested",
+  "exit_code": 0,
+  "svg_reproducibility": "Three localized light/dark SVG schematics and provenance match; inputs unchanged.",
+  "native_evidence": "Exact implementation SHA, four passed jobs, source/capture hashes and credential-pattern checks passed.",
+  "whitespace_check": {
+    "command": "git -c core.whitespace=cr-at-eol diff --cached --check -- *.md *.json *.txt",
+    "exit_code": 0,
+    "raw_evidence": "Original Windows CRLF and raw log whitespace preserved without normalization."
+  }
+}

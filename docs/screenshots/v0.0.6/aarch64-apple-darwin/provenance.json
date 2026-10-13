@@ -1,0 +1,35 @@
+{
+  "ci_run": "https://github.com/phonowell/pp-switch/actions/runs/38393449261",
+  "commit": "74ee93fedb2fc2c8deed846cb15d7310190a5a16",
+  "scenario": "CI isolated fake-provider fixtures, not user configuration.",
+  "images": [
+    {
+      "source": "input-smoke/zh-active.ppm",
+      "source_sha256": "70aa8bcf8e0cc6e9a4f989ffcb758098f504978c7f89f03233dbf1a1cd9409cc",
+      "path": "docs/screenshots/v0.0.6/aarch64-apple-darwin/zh-active.png",
+      "sha256": "c3d89f5177f6a082a15552401545c0e45210dad01a8d7324567b135c21228b51",
+      "conversion": "Lossless P6 RGB to PNG; no resizing or pixel changes."
+    },
+    {
+      "source": "input-smoke/zh-add.ppm",
+      "source_sha256": "3827a1b47fd0d300df84e976f1e1ef944cf10b5975a02c632fce560f4553ce9a",
+      "path": "docs/screenshots/v0.0.6/aarch64-apple-darwin/zh-add.png",
+      "sha256": "b6a91c317bffcd7a022e3a0a55ff2d61a5205d7796004d38bce6df4b31cf225a",
+      "conversion": "Lossless P6 RGB to PNG; no resizing or pixel changes."
+    },
+    {
+      "source": "input-smoke/zh-settings.ppm",
+      "source_sha256": "e4839a4a3f10455f5c0696765a56bb5960379c7eb5138377b9c17941f66dcf6f",
+      "path": "docs/screenshots/v0.0.6/aarch64-apple-darwin/zh-settings.png",
+      "sha256": "5876c34cd4d249162370a010ded267f509aab6192a12e754e1cecffb873b2251",
+      "conversion": "Lossless P6 RGB to PNG; no resizing or pixel changes."
+    },
+    {
+      "source": "theme-smoke/dark/zh-active.ppm",
+      "source_sha256": "76efd60dbff110dff7bd2e883cf9a80af6d1af52cda61a57b320a5f4a4814912",
+      "path": "docs/screenshots/v0.0.6/aarch64-apple-darwin/dark-zh-active.png",
+      "sha256": "e47469342d610130159868fe10d13812b2e64fc14569d976366af11b28548a4d",
+      "conversion": "Lossless P6 RGB to PNG; no resizing or pixel changes."
+    }
+  ]
+}

@@ -1,32 +1,31 @@
 # Smoke acceptance
 
-[Checkpoint](development-0.0.5.md) · [UI rules](../design/UI.md) ·
+[Published evidence](verification.md#release-006) · [UI rules](../design/UI.md) ·
 [Incremental verification](../CONTRIBUTING.md#incremental-verification)
 
-## v0.0.5 acceptance matrix
+## v0.0.6 acceptance matrix
 
 Use isolated files and fake keys. Simplified Chinese covers functionality;
 English, Traditional Chinese and Japanese cover style/property/pixels.
-Keep this shared Mac's foreground input available to its user.
+Native checks ran in [dedicated CI](https://github.com/phonowell/pp-switch/actions/runs/38393449261), preserving this Mac's foreground input.
 
-| Gate | Current scope / status |
+| Gate | Status |
 | --- | --- |
-| Format, all-target Clippy, Rust behavior, release bins/examples | [Default correction checks](measurements/v0.0.5/model-default-20261013/code-checks.json): 82 Rust / 18 Python tests; prior [prefill checks](measurements/v0.0.5/model-prefill-20261013/code-checks.json) and [rechecks](measurements/v0.0.5/model-prefill-20261013/rechecks.json) retain the earlier protection failure |
-| Client writes, defaults, names, CCS/Sub2API, five Official routes | Isolated behavior tests; [previous baseline](measurements/v0.0.5/official-20261013/report.json) |
-| Cocoa menu and Dock-format quit AppleEvent | Six real FLTK main/Settings/editor lifecycle scenarios; hidden native windows, no ordering or activation; missing-handler negative control |
-| Actual Dock Quit with main/settings/editor windows | Pending dedicated native desktop |
-| Claude Add/Edit/import → actual default; clear → direct URL/key Switch | Background production callbacks; Chinese native input pending |
-| Default prefill: Add/Edit/import/Save/Cancel; clear then Switch | [Release background callbacks](measurements/v0.0.5/model-default-20261013/release-prefill.log) and read-only connection fixtures passed; pointer/pixel acceptance pending |
-| Official/native ↔ Provider across five tabs | Pending Chinese native input; fixture write behavior separate |
-| Tabs, blue text/badges, overflow/scroll, Settings/editor | Pending four-language, both-theme native pixel captures |
-| Package, architecture, checksum, ≤5 MiB owned files | [Exact archive validated and installed](measurements/v0.0.5/model-default-20261013/report.json), 2,788,557 owned bytes |
-| Diagrams, Markdown, links, translated usage, image provenance | Deterministic SVG parity and documentation checks |
-| RSS, peak, cold interactive startup, update peak | Latest binary unmeasured; earlier memory failures disclosed |
-| Windows/Linux/Intel native branch acceptance | Pending respective hosts |
+| Format, all-target Clippy, behavior, release bins/examples | Passed on all four native targets |
+| Models, five Official routes, names, CCS/Sub2API | Isolated behavior tests passed |
+| Chinese native mouse/key, per-row actions, Settings and model fields | Passed on both macOS targets |
+| Cold/warm Provider URL delivery | Passed on both macOS targets |
+| Menu and Dock-format quit across main/Settings/editor | Real native lifecycle checks passed; actual Dock pointer click unverified |
+| Four-language light/dark styles, overflow, scrolling and blue badges | Pixel/property checks passed on both macOS targets; selected captures visually reviewed |
+| Package architecture, size, checksum and update installation/restart | Passed for all four final native archives; public checks recorded in verification |
+| Bare Cocoa comparison, native action readiness and bounded import stress | Samples retained on both macOS targets; cold start unverified |
+| RSS, peak, strict cold interactive startup and update peak | Full PP-11 not certified; memory failures disclosed |
+| Documentation and illustrations | Markdown/link/translation and deterministic SVG checks passed |
+| Local physical Windows/Linux/Intel desktop | Unverified; CI is separate evidence |
 
-Lifecycle tests are not pointer or visual/input acceptance. Illustrations cannot
-substitute for native captures. Retain failures and append targeted corrections;
-reuse only gates whose inputs are unchanged.
+Illustrations remain versioned v0.0.5 schematics of the unchanged layout, not native
+captures. Lifecycle tests do not certify actual Dock pointer clicks. Retain earlier
+failures and rechecks; only unchanged inputs may reuse evidence.
 
 ## Published v0.0.4 acceptance
 

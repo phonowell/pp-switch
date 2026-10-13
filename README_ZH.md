@@ -6,7 +6,7 @@
 
 **Pure Provider Switch. 明确切换连接，配置始终归你。**
 
-极简原生服务商切换器，0.0.5 开发版支持五个 harness。
+极简原生服务商切换器，0.0.6 预览版支持五个 harness。
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
@@ -29,22 +29,20 @@
 更新只在手动检查并确认后执行。Rust + FLTK、系统字体和矢量路径，
 不捆绑 WebView、数据库或 JavaScript 运行时。
 
-开发版支持 Claude Code、Codex CLI/App、Gemini CLI、Grok Build 和 DSH CLI/Web。
-**已发布的 0.0.4 仅支持前三者；0.0.5 尚未发布。**
+0.0.6 预览版支持 Claude Code、Codex CLI/App、Gemini CLI、Grok Build 和 DSH CLI/Web。
+较早的 0.0.4 版本仅支持前三者。
 [产品边界与 cc-switch 调研](docs/verification.md#community-sources)。
 
 ## 下载
 
-**0.0.4 已于 2026-10-12 通过用户验收并发布。** 中文功能与四种语言样式分别验证；见[验收记录](docs/smoke.md)。
-
-**[v0.0.4 功能预览](https://github.com/phonowell/pp-switch/releases/tag/v0.0.4)**。macOS 内存仍超预算，[完整实测](docs/verification.md)公开可查。
+**[v0.0.6 预览版](https://github.com/phonowell/pp-switch/releases/tag/v0.0.6) 已发布。** 四个平台原生 CI 通过，包括 macOS 中文输入与四语言浅／深色像素检查。[验收与限制](docs/smoke.md)。macOS 内存仍超预算，冷启动尚未验证。
 
 | 平台 | 下载 | 使用 |
 | --- | --- | --- |
-| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-aarch64-apple-darwin.zip) | 解压，将 `.app` 移到 Applications |
-| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-apple-darwin.zip) | 同上 |
-| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-pc-windows-msvc.zip) | 解压，运行 `pp-switch.exe` |
-| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.4/pp-switch-v0.0.4-x86_64-unknown-linux-gnu.tar.gz) | 解压，在桌面运行 `pp-switch` |
+| macOS · Apple Silicon | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.6/pp-switch-v0.0.6-aarch64-apple-darwin.zip) | 解压，将 `.app` 移到 Applications |
+| macOS · Intel | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.6/pp-switch-v0.0.6-x86_64-apple-darwin.zip) | 同上 |
+| Windows · x64 | [ZIP](https://github.com/phonowell/pp-switch/releases/download/v0.0.6/pp-switch-v0.0.6-x86_64-pc-windows-msvc.zip) | 解压，运行 `pp-switch.exe` |
+| Linux · x64 | [tar.gz](https://github.com/phonowell/pp-switch/releases/download/v0.0.6/pp-switch-v0.0.6-x86_64-unknown-linux-gnu.tar.gz) | 解压，在桌面运行 `pp-switch` |
 
 无需安装 Rust 或 Node.js。macOS 包声明支持 macOS 11+，**未进行 Apple Developer 签名或公证**。Windows 要求 Windows 10+；Linux 需要 X11/XWayland、系统 X11/fontconfig 库及覆盖所选语言的系统字体。声明最低系统版本不代表每个版本均已测试；原生验收环境见[验证记录](docs/verification.md)。
 
@@ -58,7 +56,7 @@
 不证明运行中的会话或请求成功。名称在每个客户端内唯一，导入同名时自动追加
 ` (2)`、` (3)`。相同连接可以用不同名称保存。
 
-0.0.5 的五个 harness 均有「官方」条目，用于限定范围的原生配置还原。
+0.0.6 的五个 harness 均有「官方」条目，用于限定范围的原生配置还原。
 Codex CLI/App 共用配置；DSH CLI/Web 共用已初始化的 home profile。
 CCS/Sub2API 链接打开未保存的预览；明确导入的模型优先于编辑器建议。请确认服务商支持建议的模型。
 外部密钥助手、云认证模式和不支持的密钥来源会被拒绝。
@@ -70,16 +68,16 @@ CCS/Sub2API 链接打开未保存的预览；明确导入的模型优先于编�
 
 ## 性能：预算与实测分开
 
-**0.0.4 原生 CI 实测：**
+**0.0.6 原生 CI 实测：**
 
 | 原生 CI | 安装大小 MiB | 空闲 RSS MiB | 脚本预算 |
 | --- | ---: | ---: | --- |
-| macOS 15 · ARM64 | 2.43 | 48.44 | 失败 |
-| macOS 15 · Intel | 2.67 | 31.97 | 失败 |
-| Windows Server 2022 · x64 | 2.78 | 15.08 | 通过 |
-| Ubuntu 22.04 · x64 · Xvfb | 3.01 | 16.96 | 失败 |
+| macOS 15 · ARM64 | 2.66 | 48.55 | 失败 |
+| macOS 15 · Intel | 2.95 | 32.41 | 失败 |
+| Windows Server 2022 · x64 | 3.12 | 15.21 | 失败 |
+| Ubuntu 22.04 · x64 · Xvfb | 3.40 | 21.20 | 失败 |
 
-Windows 两种场景均通过；macOS 内存超预算。Linux 空窗口通过，编辑器空闲内存超预算。严格冷启动和更新峰值仍未验证。 [SPEC PP-11](SPEC.md#acceptance-contract) · [Raw data](docs/verification.md#release-004).
+所有安装包均小于 5 MiB。macOS RSS 仍超内存预算；严格冷启动和更新峰值尚未验证。不宣称整体内存或启动速度改善。[SPEC PP-11](SPEC.md#acceptance-contract) · [原始数据](docs/verification.md#release-006)。
 
 ## 参与开发
 
