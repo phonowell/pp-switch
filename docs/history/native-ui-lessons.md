@@ -40,4 +40,3 @@ Linux window icons and installed package icons remain. Popup styling must target
 only the application's menu frame, preserving normal native window chrome.
 Layer PNGs prove rounded transparency but exclude the external compositor
 shadow; native properties supply that part of the evidence.
-
