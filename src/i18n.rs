@@ -168,7 +168,17 @@ pub fn alert(language: Language, english: &str) {
     );
 }
 
-pub fn confirm(_language: Language, text: &str, cancel: &str, action: Option<&str>) -> bool {
+pub fn confirm(language: Language, text: &str, cancel: &str, action: Option<&str>) -> bool {
+    confirm_with_link(language, text, cancel, action, None)
+}
+
+pub(crate) fn confirm_with_link(
+    language: Language,
+    text: &str,
+    cancel: &str,
+    action: Option<&str>,
+    link: Option<&str>,
+) -> bool {
     use crate::theme::{self, ButtonStyle};
     use fltk::{
         app,
@@ -213,7 +223,7 @@ pub fn confirm(_language: Language, text: &str, cancel: &str, action: Option<&st
     wrapped.push_str(&line);
     let lines = wrapped.lines().count() as i32;
     let text_height = (lines * 21).max(42);
-    let height = text_height + 108;
+    let height = text_height + 108 + if link.is_some() { 44 } else { 0 };
     let parent = app::first_window();
     let (x, y) = parent.map_or((130, 160), |w| {
         (w.x() + (w.w() - 386) / 2, w.y() + (w.h() - height) / 2)
@@ -227,6 +237,20 @@ pub fn confirm(_language: Language, text: &str, cancel: &str, action: Option<&st
     copy.set_label_size(13);
     copy.set_label_color(theme::ink());
     copy.set_align(Align::Inside | Align::Left | Align::Top | Align::Wrap);
+    if let Some(url) = link {
+        let mut notes = Button::new(24, text_height + 36, 338, 32, None);
+        notes.set_label(tr(language, "Release notes"));
+        theme::button(&mut notes, ButtonStyle::Secondary);
+        let url = url.to_owned();
+        notes.set_callback(move |_| {
+            if fltk::utils::open_uri(&url).is_err() {
+                alert(
+                    language,
+                    "Cannot open release notes. Visit the repository's Releases page.",
+                );
+            }
+        });
+    }
     let result = Rc::new(Cell::new(false));
     let mut close = Button::new(
         if action.is_some() { 146 } else { 258 },

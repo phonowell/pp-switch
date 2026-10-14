@@ -59,6 +59,9 @@ preferences are checked once per second while the GUI runs; no resident helper.
   Check for updates and passive wrapped update status. Navigation remains usable
   during a worker; repeated update activation is disabled. Explicit import-link
   registration preserves other installed handlers. No automatic requests.
+  Successful update checks reuse their result for five minutes. The installation
+  confirmation includes a localized Release notes action that opens that
+  version's repository release page only when clicked.
 - **Fields/dialogs:** name, URL, masked key and optional Default model with a
   passive explanation of blank/default behavior. Model-less Claude rows switch URL/key directly. Claude has an expandable
   Haiku/Sonnet/Opus mapping section. A supplied default is inherited by blank
@@ -112,7 +115,9 @@ page/back navigation, unique-name validation, identical-connection Save, passive
 Switch, independent duplicate Edit, validation, save/cancel, delete confirmation,
 five clients, optional model draft/save/cancel/switch and model-specific badges,
 native scrolling/reachable actions, language preference, responsive
-update worker/error recovery, tooltips, modal and main close. All files are fixtures.
+update worker/error recovery, confirmation/cancel/staging/helper-launch/quit
+callbacks, tooltips, modal and main close. The update confirmation's release-notes
+action receives four-language style captures. All files are fixtures.
 Only Chinese runs functional flows. Other locales prepare style states.
 
 [Pixel checks](../scripts/visual_check.py) compare Settings icon pixels across

@@ -1,0 +1,14 @@
+COMMAND ["/Users/mimiko/.cargo/bin/cargo", "test", "--locked", "--test", "behavior", "pp03"]
+ENV ANTHROPIC_BASE_URL=https://synthetic-override.example
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.18s
+     Running tests/behavior.rs (target/debug/deps/behavior-aac89fd2c7a847d5)
+
+running 5 tests
+test pp02_pp03_claude_preserves_unrelated_bytes_and_is_idempotent ... ok
+test pp03_claude_uses_existing_api_key_field_and_can_add_missing_containers ... ok
+test pp03_pp10_claude_config_match_preserves_provider_specific_models ... ok
+test pp03_claude_read_and_apply_refuse_ambiguous_or_malformed_fields ... ok
+test pp03_unsupported_claude_modes_never_write ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 18 filtered out; finished in 0.05s
+

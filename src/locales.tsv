@@ -15,6 +15,10 @@ Import	导入	匯入	取り込み
 Import a cc-switch Provider link	导入 cc-switch 服务商链接	匯入 cc-switch 服務商連結	cc-switch のリンクを取り込む
 Saving keeps client files unchanged. Switching updates URL + key.	保存不改客户端配置，切换只改地址和 Key。	儲存不改客戶端配置，切換隻改地址和 Key。	保存はアプリ内のみ。切り替えは URL とキーのみ。
 Check for updates	检查更新	檢查更新	更新を確認
+Release notes	版本说明	版本說明	リリースノート
+Cannot open release notes. Visit the repository's Releases page.	无法打开版本说明，请访问仓库的 Releases 页面。	無法開啟版本說明，請造訪儲存庫的 Releases 頁面。	リリースノートを開けません。リポジトリの Releases ページをご覧ください。
+GitHub update rate limit reached. Try again later.	已达到 GitHub 更新请求额度，请稍后重试。	已達到 GitHub 更新請求額度，請稍後重試。	GitHub の更新リクエスト上限に達しました。後でもう一度お試しください。
+Update URL host is not on the GitHub allowlist.	更新地址的域名不在 GitHub 允许列表中。	更新網址的網域不在 GitHub 允許清單中。	更新 URL のホストが GitHub の許可リストにありません。
 Checking for updates…	正在检查更新…	正在檢查更新…	更新を確認中…
 Installing update…	正在安装更新…	正在安裝更新…	更新をインストール中…
 New provider. Save first, then switch.	新服务商：填写后先保存，再切换。	新服務商：填寫後先儲存，再切換。	新しいプロバイダー。保存してから切り替えてください。

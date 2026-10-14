@@ -6,7 +6,8 @@
 
 **Pure Provider Switch. 明确切换连接，配置始终归你。**
 
-极简原生服务商切换器，0.0.6 预览版支持五个 harness。
+保存 API 连接并一键切换，省去反复手动编辑客户端配置。
+0.0.6 预览版支持五个 harness。
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)

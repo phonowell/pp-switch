@@ -67,6 +67,7 @@ def assemble(artifacts, output):
              "| --- | ---: | ---: | ---: | ---: | --- |"]
     for target in TARGETS:
         root = artifacts / f"pp-switch-{target}"
+        # Naming contract paired with src/update.rs::asset_name and package.py.
         name = f"pp-switch-v{VERSION}-{target}"
         report = json.loads((root / "package" / f"{name}.json").read_text(encoding="utf-8"))
         package = root / "package" / f"{name}.{'tar.gz' if 'linux' in target else 'zip'}"

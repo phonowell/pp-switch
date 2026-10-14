@@ -6,7 +6,8 @@
 
 **Pure Provider Switch. Deine Konfiguration bleibt deine.**
 
-Kleiner nativer Anbieterwechsler. Fünf Harnesses in der Vorschau 0.0.6.
+Gespeicherte API-Verbindungen wechseln, ohne ständig Client-Konfigurationsdateien zu bearbeiten.
+Fünf Harnesses in der Vorschau 0.0.6.
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)

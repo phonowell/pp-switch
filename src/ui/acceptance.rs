@@ -378,6 +378,7 @@ fn visual_locale(
     c.translate();
     c.message("Cannot contact GitHub. Check your connection or try later.");
     snapshot(&mut c.window, &shot("update-error"))?;
+    update_confirmation_capture(language, &shot("update-confirm"), driver.clone())?;
     no_tooltips(&c.window)?;
     no_tooltips(&c.editor)?;
     Ok(())
@@ -975,11 +976,169 @@ pub fn callback_smoke(
     )?;
     c.cancel.do_callback();
 
+    update_callbacks(&mut c, &store, &paths)?;
     no_tooltips(&c.window)?;
     no_tooltips(&c.editor)?;
     if let Some(path) = screenshot {
         snapshot(&mut c.window, &path)?;
     }
+    Ok(())
+}
+
+fn update_offer() -> Result<Option<update::Update>> {
+    Ok(Some(update::Update {
+        version: semver::Version::new(1, 0, 0),
+        url: "https://github.com/phonowell/pp-switch/fixture".into(),
+        digest: "a".repeat(64),
+        size: 100,
+    }))
+}
+
+fn update_confirmation_capture(
+    language: Language,
+    path: &Path,
+    driver: Rc<dyn InputDriver>,
+) -> Result<()> {
+    let captured = Rc::new(RefCell::new(Err(
+        "Update confirmation was not shown.".into()
+    )));
+    let result = captured.clone();
+    let path = path.to_owned();
+    let timer = app::add_timeout3(0.15, move |_| {
+        if let Some(modal) = app::modal() {
+            let mut modal: Window = unsafe { modal.into_widget() };
+            *result.borrow_mut() = require(
+                (0..modal.children()).any(|i| {
+                    modal
+                        .child(i)
+                        .is_some_and(|child| child.label() == tr(language, "Release notes"))
+                }),
+                "Update confirmation has no localized release-notes action.",
+            )
+            .and_then(|()| snapshot(&mut modal, &path));
+            driver.close(&modal);
+        }
+    });
+    let watchdog = app::add_timeout3(2.0, |_| {
+        if let Some(mut modal) = app::modal() {
+            modal.hide();
+        }
+    });
+    require(
+        !confirm_update(language, &update_offer()?.unwrap()),
+        "Closing update confirmation accepted installation.",
+    )?;
+    app::remove_timeout3(timer);
+    app::remove_timeout3(watchdog);
+    captured.borrow().clone()
+}
+
+fn update_callbacks(c: &mut Controls, store: &Store, paths: &Paths) -> Result<()> {
+    use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
+    static EXITED: AtomicBool = AtomicBool::new(false);
+    static CHECKS: AtomicUsize = AtomicUsize::new(0);
+    fn check() -> Result<Option<update::Update>> {
+        CHECKS.fetch_add(1, Ordering::SeqCst);
+        update_offer()
+    }
+    fn stage(_: &update::Update, language: Language) -> Result<update::Staged> {
+        let directory =
+            tempfile::tempdir().map_err(|_| "Cannot create update staging directory.")?;
+        let plan = update::InstallPlan {
+            root: directory.path().to_owned(),
+            target: update::target().into(),
+            before: Default::default(),
+            after: Default::default(),
+            parent_pid: std::process::id(),
+            language,
+        };
+        Ok(update::Staged { directory, plan })
+    }
+    fn launch(staged: update::Staged) -> Result<()> {
+        require(
+            staged.plan.language == Language::Zh,
+            "Installer lost selected language.",
+        )
+    }
+    fn exit() {
+        EXITED.store(true, Ordering::SeqCst);
+    }
+    let providers = store.load()?;
+    let current = paths.current(Client::Claude)?;
+    type Stage = fn(&update::Update, Language) -> Result<update::Staged>;
+    type Launch = fn(update::Staged) -> Result<()>;
+    for (accepted, stage_fn, launch_fn, expected, exited) in [
+        (
+            false,
+            stage as Stage,
+            launch as Launch,
+            "Update cancelled. Nothing was installed.",
+            false,
+        ),
+        (
+            true,
+            (|_, _| Err("Cannot stage update files.".into())) as Stage,
+            launch as Launch,
+            "Cannot stage update files.",
+            false,
+        ),
+        (
+            true,
+            stage as Stage,
+            (|_| Err("Cannot start update installer.".into())) as Launch,
+            "Cannot start update installer.",
+            false,
+        ),
+        (
+            true,
+            stage as Stage,
+            launch as Launch,
+            "Installing update…",
+            true,
+        ),
+    ] {
+        EXITED.store(false, Ordering::SeqCst);
+        CHECKS.store(0, Ordering::SeqCst);
+        let mut view = c.clone();
+        c.update.set_callback(move |_| {
+            check_updates_with(
+                &mut view,
+                check,
+                stage_fn,
+                launch_fn,
+                if accepted { |_, _| true } else { |_, _| false },
+                exit,
+            )
+        });
+        c.update.do_callback();
+        c.update.do_callback();
+        require(
+            c.updating.get() && !c.update.active(),
+            "Update reentry was not blocked.",
+        )?;
+        let deadline = Instant::now() + Duration::from_secs(3);
+        while c.updating.get() && !EXITED.load(Ordering::SeqCst) && Instant::now() < deadline {
+            pump();
+        }
+        require(
+            CHECKS.load(Ordering::SeqCst) == 1
+                && EXITED.load(Ordering::SeqCst) == exited
+                && c.raw_status.borrow().as_str() == expected
+                && c.status.label() == tr(Language::Zh, expected)
+                && (exited || (!c.updating.get() && c.update.active())),
+            "Update callbacks failed to restore state or quit only after installation launch.",
+        )?;
+        require(
+            store.load()? == providers && paths.current(Client::Claude)? == current,
+            "Update callbacks wrote provider/client data.",
+        )?;
+        // The fixture exit hook keeps its window alive for subsequent acceptance.
+        c.updating.set(false);
+        c.update.activate();
+    }
+    println!(
+        "GUI zh: update confirmation/cancel/staging/launch/quit callbacks passed (fixture workers, no network or real installer)"
+    );
     Ok(())
 }
 

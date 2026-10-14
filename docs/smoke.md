@@ -1,5 +1,15 @@
 # Smoke acceptance
 
+## Working-tree update review — 2026-10-14
+
+[Review resolutions and evidence](update-review-20261014.md): background format,
+all-target Clippy, 112 Rust tests, 30 script tests, release build, documentation,
+icon parity and package/archive validation passed, including targeted rechecks.
+The new updater lifecycle and release-notes confirmation require fresh Chinese
+native acceptance and four-language light/dark style/pixel review. These desktop
+gates were skipped to preserve shared-workstation input; published-release GUI
+results below do not certify the changed callbacks/dialog.
+
 [Published evidence](verification.md#release-006) · [UI rules](../design/UI.md) ·
 [Incremental verification](../CONTRIBUTING.md#incremental-verification)
 

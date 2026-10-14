@@ -84,3 +84,42 @@ fn pp13_preferences_are_private_and_do_not_touch_provider_data() {
     assert!(store.save_language(Language::En).is_err());
     assert_eq!(fs::read(store.root.join("ui.json")).unwrap(), invalid);
 }
+
+#[test]
+fn pp13_pp15_update_messages_and_staging_failures_are_localized() {
+    for english in [
+        "Checking for updates…",
+        "Downloading and verifying update…",
+        "Installing update…",
+        "Update cancelled. Nothing was installed.",
+        "Update request timed out. Try again.",
+        "Update worker stopped. Try again.",
+        "You are using the latest available version.",
+        "Release notes",
+        "Cannot open release notes. Visit the repository's Releases page.",
+        "GitHub update rate limit reached. Try again later.",
+        "Update URL host is not on the GitHub allowlist.",
+        "Cannot contact GitHub. Check your connection or try later.",
+        "Cannot locate the installed application.",
+        "Run pp-switch from its installed package to update it.",
+        "Application directory is not writable. Move it to a user-writable location and try again.",
+        "Cannot read installed application files.",
+        "Cannot create update staging directory.",
+        "Cannot stage update files.",
+        "Cannot start update installer.",
+        "Update checksum mismatch. Nothing was installed.",
+        "Application files changed during the update. Nothing was installed.",
+        "Update installation failed. Previous version was restored.",
+        "Update rollback conflicted with external changes. Backup files were preserved.",
+        "Update installed. Please reopen pp-switch manually.",
+    ] {
+        for language in Language::ALL.into_iter().skip(1) {
+            assert_ne!(
+                i18n::message(language, english),
+                english,
+                "{}: {english}",
+                language.code()
+            );
+        }
+    }
+}

@@ -1,0 +1,2 @@
+COMMAND ["target/update-review-venv/bin/python", "scripts/client_icons.py", "--check"]
+Client SVG/native path parity passed

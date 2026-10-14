@@ -1,0 +1,20 @@
+[
+  {
+    "name": "lucide-parity-recheck",
+    "exit_code": 0,
+    "seconds": 0.29,
+    "log": "target/update-review-20261014/lucide-parity-recheck.log"
+  },
+  {
+    "name": "client-icon-parity-recheck",
+    "exit_code": 0,
+    "seconds": 1.21,
+    "log": "target/update-review-20261014/client-icon-parity-recheck.log"
+  },
+  {
+    "name": "claude-env-isolation",
+    "exit_code": 0,
+    "seconds": 7.66,
+    "log": "target/update-review-20261014/claude-env-isolation.log"
+  }
+]

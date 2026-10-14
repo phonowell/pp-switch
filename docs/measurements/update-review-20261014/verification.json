@@ -1,0 +1,217 @@
+{
+  "date": "2026-10-14",
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "target": "aarch64-apple-darwin",
+  "background_checks_passed_with_targeted_rechecks": true,
+  "initial_failures": "Both icon parity checks lacked fonttools; retained unchanged in smoke-report.json and logs.",
+  "recheck_setup": "python3 -m venv target/update-review-venv; target/update-review-venv/bin/python -m pip install fonttools==4.60.1",
+  "rust_tests_passed": 112,
+  "script_tests_passed": 30,
+  "synthetic_anthropic_base_url_pp03_tests_passed": 5,
+  "desktop_acceptance_complete": false,
+  "unverified": [
+    "Chinese native update callbacks/confirmation",
+    "Four-language light/dark update confirmation captures and pixel/style review",
+    "Release-notes browser delivery",
+    "Helper restart/quit on desktop",
+    "Windows/Linux/Intel native validation"
+  ],
+  "source_sha256": {
+    "Cargo.toml": "d26ad29471f96568140c41be41718f959374b7322ac12a203a99ce2fac7ddea5",
+    "Cargo.lock": "3f3b9f89e185f5217d66dd902708b787624cdede07fed21028119951bb4a0b08",
+    "build.rs": "d8ffe5969a2b709f4b0dcd9db0b6d238790379b159a1ad2cc9f90d481ee2ae0a",
+    "src/ui.rs": "197b6dc6430d1ad665d1f2856f39a50c748039e03f334461f54511d188ba05c4",
+    "src/protocol.rs": "98034ec6df806204e07ca33a77242efa2c79616cbd12af9208dc10bcfc12f9e3",
+    "src/client.rs": "066b27ee79940da63f16e3d4a05fe4716e7867e894d07e64db74411800cecd53",
+    "src/config.rs": "d68d16b142a18d60bcddb49df866fd0dcba718636134d1ad1982a9c0633ddf0f",
+    "src/lib.rs": "6e47c2cd56fcc00e01b77b09f154474a437f65afec5b1a0d60f33b69ec76e091",
+    "src/locales.tsv": "9c34f190698fcbcc966dea21b319847dc9ff5055c5942e8a7bd8b7449c2c6a4d",
+    "src/provider.rs": "3cad6a7017f1b398851e67edf3728e45e14ef5100e88f6342b6cd74414b3cea3",
+    "src/theme.rs": "49343424b0a2a5b6edf80bf05db519aca090524f8680beb0a7a137fa1b138059",
+    "src/update.rs": "9046d7dfa5b3b4e93cc48559a3fa2fb0f4f7279497498f3ba9afd527eafee254",
+    "src/main.rs": "a8acac5ac831b3daecdb303454168008c38fcc5af712c335cdd855fad6f9fb20",
+    "src/storage.rs": "712ae6a57ed62b33ecf2d15de284d04e9b6ca0b7b77ac80d8915b114bf6cfdde",
+    "src/i18n.rs": "b1763ce98cac81ab8ab959a93f529714fe29072809fae6945cb50f19a4239aa9",
+    "src/macos.m": "77e413c38f8b2d69ab99f5f3c343d3e617a33d4e24374d6d6c196e1bd4f9fb8f",
+    "src/ui/acceptance.rs": "9703a71d0477e17fb9ff2aa516664fa2ea1258ad1aa8498e917158aa41aa4d27",
+    "src/ui/update_job.rs": "1f4e0277bb204a5ec9a96062cf48bd93dac5ccc6e8af9e175546fa1ad943054e",
+    "src/ui/lucide.rs": "209dc0e8d21f4c06d307cfec88fa8f5ee6aa41a1086d9f90c44668cbc253f27a",
+    "src/ui/client_icons.rs": "16f5f70157788fab9a1f2f23a41fdb7d23fd65cfbfd90efa71fbd16eff9ca1dc",
+    "src/theme/system.rs": "5bdccce096e5b923df61a26e5c27a9ab5ca1b5e04f186b42f76a67fd63c147b1",
+    "src/client/models.rs": "4c9ec5c4bca97e02cc8b2ae7808b75278cea84d5a1f69517ebcffd686a386d2e",
+    "src/client/dsh.rs": "7ada600c5f87d1a6b02b289fc70b2df5ca6aed18952af055aa5e0a7223ba8a5f",
+    "src/client/official.rs": "2f78052ef37ff9a56944b0d488bb4354855d25e8b91c2de4965bc201ad30b6e5",
+    "examples/mac_quit_background.rs": "c032f03d2d6124291803c2ee4ab63972fcddd1089a7e6a063612fab12b0a6f2b",
+    "examples/measure_cocoa.m": "e832a3d4fe3b8e42ec92af6b4c66984e37fa7f83be31422ba9d2d17a3bef59fd",
+    "examples/macos_input.m": "1bcb9a5caa13c043714e9207bd657d929dfb83b2af9894c78260c10952ef3dcf",
+    "examples/mac_acceptance.rs": "294740d513598605bc755a1bee71d4fe6cdff2c39e1090e8aaa0f472ac5cfbc7",
+    "examples/protocol_smoke.rs": "77746e88629bacd74e5e868b8fd07ba2e4dfd25f9f64166c5fd352624cbf04e7",
+    "examples/ui_smoke.rs": "9c668cb435762cf77802f12cb6fd7f0dba05e34aacbcbea650062656593b8cfe",
+    "examples/measure_config.rs": "3ab0fde4bdfa7d7dcae6a1a6ccdfff91743888d7ac5e89969c3b93885e95bff1",
+    "examples/update_smoke.rs": "12896f395079dc16c61d1f692ea8aebfd824f61dadd227986bd34c7dc7f89652",
+    "examples/input_smoke.rs": "c485827993530003f0a8089fcd04ac08d5b40ed41e85f70d22995e586a7830f8",
+    "examples/measure_ui.rs": "0b396f30a10fd6ae35a8565eb014a2039a089b3eb6906dc40e7edb44509fa834",
+    "examples/macos_quit_background.m": "88e6961a75a1b5dd6107d1b1248d40d422d595d3db1a3d9745bc0807b4d1ba48",
+    "examples/support/mod.rs": "b8b98891731747559a59544aa1a59d3be3c5aeb67ccd7115d3473a71786fc7be",
+    "scripts/package.py": "97a2afde226d60f6da52fbf0ebcd280e98305f903b282b2f26286ba423f0b1e8",
+    "scripts/measure.py": "439d8a3e69f6a018df5e23c793d3fa0d74fa7e25a8732baa50587fa484a5f7f5",
+    "scripts/docs_check.py": "7d44a3e3ad590774239eb3e6712e87b68474a41683a2e9e08118cbfb51194b90",
+    "scripts/native_quit_test.py": "ab23d534e13ea29d15d887e3ac6febaa29b3353f77d35784fe799e5923e85dd0",
+    "scripts/release.py": "83e0f544a509620aa835263c98b87c42479f5542665c73f4b6ff2bcdc01e73f6",
+    "scripts/generate_icons.py": "d401be38068587422560ee4c4b63c21adcd22774254b4531c0540126e6f2078a",
+    "scripts/release_test.py": "9c28b44fd5e3d9df14525ccac6e7ed8c91ea96c380d937028966e9627a395a23",
+    "scripts/protocol_smoke.py": "4f09706c6a0eeb3e6fa8ed801fee2529463ccda512e0eef581598462da3de4c0",
+    "scripts/visual_check.py": "e35fd65e969a90910bdc3c819a61b54f2c5463c119d72170f7e078ea9649bde2",
+    "scripts/desktop_test.py": "975777cd1853c0a146e35e50adcc8ad770f0a28bdba15e63d3727347d2c1d74a",
+    "scripts/mac_performance.py": "1a65d91e9153cf50e0c78d59b6d1d8ffaea311f9417cd05f75f9480caaf32b7f",
+    "scripts/performance_test.py": "7939b561e1b0db23039f9bf114e500b1720336277a32a27a0621186d97c1ec31",
+    "scripts/test_runner.py": "70398affdcc33788c17d140fbe56ebe5742119e909fcddbc287ffe4cdce023ca",
+    "scripts/test_runner_test.py": "55c36d815d50aa268852a0da04ae88d6c25b3f19d81355826845cc8938fbdfeb",
+    "scripts/gui_smoke.py": "d13a16208d33262440b717cb0f7c2fb6ace4b41880fa406deebf8c866c0a6c39",
+    "scripts/client_icons.py": "cbf273ba6ec2637e3d22f97852a3849d3d2e584254dd304a5000bbd7a6dfab23",
+    "scripts/lucide.py": "2eb9c49fb6e37912f64836354d818587787db97ea4e9166157cc119e3d9f3881",
+    "scripts/performance.py": "b794caee8ece03a4393f69486d0269a4822dab388ae23850d4c6e42538ab4e0b",
+    "scripts/visual_test.py": "66ef0082603cf2125142af6bcfe9370a4521fb3715f7050ce089cff39d7e9536",
+    "scripts/smoke.py": "3b56fb10ce19624e01d2b3de5cc16f5d73ab3ac28066d8e27b7c3b675d477067",
+    "design/harness-icons.svg": "aa29ef531d29d879c111d754c45c94abf5769e068a4111ccb4da170862a3b553",
+    "design/render_docs.py": "592b6fc9e7604f2e633af32aa0585852bc7ea191383392a8048bcce2ba7fe8cc",
+    "design/UI.md": "d4f3421d5b9ca62deb5419981ccccf14fb3290655f64dcf6ebeccddf52d9a988",
+    ".cargo/config.toml": "0db5db69e79044c9c9fa19b1fea9e6a10eb087c478b6106ea73e21cfe69a0ca1",
+    "tests/behavior.rs": "c5fc269f39f2cd7d68e899a8838af7831d78d7fa03fd592bb250ac292d45d2b3",
+    "tests/dsh.rs": "3ac4787f9891a49d9421aa42b37789dc59b9f7f6f0a5f27923855a753c40272d",
+    "tests/provider_names.rs": "c776f9395aa6f3bcb5339dcbd6ff63ab11db77a6c2ab5969c781a824d0dafb3f",
+    "tests/sub2api.rs": "73004cfa00e245c119270fd6d46f8411bde33a1aa57476d600a0af49ce67a45d",
+    "tests/official.rs": "8e3340d002f65e58630be141be794687cffb869348937e856fcee7bb85409a60",
+    "tests/localization.rs": "6b2538ef336fe1363ee105ce87338735df4dd2465ab9956cd971a555d402eccc",
+    "tests/provider_models.rs": "58ef38a94f91e000803c20072e82ebed2e3f417f0f78d0dca5536bc27f05440a"
+  },
+  "log_sha256": {
+    "behavior.log": "4d6055fdbbb10dea0ec0abea883ed77b654f859c3c265a0313433bed80cade2e",
+    "update-package.log": "8e93848edea0012e176b7aeecfc68acd10cfd3e8f9703c1e71f3991dc053c0b2",
+    "client-icon-parity-recheck.log": "e9ef16484daf9702b99a354e4f3c1d20b3cc26cdf45908853d9a8ffe324278ec",
+    "format.log": "3ca73f140e92c15435e9ef6110a4f21c7ff5e52b2013a4d9d236af636e784ec8",
+    "config-read-comparison.log": "6affe16dbe766b74a142dd8b3b96f55284530c2b0a20edd2bfd7b2780e48f68e",
+    "clippy.log": "a8f4f75645b1c95bda9adda9003bd95357935fedea84e79e66801cb4ae3070fc",
+    "claude-env-isolation.log": "85fe472ce7010247686e93f534808d42515303c9d0937b3b09a3535612c46d4d",
+    "release-build.log": "b2483a298d686fcea89e850ca02651e2f927f9d410f6d82f503ed8a7df42b302",
+    "release-tests.log": "0969852e181ff56306164b6384fb970efeb97136b743750bd8252b7329bd3d04",
+    "lucide-parity-recheck.log": "7e33287be68c4c6e2c2a472a039a44d947b6a21f3987eadc8ff268acded231f3",
+    "lucide-parity.log": "fe5762761338de9d617e3435a6ae6fdcfe17379bbdc9d0efaeba952a9f6b1961",
+    "client-icon-parity.log": "5d89b2966ded8bca1d5f500d0398124f5cce5f629329753299602792815333dd",
+    "package.log": "ac96bb8e784f65b6c8de1253e6a2b92a997eb1fc5562c2fd235ac1e8b019599a",
+    "documentation.log": "0c31c50023412420fba854323c6423b28f38776fa44c642bec43f00cf4cff26c",
+    "documentation-final.log": "d11a9abc174cceff5f217326f4bd82f2297039a8595fe6197f24c94dda187299",
+    "cargo-runner-final.log": "f71fd08e9da091603bf01da818ec9e0bde6571befab8eed269c1869826595d5f"
+  },
+  "checks": [
+    {
+      "name": "lucide-parity",
+      "status": "failed",
+      "exit_code": 1,
+      "seconds": 0.04,
+      "log": "lucide-parity.log"
+    },
+    {
+      "name": "client-icon-parity",
+      "status": "failed",
+      "exit_code": 1,
+      "seconds": 0.04,
+      "log": "client-icon-parity.log"
+    },
+    {
+      "name": "format",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.17,
+      "log": "format.log"
+    },
+    {
+      "name": "clippy",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 11.49,
+      "log": "clippy.log"
+    },
+    {
+      "name": "behavior",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 20.41,
+      "log": "behavior.log"
+    },
+    {
+      "name": "release-tests",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 5.8,
+      "log": "release-tests.log"
+    },
+    {
+      "name": "release-build",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 53.71,
+      "log": "release-build.log"
+    },
+    {
+      "name": "config-read-comparison",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 5.63,
+      "log": "config-read-comparison.log"
+    },
+    {
+      "name": "documentation",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "log": "documentation.log"
+    },
+    {
+      "name": "package",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.35,
+      "log": "package.log"
+    },
+    {
+      "name": "update-package",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.34,
+      "log": "update-package.log"
+    }
+  ],
+  "targeted_rechecks": [
+    {
+      "name": "lucide-parity-recheck",
+      "exit_code": 0,
+      "seconds": 0.29,
+      "log": "lucide-parity-recheck.log"
+    },
+    {
+      "name": "client-icon-parity-recheck",
+      "exit_code": 0,
+      "seconds": 1.21,
+      "log": "client-icon-parity-recheck.log"
+    },
+    {
+      "name": "claude-env-isolation",
+      "exit_code": 0,
+      "seconds": 7.66,
+      "log": "claude-env-isolation.log"
+    }
+  ],
+  "final_rechecks": [
+    {
+      "name": "cargo-runner-final",
+      "exit_code": 0,
+      "log": "cargo-runner-final.log"
+    },
+    {
+      "name": "documentation-final",
+      "exit_code": 0,
+      "log": "documentation-final.log"
+    }
+  ]
+}

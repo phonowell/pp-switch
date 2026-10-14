@@ -27,6 +27,7 @@ use std::{
 pub mod acceptance;
 mod client_icons;
 mod lucide;
+mod update_job;
 use lucide::Icon;
 
 #[derive(Clone)]
@@ -1080,105 +1081,80 @@ fn event_loop() {
     while !app::should_program_quit() && app::wait() {}
 }
 
-enum UpdateEvent {
-    Checked(Result<Option<update::Update>>),
-    Staged(Result<update::Staged>),
+const UPDATE_POLL_INTERVAL: f64 = 0.5;
+
+fn confirm_update(language: Language, release: &update::Update) -> bool {
+    let prompt = tr(
+        language,
+        "Install version {version} and restart? Unsaved edits will be lost.",
+    )
+    .replace("{version}", &release.version.to_string());
+    i18n::confirm_with_link(
+        language,
+        &prompt,
+        tr(language, "Cancel"),
+        Some(tr(language, "Install and restart")),
+        Some(&release.release_notes_url()),
+    )
 }
 
 fn check_updates(c: &mut Controls, check: fn() -> Result<Option<update::Update>>) {
+    check_updates_with(
+        c,
+        check,
+        update::stage,
+        update::launch_helper,
+        confirm_update,
+        quit,
+    );
+}
+
+fn check_updates_with(
+    c: &mut Controls,
+    check: fn() -> Result<Option<update::Update>>,
+    stage: fn(&update::Update, Language) -> Result<update::Staged>,
+    launch: fn(update::Staged) -> Result<()>,
+    confirm: fn(Language, &update::Update) -> bool,
+    exit: fn(),
+) {
+    use update_job::{Job, Progress};
     let mut view = c.clone();
-    {
-        if view.updating.replace(true) {
-            return;
-        }
-        view.update.deactivate();
-        view.update.set_label(tr(view.lang(), "Updating…"));
-        view.message("Checking for updates…");
-        let (sender, receiver) = std::sync::mpsc::channel();
-        let checked = sender.clone();
-        std::thread::spawn(move || {
-            let _ = checked.send(UpdateEvent::Checked(check()));
-        });
-        let mut view = view.clone();
-        let mut deadline = std::time::Instant::now() + std::time::Duration::from_secs(70);
-        app::add_timeout3(0.1, move |handle| {
-            let mut finished = false;
-            if std::time::Instant::now() >= deadline {
-                view.message("Update request timed out. Try again.");
-                view.updating.set(false);
-                view.update.activate();
-                view.update.set_label(tr(view.lang(), "Check for updates"));
-                app::remove_timeout3(handle);
-                return;
-            }
-            match receiver.try_recv() {
-                Ok(UpdateEvent::Checked(Ok(Some(release)))) => {
-                    let prompt = tr(
-                        view.lang(),
-                        "Install version {version} and restart? Unsaved edits will be lost.",
-                    )
-                    .replace("{version}", &release.version.to_string());
-                    if i18n::confirm(
-                        view.lang(),
-                        &prompt,
-                        tr(view.lang(), "Cancel"),
-                        Some(tr(view.lang(), "Install and restart")),
-                    ) {
-                        view.message("Downloading and verifying update…");
-                        let language = view.lang();
-                        let staged = sender.clone();
-                        deadline = std::time::Instant::now() + std::time::Duration::from_secs(70);
-                        std::thread::spawn(move || {
-                            let _ =
-                                staged.send(UpdateEvent::Staged(update::stage(&release, language)));
-                        });
-                    } else {
-                        view.message("Update cancelled. Nothing was installed.");
-                        finished = true;
-                    }
-                }
-                Ok(UpdateEvent::Checked(Ok(None))) => {
-                    view.message("You are using the latest available version.");
-                    finished = true;
-                }
-                Ok(UpdateEvent::Checked(Err(error)) | UpdateEvent::Staged(Err(error))) => {
-                    view.message(&error);
-                    finished = true;
-                }
-                Ok(UpdateEvent::Staged(Ok(mut staged))) => {
-                    staged.plan.language = view.lang();
-                    match update::launch_helper(staged) {
-                        Ok(()) => {
-                            view.message("Installing update…");
-                            // Bound Cocoa's native wait after the timer hides the final window.
-                            app::add_timeout3(0.0, |_| {});
-                            app::quit();
-                        }
-                        Err(error) => {
-                            view.message(&error);
-                            finished = true;
-                        }
-                    }
-                    if !finished {
-                        return;
-                    }
-                }
-                Err(std::sync::mpsc::TryRecvError::Disconnected) => {
-                    view.message("Update worker stopped. Try again.");
-                    finished = true;
-                }
-                Err(std::sync::mpsc::TryRecvError::Empty) => {}
-            }
-            if finished {
-                view.updating.set(false);
-                view.update.activate();
-                view.update.set_label(tr(view.lang(), "Check for updates"));
-                app::remove_timeout3(handle);
-            } else {
-                app::repeat_timeout3(0.1, handle);
-            }
-        });
+    if view.updating.replace(true) {
+        return;
     }
+    view.update.deactivate();
+    view.update.set_label(tr(view.lang(), "Updating…"));
+    // message() translates and retains the English key for live language changes.
+    view.message("Checking for updates…");
+    let mut job = Job::start(check, stage, launch);
+    app::add_timeout3(UPDATE_POLL_INTERVAL, move |handle| {
+        let mut progress = job.poll(std::time::Instant::now(), view.lang());
+        if let Progress::Confirm(release) = progress {
+            let accepted = confirm(view.lang(), &release);
+            progress = job.confirm(release, accepted, view.lang(), std::time::Instant::now());
+            if accepted {
+                view.message("Downloading and verifying update…");
+            }
+        }
+        match progress {
+            Progress::Finished(result) => {
+                view.message(result.as_deref().unwrap_or_else(|error| error));
+                view.updating.set(false);
+                view.update.activate();
+                view.update.set_label(tr(view.lang(), "Check for updates"));
+                app::remove_timeout3(handle);
+            }
+            Progress::Installed => {
+                view.message("Installing update…");
+                app::remove_timeout3(handle);
+                // Bound Cocoa's native wait after the timer hides the final window.
+                app::add_timeout3(0.0, |_| {});
+                exit();
+            }
+            Progress::Waiting => app::repeat_timeout3(UPDATE_POLL_INTERVAL, handle),
+            Progress::Confirm(_) => unreachable!(),
+        }
+    });
 }
 
 pub fn run(link: Option<&str>) -> Result<()> {

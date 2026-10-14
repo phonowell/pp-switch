@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import time
+from test_runner import CLIENT_OVERRIDES
 
 
 def main():
@@ -24,6 +25,10 @@ def main():
     output.mkdir(parents=True, exist_ok=False)
     cargo = shutil.which("cargo") or str(Path.home() / ".cargo/bin/cargo")
     env = os.environ.copy()
+    # Fixtures must not inherit real routing/credential/model overrides, including
+    # direct example launches that do not pass through Cargo's test runner.
+    for name in CLIENT_OVERRIDES:
+        env.pop(name, None)
     env["PATH"] = str(Path(cargo).parent) + os.pathsep + env.get("PATH", "")
     rust_host = subprocess.check_output([str(Path(cargo).with_name("rustc")), "-vV"], env=env, text=True)
     target = next(line.split(": ", 1)[1] for line in rust_host.splitlines() if line.startswith("host:"))

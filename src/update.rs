@@ -13,6 +13,7 @@ use std::{
     io::{Cursor, Read, Write},
     path::{Component, Path, PathBuf},
     process::Command,
+    sync::Mutex,
     time::{Duration, Instant},
 };
 use tempfile::{NamedTempFile, TempDir};
@@ -21,6 +22,17 @@ use url::Url;
 const REPOSITORY: &str = "phonowell/pp-switch";
 const ARCHIVE_LIMIT: u64 = 10 * 1024 * 1024;
 const INSTALLED_LIMIT: u64 = 5 * 1024 * 1024;
+pub(crate) const NETWORK_TIMEOUT: Duration = Duration::from_secs(45);
+pub(crate) const UI_TIMEOUT: Duration = Duration::from_secs(NETWORK_TIMEOUT.as_secs() + 15);
+const CHECK_COOLDOWN: Duration = Duration::from_secs(5 * 60);
+const RELEASES_PER_PAGE: usize = 20;
+const METADATA_LIMIT: u64 = 2 * 1024 * 1024;
+const ALLOWED_HOSTS: &[&str] = &[
+    "api.github.com",
+    "github.com",
+    "release-assets.githubusercontent.com",
+    "objects.githubusercontent.com",
+];
 
 pub fn target() -> &'static str {
     if cfg!(all(target_os = "macos", target_arch = "aarch64")) {
@@ -44,11 +56,21 @@ pub struct Update {
     pub size: u64,
 }
 
+impl Update {
+    pub fn release_notes_url(&self) -> String {
+        format!(
+            "https://github.com/{REPOSITORY}/releases/tag/v{}",
+            self.version
+        )
+    }
+}
+
 pub fn sha256(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
 }
 
 fn asset_name(version: &Version, target: &str) -> String {
+    // Package naming contract: scripts/package.py and scripts/release.py must match.
     format!(
         "pp-switch-v{version}-{target}.{}",
         if target.contains("linux") {
@@ -94,24 +116,25 @@ pub fn select_release(json: &str, current: &Version, target: &str) -> Result<Opt
             .into_iter()
             .filter(|a| a.name == name)
             .collect();
-        if matches.is_empty() {
-            continue;
-        }
+        // Treat all unusable matching assets alike, including ambiguous duplicates.
+        // Skip this release without choosing an arbitrary asset or hiding other releases.
         if matches.len() != 1 {
-            return Err("Invalid update metadata.".into());
+            continue;
         }
         let asset = matches.into_iter().next().unwrap();
         let expected = format!(
             "https://github.com/{REPOSITORY}/releases/download/{}/{name}",
             release.tag_name
         );
-        let digest = asset
+        let Some(digest) = asset
             .digest
             .and_then(|s| s.strip_prefix("sha256:").map(str::to_owned))
             .filter(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit()))
-            .ok_or("Update has no valid SHA-256 digest.")?;
+        else {
+            continue;
+        };
         if asset.browser_download_url != expected || asset.size == 0 || asset.size > ARCHIVE_LIMIT {
-            return Err("Invalid update metadata.".into());
+            continue;
         }
         candidate = Some(Update {
             version,
@@ -121,6 +144,36 @@ pub fn select_release(json: &str, current: &Version, target: &str) -> Result<Opt
         });
     }
     Ok(candidate)
+}
+
+fn validate_url(url: &Url) -> Result<()> {
+    if url.scheme() != "https"
+        || !url.username().is_empty()
+        || url.password().is_some()
+        || url.fragment().is_some()
+        || url.port().is_some_and(|port| port != 443)
+    {
+        return Err("Invalid update URL.".into());
+    }
+    if !url
+        .host_str()
+        .is_some_and(|host| ALLOWED_HOSTS.contains(&host))
+    {
+        return Err("Update URL host is not on the GitHub allowlist.".into());
+    }
+    Ok(())
+}
+
+fn http_error(response: &ureq::Response) -> &'static str {
+    if response.status() == 429
+        || (response.status() == 403
+            && (response.header("X-RateLimit-Remaining") == Some("0")
+                || response.header("Retry-After").is_some()))
+    {
+        "GitHub update rate limit reached. Try again later."
+    } else {
+        "Cannot contact GitHub. Check your connection or try later."
+    }
 }
 
 fn response(url: &str, deadline: Instant) -> Result<ureq::Response> {
@@ -135,24 +188,10 @@ fn response(url: &str, deadline: Instant) -> Result<ureq::Response> {
         if deadline <= Instant::now() {
             return Err("Update request timed out. Try again.".into());
         }
-        if url.scheme() != "https"
-            || !url.username().is_empty()
-            || url.password().is_some()
-            || url.fragment().is_some()
-            || !matches!(
-                url.host_str(),
-                Some(
-                    "api.github.com"
-                        | "github.com"
-                        | "release-assets.githubusercontent.com"
-                        | "objects.githubusercontent.com"
-                )
-            )
-        {
-            return Err("Invalid update URL.".into());
-        }
+        validate_url(&url)?;
         let result = agent
             .get(url.as_str())
+            .timeout(deadline.saturating_duration_since(Instant::now()))
             .set(
                 "User-Agent",
                 concat!("pp-switch/", env!("CARGO_PKG_VERSION")),
@@ -161,6 +200,7 @@ fn response(url: &str, deadline: Instant) -> Result<ureq::Response> {
             .call();
         let response = match result {
             Ok(r) | Err(ureq::Error::Status(301 | 302 | 303 | 307 | 308, r)) => r,
+            Err(ureq::Error::Status(_, r)) => return Err(http_error(&r).into()),
             _ => return Err("Cannot contact GitHub. Check your connection or try later.".into()),
         };
         if response.status() == 200 {
@@ -194,20 +234,77 @@ fn bounded_read(mut reader: impl Read, limit: u64, deadline: Instant) -> Result<
     }
 }
 
+#[derive(Default)]
+struct CheckCache {
+    successful: Option<(Instant, Option<Update>)>,
+}
+
+impl CheckCache {
+    fn check(
+        &mut self,
+        now: impl Fn() -> Instant,
+        fetch: impl FnOnce() -> Result<Option<Update>>,
+    ) -> Result<Option<Update>> {
+        if let Some((checked_at, result)) = &self.successful
+            && now().saturating_duration_since(*checked_at) < CHECK_COOLDOWN
+        {
+            return Ok(result.clone());
+        }
+        let result = fetch()?;
+        self.successful = Some((now(), result.clone()));
+        Ok(result)
+    }
+}
+
+fn scan_releases(
+    current: &Version,
+    target: &str,
+    mut page: impl FnMut(usize, u64) -> Result<Vec<u8>>,
+) -> Result<Option<Update>> {
+    let mut remaining = METADATA_LIMIT;
+    let mut candidate: Option<Update> = None;
+    for number in 1.. {
+        let bytes = page(number, remaining)?;
+        if bytes.len() as u64 > remaining || bytes.is_empty() {
+            return Err("Update data exceeds the size limit.".into());
+        }
+        remaining -= bytes.len() as u64;
+        let json = std::str::from_utf8(&bytes).map_err(|_| "Invalid update metadata.")?;
+        let releases: Vec<Release> =
+            serde_json::from_str(json).map_err(|_| "Invalid update metadata.")?;
+        if let Some(release) = select_release(json, current, target)?
+            && candidate
+                .as_ref()
+                .is_none_or(|old| old.version < release.version)
+        {
+            candidate = Some(release);
+        }
+        if releases.len() < RELEASES_PER_PAGE {
+            return Ok(candidate);
+        }
+        if remaining == 0 {
+            return Err("Update data exceeds the size limit.".into());
+        }
+    }
+    unreachable!()
+}
+
 pub fn check() -> Result<Option<Update>> {
-    let deadline = Instant::now() + Duration::from_secs(45);
-    let url = format!("https://api.github.com/repos/{REPOSITORY}/releases?per_page=10");
-    let bytes = bounded_read(
-        response(&url, deadline)?.into_reader(),
-        512 * 1024,
-        deadline,
-    )?;
-    let json = std::str::from_utf8(&bytes).map_err(|_| "Invalid update metadata.")?;
-    select_release(
-        json,
-        &Version::parse(env!("CARGO_PKG_VERSION")).unwrap(),
-        target(),
-    )
+    static CACHE: Mutex<CheckCache> = Mutex::new(CheckCache { successful: None });
+    CACHE
+        .lock()
+        .map_err(|_| "Update worker stopped. Try again.")?
+        .check(Instant::now, || {
+            let deadline = Instant::now() + NETWORK_TIMEOUT;
+            scan_releases(
+                &Version::parse(env!("CARGO_PKG_VERSION")).unwrap(),
+                target(),
+                |page, limit| {
+                    let url = format!("https://api.github.com/repos/{REPOSITORY}/releases?per_page={RELEASES_PER_PAGE}&page={page}");
+                    bounded_read(response(&url, deadline)?.into_reader(), limit, deadline)
+                },
+            )
+        })
 }
 
 pub fn owned_files(target: &str) -> Vec<&'static str> {
@@ -486,7 +583,7 @@ pub fn stage(update: &Update, language: Language) -> Result<Staged> {
         .into_iter()
         .map(|name| Ok((name.to_owned(), file_hash(&safe_destination(&root, name)?)?)))
         .collect::<Result<BTreeMap<_, _>>>()?;
-    let deadline = Instant::now() + Duration::from_secs(45);
+    let deadline = Instant::now() + NETWORK_TIMEOUT;
     let bytes = bounded_read(
         response(&update.url, deadline)?.into_reader(),
         ARCHIVE_LIMIT,
@@ -837,6 +934,7 @@ mod tests {
                 .unwrap()
                 .is_none()
         );
+        // A release with bad metadata is skipped; a valid release in the same list is still found.
         for (field, bad) in [
             ("digest", serde_json::Value::Null),
             ("size", 0.into()),
@@ -845,14 +943,202 @@ mod tests {
                 "https://example.com/pp-switch.zip".into(),
             ),
         ] {
-            let mut r = release("0.0.3", t);
-            r["assets"][0][field] = bad;
-            assert!(select_release(&serde_json::json!([r]).to_string(), &current, t).is_err());
+            let mut bad_r = release("0.0.3", t);
+            bad_r["assets"][0][field] = bad;
+            // Bad release alone → no candidate (skipped, not an error).
+            assert!(
+                select_release(&serde_json::json!([bad_r]).to_string(), &current, t)
+                    .unwrap()
+                    .is_none()
+            );
+            // Bad release alongside a good one → the good one is selected.
+            assert_eq!(
+                select_release(
+                    &serde_json::json!([bad_r, release("0.0.4", t)]).to_string(),
+                    &current,
+                    t
+                )
+                .unwrap()
+                .unwrap()
+                .version,
+                Version::parse("0.0.4").unwrap()
+            );
         }
+        // Ambiguous duplicates are skipped just like an invalid digest/URL/size.
         let mut r = release("0.0.3", t);
         let duplicate = r["assets"][0].clone();
         r["assets"].as_array_mut().unwrap().push(duplicate);
-        assert!(select_release(&serde_json::json!([r]).to_string(), &current, t).is_err());
+        assert!(
+            select_release(&serde_json::json!([r.clone()]).to_string(), &current, t)
+                .unwrap()
+                .is_none()
+        );
+        assert_eq!(
+            select_release(
+                &serde_json::json!([r, release("0.0.4", t)]).to_string(),
+                &current,
+                t
+            )
+            .unwrap()
+            .unwrap()
+            .version,
+            Version::new(0, 0, 4)
+        );
+    }
+
+    #[test]
+    fn pp15_successful_check_caches_offer_and_latest_for_five_minutes() {
+        for result in [
+            None,
+            select_release(
+                &serde_json::json!([release("1.0.0", target())]).to_string(),
+                &Version::new(0, 0, 1),
+                target(),
+            )
+            .unwrap(),
+        ] {
+            let mut cache = CheckCache::default();
+            let now = Instant::now();
+            let fetched = cache.check(|| now, || Ok(result)).unwrap();
+            let cached = cache
+                .check(
+                    || now + CHECK_COOLDOWN - Duration::from_millis(1),
+                    || panic!("cooldown requested GitHub again"),
+                )
+                .unwrap();
+            assert_eq!(
+                cached.as_ref().map(|r| &r.version),
+                fetched.as_ref().map(|r| &r.version)
+            );
+            assert!(
+                cache
+                    .check(|| now + CHECK_COOLDOWN, || Ok(None))
+                    .unwrap()
+                    .is_none()
+            );
+        }
+    }
+
+    #[test]
+    fn pp15_failed_checks_are_retryable_and_cache_time_starts_on_success() {
+        let mut cache = CheckCache::default();
+        let start = Instant::now();
+        assert!(cache.check(|| start, || Err("offline".into())).is_err());
+        let end = start + Duration::from_secs(44);
+        cache.check(|| end, || Ok(None)).unwrap();
+        cache
+            .check(
+                || end + CHECK_COOLDOWN - Duration::from_millis(1),
+                || panic!("success cooldown ended too early"),
+            )
+            .unwrap();
+        assert!(
+            cache
+                .check(|| end + CHECK_COOLDOWN, || Err("offline".into()))
+                .is_err()
+        );
+        cache.check(|| end + CHECK_COOLDOWN, || Ok(None)).unwrap();
+    }
+
+    #[test]
+    fn pp15_scans_later_pages_and_does_not_assume_release_order() {
+        let mut pages = Vec::new();
+        let found = scan_releases(&Version::new(0, 0, 1), target(), |page, _| {
+            pages.push(page);
+            // Older releases can be published later: API order is not SemVer order.
+            let json = if page == 1 {
+                vec![release("0.0.1", target()); RELEASES_PER_PAGE]
+            } else {
+                vec![release("2.0.0", target())]
+            };
+            Ok(serde_json::to_vec(&json).unwrap())
+        })
+        .unwrap()
+        .unwrap();
+        assert_eq!(pages, [1, 2]);
+        assert_eq!(found.version, Version::new(2, 0, 0));
+        assert_eq!(
+            found.release_notes_url(),
+            "https://github.com/phonowell/pp-switch/releases/tag/v2.0.0"
+        );
+    }
+
+    #[test]
+    fn pp15_incomplete_release_scan_never_claims_latest() {
+        assert!(
+            scan_releases(&Version::new(0, 0, 1), target(), |page, _| {
+                if page == 1 {
+                    Ok(
+                        serde_json::to_vec(&vec![release("1.0.0", target()); RELEASES_PER_PAGE])
+                            .unwrap(),
+                    )
+                } else {
+                    Err("timed out".into())
+                }
+            })
+            .is_err()
+        );
+        assert!(
+            scan_releases(&Version::new(0, 0, 1), target(), |_, limit| Ok(vec![
+                b' ';
+                limit as usize
+                    + 1
+            ]))
+            .is_err()
+        );
+        assert!(
+            scan_releases(&Version::new(0, 0, 1), target(), |_, _| Ok(
+                b"invalid JSON".to_vec()
+            ))
+            .is_err()
+        );
+    }
+
+    #[test]
+    fn pp15_url_allowlist_and_rate_limit_errors_are_explicit() {
+        for host in ALLOWED_HOSTS {
+            validate_url(&Url::parse(&format!("https://{host}/fixture")).unwrap()).unwrap();
+        }
+        assert_eq!(
+            validate_url(&Url::parse("https://new-cdn.example/fixture").unwrap()).unwrap_err(),
+            "Update URL host is not on the GitHub allowlist."
+        );
+        for url in [
+            "http://github.com/x",
+            "https://user@github.com/x",
+            "https://github.com:444/x",
+            "https://github.com/x#fragment",
+            "https://github.com.evil.example/x",
+        ] {
+            assert!(validate_url(&Url::parse(url).unwrap()).is_err());
+        }
+        for (code, headers, expected) in [
+            (
+                403,
+                "X-RateLimit-Remaining: 0\r\n",
+                "GitHub update rate limit reached. Try again later.",
+            ),
+            (
+                403,
+                "Retry-After: 60\r\n",
+                "GitHub update rate limit reached. Try again later.",
+            ),
+            (
+                429,
+                "",
+                "GitHub update rate limit reached. Try again later.",
+            ),
+            (
+                403,
+                "",
+                "Cannot contact GitHub. Check your connection or try later.",
+            ),
+        ] {
+            let response: ureq::Response = format!("HTTP/1.1 {code} Error\r\n{headers}\r\n")
+                .parse()
+                .unwrap();
+            assert_eq!(http_error(&response), expected);
+        }
     }
 
     fn binary(t: &str) -> Vec<u8> {

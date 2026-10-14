@@ -81,6 +81,22 @@ checks cold/warm Apple URL events in an isolated bundle without changing default
 Add tests for PP behavior, not for implementation details.
 Native CI validates macOS ARM64/Intel, Windows x64 and Linux x64 independently.
 
+The Cargo runner in `.cargo/config.toml` invokes `scripts/test_runner.py` for
+native executions. Before hashed test harnesses start, it removes inherited
+client URL/key/model overrides (including `ANTHROPIC_BASE_URL`); regular
+`cargo run` keeps them. No test thread mutates the process environment. Tests of
+environment conflicts launch their own subprocess with explicit synthetic
+overrides. Background smoke also clears these overrides for directly launched
+fixture examples. Python 3 must be available as `python3` on macOS/Linux or
+`python` on Windows for the Cargo runner.
+Updater worker lifecycle tests run without showing windows; callback acceptance
+uses injected fixture staging/install/exit functions and requires desktop opt-in.
+
+Update asset filenames are a cross-language contract:
+`pp-switch-v{version}-{target}.zip`, or `.tar.gz` for Linux. Keep
+`src/update.rs::asset_name`, `scripts/package.py` and `scripts/release.py` aligned;
+package/archive validation exercises their compatibility.
+
 After a correction, rerun checks affected by its changed inputs and reuse the
 others' retained commands/logs/hashes. In particular, a pixel-checker correction
 uses the existing screenshots; it does not require another build or GUI run.

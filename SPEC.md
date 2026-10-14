@@ -137,6 +137,26 @@ PP-11 budgets remain unchanged.
 
 Updates are strictly user-triggered: no startup, scheduled or background checks. A compact Check for updates action queries only this repository's GitHub Releases over verified HTTPS; preview builds may receive newer previews. Show version and request confirmation before download/install/restart, warning about unsaved edits. Keep the GUI responsive during network work. Select only the current OS/architecture package, bound download/extraction size and whitelist application-owned files. Verify the archive against GitHub's SHA-256 asset digest before staging. Reject malformed metadata, path traversal, symlinks, unsupported layouts and unwritable installations without editing provider/client files. A temporary helper waits for the app to exit, checks the destination has not changed, replaces owned files with backups, rolls back failed installs and restarts. Report failures in the selected language. Release assets remain unsigned; a GitHub digest verifies download integrity, not an independent publisher signature.
 
+After a successful check (including no update or a cancelled installation), reuse
+its result for five minutes in the running app; another explicit click may show
+the cached offer but must not request metadata again. Failed checks remain
+retryable. Fetch releases in pages of 20, including later pages, within a shared
+45-second network deadline and 2-MiB metadata budget. If the scan cannot finish,
+report a failure rather than claiming the current version is latest. Skip a
+release with invalid or ambiguous matching assets; never install it. Provide
+the selected version's repository release-notes link before confirmation.
+
+Report GitHub rate limiting distinctly from connection failure. HTTPS redirect
+hosts must be explicitly allowed; a rejected host gets a specific localized
+message. Poll workers at 500 ms; the UI watchdog is the network deadline plus
+15 seconds and resets when staging begins. Cancellation, network/timeout,
+checksum, disk-space, permission or locked-file failures restore the update
+action. Before replacement, failures leave the installed app unchanged. During
+replacement, restore backups; if external changes prevent rollback, preserve
+backups and report the conflict. Never quit on staging/helper-launch failure;
+quit only after the helper starts successfully. All failures preserve
+providers, credentials and client configuration.
+
 ### PP-16: Grok Build
 
 Grok Build: patch only `base_url` and existing `api_key` in the custom

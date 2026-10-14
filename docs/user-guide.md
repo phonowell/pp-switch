@@ -176,12 +176,19 @@ if needed. Do not publish it or paste it into diagnostics.
 macOS 0.0.2 users must download 0.0.3 manually once: the old strict file whitelist rejects the new app icon. 0.0.3 handles the icon in future updates.
 
 1. Click **Settings → Check for updates**. There is no startup or periodic check.
-2. If a newer compatible GitHub release is found, read its version and confirm
+2. If a newer compatible GitHub release is found, read its version and open
+   **Release notes** in the confirmation dialog, then confirm
    **Install and restart**. Cancel makes no changes. Preview builds can receive
    newer previews. Save edits first; unsaved edits are lost on restart.
 3. The app downloads only this repository's package for the current OS/CPU,
    verifies its GitHub SHA-256 digest, stages owned files and starts a temporary
    helper. The helper waits for exit, installs with backups and restarts.
+
+Successful checks are cached for five minutes while the app runs, including
+when you cancel installation. Clicking again reuses the result without another
+GitHub metadata request. Failed checks can be retried immediately. GitHub rate
+limits and unapproved redirect hosts have distinct messages. A timeout or
+incomplete metadata scan reports failure and restores the update action.
 
 Updates send no provider/key data and replace only application-owned files.
 On installation failure, previous files are restored unless an external change

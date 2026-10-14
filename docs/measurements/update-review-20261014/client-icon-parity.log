@@ -1,0 +1,5 @@
+COMMAND ["/Library/Developer/CommandLineTools/usr/bin/python3", "scripts/client_icons.py", "--check"]
+Traceback (most recent call last):
+  File "/Users/mimiko/Projects/pp-switch/scripts/client_icons.py", line 10, in <module>
+    from fontTools.svgLib.path import parse_path
+ModuleNotFoundError: No module named 'fontTools'

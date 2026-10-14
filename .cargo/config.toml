@@ -3,5 +3,12 @@ MACOSX_DEPLOYMENT_TARGET = "11.0"
 # Size-focused native flags and FLTK's nested static MSVC runtime setting.
 CFLTK_TOOLCHAIN = { value = "cmake/minimal.cmake", relative = true }
 
+# Only hashed test harnesses lose inherited client overrides; cargo run keeps them.
+[target.'cfg(any(target_os = "macos", target_os = "linux"))']
+runner = ["python3", "scripts/test_runner.py"]
+
+[target.'cfg(target_os = "windows")']
+runner = ["python", "scripts/test_runner.py"]
+
 [target.x86_64-pc-windows-msvc]
 rustflags = ["-C", "target-feature=+crt-static"]

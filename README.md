@@ -6,7 +6,8 @@
 
 **Pure Provider Switch. Your setup stays yours.**
 
-A compact native provider switcher. Five harnesses in the v0.0.6 preview.
+Switch saved API connections without repeatedly editing client configuration files.
+Five harnesses in the v0.0.6 preview.
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)

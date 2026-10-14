@@ -1,0 +1,6 @@
+COMMAND ["/Library/Developer/CommandLineTools/usr/bin/python3", "-m", "unittest", "discover", "-s", "scripts", "-p", "*_test.py"]
+..............................
+----------------------------------------------------------------------
+Ran 30 tests in 5.611s
+
+OK

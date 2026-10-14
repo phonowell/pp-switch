@@ -1,0 +1,446 @@
+COMMAND ["/Users/mimiko/Projects/pp-switch/target/release/examples/measure_config"]
+{
+  "allocation_metric": "cumulative requested bytes, not live heap or process RSS",
+  "gui_initialized": false,
+  "results": [
+    {
+      "file_bytes": 1174,
+      "properties_per_object": 16,
+      "rounds": [
+        {
+          "allocation_calls_per_read": 127,
+          "microseconds_per_read": 74.21667,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 19450,
+          "round": 0
+        },
+        {
+          "allocation_calls_per_read": 67,
+          "microseconds_per_read": 42.68416,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 9776,
+          "round": 0
+        },
+        {
+          "allocation_calls_per_read": 67,
+          "microseconds_per_read": 39.149170000000005,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 9776,
+          "round": 1
+        },
+        {
+          "allocation_calls_per_read": 127,
+          "microseconds_per_read": 75.46124999999999,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 19450,
+          "round": 1
+        },
+        {
+          "allocation_calls_per_read": 127,
+          "microseconds_per_read": 78.33417,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 19450,
+          "round": 2
+        },
+        {
+          "allocation_calls_per_read": 67,
+          "microseconds_per_read": 41.35792,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 9776,
+          "round": 2
+        },
+        {
+          "allocation_calls_per_read": 67,
+          "microseconds_per_read": 37.07208,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 9776,
+          "round": 3
+        },
+        {
+          "allocation_calls_per_read": 127,
+          "microseconds_per_read": 74.44542,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 19450,
+          "round": 3
+        },
+        {
+          "allocation_calls_per_read": 127,
+          "microseconds_per_read": 78.365,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 19450,
+          "round": 4
+        },
+        {
+          "allocation_calls_per_read": 67,
+          "microseconds_per_read": 36.795,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 9776,
+          "round": 4
+        },
+        {
+          "allocation_calls_per_read": 67,
+          "microseconds_per_read": 36.3,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 9776,
+          "round": 5
+        },
+        {
+          "allocation_calls_per_read": 127,
+          "microseconds_per_read": 69.97332999999999,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 19450,
+          "round": 5
+        },
+        {
+          "allocation_calls_per_read": 127,
+          "microseconds_per_read": 69.76334,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 19450,
+          "round": 6
+        },
+        {
+          "allocation_calls_per_read": 67,
+          "microseconds_per_read": 37.217079999999996,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 9776,
+          "round": 6
+        },
+        {
+          "allocation_calls_per_read": 67,
+          "microseconds_per_read": 35.03833,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 9776,
+          "round": 7
+        },
+        {
+          "allocation_calls_per_read": 127,
+          "microseconds_per_read": 72.83375,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 19450,
+          "round": 7
+        },
+        {
+          "allocation_calls_per_read": 127,
+          "microseconds_per_read": 73.44500000000001,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 19450,
+          "round": 8
+        },
+        {
+          "allocation_calls_per_read": 67,
+          "microseconds_per_read": 35.48666,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 9776,
+          "round": 8
+        },
+        {
+          "allocation_calls_per_read": 67,
+          "microseconds_per_read": 35.61292,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 9776,
+          "round": 9
+        },
+        {
+          "allocation_calls_per_read": 127,
+          "microseconds_per_read": 72.66458,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 19450,
+          "round": 9
+        }
+      ]
+    },
+    {
+      "file_bytes": 7502,
+      "properties_per_object": 128,
+      "rounds": [
+        {
+          "allocation_calls_per_read": 591,
+          "microseconds_per_read": 330.845,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 119626,
+          "round": 0
+        },
+        {
+          "allocation_calls_per_read": 299,
+          "microseconds_per_read": 170.44958999999997,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 59864,
+          "round": 0
+        },
+        {
+          "allocation_calls_per_read": 299,
+          "microseconds_per_read": 184.54833,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 59864,
+          "round": 1
+        },
+        {
+          "allocation_calls_per_read": 591,
+          "microseconds_per_read": 343.90749999999997,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 119626,
+          "round": 1
+        },
+        {
+          "allocation_calls_per_read": 591,
+          "microseconds_per_read": 350.46542,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 119626,
+          "round": 2
+        },
+        {
+          "allocation_calls_per_read": 299,
+          "microseconds_per_read": 184.06833,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 59864,
+          "round": 2
+        },
+        {
+          "allocation_calls_per_read": 299,
+          "microseconds_per_read": 208.70708000000002,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 59864,
+          "round": 3
+        },
+        {
+          "allocation_calls_per_read": 591,
+          "microseconds_per_read": 411.99167,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 119626,
+          "round": 3
+        },
+        {
+          "allocation_calls_per_read": 591,
+          "microseconds_per_read": 356.885,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 119626,
+          "round": 4
+        },
+        {
+          "allocation_calls_per_read": 299,
+          "microseconds_per_read": 170.68625,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 59864,
+          "round": 4
+        },
+        {
+          "allocation_calls_per_read": 299,
+          "microseconds_per_read": 357.47625,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 59864,
+          "round": 5
+        },
+        {
+          "allocation_calls_per_read": 591,
+          "microseconds_per_read": 357.37291999999997,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 119626,
+          "round": 5
+        },
+        {
+          "allocation_calls_per_read": 591,
+          "microseconds_per_read": 347.00083,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 119626,
+          "round": 6
+        },
+        {
+          "allocation_calls_per_read": 299,
+          "microseconds_per_read": 186.23875,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 59864,
+          "round": 6
+        },
+        {
+          "allocation_calls_per_read": 299,
+          "microseconds_per_read": 173.56209,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 59864,
+          "round": 7
+        },
+        {
+          "allocation_calls_per_read": 591,
+          "microseconds_per_read": 344.04249999999996,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 119626,
+          "round": 7
+        },
+        {
+          "allocation_calls_per_read": 591,
+          "microseconds_per_read": 351.65166,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 119626,
+          "round": 8
+        },
+        {
+          "allocation_calls_per_read": 299,
+          "microseconds_per_read": 168.08041,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 59864,
+          "round": 8
+        },
+        {
+          "allocation_calls_per_read": 299,
+          "microseconds_per_read": 167.97415999999998,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 59864,
+          "round": 9
+        },
+        {
+          "allocation_calls_per_read": 591,
+          "microseconds_per_read": 340.15042,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 119626,
+          "round": 9
+        }
+      ]
+    },
+    {
+      "file_bytes": 29774,
+      "properties_per_object": 512,
+      "rounds": [
+        {
+          "allocation_calls_per_read": 2139,
+          "microseconds_per_read": 3200.75917,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 478282,
+          "round": 0
+        },
+        {
+          "allocation_calls_per_read": 1073,
+          "microseconds_per_read": 1812.5929199999998,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 239192,
+          "round": 0
+        },
+        {
+          "allocation_calls_per_read": 1073,
+          "microseconds_per_read": 1786.3512500000002,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 239192,
+          "round": 1
+        },
+        {
+          "allocation_calls_per_read": 2139,
+          "microseconds_per_read": 3234.36417,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 478282,
+          "round": 1
+        },
+        {
+          "allocation_calls_per_read": 2139,
+          "microseconds_per_read": 3027.62042,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 478282,
+          "round": 2
+        },
+        {
+          "allocation_calls_per_read": 1073,
+          "microseconds_per_read": 1502.7637499999998,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 239192,
+          "round": 2
+        },
+        {
+          "allocation_calls_per_read": 1073,
+          "microseconds_per_read": 1525.0441600000001,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 239192,
+          "round": 3
+        },
+        {
+          "allocation_calls_per_read": 2139,
+          "microseconds_per_read": 2967.72417,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 478282,
+          "round": 3
+        },
+        {
+          "allocation_calls_per_read": 2139,
+          "microseconds_per_read": 3173.70416,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 478282,
+          "round": 4
+        },
+        {
+          "allocation_calls_per_read": 1073,
+          "microseconds_per_read": 1566.4745899999998,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 239192,
+          "round": 4
+        },
+        {
+          "allocation_calls_per_read": 1073,
+          "microseconds_per_read": 1524.51209,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 239192,
+          "round": 5
+        },
+        {
+          "allocation_calls_per_read": 2139,
+          "microseconds_per_read": 3109.8341699999996,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 478282,
+          "round": 5
+        },
+        {
+          "allocation_calls_per_read": 2139,
+          "microseconds_per_read": 3038.0195799999997,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 478282,
+          "round": 6
+        },
+        {
+          "allocation_calls_per_read": 1073,
+          "microseconds_per_read": 1526.3854199999998,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 239192,
+          "round": 6
+        },
+        {
+          "allocation_calls_per_read": 1073,
+          "microseconds_per_read": 1555.86875,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 239192,
+          "round": 7
+        },
+        {
+          "allocation_calls_per_read": 2139,
+          "microseconds_per_read": 3068.79167,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 478282,
+          "round": 7
+        },
+        {
+          "allocation_calls_per_read": 2139,
+          "microseconds_per_read": 3047.23292,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 478282,
+          "round": 8
+        },
+        {
+          "allocation_calls_per_read": 1073,
+          "microseconds_per_read": 1511.73,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 239192,
+          "round": 8
+        },
+        {
+          "allocation_calls_per_read": 1073,
+          "microseconds_per_read": 1539.3425,
+          "reader": "single_snapshot",
+          "requested_allocation_bytes_per_read": 239192,
+          "round": 9
+        },
+        {
+          "allocation_calls_per_read": 2139,
+          "microseconds_per_read": 3017.88417,
+          "reader": "separate_connection_and_models",
+          "requested_allocation_bytes_per_read": 478282,
+          "round": 9
+        }
+      ]
+    }
+  ],
+  "scenario": "isolated Claude connection + model badge read; warm OS file cache; same binary and fixtures"
+}

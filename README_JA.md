@@ -6,7 +6,8 @@
 
 **Pure Provider Switch. 設定は、あなたのまま。**
 
-小さなネイティブ接続切り替えアプリ。0.0.6 プレビューは五つの harness に対応。
+保存した API 接続を切り替え、クライアント設定ファイルの繰り返し編集を省きます。
+0.0.6 プレビューは五つの harness に対応。
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
