@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 import release
+from performance import evaluate, MIB
 
 
 class PublicationGates(unittest.TestCase):
@@ -38,10 +39,42 @@ class PublicationGates(unittest.TestCase):
                 "sha256": release.digest(archive)}))
             for filename, scenario in [("metrics.json", "empty-window"), ("editor-metrics.json", "provider-editor")]:
                 # Budget failures must be retained, not silently made successful.
-                data = {"scenario": scenario, "samples": [{"startup_ms": 301, "idle_rss_bytes": 100,
-                    "peak_rss_bytes": 100}], "startup_max_ms": 301, "idle_max_bytes": 100,
-                    "peak_max_bytes": 100, "budget_pass": False}
+                samples = [{"startup_ms": 1001, "idle_rss_bytes": 100, "peak_rss_bytes": 100}] * 3
+                system = "Darwin" if "apple" in target else "Windows" if "windows" in target else "Linux"
+                data = {"scenario": scenario, "samples": samples,
+                        "native_action_readiness": False, "cold_start_verified": False,
+                        **evaluate(system, samples)}
                 (artifact / filename).write_text(json.dumps(data))
+
+    def test_current_routine_budget_is_separate_from_cold_start_and_validates_platform(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "metrics.json"
+            samples = [{"startup_ms": 400, "idle_rss_bytes": 129 * MIB, "peak_rss_bytes": 130 * MIB}] * 3
+            data = {"samples": samples, "native_action_readiness": False,
+                    "cold_start_verified": False, **evaluate("Darwin", samples)}
+            path.write_text(json.dumps(data))
+            self.assertTrue(release.metrics(path, "aarch64-apple-darwin")["budget_pass"])
+            self.assertFalse(release.metrics(path)["cold_start_verified"])
+            with self.assertRaisesRegex(ValueError, "platform"):
+                release.metrics(path, "x86_64-pc-windows-msvc")
+            for key, value in [("budget_limits", {}), ("startup_median_ms", 1),
+                               ("budget_pass", False), ("budget_version", 999)]:
+                with self.subTest(key=key):
+                    path.write_text(json.dumps({**data, key: value}))
+                    with self.assertRaises(ValueError):
+                        release.metrics(path)
+
+    def test_old_reports_cannot_be_reused_as_current_release_measurements(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "artifacts"
+            self.fixture(root)
+            path = root / f"pp-switch-{release.TARGETS[0]}" / "metrics.json"
+            path.write_text(json.dumps({"scenario": "empty-window",
+                "samples": [{"startup_ms": 301, "idle_rss_bytes": 100, "peak_rss_bytes": 100}],
+                "startup_max_ms": 301, "idle_max_bytes": 100, "peak_max_bytes": 100,
+                "budget_pass": False}))
+            with self.assertRaisesRegex(ValueError, "Current budget revision"):
+                self.assemble(root, Path(directory) / "release")
 
     def assemble(self, root, output):
         with patch.dict(os.environ, RELEASE_TAG=f"v{release.VERSION}", RELEASE_COMMIT="a"*40,

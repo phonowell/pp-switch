@@ -2,10 +2,12 @@
 import argparse
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import shutil
 import subprocess
+from performance import BUDGET_VERSION, MEMORY_MIB, evaluate
 
 TARGETS = ("aarch64-apple-darwin", "x86_64-apple-darwin",
            "x86_64-pc-windows-msvc", "x86_64-unknown-linux-gnu")
@@ -18,13 +20,32 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def metrics(path):
+def metrics(path, target=None):
     data = json.loads(path.read_text(encoding="utf-8"))
     samples = data["samples"]
     if not 1 <= len(samples) <= 20 or any(
-            not isinstance(s[k], (float, int)) or not 0 < s[k] < 10**10
+            type(s[k]) not in (float, int) or not math.isfinite(s[k]) or not 0 < s[k] < 10**10
             for s in samples for k in ("startup_ms", "idle_rss_bytes", "peak_rss_bytes")):
         raise ValueError(f"Missing/invalid measurement samples: {path}")
+    if (data["startup_max_ms"] != max(s["startup_ms"] for s in samples)
+            or data["idle_max_bytes"] != max(s["idle_rss_bytes"] for s in samples)
+            or data["peak_max_bytes"] != max(s["peak_rss_bytes"] for s in samples)):
+        raise ValueError(f"Inconsistent measurements: {path}")
+    if "budget_version" in data:
+        if type(data["budget_version"]) is not int or data["budget_version"] != BUDGET_VERSION:
+            raise ValueError(f"Unsupported budget version: {path}")
+        if type(data.get("cold_start_verified")) is not bool or type(data.get("native_action_readiness")) is not bool:
+            raise ValueError(f"Missing/invalid readiness provenance: {path}")
+        if target is not None:
+            system = "Darwin" if "apple" in target else "Windows" if "windows" in target else "Linux"
+            if data.get("platform_system") != system:
+                raise ValueError(f"Measurement platform does not match target: {path}")
+        expected = evaluate(data["platform_system"], samples)
+        for key, value in expected.items():
+            if data.get(key) != value or (type(value) is bool and type(data.get(key)) is not bool):
+                raise ValueError(f"Inconsistent budget field {key}: {path}")
+        return data
+    # Immutable older evidence keeps its original revision-1 interpretation.
     expected = (data["startup_max_ms"] <= 300 and data["idle_max_bytes"] <= 20 * 1024**2
                 and data["peak_max_bytes"] <= 30 * 1024**2)
     if "cold_start_verified" in data or "native_action_readiness" in data:
@@ -35,10 +56,6 @@ def metrics(path):
         expected = expected and data["native_action_readiness"] and data["cold_start_verified"]
     if data["budget_pass"] is not expected:
         raise ValueError(f"Inconsistent budget result: {path}")
-    if (data["startup_max_ms"] != max(s["startup_ms"] for s in samples)
-            or data["idle_max_bytes"] != max(s["idle_rss_bytes"] for s in samples)
-            or data["peak_max_bytes"] != max(s["peak_rss_bytes"] for s in samples)):
-        raise ValueError(f"Inconsistent measurements: {path}")
     return data
 
 
@@ -57,13 +74,13 @@ def assemble(artifacts, output):
              "- macOS application-menu and Dock-format Quit handling repaired; full window title, consistent harness icons and blue In use emphasis.",
              "- Single-snapshot Claude/DSH configuration status; raw measurements below.",
              "- Tag builds validate all four native targets before publishing.", "",
-             "Packages are unsigned (macOS is not notarized). Full PP-11 is not certified:",
-             "OS caches are retained; readiness is an event-loop marker, not cold input latency.",
+             "Packages are unsigned (macOS is not notarized). Routine PP-11 revision-2 budgets are reported below:",
+             "OS caches are retained; routine readiness is an event-loop marker, not cold input latency.",
              "RSS includes system/shared pages. Update download/install peaks are unverified.", "",
              "Migration: saved providers remain readable. Save never applies client files; use the row's Switch action. Models must be supported by your endpoint.",
              "Codex CLI/App share configuration. DSH CLI/Web share initialized headless/web home profiles; external credential stores and unsupported overrides are refused.",
              "Official restores routing, not account login. Native Dock pointer clicks and true cold-start performance are not certified by these automated checks.", "",
-             "| Target | Installed MiB | Idle / peak MiB | Readiness max ms | Editor peak MiB | Budget |",
+             "| Target | Installed MiB | Idle / peak MiB | Readiness max ms | Editor peak MiB | Routine budget |",
              "| --- | ---: | ---: | ---: | ---: | --- |"]
     for target in TARGETS:
         root = artifacts / f"pp-switch-{target}"
@@ -76,8 +93,10 @@ def assemble(artifacts, output):
                 or report["archive_bytes"] != package.stat().st_size
                 or report["sha256"] != digest(package)):
             raise ValueError(f"Invalid native package: {target}")
-        idle = metrics(root / "metrics.json")
-        editor = metrics(root / "editor-metrics.json")
+        idle = metrics(root / "metrics.json", target)
+        editor = metrics(root / "editor-metrics.json", target)
+        if any(record.get("budget_version") != BUDGET_VERSION for record in (idle, editor)):
+            raise ValueError(f"Current budget revision required for new release artifacts: {target}")
         if idle["scenario"] != "empty-window" or editor["scenario"] != "provider-editor":
             raise ValueError(f"Missing measurement scenario: {target}")
         report.update(measurement=idle, editor_measurement=editor,
@@ -91,9 +110,13 @@ def assemble(artifacts, output):
         notes.append(f"| {target} | {report['installed_bytes']/1024**2:.2f} | "
                      f"{idle['idle_max_bytes']/1024**2:.2f} / {idle['peak_max_bytes']/1024**2:.2f} | "
                      f"{idle['startup_max_ms']:.2f} | {editor['peak_max_bytes']/1024**2:.2f} | "
-                     f"{'Script pass' if passed else '**FAIL**'} |")
-    notes += ["", "Budget failures are disclosed; thresholds remain 5 MiB installed, 20 MiB idle RSS,",
-              "30 MiB startup/editor peak RSS and 300 ms readiness. See verification.json for all samples.",
+                     f"{'Routine pass' if passed else '**FAIL**'} |")
+    notes += ["", "PP-11 revision 2: installed size ≤5 MiB; cached readiness median ≤500 ms and maximum ≤1,000 ms,",
+              "with at least three fresh processes per scenario. Total RSS limits (idle / peak):", "",
+              *[f"- {'macOS' if system == 'Darwin' else system}: {idle} / {peak} MiB."
+                for system, (idle, peak) in MEMORY_MIB.items()],
+              "", "Budget failures remain disclosed. A routine pass does not certify strict cold startup or update peaks.",
+              "See verification.json for budget revisions, exact limits and all samples.",
               "", f"Implementation: `{evidence['commit']}`. [Native CI]({evidence['ci_run']}).",
               "", "macOS 0.0.2 users must download manually once (the old updater rejects the icon).",
               "Move the app to Applications and open it. Language and manual updates are in Settings."]

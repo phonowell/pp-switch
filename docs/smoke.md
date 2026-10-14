@@ -18,6 +18,8 @@ results below do not certify the changed callbacks/dialog.
 Use isolated files and fake keys. Simplified Chinese covers functionality;
 English, Traditional Chinese and Japanese cover style/property/pixels.
 Native checks ran in [dedicated CI](https://github.com/phonowell/pp-switch/actions/runs/38393449261), preserving this Mac's foreground input.
+The [revision-2 reassessment](verification.md#performance-budget-revision-2)
+changes performance acceptance only; the release's original reports remain intact.
 
 | Gate | Status |
 | --- | --- |
@@ -29,7 +31,8 @@ Native checks ran in [dedicated CI](https://github.com/phonowell/pp-switch/actio
 | Four-language light/dark styles, overflow, scrolling and blue badges | Pixel/property checks passed on both macOS targets; selected captures visually reviewed |
 | Package architecture, size, checksum and update installation/restart | Passed for all four final native archives; public checks recorded in verification |
 | Bare Cocoa comparison, native action readiness and bounded import stress | Samples retained on both macOS targets; cold start unverified |
-| RSS, peak, strict cold interactive startup and update peak | Full PP-11 not certified; memory failures disclosed |
+| Routine RSS, peak and cached readiness (PP-11 revision 2) | Retained v0.0.6 samples pass retrospective reassessment; no new measurements |
+| Strict cold interactive startup and update peak | Unverified separate investigations; original revision-1 failures retained |
 | Documentation and illustrations | Markdown/link/translation and deterministic SVG checks passed |
 | Local physical Windows/Linux/Intel desktop | Unverified; CI is separate evidence |
 

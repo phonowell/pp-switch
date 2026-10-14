@@ -3,8 +3,9 @@
 Status: v0.0.6 preview contract. Changes to behavior start here.
 
 Release policy: functional previews may be published with disclosed performance
-failures. Report functional and performance checks separately. PP-11 remains
-the optimization budget; previews do not relax its thresholds or expand scope.
+failures. Report functional and performance checks separately. PP-11 defines
+versioned performance budgets; changing them requires baseline evidence and an
+explicit contract revision, never a silent relaxation for a preview.
 
 ## Purpose
 
@@ -87,8 +88,37 @@ Display configuration status by reading supported user-level client files, rathe
 
 ### PP-11: Performance budgets
 
-The primary work remains reducing macOS memory, startup time and package size,
-with comparable release-build measurements. Installed application-owned files ≤5 MiB; steady idle total RSS ≤20 MiB; startup/editor peak total RSS ≤30 MiB; cold interactive startup ≤300 ms. Measure a stripped release build on each platform, state hardware/method and report failures. These are budgets, not verified claims. No subprocess/runtime exclusions for memory.
+Budget revision 2 (2026-10-14) uses platform-specific total RSS limits:
+
+| Platform | Steady idle total RSS | Startup/editor peak total RSS |
+| --- | ---: | ---: |
+| macOS (Apple Silicon / Intel) | ≤160 MiB | ≤192 MiB |
+| Windows x64 | ≤32 MiB | ≤48 MiB |
+| Linux x64 | ≤32 MiB | ≤48 MiB |
+
+Installed application-owned files remain ≤5 MiB. Routine launch readiness with
+OS caches retained must have a median ≤500 ms and maximum ≤1,000 ms over at least
+three fresh processes per scenario. Empty-window and provider-editor scenarios
+are required. Readiness is the first event-loop marker unless native input and
+a displayed frame are explicitly verified; always label which was measured.
+Native import stress uses the same limits when measured. One-process diagnostic
+records cannot certify a budget; interleaved native records are evaluated together.
+
+Strict cold interactive startup and update download/install peaks are separate,
+unverified investigations until dedicated experiments establish their baselines;
+they do not force every routine measurement to fail. A routine budget pass never
+certifies them. State hardware, OS, renderer, method and scenario, retain raw
+samples, and use comparable stripped release builds. Total RSS includes shared
+system mappings; physical footprint, allocations and subtraction of a bare-window
+baseline are diagnostics, never substitutes. No subprocess/runtime exclusions.
+
+The [budget rationale](docs/verification.md#performance-budget-revision-2)
+uses both native CI and local macOS measurements. These are regression ceilings,
+not verified efficiency claims. Continue reducing controllable application costs;
+investigate same-host increases rather than spending all available headroom.
+Reports record the budget revision and limits. Preserve historical failures under
+their original contract; any reassessment is separate and does not establish an
+implementation improvement. Revise budgets only with new baseline evidence.
 
 ### PP-12: Public evidence and CI
 
@@ -131,7 +161,7 @@ Follow system light/dark appearance without a theme selector or saved preference
 Recolor existing widgets without losing drafts, text selection or focus. Chinese native
 functional acceptance and all four languages' light/dark style checks must cover
 row actions, settings, localized badge visibility and keyboard navigation.
-PP-11 budgets remain unchanged.
+UI changes remain subject to the current PP-11 budgets.
 
 ### PP-15: Manual updates
 

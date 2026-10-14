@@ -2,6 +2,62 @@
 
 [Documentation](README.md) · [Acceptance](smoke.md) · [Reproduce](../CONTRIBUTING.md)
 
+## Performance budget revision 2
+
+On 2026-10-14, [PP-11](../SPEC.md#pp-11-performance-budgets) changed from a
+universal 20/30 MiB RSS limit and 300 ms cold-start goal to explicit platform
+ceilings and routine cached-readiness checks. This revises acceptance, not the
+implementation. Release tables below preserve their original revision-1 failures.
+
+| Platform | Idle total RSS ceiling | Startup/editor peak ceiling |
+| --- | ---: | ---: |
+| macOS ARM64 / Intel | 160 MiB | 192 MiB |
+| Windows x64 | 32 MiB | 48 MiB |
+| Linux x64 | 32 MiB | 48 MiB |
+
+Installed size stays ≤5 MiB. Cached readiness requires a median ≤500 ms and
+maximum ≤1,000 ms across at least three fresh processes per scenario. The first
+event-loop marker is explicitly a proxy; only native-action captures establish
+input/display readiness. Strict cold interactive startup and update peaks remain
+separate unverified investigations rather than impossible prerequisites for a
+routine pass. A pass does not certify all performance scenarios.
+
+The [retrospective reassessment](measurements/performance-budget-20261014/reassessment.json)
+retains every source path/hash, original result and revision-2 result. No windows
+were launched and no old evidence was rewritten. The rationale includes both
+macOS 15 native CI and the documented macOS 27 / M4 local checkpoints:
+
+- Bare Cocoa idle RSS was 53.3–53.7 MiB on ARM64 and 31.9–32.0 MiB on Intel;
+  even a blank system window exceeded the old limit. Native PPS editor peaks were
+  63.44/41.87 MiB, and bounded import peaks 67.23/44.55 MiB.
+- macOS 27 local empty/editor RSS reached 110.77/129.00 MiB. The macOS limits
+  leave approximately 24% idle and 49% peak headroom above that editor baseline;
+  choosing limits only from macOS 15 CI would exclude the developer's newer OS.
+- v0.0.6 Windows/Linux editor idle RSS reached 15.80/22.36 MiB, with peaks
+  16.16/22.38 MiB. The 32/48 MiB ceilings retain bounded platform headroom.
+- Native import readiness medians reached 298.56 ms on ARM64 and 430.68 ms on
+  Intel. The 500 ms median and 1,000 ms maximum allow observed routine launches
+  while still rejecting the retained local baseline's 1,213.08 ms outlier.
+
+All v0.0.6 retained empty/editor and macOS native PPS scenarios fit revision 2;
+this is a reassessment of those binaries, not fresh verification of today's build
+or a measured performance gain. The older local baseline still fails the maximum
+readiness limit. Total RSS includes system/shared mappings; a bare Cocoa window
+is diagnostic and cannot be subtracted to claim compliance. Renderer provenance
+is the release's Rust/FLTK build and the compiled Cocoa comparison.
+
+Continue investigating same-host regressions and controllable application costs.
+New OS/toolkit baselines may justify a documented future revision; do not raise
+limits automatically or consume headroom without explanation. Optimization issue
+#1 remains separate from the revised routine acceptance result.
+
+[Revision checks](measurements/performance-budget-20261014/checks.json) retain
+commands, raw logs, exit codes and source hashes for format, all-target Clippy,
+82 Rust tests, 27 Python tests, release bins/examples and package validation.
+Documentation/link/translation and deterministic illustrations passed. Shared
+desktop GUI and new runtime measurements were skipped; the report records a
+concurrent updater change included in its source snapshot, outside this revision.
+
 ## Release: 0.0.6
 
 [Published preview](https://github.com/phonowell/pp-switch/releases/tag/v0.0.6): implementation `74ee93fedb2fc2c8deed846cb15d7310190a5a16`.
@@ -26,7 +82,7 @@ Claude Add/Edit/import fields suggest `claude-sonnet-5` when no explicit,
 mapped or same-connection model exists; clearing opts out of model writes.
 That suggestion does not guarantee endpoint compatibility.
 
-| Native runner | Installed bytes | Idle / peak MiB | Readiness max ms | Editor peak MiB | Both script budgets |
+| Native runner | Installed bytes | Idle / peak MiB | Readiness max ms | Editor peak MiB | Both original budgets |
 | --- | ---: | ---: | ---: | ---: | --- |
 | macOS 15 · ARM64 | 2,788,597 | 48.55 / 48.59 | 180.01 | 51.72 | Fail |
 | macOS 15 · Intel | 3,094,789 | 32.41 / 32.41 | 136.63 | 35.86 | Fail |
@@ -35,7 +91,7 @@ That suggestion does not guarantee endpoint compatibility.
 
 [Raw release evidence](measurements/v0.0.6/verification.json) ·
 [Public download and checksum validation](measurements/v0.0.6/publication-verification.json).
-All installed packages fit 5 MiB. macOS total RSS exceeds the original memory
+All installed packages fit 5 MiB. macOS total RSS exceeds the original revision-1 memory
 budget; native Cocoa comparison, import stress and action-readiness samples are
 retained. A bare Cocoa window is diagnostic, not a feature-equivalent baseline.
 Cold startup and update peaks remain unverified; no overall memory/startup gain
@@ -83,6 +139,11 @@ second. READY is the first event-loop timer, not verified cold interactive readi
 OS caches remain. Peak is the OS high-water mark. Installed size includes all
 owned files: executable, metadata, icons and license notices. Shared pages and
 system fonts count toward RSS; physical footprint and allocations are other metrics.
+
+New reports apply revision 2 via `scripts/performance.py`, retain separate
+memory/readiness checks and require three samples for a routine pass. Historical
+reports keep their original fields/results; the linked reassessment records the
+new interpretation separately.
 
 CI uses separate VMs, with Xvfb on Linux; results are not controlled cross-platform
 comparisons. Minimum OS declarations do not prove every version was tested.

@@ -1,0 +1,6 @@
+COMMAND ["/Users/mimiko/.cargo/bin/cargo", "clippy", "--locked", "--all-targets", "--", "-D", "warnings"]
+    Blocking waiting for file lock on build directory
+   Compiling fltk-sys v1.5.23
+    Checking fltk v1.5.23
+    Checking pp-switch v0.0.6 (/Users/mimiko/Projects/pp-switch)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 31.58s

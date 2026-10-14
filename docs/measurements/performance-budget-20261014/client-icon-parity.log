@@ -1,0 +1,2 @@
+COMMAND ["/Users/mimiko/Projects/pp-switch/target/performance-check-env/bin/python", "scripts/client_icons.py", "--check"]
+Client SVG/native path parity passed

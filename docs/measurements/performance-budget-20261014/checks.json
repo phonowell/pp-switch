@@ -1,0 +1,138 @@
+{
+  "background_report": "background-report.json",
+  "background_report_sha256": "0272de1af94b792a5d45f181212c353f6fb16139bf6fd9ce1ff6d607d87fee8c",
+  "background_pass": true,
+  "checks": [
+    {
+      "name": "lucide-parity",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.6,
+      "log": "lucide-parity.log"
+    },
+    {
+      "name": "client-icon-parity",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 1.0,
+      "log": "client-icon-parity.log"
+    },
+    {
+      "name": "format",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.93,
+      "log": "format.log"
+    },
+    {
+      "name": "clippy",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 32.04,
+      "log": "clippy.log"
+    },
+    {
+      "name": "behavior",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 94.3,
+      "log": "behavior.log"
+    },
+    {
+      "name": "release-tests",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 101.68,
+      "log": "release-tests.log"
+    },
+    {
+      "name": "release-build",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 241.08,
+      "log": "release-build.log"
+    },
+    {
+      "name": "config-read-comparison",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 5.42,
+      "log": "config-read-comparison.log"
+    },
+    {
+      "name": "documentation",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.29,
+      "log": "documentation.log"
+    },
+    {
+      "name": "package",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.3,
+      "log": "package.log"
+    },
+    {
+      "name": "update-package",
+      "status": "passed",
+      "exit_code": 0,
+      "seconds": 0.71,
+      "log": "update-package.log"
+    },
+    {
+      "name": "documentation-final",
+      "status": "failed",
+      "exit_code": 1,
+      "log": "documentation-final.log",
+      "cause": "The linked checks.json index had not yet been written; retained before targeted recheck."
+    },
+    {
+      "name": "documentation-final-recheck",
+      "status": "passed",
+      "exit_code": 0,
+      "log": "documentation-final-recheck.log"
+    },
+    {
+      "name": "illustrations",
+      "status": "passed",
+      "exit_code": 0,
+      "log": "illustrations.log"
+    },
+    {
+      "name": "whitespace",
+      "status": "passed",
+      "exit_code": 0,
+      "log": "whitespace.log"
+    }
+  ],
+  "task_owned_source_sha256": {
+    "SPEC.md": "b38cffeb995a3495ff512a3d7dcc8ae4b7ce3789b8135d033c136e16bf6542cb",
+    "CONTRIBUTING.md": "9748ffa5a63e343fc9950e35d081fa6274f32b8dd5c1b0f2f53fdff7f303b173",
+    "README.md": "36cd2403c94d314c75851f8985c8b6518377a94cf35baeacabed34ea07f8cd63",
+    "README_ZH.md": "918db10d6e5e5853cc0902fc39656fab58d7ff447facd202f9db39c6a6df7340",
+    "README_JA.md": "2642a2af05802165dea751fbc8b3e362a511aaab684971937e80fc95959671fb",
+    "README_DE.md": "5306a862e8f1802c82731f90c1f9ad55c0786a0c5f21148e05df42e770d8f86c",
+    "docs/verification.md": "af450317b87630b6d7c69d073b7aefadbd296f68a5dd465ad4123252c591df7d",
+    "docs/smoke.md": "9e6503a13270e8252c0800bc2416a75ec4f7db76a0ff124f8378231f6af4767a",
+    "docs/development-0.0.5.md": "31032a112a223050dc78f64cffd77e4809f3903f7e9f558a0f3de5cd00f9f61c",
+    "scripts/performance.py": "b794caee8ece03a4393f69486d0269a4822dab388ae23850d4c6e42538ab4e0b",
+    "scripts/performance_test.py": "7939b561e1b0db23039f9bf114e500b1720336277a32a27a0621186d97c1ec31",
+    "scripts/measure.py": "439d8a3e69f6a018df5e23c793d3fa0d74fa7e25a8732baa50587fa484a5f7f5",
+    "scripts/mac_performance.py": "1a65d91e9153cf50e0c78d59b6d1d8ffaea311f9417cd05f75f9480caaf32b7f",
+    "scripts/release.py": "0ec76de7353394af802568dd4128f06e56d1178d90774dca0d083bb275570c23",
+    "scripts/release_test.py": "9c28b44fd5e3d9df14525ccac6e7ed8c91ea96c380d937028966e9627a395a23"
+  },
+  "concurrent_input": {
+    "path": "src/update.rs",
+    "sha256": "06333a2610c8aaa7b93f6023efab1fc9d384a9f9232cbd5ba3edbba8a014e083",
+    "ownership": "parallel updater work; preserved, not edited by this task"
+  },
+  "reassessment": "reassessment.json",
+  "limits": [
+    "Desktop GUI, native input and new performance measurements skipped on shared workstation.",
+    "Retrospective budget compliance is not a measured implementation gain.",
+    "Only local macOS background checks ran; other native platforms require their CI hosts."
+  ],
+  "targeted_rechecks_pass": true
+}

@@ -10,6 +10,7 @@ import statistics
 import subprocess
 import threading
 import time
+from performance import evaluate, limits
 
 parser = argparse.ArgumentParser()
 parser.add_argument("binary", type=Path)
@@ -29,6 +30,7 @@ if args.scenario and not args.native_ready:
 if not args.allow_desktop_input and os.environ.get("CI") != "true":
     raise SystemExit("SKIPPED: measurement windows require --allow-desktop-input or a dedicated CI session")
 
+limits(platform.system())
 windows = os.name == "nt"
 if windows:
     from ctypes import wintypes
@@ -111,12 +113,9 @@ report = {"os": platform.platform(), "machine": platform.machine(), "scenario": 
           "binary": str(args.binary.resolve()), "command": command,
           "method": "fresh processes; OS cache not cleared; " + ("READY after native event action and displayed frame" if args.native_ready else "READY on first event-loop timer") + "; 50 ms RSS samples; idle after 1 s; OS high-water mark",
           "native_action_readiness": args.native_ready, "cold_start_verified": False,
-          "samples": samples, "startup_median_ms": round(statistics.median(s["startup_ms"] for s in samples), 2),
-          "startup_max_ms": max(s["startup_ms"] for s in samples),
-          "idle_max_bytes": max(s["idle_rss_bytes"] for s in samples), "peak_max_bytes": max(s["peak_rss_bytes"] for s in samples)}
-report["measured_threshold_pass"] = report["startup_max_ms"] <= 300 and report["idle_max_bytes"] <= 20 * 1024 * 1024 and report["peak_max_bytes"] <= 30 * 1024 * 1024
-# Cache-retaining launches cannot certify the complete cold-start requirement.
-report["budget_pass"] = report["measured_threshold_pass"] and report["native_action_readiness"] and report["cold_start_verified"]
+          "samples": samples}
+# Routine readiness is explicitly distinct from strict cold interactive startup.
+report.update(evaluate(platform.system(), samples))
 text = json.dumps(report, indent=2) + "\n"
 print(text)
 if args.output:

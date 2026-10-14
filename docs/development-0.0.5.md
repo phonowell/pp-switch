@@ -94,8 +94,10 @@ measurements and native Windows/Linux/Intel branch checks. CodeGraph is unavaila
 (no worktree index); bounded source and consumer reads were used instead.
 
 The primary release goal remains macOS memory, startup and package size.
-[Performance evidence](verification.md) establishes no material memory/startup gain;
-PP-11 budgets remain unchanged. The older unexplained native hang is distinct from
+[Performance evidence](verification.md) establishes no material memory/startup gain.
+At this historical checkpoint PP-11 budgets were unchanged; the
+[2026-10-14 revision](verification.md#performance-budget-revision-2) now defines
+routine performance acceptance. The older unexplained native hang is distinct from
 this termination cancellation and remains unresolved.
 
 ## Earlier checkpoints

@@ -1,0 +1,6 @@
+COMMAND ["/Users/mimiko/.cargo/bin/cargo", "build", "--locked", "--release", "--bins", "--examples"]
+    Blocking waiting for file lock on build directory
+   Compiling fltk-sys v1.5.23
+   Compiling fltk v1.5.23
+   Compiling pp-switch v0.0.6 (/Users/mimiko/Projects/pp-switch)
+    Finished `release` profile [optimized] target(s) in 4m 00s

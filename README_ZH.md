@@ -71,14 +71,20 @@ CCS/Sub2API 链接打开未保存的预览；明确导入的模型优先于编�
 
 **0.0.6 原生 CI 实测：**
 
-| 原生 CI | 安装大小 MiB | 空闲 RSS MiB | 脚本预算 |
+| 原生 CI | 安装大小 MiB | 空闲 RSS MiB | 原预算 |
 | --- | ---: | ---: | --- |
 | macOS 15 · ARM64 | 2.66 | 48.55 | 失败 |
 | macOS 15 · Intel | 2.95 | 32.41 | 失败 |
 | Windows Server 2022 · x64 | 3.12 | 15.21 | 失败 |
 | Ubuntu 22.04 · x64 · Xvfb | 3.40 | 21.20 | 失败 |
 
-所有安装包均小于 5 MiB。macOS RSS 仍超内存预算；严格冷启动和更新峰值尚未验证。不宣称整体内存或启动速度改善。[SPEC PP-11](SPEC.md#acceptance-contract) · [原始数据](docs/verification.md#release-006)。
+所有安装包均小于 5 MiB。上表保留原预算的失败结果。PP-11 第 2 版规定：
+macOS 空闲/峰值总 RSS 上限为 160/192 MiB，Windows/Linux 为 32/48 MiB；
+每个场景至少启动三次，保留系统缓存的就绪时间中位数 ≤500 ms、最大值 ≤1,000 ms。
+已有 v0.0.6 样本符合这些日常指标；这是标准复评，不代表性能改善。
+严格冷启动和更新峰值仍未验证。
+[当前指标与依据](docs/verification.md#performance-budget-revision-2) ·
+[原始数据](docs/verification.md#release-006)。
 
 ## 参与开发
 

@@ -76,14 +76,22 @@ Anbieteranfragen. Updates prüfen SHA-256 dieses Repositorys und ersetzen nur Ap
 
 **Native CI-Messungen für 0.0.6:**
 
-| Native CI | Installiert MiB | Leerlauf-RSS MiB | Skriptbudget |
+| Native CI | Installiert MiB | Leerlauf-RSS MiB | Ursprüngliches Budget |
 | --- | ---: | ---: | --- |
 | macOS 15 · ARM64 | 2.66 | 48.55 | Nicht bestanden |
 | macOS 15 · Intel | 2.95 | 32.41 | Nicht bestanden |
 | Windows Server 2022 · x64 | 3.12 | 15.21 | Nicht bestanden |
 | Ubuntu 22.04 · x64 · Xvfb | 3.40 | 21.20 | Nicht bestanden |
 
-Alle Pakete sind kleiner als 5 MiB. macOS-RSS überschreitet das Speicherbudget; echter Kaltstart und Updatespitzen sind ungeprüft. Keine allgemeine Speicher- oder Startzeitverbesserung wird behauptet. [SPEC PP-11](SPEC.md#acceptance-contract) · [Messdaten](docs/verification.md#release-006).
+Alle Pakete sind kleiner als 5 MiB. Die Tabelle bewahrt die ursprünglichen Budgetfehler.
+PP-11 Revision 2 begrenzt den gesamten Leerlauf-/Spitzen-RSS auf 160/192 MiB unter
+macOS und 32/48 MiB unter Windows/Linux. Je Szenario sind mindestens drei Starts
+mit erhaltenen System-Caches nötig: Bereitschaftsmedian ≤500 ms, Maximum ≤1.000 ms.
+Die gespeicherten v0.0.6-Samples erfüllen diese Routinegrenzen; das ist eine
+Neubewertung, keine Leistungsverbesserung. Echter Kaltstart und Updatespitzen
+bleiben ungeprüft.
+[Aktuelle Budgets und Begründung](docs/verification.md#performance-budget-revision-2) ·
+[Ursprüngliche Messdaten](docs/verification.md#release-006).
 
 ## Mitwirken
 

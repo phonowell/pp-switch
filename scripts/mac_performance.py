@@ -11,6 +11,7 @@ from pathlib import Path
 import platform
 import subprocess
 import sys
+from performance import evaluate
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -67,6 +68,8 @@ def main():
         "boot_session": subprocess.check_output(["sysctl", "-n", "kern.boottime"], text=True).strip(),
         "binaries": {name: {"path": str(binary), "sha256": hashlib.sha256(binary.read_bytes()).hexdigest()} for name, binary in binaries.items()},
         "commands": commands, "measurements": evidence,
+        "scenario_budgets": {scenario: evaluate("Darwin", [sample for record in records for sample in record["samples"]])
+                             for scenario, records in evidence.items() if scenario != "cocoa"},
         "cold_start_verified": False,
         "limitations": ["OS caches retained; no true cold-start acceptance", "Cocoa baseline is a blank window, not a feature-equivalent UI", "Native terminate entry point checked; actual Dock/menu clicks require separate acceptance", "Total RSS includes shared mappings; baseline subtraction is diagnostic, not the budget metric"],
     }

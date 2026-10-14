@@ -174,10 +174,16 @@ generated ZIP or tar.gz filename. Packaging includes app metadata, the native
 icon and license notices, and enforces the installed-size budget. The archive
 smoke checks the actual package against the updater's whitelist and architecture.
 
-Keep [PP-11](SPEC.md#pp-11-performance-budgets) thresholds unchanged. The measurement
-script can fail after functional checks pass; preserve its JSON and report the
-failure. Its event-loop marker does not certify cold interactive startup or
-editor/update peaks. For macOS issue #1 use `python3 scripts/mac_performance.py
+Use [PP-11 revision 2](SPEC.md#pp-11-performance-budgets), implemented once in
+`scripts/performance.py`: macOS idle/peak RSS ≤160/192 MiB, Windows/Linux
+≤32/48 MiB, installed size ≤5 MiB, cached readiness median ≤500 ms and maximum
+≤1,000 ms over at least three fresh processes per scenario. Reports retain the
+revision, exact limits, separate memory/readiness results and sample sufficiency.
+`--enforce` checks those routine limits; it can fail after functional checks pass.
+Preserve its JSON and report the failure. The event-loop marker is a readiness
+proxy, never proof of native input or strict cold interactive startup. Editor
+peak is measured; update download/install peaks remain a separate investigation.
+For macOS issue #1 use `python3 scripts/mac_performance.py
 target/release/examples/mac_acceptance target/mac-performance` on a dedicated
 desktop. It interleaves a compiled bare Cocoa window with PPS empty/editor/import
 scenarios, measures total RSS and OS high-water marks, and requires a dispatched
@@ -190,10 +196,15 @@ suppressed. It sends menu and Dock-format quit AppleEvents and checks the real
 delegate, termination, unchanged fixture files and unchanged foreground process.
 The missing-handler negative control must reproduce `errAEEventNotHandled`.
 These background tests do not replace visual or native pointer acceptance.
-All commands, hashes and raw records are retained. Cached launches are explicitly
-not a verified cold start: `budget_pass` remains false without that evidence.
-Do not purge shared-machine caches; a separately documented reboot/first-launch
-experiment is still required. `measure_config` compares separate vs single-snapshot
+All commands, hashes and raw records are retained. Cached launches can pass the
+routine budget while `cold_start_verified` remains false. Native measurements
+aggregate the interleaved single-process records into one budget result for each
+PPS scenario; the bare Cocoa samples remain diagnostic. Cold startup requires a
+separately documented reboot/first-launch experiment; never purge shared-machine
+caches. Old reports retain their original budget interpretation. Release assembly
+requires revision-2 reports matching each target; it cannot reuse old reports as
+new measurements. Reassessments live separately with source hashes and never
+rewrite released evidence. `measure_config` compares separate vs single-snapshot
 connection/model reads in the same release binary and synthetic files; cumulative
 requested allocation bytes are not RSS or live heap.
 [Verification](docs/verification.md) defines the method

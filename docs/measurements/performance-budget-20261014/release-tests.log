@@ -1,0 +1,6 @@
+COMMAND ["/Users/mimiko/Projects/pp-switch/target/performance-check-env/bin/python", "-m", "unittest", "discover", "-s", "scripts", "-p", "*_test.py"]
+...........................
+----------------------------------------------------------------------
+Ran 27 tests in 100.755s
+
+OK

@@ -74,14 +74,21 @@ only application-owned files. [Behavior contract](SPEC.md).
 
 **0.0.6 native CI measurements:**
 
-| Native CI | Installed MiB | Idle RSS MiB | Script budget |
+| Native CI | Installed MiB | Idle RSS MiB | Original budget |
 | --- | ---: | ---: | --- |
 | macOS 15 · ARM64 | 2.66 | 48.55 | Fail |
 | macOS 15 · Intel | 2.95 | 32.41 | Fail |
 | Windows Server 2022 · x64 | 3.12 | 15.21 | Fail |
 | Ubuntu 22.04 · x64 · Xvfb | 3.40 | 21.20 | Fail |
 
-All packages are below 5 MiB. macOS RSS exceeds the memory budget; cold interactive startup and update peaks remain unverified. No overall memory/startup improvement is claimed. [SPEC PP-11](SPEC.md#acceptance-contract) · [Raw data](docs/verification.md#release-006).
+All packages are below 5 MiB. The table preserves the original budget failures.
+PP-11 revision 2 sets idle/peak total RSS ceilings of 160/192 MiB on macOS and
+32/48 MiB on Windows/Linux; cached readiness requires median ≤500 ms and maximum
+≤1,000 ms over at least three launches per scenario. Retained v0.0.6 samples fit
+these routine limits; this is a reassessment, not a performance improvement.
+Strict cold interactive startup and update peaks remain unverified.
+[Current budgets and rationale](docs/verification.md#performance-budget-revision-2) ·
+[Original raw data](docs/verification.md#release-006).
 
 ## Contribute
 

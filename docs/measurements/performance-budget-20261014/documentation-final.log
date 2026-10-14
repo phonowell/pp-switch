@@ -1,0 +1,7 @@
+COMMAND ["rtk", "proxy", "python3", "scripts/docs_check.py"]
+Traceback (most recent call last):
+  File "/Users/mimiko/Projects/pp-switch/scripts/docs_check.py", line 120, in <module>
+    print(json.dumps(check(args.record), ensure_ascii=False, indent=2))
+  File "/Users/mimiko/Projects/pp-switch/scripts/docs_check.py", line 108, in check
+    raise ValueError("\n".join(errors))
+ValueError: Missing link: docs/verification.md -> measurements/performance-budget-20261014/checks.json

@@ -1,0 +1,1139 @@
+{
+  "date": "2026-10-14",
+  "budget_version": 2,
+  "contract": "SPEC.md#pp-11-performance-budgets",
+  "policy_source": {
+    "path": "scripts/performance.py",
+    "sha256": "b794caee8ece03a4393f69486d0269a4822dab388ae23850d4c6e42538ab4e0b"
+  },
+  "kind": "retrospective reassessment of retained samples; no new GUI launches",
+  "limitations": [
+    "Original reports and failures unchanged.",
+    "Budget revision is not an implementation or performance improvement.",
+    "Bare Cocoa is diagnostic, not a feature-equivalent application.",
+    "Cached readiness is distinct from strict cold interactive startup.",
+    "Local v0.0.5 records describe those binaries, not the current build."
+  ],
+  "assessments": [
+    {
+      "label": "aarch64-apple-darwin/metrics.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/metrics.json",
+          "sha256": "6979dfe1188940756fe86d8cc5b76b80cf6b10a137c2d4beccc2675ee082ea56",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+      "scenario": "empty-window",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 180.01,
+          "idle_rss_bytes": 50905088,
+          "peak_rss_bytes": 50954240
+        },
+        {
+          "startup_ms": 94.08,
+          "idle_rss_bytes": 50446336,
+          "peak_rss_bytes": 50462720
+        },
+        {
+          "startup_ms": 105.51,
+          "idle_rss_bytes": 50610176,
+          "peak_rss_bytes": 50626560
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 105.51,
+        "startup_max_ms": 180.01,
+        "idle_max_bytes": 50905088,
+        "peak_max_bytes": 50954240,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "aarch64-apple-darwin/editor-metrics.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/editor-metrics.json",
+          "sha256": "893a8b5d69f465fb5af6cf19623db21ef2619405954287ff73c9f55a832f501a",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+      "scenario": "provider-editor",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 173.66,
+          "idle_rss_bytes": 53739520,
+          "peak_rss_bytes": 53755904
+        },
+        {
+          "startup_ms": 128.44,
+          "idle_rss_bytes": 54198272,
+          "peak_rss_bytes": 54231040
+        },
+        {
+          "startup_ms": 133.84,
+          "idle_rss_bytes": 54116352,
+          "peak_rss_bytes": 54132736
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 133.84,
+        "startup_max_ms": 173.66,
+        "idle_max_bytes": 54198272,
+        "peak_max_bytes": 54231040,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "aarch64-apple-darwin/native-cocoa",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/cocoa-0.json",
+          "sha256": "01f1904d74b54a42eaee554d8882683037279f35be1b9d8fec7073f297f7ce71",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/cocoa-1.json",
+          "sha256": "d6f16ec15c81d2398268783f2f33b33ebc7066b6931a64480da9b7b74c795e13",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/cocoa-2.json",
+          "sha256": "f08797eb81c1eebe145c940fb090df24919288ad200ce6ebb3696caceb788659",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+      "scenario": "empty-window",
+      "native_action_readiness": true,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 244.29,
+          "idle_rss_bytes": 56262656,
+          "peak_rss_bytes": 56295424
+        },
+        {
+          "startup_ms": 221.5,
+          "idle_rss_bytes": 55918592,
+          "peak_rss_bytes": 55951360
+        },
+        {
+          "startup_ms": 146.87,
+          "idle_rss_bytes": 55984128,
+          "peak_rss_bytes": 56016896
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 221.5,
+        "startup_max_ms": 244.29,
+        "idle_max_bytes": 56262656,
+        "peak_max_bytes": 56295424,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "aarch64-apple-darwin/native-empty",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/empty-0.json",
+          "sha256": "7a62a8a45ca06f5fb0581d8e4cfbbad986da428360832ff4462fe34fa2b1d34d",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/empty-1.json",
+          "sha256": "c8c9dfd6064986a3233a6f5ea985e96abe6227dd313aed3a858787de5ec325f1",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/empty-2.json",
+          "sha256": "d5983171978d2b1019f1ccdf3e02f28845b6a982f51950c9ccd5a9f21623c288",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+      "scenario": "empty",
+      "native_action_readiness": true,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 235.58,
+          "idle_rss_bytes": 59817984,
+          "peak_rss_bytes": 60342272
+        },
+        {
+          "startup_ms": 237.86,
+          "idle_rss_bytes": 59539456,
+          "peak_rss_bytes": 60063744
+        },
+        {
+          "startup_ms": 240.3,
+          "idle_rss_bytes": 59588608,
+          "peak_rss_bytes": 59932672
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 237.86,
+        "startup_max_ms": 240.3,
+        "idle_max_bytes": 59817984,
+        "peak_max_bytes": 60342272,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "aarch64-apple-darwin/native-editor",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/editor-0.json",
+          "sha256": "e7c993b562fe795caa191c9dffd248033780ba6b0744218c1fc4f0d17fa83429",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/editor-1.json",
+          "sha256": "b6a7296915b0ff0624c391a443a7b0e62d5d058b1f62c49a068559c878103800",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/editor-2.json",
+          "sha256": "d4671e19f5f90b5538011220c8ce2a5d1c106d4a2299a74cc9eab13fcf3bd2d6",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+      "scenario": "editor",
+      "native_action_readiness": true,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 221.81,
+          "idle_rss_bytes": 66404352,
+          "peak_rss_bytes": 66519040
+        },
+        {
+          "startup_ms": 208.02,
+          "idle_rss_bytes": 66076672,
+          "peak_rss_bytes": 66191360
+        },
+        {
+          "startup_ms": 245.46,
+          "idle_rss_bytes": 66338816,
+          "peak_rss_bytes": 66453504
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 221.81,
+        "startup_max_ms": 245.46,
+        "idle_max_bytes": 66404352,
+        "peak_max_bytes": 66519040,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "aarch64-apple-darwin/native-import",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/import-0.json",
+          "sha256": "69bfcf85bb4741e9c94a1b00879df10fdc6179c8a07bf16f06ed237b33ff4b82",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/import-1.json",
+          "sha256": "8effe226cdcdfbb413c3fbaf0e633995556d6316b91341d69d0b259eb9394246",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/import-2.json",
+          "sha256": "8ccf6b648315d3943e7763e8e7766265b8aa4849e10bda3d1aaa3e0f55a74640",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-arm64-arm-64bit-Mach-O",
+      "scenario": "import",
+      "native_action_readiness": true,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 298.56,
+          "idle_rss_bytes": 70320128,
+          "peak_rss_bytes": 70500352
+        },
+        {
+          "startup_ms": 231.47,
+          "idle_rss_bytes": 70090752,
+          "peak_rss_bytes": 70189056
+        },
+        {
+          "startup_ms": 347.46,
+          "idle_rss_bytes": 70221824,
+          "peak_rss_bytes": 70500352
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 298.56,
+        "startup_max_ms": 347.46,
+        "idle_max_bytes": 70320128,
+        "peak_max_bytes": 70500352,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "x86_64-apple-darwin/metrics.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/metrics.json",
+          "sha256": "0fb95ee6d2d2f5cb39caa3e57dcd35901287839756aa27fcad678bf47532ddae",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+      "scenario": "empty-window",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 125.97,
+          "idle_rss_bytes": 33640448,
+          "peak_rss_bytes": 33652736
+        },
+        {
+          "startup_ms": 136.63,
+          "idle_rss_bytes": 33845248,
+          "peak_rss_bytes": 33861632
+        },
+        {
+          "startup_ms": 121.98,
+          "idle_rss_bytes": 33984512,
+          "peak_rss_bytes": 33984512
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 125.97,
+        "startup_max_ms": 136.63,
+        "idle_max_bytes": 33984512,
+        "peak_max_bytes": 33984512,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "x86_64-apple-darwin/editor-metrics.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/editor-metrics.json",
+          "sha256": "278b235b36a41bce94ddb3f89ff9f7e099529bcbc010d40360e137fdf4955d2b",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+      "scenario": "provider-editor",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 148.12,
+          "idle_rss_bytes": 37597184,
+          "peak_rss_bytes": 37601280
+        },
+        {
+          "startup_ms": 138.0,
+          "idle_rss_bytes": 37298176,
+          "peak_rss_bytes": 37302272
+        },
+        {
+          "startup_ms": 142.2,
+          "idle_rss_bytes": 37486592,
+          "peak_rss_bytes": 37494784
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 142.2,
+        "startup_max_ms": 148.12,
+        "idle_max_bytes": 37597184,
+        "peak_max_bytes": 37601280,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "x86_64-apple-darwin/native-cocoa",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/cocoa-0.json",
+          "sha256": "30304ca969793d0763269fe5e859f11416ca444fd85d72d8c7ce1f572ddafedc",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/cocoa-1.json",
+          "sha256": "a26a4637091d9f38ad948b756432a2bf9d55da9a2da80ddc6de8cd8299564b4c",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/cocoa-2.json",
+          "sha256": "6670eec05008bc14c7e960f6dd008a4e171a62ba767604428b5a520b9b37ba21",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+      "scenario": "empty-window",
+      "native_action_readiness": true,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 266.01,
+          "idle_rss_bytes": 33497088,
+          "peak_rss_bytes": 33509376
+        },
+        {
+          "startup_ms": 180.98,
+          "idle_rss_bytes": 33497088,
+          "peak_rss_bytes": 33513472
+        },
+        {
+          "startup_ms": 172.91,
+          "idle_rss_bytes": 33431552,
+          "peak_rss_bytes": 33443840
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 180.98,
+        "startup_max_ms": 266.01,
+        "idle_max_bytes": 33497088,
+        "peak_max_bytes": 33513472,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "x86_64-apple-darwin/native-empty",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/empty-0.json",
+          "sha256": "1bbb612da53b8223190783cec6fb87ffd9434dbc7d6093361711c427ecd15e3b",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/empty-1.json",
+          "sha256": "444698c370c952fd7c6c47cdd137e6579c1e8f62338d57c3d6e57f55f2ba7628",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/empty-2.json",
+          "sha256": "c4ece462e61f8e605056a6c39a3876b599a80989e70cbf2e5908c74e5db6b8bb",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+      "scenario": "empty",
+      "native_action_readiness": true,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 258.08,
+          "idle_rss_bytes": 38178816,
+          "peak_rss_bytes": 38940672
+        },
+        {
+          "startup_ms": 226.59,
+          "idle_rss_bytes": 38285312,
+          "peak_rss_bytes": 39059456
+        },
+        {
+          "startup_ms": 226.88,
+          "idle_rss_bytes": 38223872,
+          "peak_rss_bytes": 38948864
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 226.88,
+        "startup_max_ms": 258.08,
+        "idle_max_bytes": 38285312,
+        "peak_max_bytes": 39059456,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "x86_64-apple-darwin/native-editor",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/editor-0.json",
+          "sha256": "47dffdb28f1bac98838e38a5690282b765b9b9dfd2b8517308c72beb49179659",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/editor-1.json",
+          "sha256": "21b6b32ccdaf127fbc580a3fa81d69ae6bc23f62594504ecb2b46c55bc0a8a58",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/editor-2.json",
+          "sha256": "154374eedb654ba9c52244617e427f7e898e8c80248c56aae8da28b0f650adbf",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+      "scenario": "editor",
+      "native_action_readiness": true,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 314.6,
+          "idle_rss_bytes": 43769856,
+          "peak_rss_bytes": 43839488
+        },
+        {
+          "startup_ms": 301.98,
+          "idle_rss_bytes": 43634688,
+          "peak_rss_bytes": 43704320
+        },
+        {
+          "startup_ms": 243.3,
+          "idle_rss_bytes": 43835392,
+          "peak_rss_bytes": 43905024
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 301.98,
+        "startup_max_ms": 314.6,
+        "idle_max_bytes": 43835392,
+        "peak_max_bytes": 43905024,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "x86_64-apple-darwin/native-import",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/import-0.json",
+          "sha256": "e5f35ee376ae9679da3b702747ea393607288f688eba6f38996a102ababf4e08",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/import-1.json",
+          "sha256": "c837c51c894370503b63b4e7bb1bd674d8d85ef3d25d9b0a344debc094e8485b",
+          "original_budget_pass": false
+        },
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/import-2.json",
+          "sha256": "fdc15cb064945860901c7799700db6f69118def1dcd17b2ac076df6541fb1bd9",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-15.7.9-x86_64-i386-64bit-Mach-O",
+      "scenario": "import",
+      "native_action_readiness": true,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY after native event action and displayed frame; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 430.68,
+          "idle_rss_bytes": 46637056,
+          "peak_rss_bytes": 46645248
+        },
+        {
+          "startup_ms": 406.67,
+          "idle_rss_bytes": 46546944,
+          "peak_rss_bytes": 46686208
+        },
+        {
+          "startup_ms": 482.86,
+          "idle_rss_bytes": 46665728,
+          "peak_rss_bytes": 46714880
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 430.68,
+        "startup_max_ms": 482.86,
+        "idle_max_bytes": 46665728,
+        "peak_max_bytes": 46714880,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "x86_64-pc-windows-msvc/metrics.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-pc-windows-msvc/metrics.json",
+          "sha256": "3f9880f16ef569ed8e9fa97e7392ab0e2fa3f6d75fb7db9e8e689cfbbb9f8e83",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "Windows-2022Server-10.0.20348-SP0",
+      "scenario": "empty-window",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 44.09,
+          "idle_rss_bytes": 15949824,
+          "peak_rss_bytes": 16359424
+        },
+        {
+          "startup_ms": 38.56,
+          "idle_rss_bytes": 15298560,
+          "peak_rss_bytes": 15691776
+        },
+        {
+          "startup_ms": 40.04,
+          "idle_rss_bytes": 15306752,
+          "peak_rss_bytes": 15704064
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Windows",
+        "budget_limits": {
+          "idle_rss_bytes": 33554432,
+          "peak_rss_bytes": 50331648,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 40.04,
+        "startup_max_ms": 44.09,
+        "idle_max_bytes": 15949824,
+        "peak_max_bytes": 16359424,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "x86_64-pc-windows-msvc/editor-metrics.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-pc-windows-msvc/editor-metrics.json",
+          "sha256": "c3355d455da9f4f848adc6723481aab5587b8da65b0b4777f47936e98801d3cb",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "Windows-2022Server-10.0.20348-SP0",
+      "scenario": "provider-editor",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 56.75,
+          "idle_rss_bytes": 16556032,
+          "peak_rss_bytes": 16936960
+        },
+        {
+          "startup_ms": 56.53,
+          "idle_rss_bytes": 16572416,
+          "peak_rss_bytes": 16945152
+        },
+        {
+          "startup_ms": 59.97,
+          "idle_rss_bytes": 16560128,
+          "peak_rss_bytes": 16941056
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Windows",
+        "budget_limits": {
+          "idle_rss_bytes": 33554432,
+          "peak_rss_bytes": 50331648,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 56.75,
+        "startup_max_ms": 59.97,
+        "idle_max_bytes": 16572416,
+        "peak_max_bytes": 16945152,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "x86_64-unknown-linux-gnu/metrics.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-unknown-linux-gnu/metrics.json",
+          "sha256": "f5bb96b08082b48966c9b1ee84c3b9806845ed8fda9f8a1e14ca66bff3bb4215",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "Linux-6.8.0-1064-azure-x86_64-with-glibc2.35",
+      "scenario": "empty-window",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 16.68,
+          "idle_rss_bytes": 22224896,
+          "peak_rss_bytes": 22413312
+        },
+        {
+          "startup_ms": 16.93,
+          "idle_rss_bytes": 22171648,
+          "peak_rss_bytes": 22171648
+        },
+        {
+          "startup_ms": 19.28,
+          "idle_rss_bytes": 22126592,
+          "peak_rss_bytes": 22126592
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Linux",
+        "budget_limits": {
+          "idle_rss_bytes": 33554432,
+          "peak_rss_bytes": 50331648,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 16.93,
+        "startup_max_ms": 19.28,
+        "idle_max_bytes": 22224896,
+        "peak_max_bytes": 22413312,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "x86_64-unknown-linux-gnu/editor-metrics.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.6/native-ci-20261013/x86_64-unknown-linux-gnu/editor-metrics.json",
+          "sha256": "57d8b37554818c42b5b31a6bde473d2c71d85897eb1434eee342875b089efd72",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "Linux-6.8.0-1064-azure-x86_64-with-glibc2.35",
+      "scenario": "provider-editor",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 18.18,
+          "idle_rss_bytes": 23404544,
+          "peak_rss_bytes": 23404544
+        },
+        {
+          "startup_ms": 19.31,
+          "idle_rss_bytes": 23404544,
+          "peak_rss_bytes": 23461888
+        },
+        {
+          "startup_ms": 19.85,
+          "idle_rss_bytes": 23445504,
+          "peak_rss_bytes": 23445504
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Linux",
+        "budget_limits": {
+          "idle_rss_bytes": 33554432,
+          "peak_rss_bytes": 50331648,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 19.31,
+        "startup_max_ms": 19.85,
+        "idle_max_bytes": 23445504,
+        "peak_max_bytes": 23461888,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "macOS-27-local/metrics.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.5/review-20261013/metrics.json",
+          "sha256": "b55c58c3c6055aa61f232f719ddc79a17115d8d8358e5c99784bf7ab78b41a55",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-27.0.1-arm64-arm-64bit",
+      "scenario": "empty-window",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 441.87,
+          "idle_rss_bytes": 115949568,
+          "peak_rss_bytes": 115982336
+        },
+        {
+          "startup_ms": 109.6,
+          "idle_rss_bytes": 116146176,
+          "peak_rss_bytes": 116178944
+        },
+        {
+          "startup_ms": 112.37,
+          "idle_rss_bytes": 115998720,
+          "peak_rss_bytes": 116031488
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 112.37,
+        "startup_max_ms": 441.87,
+        "idle_max_bytes": 116146176,
+        "peak_max_bytes": 116178944,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "macOS-27-local/editor-metrics.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.5/review-20261013/editor-metrics.json",
+          "sha256": "64dde776fcb62932c570d4fb407affdee53afdc8b0067af010f42307f857754e",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-27.0.1-arm64-arm-64bit",
+      "scenario": "provider-editor",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 87.81,
+          "idle_rss_bytes": 132743168,
+          "peak_rss_bytes": 135004160
+        },
+        {
+          "startup_ms": 151.26,
+          "idle_rss_bytes": 135020544,
+          "peak_rss_bytes": 135053312
+        },
+        {
+          "startup_ms": 127.11,
+          "idle_rss_bytes": 134922240,
+          "peak_rss_bytes": 134955008
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 127.11,
+        "startup_max_ms": 151.26,
+        "idle_max_bytes": 135020544,
+        "peak_max_bytes": 135053312,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    },
+    {
+      "label": "macOS-27-local/baseline-empty.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.5/review-20261013/baseline-empty.json",
+          "sha256": "a27bf369b9edcf12587cda26e2fc41a66452cea88c2bbce016ce2918566bb7a7",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-27.0.1-arm64-arm-64bit",
+      "scenario": "empty-window",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 1213.08,
+          "idle_rss_bytes": 82526208,
+          "peak_rss_bytes": 82771968
+        },
+        {
+          "startup_ms": 88.41,
+          "idle_rss_bytes": 115884032,
+          "peak_rss_bytes": 115884032
+        },
+        {
+          "startup_ms": 117.32,
+          "idle_rss_bytes": 116146176,
+          "peak_rss_bytes": 116178944
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 117.32,
+        "startup_max_ms": 1213.08,
+        "idle_max_bytes": 116146176,
+        "peak_max_bytes": 116178944,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": false,
+        "sample_count_pass": true,
+        "measured_threshold_pass": false,
+        "budget_pass": false
+      }
+    },
+    {
+      "label": "macOS-27-local/baseline-editor.json",
+      "source_records": [
+        {
+          "path": "docs/measurements/v0.0.5/review-20261013/baseline-editor.json",
+          "sha256": "6aa2f55ac162229b6411236526e90cc54165c45004d06aa7bca839b800d145a4",
+          "original_budget_pass": false
+        }
+      ],
+      "os": "macOS-27.0.1-arm64-arm-64bit",
+      "scenario": "provider-editor",
+      "native_action_readiness": false,
+      "cold_start_verified": false,
+      "method": "fresh processes; OS cache not cleared; READY on first event-loop timer; 50 ms RSS samples; idle after 1 s; OS high-water mark",
+      "samples": [
+        {
+          "startup_ms": 331.96,
+          "idle_rss_bytes": 90800128,
+          "peak_rss_bytes": 134791168
+        },
+        {
+          "startup_ms": 105.86,
+          "idle_rss_bytes": 135266304,
+          "peak_rss_bytes": 135315456
+        },
+        {
+          "startup_ms": 112.28,
+          "idle_rss_bytes": 135217152,
+          "peak_rss_bytes": 135249920
+        }
+      ],
+      "reassessment": {
+        "budget_version": 2,
+        "platform_system": "Darwin",
+        "budget_limits": {
+          "idle_rss_bytes": 167772160,
+          "peak_rss_bytes": 201326592,
+          "startup_median_ms": 500,
+          "startup_max_ms": 1000,
+          "minimum_runs": 3
+        },
+        "startup_median_ms": 112.28,
+        "startup_max_ms": 331.96,
+        "idle_max_bytes": 135266304,
+        "peak_max_bytes": 135315456,
+        "memory_budget_pass": true,
+        "readiness_budget_pass": true,
+        "sample_count_pass": true,
+        "measured_threshold_pass": true,
+        "budget_pass": true
+      }
+    }
+  ]
+}

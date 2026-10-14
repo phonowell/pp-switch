@@ -1,0 +1,2 @@
+COMMAND ["rtk", "proxy", "target/performance-check-env/bin/python", "design/render_docs.py", "--check"]
+Three localized light/dark SVG schematics and provenance match
