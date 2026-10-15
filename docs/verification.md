@@ -48,8 +48,8 @@ is the release's Rust/FLTK build and the compiled Cocoa comparison.
 
 Continue investigating same-host regressions and controllable application costs.
 New OS/toolkit baselines may justify a documented future revision; do not raise
-limits automatically or consume headroom without explanation. Optimization issue
-#1 remains separate from the revised routine acceptance result.
+limits automatically or consume headroom without explanation. The disposition of
+the original optimization issue is recorded in the [issue #1 closeout](#issue-1-closeout).
 
 [Revision checks](measurements/performance-budget-20261014/checks.json) retain
 commands, raw logs, exit codes and source hashes for format, all-target Clippy,
@@ -57,6 +57,39 @@ commands, raw logs, exit codes and source hashes for format, all-target Clippy,
 Documentation/link/translation and deterministic illustrations passed. Shared
 desktop GUI and new runtime measurements were skipped; the report records a
 concurrent updater change included in its source snapshot, outside this revision.
+
+## Issue #1 closeout
+
+On 2026-10-15, [issue #1](https://github.com/phonowell/pp-switch/issues/1) was
+reviewed against budget revision 2, adopted in
+[commit 8c42544](https://github.com/phonowell/pp-switch/commit/8c425442611c178737c44aee078a424d889dfb9c).
+The original universal 20/30 MiB and 300 ms cold-start target is superseded;
+closing that target does not establish that it was achieved or that the budget
+revision improved performance. Historical failures remain unchanged.
+
+The retained v0.0.6 native CI already supplies the requested interleaved bare
+Cocoa comparison, empty/editor/import scenarios and readiness after a dispatched
+native keyboard action and displayed frame. Each scenario has three fresh
+processes with OS caches retained. The import scenario exercises eight synthetic
+previews near the 256-KiB link limit.
+
+| macOS 15 native CI | Empty idle / peak MiB | Editor peak MiB | Import peak MiB | Import readiness median / max ms |
+| --- | ---: | ---: | ---: | ---: |
+| ARM64 | 57.05 / 57.55 | 63.44 | 67.23 | 298.56 / 347.46 |
+| Intel | 36.51 / 37.25 | 41.87 | 44.55 | 430.68 / 482.86 |
+
+Sources: [ARM64 raw report](measurements/v0.0.6/native-ci-20261013/aarch64-apple-darwin/mac-performance/report.json),
+[Intel raw report](measurements/v0.0.6/native-ci-20261013/x86_64-apple-darwin/mac-performance/report.json)
+and the separate [revision-2 reassessment](measurements/performance-budget-20261014/reassessment.json).
+All v0.0.6 routine empty/editor and native PPS scenarios pass revision 2, and all
+four installed packages fit 5 MiB. The closeout audit matched 36 raw-source
+SHA-256 hashes and reproduced all 20 retained assessments from their source
+samples and the current policy, including the older local readiness failure.
+
+This is an evidence review, with no application change or new runtime measurement.
+It does not certify the current build. Strict cold interactive startup and update
+download/install peaks remain unverified investigations under PP-11; same-host
+regressions and controllable application costs remain subject to that contract.
 
 ## Release: 0.0.6
 
@@ -97,7 +130,8 @@ retained. A bare Cocoa window is diagnostic, not a feature-equivalent baseline.
 Cold startup and update peaks remain unverified; no overall memory/startup gain
 is established. Packages are unsigned and macOS is not notarized. Actual Dock
 pointer clicks and local physical Windows/Linux/Intel desktops remain untested.
-Performance issue #1 stays open.
+At release time, performance issue #1 remained open; see its later
+[closeout](#issue-1-closeout).
 
 The v0.0.5 tag remains an unpublished failed candidate. Its
 [test-bootstrap failure](measurements/v0.0.5/release-preparation-20261013/ci-rtk-failure.json)
