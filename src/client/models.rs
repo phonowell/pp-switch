@@ -1,4 +1,4 @@
-use super::{Paths, claude_config, grok_profile};
+use super::{Paths, claude_config, codex_provider, grok_profile, official::render};
 use crate::{
     Result, config,
     provider::{Client, Models, Provider},
@@ -39,6 +39,7 @@ impl ModelState {
                 haiku: env.string("ANTHROPIC_DEFAULT_HAIKU_MODEL").ok().flatten(),
                 sonnet: env.string("ANTHROPIC_DEFAULT_SONNET_MODEL").ok().flatten(),
                 opus: env.string("ANTHROPIC_DEFAULT_OPUS_MODEL").ok().flatten(),
+                ..Models::default()
             },
             selector: root.string("model").ok().flatten(),
             invalid_legacy_fast: legacy.is_err(),
@@ -76,6 +77,14 @@ impl ModelState {
                 return false;
             }
         }
+        for (desired, actual) in [
+            (&desired.effort, &self.values.effort),
+            (&desired.catalog_url, &self.values.catalog_url),
+        ] {
+            if desired.is_some() && desired != actual {
+                return false;
+            }
+        }
         true
     }
 }
@@ -86,26 +95,51 @@ impl Paths {
     /// endpoint or key rotation never inherits a different connection's model.
     pub fn editor_models(&self, provider: &Provider) -> Models {
         let mut models = provider.models.clone();
-        if models.model.is_some() {
-            return models;
+        let needs_status = models.model.is_none()
+            || (provider.client == Client::Codex
+                && (models.effort.is_none() || models.catalog_url.is_none()));
+        let connection_status = needs_status
+            .then(|| self.status(provider.client, true).ok())
+            .flatten()
+            .filter(|status| !status.official)
+            .filter(|status| {
+                status
+                    .connection
+                    .as_ref()
+                    .is_some_and(|(url, key)| url == &provider.base_url && key == &provider.api_key)
+            });
+        let current = connection_status.as_ref().and_then(|s| s.models.as_ref());
+        if models.model.is_none() {
+            if provider.client == Client::Claude {
+                models.model = models
+                    .sonnet
+                    .clone()
+                    .or_else(|| models.opus.clone())
+                    .or_else(|| models.haiku.clone());
+            }
+            if let Some(current) = current
+                && models.model.is_none()
+            {
+                models.model = current.editor_default(provider.client).map(str::to_owned);
+            }
         }
-        if provider.client == Client::Claude {
-            models.model = models
-                .sonnet
-                .clone()
-                .or_else(|| models.opus.clone())
-                .or_else(|| models.haiku.clone());
-        }
-        if models.model.is_none()
-            && let Ok(status) = self.status(provider.client, true)
-            && !status.official
-            && status
-                .connection
-                .as_ref()
-                .is_some_and(|(url, key)| url == &provider.base_url && key == &provider.api_key)
-            && let Some(current) = status.models
-        {
-            models.model = current.editor_default(provider.client).map(str::to_owned);
+        if provider.client == Client::Codex {
+            if let Some(current) = current {
+                models.effort = models
+                    .effort
+                    .take()
+                    .or_else(|| current.values.effort.clone());
+                models.catalog_url = models
+                    .catalog_url
+                    .take()
+                    .or_else(|| current.values.catalog_url.clone());
+            }
+            if models.catalog_url.is_none() {
+                models.catalog_url = Some(format!(
+                    "{}/models",
+                    provider.base_url.trim_end_matches('/')
+                ));
+            }
         }
         let mut candidate = provider.clone();
         candidate.models = models.clone();
@@ -128,16 +162,35 @@ impl Paths {
                 let (root, env, _) = claude_config(&text)?;
                 state = ModelState::claude(&root, &env);
             }
-            Client::Codex | Client::Grok => {
+            Client::Codex => {
                 let doc = toml_edit::Document::parse(text.as_str())
                     .map_err(|_| "Configuration is not valid TOML.")?;
-                let item = if client == Client::Codex {
-                    doc.get("model")
-                } else {
-                    let id = grok_profile(&doc)?;
-                    doc["model"][id].get("model")
+                let string = |item: Option<&toml_edit::Item>, field: &str| {
+                    item.map(|v| {
+                        v.as_str()
+                            .map(str::to_owned)
+                            .ok_or_else(|| format!("Configured {field} must be a string."))
+                    })
+                    .transpose()
                 };
-                state.values.model = item
+                state.values.model = string(doc.get("model"), "model")?;
+                state.values.effort =
+                    string(doc.get("model_reasoning_effort"), "reasoning effort")?;
+                let table = doc
+                    .get("model_provider")
+                    .and_then(toml_edit::Item::as_str)
+                    .and_then(|id| doc.get("model_providers").and_then(|p| p.get(id)));
+                state.values.catalog_url = string(
+                    table.and_then(|t| t.get("model_catalog_url")),
+                    "catalog URL",
+                )?;
+            }
+            Client::Grok => {
+                let doc = toml_edit::Document::parse(text.as_str())
+                    .map_err(|_| "Configuration is not valid TOML.")?;
+                let id = grok_profile(&doc)?;
+                state.values.model = doc["model"][id]
+                    .get("model")
                     .map(|v| {
                         v.as_str()
                             .map(str::to_owned)
@@ -192,18 +245,45 @@ impl Paths {
                 }
             }
             Client::Codex => {
-                if let Some(model) = &desired.model {
-                    let doc = toml_edit::Document::parse(text)
+                for (key, value) in [
+                    ("model", desired.model.as_deref()),
+                    ("model_reasoning_effort", desired.effort.as_deref()),
+                ] {
+                    let Some(value) = value else { continue };
+                    let doc = toml_edit::Document::parse(next.as_str())
                         .map_err(|_| "Configuration is not valid TOML.")?;
-                    next = if doc.get("model").is_some() {
-                        config::patch_toml(text, &["model"], model)?
+                    next = if doc.get(key).is_some() {
+                        config::patch_toml(&next, &[key], value)?
                     } else {
-                        let newline = if text.contains("\r\n") { "\r\n" } else { "\n" };
-                        format!(
-                            "model = {}{newline}{text}",
-                            toml_edit::Value::from(model.as_str())
-                        )
+                        let newline = if next.contains("\r\n") { "\r\n" } else { "\n" };
+                        format!("{key} = {}{newline}{next}", toml_edit::Value::from(value))
                     };
+                }
+                if let Some(catalog) = desired.catalog_url.as_deref() {
+                    let doc = toml_edit::Document::parse(next.as_str())
+                        .map_err(|_| "Configuration is not valid TOML.")?;
+                    let id = codex_provider(&doc)?;
+                    if doc
+                        .get("model_providers")
+                        .and_then(|p| p.get(id))
+                        .and_then(|t| t.get("model_catalog_url"))
+                        .is_some()
+                    {
+                        next = config::patch_toml(
+                            &next,
+                            &["model_providers", id, "model_catalog_url"],
+                            catalog,
+                        )?;
+                    } else {
+                        let mut doc = next
+                            .parse::<toml_edit::DocumentMut>()
+                            .map_err(|_| "Configuration is not valid TOML.")?;
+                        let table = doc["model_providers"][id]
+                            .as_table_like_mut()
+                            .ok_or("Codex provider must be a table.")?;
+                        table.insert("model_catalog_url", toml_edit::value(catalog));
+                        next = render(&doc, &next);
+                    }
                 }
             }
             Client::Gemini => {

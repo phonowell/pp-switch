@@ -59,7 +59,15 @@ fn pp18_editor_prefill_is_connection_scoped_read_only_and_keeps_explicit_models(
         } else {
             "old-model"
         };
-        assert_eq!(paths.editor_models(&p).model.as_deref(), Some(expected));
+        let suggested = paths.editor_models(&p);
+        assert_eq!(suggested.model.as_deref(), Some(expected));
+        if client == Client::Codex {
+            assert_eq!(suggested.effort.as_deref(), Some("high"));
+            assert_eq!(
+                suggested.catalog_url.as_deref(),
+                Some("https://old.example/models")
+            );
+        }
         for (url, key) in [
             ("https://different.example", "old-key"),
             ("https://old.example", "rotated-key"),
@@ -68,13 +76,26 @@ fn pp18_editor_prefill_is_connection_scoped_read_only_and_keeps_explicit_models(
             let suggested = paths.editor_models(&changed);
             if client == Client::Claude {
                 assert_eq!(suggested.model.as_deref(), Some(CLAUDE_EDITOR_DEFAULT));
+            } else if client == Client::Codex {
+                assert_eq!(
+                    suggested,
+                    Models {
+                        catalog_url: Some(format!("{url}/models")),
+                        ..Models::default()
+                    }
+                );
             } else {
                 assert!(suggested.is_empty());
             }
         }
         let mut explicit = p.clone();
         explicit.models = Models::from_fields("link-model", "", "", "");
-        assert!(paths.editor_models(&explicit) == explicit.models);
+        let mut expected = explicit.models.clone();
+        if client == Client::Codex {
+            expected.effort = Some("high".into());
+            expected.catalog_url = Some("https://old.example/models".into());
+        }
+        assert_eq!(paths.editor_models(&explicit), expected);
         assert_eq!(fs::read(paths.settings(client)).unwrap(), before);
         assert!(store.load().unwrap().is_empty());
         assert!(p.models.is_empty());
@@ -222,6 +243,30 @@ fn pp18_invalid_models_or_cross_client_mappings_never_write() {
         };
         assert!(p.validate().is_err());
     }
+    for client in [Client::Claude, Client::Gemini, Client::Grok] {
+        for (field, value) in [
+            ("effort", "xhigh"),
+            ("catalog_url", "https://catalog.example/models"),
+        ] {
+            let mut p = provider(client, "valid");
+            match field {
+                "effort" => p.models.effort = Some(value.into()),
+                _ => p.models.catalog_url = Some(value.into()),
+            }
+            assert!(p.validate().is_err(), "{client:?} rejected {field}");
+        }
+    }
+    for (effort, catalog) in [
+        (Some("bad effort"), None),
+        (None, Some("notaurl")),
+        (None, Some("ftp://host/models")),
+        (None, Some("https://host/models#frag")),
+    ] {
+        let mut p = provider(Client::Codex, "valid");
+        p.models.effort = effort.map(str::to_owned);
+        p.models.catalog_url = catalog.map(str::to_owned);
+        assert!(p.validate().is_err(), "{effort:?} {catalog:?}");
+    }
 }
 
 #[test]
@@ -366,6 +411,77 @@ fn pp04_pp16_pp18_toml_model_switch_keeps_selection_protocol_comments_and_other_
                 .contains("model = 'old-model' # keep model comment")
         );
     }
+}
+
+#[test]
+fn pp04_pp10_pp18_codex_switches_effort_and_catalog_with_model() {
+    let (_dir, paths, store) = fixture();
+    let file = paths.settings(Client::Codex);
+    put(&file, codex());
+    let mut p = provider(Client::Codex, "new-model");
+    p.models.effort = Some("xhigh".into());
+    p.models.catalog_url = Some("https://new.example/v1/models".into());
+    paths.apply(&store, &p).unwrap();
+    assert_eq!(
+        fs::read_to_string(&file).unwrap(),
+        codex()
+            .replace("'https://old.example'", "\"https://new.example/v1\"")
+            .replace("'old-key'", "\"new-key\"")
+            .replace("'old-model'", "\"new-model\"")
+            .replace("'high'", "\"xhigh\"")
+            .replace(
+                "wire_api = 'responses'\r\n",
+                "wire_api = 'responses'\r\nmodel_catalog_url = \"https://new.example/v1/models\"\r\n"
+            )
+    );
+    // In use requires matching every managed destination.
+    let state = paths.current_models(Client::Codex).unwrap();
+    assert!(state.matches(Client::Codex, &p.models));
+    for (effort, catalog) in [
+        (Some("low"), None),
+        (None, Some("https://else.example/models")),
+    ] {
+        let mut different = p.clone();
+        if let Some(effort) = effort {
+            different.models.effort = Some(effort.into());
+        }
+        if let Some(catalog) = catalog {
+            different.models.catalog_url = Some(catalog.into());
+        }
+        assert!(!state.matches(Client::Codex, &different.models));
+    }
+    // Idempotent apply makes no file changes.
+    let modified = fs::metadata(&file).unwrap().modified().unwrap();
+    paths.apply(&store, &p).unwrap();
+    assert_eq!(fs::metadata(&file).unwrap().modified().unwrap(), modified);
+    // Blank Codex options preserve client-owned values.
+    put(&file, codex());
+    paths.apply(&store, &provider(Client::Codex, "")).unwrap();
+    let after = fs::read_to_string(&file).unwrap();
+    assert!(after.contains("model_reasoning_effort = 'high'"));
+    assert!(!after.contains("model_catalog_url"));
+    // Missing effort is added minimally; an existing catalog is patched in place.
+    let existing_catalog = codex()
+        .replace("model_reasoning_effort = 'high'\r\n", "")
+        .replace(
+            "wire_api = 'responses'\r\n",
+            "wire_api = 'responses'\r\nmodel_catalog_url = 'https://stale.example/models'\r\n",
+        );
+    put(&file, &existing_catalog);
+    let mut p = provider(Client::Codex, "new-model");
+    p.models.effort = Some("max".into());
+    p.models.catalog_url = Some("https://new.example/v1/models".into());
+    paths.apply(&store, &p).unwrap();
+    let text = fs::read_to_string(&file).unwrap();
+    assert!(text.starts_with("model_reasoning_effort = \"max\"\r\n"));
+    assert!(text.contains("model_catalog_url = \"https://new.example/v1/models\""));
+    assert!(!text.contains("stale.example/models"));
+    assert!(
+        paths
+            .current_models(Client::Codex)
+            .unwrap()
+            .matches(Client::Codex, &p.models)
+    );
 }
 
 #[test]

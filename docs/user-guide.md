@@ -27,7 +27,7 @@ The small gear beside the client tabs opens Settings in the same window; Back re
 The interface follows the system light/dark appearance, including open dialogs;
 changing appearance preserves unsaved edits, text selection and focus.
 
-**In use verifies only the supported user-level files.** It does not verify a running session or send a request. The new provider must support the retained model; a Claude unknown-model catalog warning alone does not mean that switching failed. Check a real request error separately from the startup model banner.
+**In use verifies only the supported user-level files.** It does not verify a running session or send a request. The new provider must support the retained model and effort settings; a Claude unknown-model catalog warning alone does not mean that switching failed. Check a real request error separately from the startup model banner.
 
 ## Optional models (0.0.6 preview)
 
@@ -36,23 +36,28 @@ directly and show In use when those fields match. Existing records and imports
 keep explicit models first. Claude then uses its supplied Sonnet, Opus, then Haiku
 mapping. Otherwise all four clients prefill from supported local configuration
 only when both URL and key match; Claude tier aliases resolve through configured
-mappings. No model is inherited from a different connection.
+mappings and Codex also prefills its configured `model_reasoning_effort` and
+`model_catalog_url`. No model is inherited from a different connection.
 
 Claude Add/Edit/import fields fall back to the visible, editable `claude-sonnet-5`
 when no specific model is available. This product suggestion is not a compatibility
 guarantee; check that your provider supports it or replace it. Clearing it preserves
-client models. Prefill is an unsaved draft: Save, then Switch to apply. Other clients'
-new fields stay blank.
+client models. Prefill is an unsaved draft: Save, then Switch to apply. New Gemini
+and Grok model fields stay blank. A Codex catalog URL field instead suggests the
+Provider's base URL plus `/models`; edit or clear it.
 
 Claude synchronizes root `model`, `env.ANTHROPIC_MODEL` and the Haiku/Sonnet/Opus
 mappings. Expand mappings to override each tier. An existing
-`ANTHROPIC_SMALL_FAST_MODEL` follows Haiku. Codex changes root `config.toml.model`;
-Gemini synchronizes `.env.GEMINI_MODEL` and `settings.json.model.name` with
+`ANTHROPIC_SMALL_FAST_MODEL` follows Haiku. Codex changes root `config.toml.model`
+and `model_reasoning_effort`, plus the selected provider's `model_catalog_url`
+that Codex itself loads its model list from. Gemini synchronizes
+`.env.GEMINI_MODEL` and `settings.json.model.name` with
 recoverable writes. Grok changes the selected custom profile’s model; creating
 a PPS profile from native mode requires an explicit model. Clearing a saved model stops managing it;
 it does not erase client values or restore previous settings.
 
-No model catalogs, compatibility probes or context metadata are guessed.
+pp-switch never queries a model catalog, runs compatibility probes or guesses
+context metadata.
 Unknown-model warnings can remain. Old model-less records remain directly switchable.
 These features are absent
 from the 0.0.4 download.
@@ -101,7 +106,9 @@ network request: sign in through the client and restart it if needed.
   and root model. Native credentials, hooks, permissions, model catalogs and
   existing proxy/context settings remain. External helpers/cloud modes are refused.
 - Codex clears root provider/model selection, API-only forced login and
-  `auth.json.OPENAI_API_KEY`/API auth mode. OAuth tokens and inactive tables remain.
+  `auth.json.OPENAI_API_KEY`/API auth mode. OAuth tokens and inactive tables remain,
+  including top-level `model_reasoning_effort` and a `model_catalog_url` inside
+  those tables.
 - Gemini clears managed URL/key/model environment entries, selects
   `oauth-personal`, and removes `model.name`; OAuth cache and other settings remain.
 - Grok clears the default selector and a summary selector referencing the same

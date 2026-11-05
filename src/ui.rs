@@ -75,6 +75,9 @@ struct Controls {
     model_group: Group,
     model_toggle: Button,
     model_hint: Frame,
+    codex_group: Group,
+    effort: Input,
+    catalog: Input,
     models_expanded: Rc<Cell<bool>>,
     new: Button,
     save: Button,
@@ -138,17 +141,22 @@ impl Controls {
         self.editor.hide();
     }
     fn model_layout(&mut self, expanded: bool) {
-        let claude = self.client.get() == Client::Claude;
+        let client = self.client.get();
+        let claude = client == Client::Claude;
+        let codex = client == Client::Codex;
         self.models_expanded.set(expanded && claude);
         self.model_hint.set_label(tr(
             self.lang(),
             if claude {
                 "Blank keeps models. Mappings follow a supplied default."
+            } else if codex {
+                "Blank keeps the client's model and Codex options."
             } else {
                 "Blank keeps the client's model."
             },
         ));
         let y = if claude {
+            self.codex_group.hide();
             self.model_toggle.show();
             self.model_toggle.set_label(tr(
                 self.lang(),
@@ -168,7 +176,13 @@ impl Controls {
         } else {
             self.model_toggle.hide();
             self.model_group.hide();
-            394
+            if codex {
+                self.codex_group.show();
+                538
+            } else {
+                self.codex_group.hide();
+                394
+            }
         };
         for b in [&mut self.delete, &mut self.cancel, &mut self.save] {
             b.set_pos(b.x(), y);
@@ -188,6 +202,10 @@ impl Controls {
     }
     fn model_fields(&mut self, models: &Models) {
         self.model.set_value(models.model.as_deref().unwrap_or(""));
+        self.effort
+            .set_value(models.effort.as_deref().unwrap_or(""));
+        self.catalog
+            .set_value(models.catalog_url.as_deref().unwrap_or(""));
         for (input, value) in
             self.model_aliases
                 .iter_mut()
@@ -506,6 +524,15 @@ fn controls(language: Language) -> Controls {
     });
     model_group.end();
     model_group.hide();
+    let mut codex_group = Group::new(24, 382, 338, 136, "");
+    labels.push(label(24, 382, 338, "Reasoning effort (optional)"));
+    let mut effort = Input::new(24, 407, 338, 40, "");
+    field(&mut effort);
+    labels.push(label(24, 453, 338, "Model catalog URL (optional)"));
+    let mut catalog = Input::new(24, 478, 338, 40, "");
+    field(&mut catalog);
+    codex_group.end();
+    codex_group.hide();
     let mut delete = Button::new(24, 328, 66, 36, "Delete");
     theme::button(&mut delete, theme::ButtonStyle::Danger);
     let mut cancel = Button::new(168, 328, 88, 36, "Cancel");
@@ -542,6 +569,9 @@ fn controls(language: Language) -> Controls {
         model_group,
         model_toggle,
         model_hint,
+        codex_group,
+        effort,
+        catalog,
         models_expanded: Rc::new(Cell::new(false)),
         new,
         save,
@@ -1023,6 +1053,8 @@ fn wire_with_updates(
                 &view.model_aliases[1].value(),
                 &view.model_aliases[2].value(),
             );
+            p.models.effort = Models::optional(&view.effort.value());
+            p.models.catalog_url = Models::optional(&view.catalog.value());
             p.validate()?;
             if let Some(id) = &state_save.borrow().editing {
                 p.id.clone_from(id);

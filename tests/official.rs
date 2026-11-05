@@ -123,6 +123,35 @@ fn pp19_codex_native_bearer_roundtrip_never_loses_oauth_or_other_tables() {
     );
 }
 #[test]
+fn pp19_codex_native_route_carries_codex_options_and_restore_keeps_them() {
+    let (_dir, paths, store) = fixture();
+    let file = paths.settings(Client::Codex);
+    put(
+        &file,
+        "# retained\n[projects.'/fixture']\ntrust_level='trusted'\n",
+    );
+    put(
+        &paths.codex.join("auth.json"),
+        "{\"auth_mode\":\"chatgpt\",\"tokens\":{\"access_token\":\"native\"}}",
+    );
+    let mut p = provider(Client::Codex);
+    p.models.effort = Some("max".into());
+    p.models.catalog_url = Some("https://relay.example/v1/models".into());
+    paths.apply(&store, &p).unwrap();
+    let text = fs::read_to_string(&file).unwrap();
+    assert!(text.contains("model_provider = \"pps\""));
+    assert!(text.contains("model = \"compatible-model\""));
+    assert!(text.contains("model_reasoning_effort = \"max\""));
+    assert!(text.contains("model_catalog_url = \"https://relay.example/v1/models\""));
+    // Restore keeps the top-level effort and the inactive table's catalog.
+    paths.apply_official(&store, Client::Codex).unwrap();
+    let after = fs::read_to_string(&file).unwrap();
+    assert!(after.contains("model_reasoning_effort = \"max\""));
+    assert!(after.contains("model_catalog_url = \"https://relay.example/v1/models\""));
+    assert!(!after.contains("model_provider = "));
+}
+
+#[test]
 fn pp19_codex_official_removes_only_api_auth_preserves_native_tokens() {
     let (_dir, paths, store) = fixture();
     put(

@@ -55,7 +55,7 @@ pub struct Provider {
     pub models: Models,
 }
 
-#[derive(Clone, Default, Deserialize, Serialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub struct Models {
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -66,23 +66,38 @@ pub struct Models {
     pub sonnet: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub opus: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub effort: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub catalog_url: Option<String>,
 }
 
 impl Models {
+    pub(crate) fn optional(s: &str) -> Option<String> {
+        (!s.trim().is_empty()).then(|| s.trim().to_owned())
+    }
+
     pub fn from_fields(model: &str, haiku: &str, sonnet: &str, opus: &str) -> Self {
-        let optional = |s: &str| (!s.trim().is_empty()).then(|| s.trim().to_owned());
         Self {
-            model: optional(model),
-            haiku: optional(haiku),
-            sonnet: optional(sonnet),
-            opus: optional(opus),
+            model: Self::optional(model),
+            haiku: Self::optional(haiku),
+            sonnet: Self::optional(sonnet),
+            opus: Self::optional(opus),
+            ..Self::default()
         }
     }
 
     pub fn is_empty(&self) -> bool {
-        [&self.model, &self.haiku, &self.sonnet, &self.opus]
-            .iter()
-            .all(|v| v.is_none())
+        [
+            &self.model,
+            &self.haiku,
+            &self.sonnet,
+            &self.opus,
+            &self.effort,
+            &self.catalog_url,
+        ]
+        .iter()
+        .all(|v| v.is_none())
     }
 
     pub(crate) fn claude_mappings(&self) -> [(&'static str, Option<&str>); 3] {
@@ -107,6 +122,8 @@ impl Models {
         self.haiku = self.haiku.take().or(other.haiku);
         self.sonnet = self.sonnet.take().or(other.sonnet);
         self.opus = self.opus.take().or(other.opus);
+        self.effort = self.effort.take().or(other.effort);
+        self.catalog_url = self.catalog_url.take().or(other.catalog_url);
     }
 
     fn validate(&self, client: Client) -> Result<()> {
@@ -117,9 +134,22 @@ impl Models {
         {
             return Err("Model mappings are supported only for Claude Code.".into());
         }
-        for value in [&self.model, &self.haiku, &self.sonnet, &self.opus]
-            .into_iter()
-            .flatten()
+        if client != Client::Codex
+            && [&self.effort, &self.catalog_url]
+                .iter()
+                .any(|v| v.is_some())
+        {
+            return Err("Codex options are supported only for Codex.".into());
+        }
+        for value in [
+            &self.model,
+            &self.haiku,
+            &self.sonnet,
+            &self.opus,
+            &self.effort,
+        ]
+        .into_iter()
+        .flatten()
         {
             if value.is_empty()
                 || value.len() > 512
@@ -130,6 +160,9 @@ impl Models {
                         .into(),
                 );
             }
+        }
+        if let Some(url) = &self.catalog_url {
+            validate_http_url(url, "Catalog URL")?;
         }
         Ok(())
     }
@@ -193,7 +226,11 @@ impl Provider {
 }
 
 pub fn validate_url(value: &str) -> Result<()> {
-    let url = Url::parse(value).map_err(|_| "Base URL must be a valid HTTP(S) URL.")?;
+    validate_http_url(value, "Base URL")
+}
+
+fn validate_http_url(value: &str, field: &str) -> Result<()> {
+    let url = Url::parse(value).map_err(|_| format!("{field} must be a valid HTTP(S) URL."))?;
     if !matches!(url.scheme(), "http" | "https")
         || url.host_str().is_none()
         || !url.username().is_empty()
@@ -202,10 +239,9 @@ pub fn validate_url(value: &str) -> Result<()> {
         || value.chars().any(char::is_control)
         || value.len() > 8192
     {
-        return Err(
-            "Base URL must use HTTP(S), with a host and no embedded credentials or fragment."
-                .into(),
-        );
+        return Err(format!(
+            "{field} must use HTTP(S), with a host and no embedded credentials or fragment."
+        ));
     }
     Ok(())
 }
@@ -261,6 +297,8 @@ pub fn import_link(text: &str) -> Result<Provider> {
         params.get("sonnetModel").map_or("", String::as_str),
         params.get("opusModel").map_or("", String::as_str),
     );
+    models.effort = Models::optional(params.get("effort").map_or("", String::as_str));
+    models.catalog_url = Models::optional(params.get("catalogUrl").map_or("", String::as_str));
 
     if let Some(raw) = params.get("config") {
         let config = decode_config(raw)?;
@@ -279,6 +317,7 @@ pub fn import_link(text: &str) -> Result<Provider> {
                         haiku: text_at(&json, "/env/ANTHROPIC_DEFAULT_HAIKU_MODEL"),
                         sonnet: text_at(&json, "/env/ANTHROPIC_DEFAULT_SONNET_MODEL"),
                         opus: text_at(&json, "/env/ANTHROPIC_DEFAULT_OPUS_MODEL"),
+                        ..Models::default()
                     },
                     Client::Gemini => Models {
                         model: text_at(&json, "/GEMINI_MODEL")
@@ -344,6 +383,7 @@ pub fn import_link(text: &str) -> Result<Provider> {
                         haiku: get("ANTHROPIC_DEFAULT_HAIKU_MODEL"),
                         sonnet: get("ANTHROPIC_DEFAULT_SONNET_MODEL"),
                         opus: get("ANTHROPIC_DEFAULT_OPUS_MODEL"),
+                        ..Models::default()
                     }
                 } else {
                     Models {
@@ -468,6 +508,11 @@ fn extract_codex(config: &str) -> Result<(Option<String>, Option<String>, Models
                 .get("model")
                 .and_then(toml_edit::Item::as_str)
                 .map(str::to_owned),
+            effort: doc
+                .get("model_reasoning_effort")
+                .and_then(toml_edit::Item::as_str)
+                .map(str::to_owned),
+            catalog_url: get("model_catalog_url"),
             ..Models::default()
         },
     ))

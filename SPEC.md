@@ -38,7 +38,7 @@ Create, edit and delete a provider. Saving does not change client files. Names a
 
 ### PP-02: URL/key writes
 
-Apply modifies only the effective base URL and API key, plus optional PP-18 model fields explicitly configured on the Provider and the scoped PP-19 native/API routing changes. Preserve all unrelated bytes, including comments, whitespace, ordering and line endings. Idempotent apply makes no file changes.
+Apply modifies only the effective base URL and API key, plus the optional PP-18 fields explicitly configured on the Provider and the scoped PP-19 native/API routing changes. Preserve all unrelated bytes, including comments, whitespace, ordering and line endings. Idempotent apply makes no file changes.
 
 ### PP-03: Claude Code
 
@@ -46,7 +46,7 @@ Claude: patch `env.ANTHROPIC_BASE_URL` and the existing `ANTHROPIC_AUTH_TOKEN` o
 
 ### PP-04: Codex
 
-Codex: patch the currently selected custom provider's `base_url` in `config.toml`; patch its existing `experimental_bearer_token`, or `auth.json.OPENAI_API_KEY` for an existing file-based API-key setup. For an existing custom route preserve selection and auth mode. From the native route, select a reserved `pps` Responses/bearer table without changing OAuth tokens or credential-store settings; refuse a pre-existing unrelated `pps` table and active profile overrides. Models follow PP-18. Refuse unsupported key sources. PP-19 defines restoration to the native route.
+Codex: patch the currently selected custom provider's `base_url` in `config.toml`; patch its existing `experimental_bearer_token`, or `auth.json.OPENAI_API_KEY` for an existing file-based API-key setup. For an existing custom route preserve selection and auth mode. From the native route, select a reserved `pps` Responses/bearer table without changing OAuth tokens or credential-store settings; refuse a pre-existing unrelated `pps` table and active profile overrides. Models and optional connection fields follow PP-18. Refuse unsupported key sources. PP-19 defines restoration to the native route.
 
 ### PP-05: Gemini CLI
 
@@ -56,7 +56,7 @@ Gemini: patch `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` in `.env`. Allow `ge
 
 Accept `ccswitch://v1/import` and `ppswitch://v1/import` links for
 `resource=provider` only. Extract client, name, base URL and API key from direct
-parameters or bounded inline JSON/TOML, including optional PP-18 model fields;
+parameters or bounded inline JSON/TOML, including optional PP-18 fields;
 discard unrelated settings. For a Claude link containing only tier mappings, use
 Sonnet, then Opus, then Haiku as its visible default. A supplied default always
 wins. When a Claude link contains no models, use the visible PP-18 editor default.
@@ -84,7 +84,7 @@ Before writing, validate every involved file. Refuse symbolic-link file destinat
 
 ### PP-10: Current status
 
-Display configuration status by reading supported user-level client files, rather than trusting a stored active-provider ID. Allow duplicate connection settings under different names; every record for the selected client matching the configured URL, key and supplied PP-18 model fields displays In use and cannot be switched again. This is a file match, not verification of a running session, connection, credentials or model compatibility. Project settings, launch arguments and a separately launched client's environment can override these files. Editing identifies individual records; rows have no independent selection state. There is no bottom Current/status or global Switch area; status is represented by row badges. Setup errors are reported when switching is attempted. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration. Documentation must distinguish provider configuration from live usage and explain that retained model settings must be supported by the new provider.
+Display configuration status by reading supported user-level client files, rather than trusting a stored active-provider ID. Allow duplicate connection settings under different names; every record for the selected client matching the configured URL, key and supplied PP-18 fields displays In use and cannot be switched again. This is a file match, not verification of a running session, connection, credentials or model compatibility. Project settings, launch arguments and a separately launched client's environment can override these files. Editing identifies individual records; rows have no independent selection state. There is no bottom Current/status or global Switch area; status is represented by row badges. Setup errors are reported when switching is attempted. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration. Documentation must distinguish provider configuration from live usage and explain that retained model and effort settings must be supported by the new provider.
 
 ### PP-11: Performance budgets
 
@@ -209,21 +209,24 @@ store is read; other stored records remain readable and the store stays writable
 
 ### PP-18: Optional Provider models
 
-Persist an optional `models` object with `model`, and Claude-only `haiku`,
-`sonnet`, `opus` overrides. Old records without it retain URL/key-only behavior.
+Persist an optional `models` object with `model`, Claude-only `haiku`,
+`sonnet`, `opus` overrides, and Codex-only `effort` and `catalog_url`. Old
+records without it retain URL/key-only behavior.
 Empty editor inputs mean no explicit value, not deletion. Models are optional for
 Claude too: model-less saved records can switch URL/key directly and display In use
 when their managed fields match. Saving never applies; a separate Switch applies.
 The low-level URL/key patch contract remains available for legacy fixtures. Validate each supplied
-model as 1–512 UTF-8 bytes with no whitespace or control characters; never
-query a model catalog or test credentials. Save/cancel/import preview do not
+model or `effort` as 1–512 UTF-8 bytes with no whitespace or control
+characters, and `catalog_url` under the same HTTP(S) rules as the base URL;
+never query a model catalog or test credentials. Save/cancel/import preview do not
 modify client files. The editor explains exactly which values follow the default.
 For existing records and import previews, keep explicit Provider/link values.
 When its default is absent, Claude may use its supplied Sonnet/Opus/Haiku mapping
 (in that order); otherwise prefill from supported client files only when both
 URL and key match that Provider. Resolve Claude tier aliases through their
 configured mappings. Apply the same connection-scoped default prefill to all four
-clients. Never copy models from a different connection. Claude editors (including
+clients, including Codex `effort` and `catalog_url`. Never copy models from a
+different connection. Claude editors (including
 new Providers and model-less import previews) fall back to the visible, editable
 `claude-sonnet-5` when no explicit/mapped/same-connection model exists. This is a
 product default, not a compatibility guarantee or catalog query. Clearing it
@@ -239,14 +242,17 @@ when setting the Haiku mapping. Preserve modelPicker, modelOverrides, context
 window, reasoning, plugins and all other settings. Do not invent `behavesAs` or
 claim an unknown-model catalog warning has been fixed.
 
-Codex changes only top-level `config.toml.model` (minimally add it if absent).
+Codex changes top-level `config.toml.model` and `model_reasoning_effort`
+(minimally add each if absent), plus the selected provider table's
+`model_catalog_url` (also added if absent). A suggested catalog URL defaults
+to the Provider's base URL with a `/models` path suffix.
 Gemini synchronizes `.env.GEMINI_MODEL` and `settings.json.model.name`, using
 PP-09 recovery for the two-file update. Grok changes only the selected custom
 profile's existing `model` string; PP-19 native transitions may also change `[models].default`. Apply validates model
 destinations before any writes; malformed or ambiguous destinations are refused.
 
-In use badges must match URL/key and every model destination this Provider
-would write. A Provider without model settings ignores model differences. A
+In use badges must match URL/key and every PP-18 destination this Provider
+would write. A Provider without PP-18 settings ignores their differences. A
 different supplied model must keep Switch available even for matching URL/key.
 Project settings, launch arguments and process environment remain outside this
 file-match status. Detect relevant model environment overrides visible to PPS
@@ -265,9 +271,11 @@ External helpers/cloud modes remain unsupported. Preserve hooks, permissions,
 modelPicker/modelOverrides and native credential files. Codex removes root
 `model_provider`, `model`, API-only `forced_login_method`, and
 `auth.json.OPENAI_API_KEY` plus API-only `auth_mode`; keep OAuth tokens,
-keyring/login files and inactive custom provider tables. Refuse active profile
-routing overrides. Switching from native uses a dedicated bearer table so it
-never needs to overwrite native login credentials.
+keyring/login files and inactive custom provider tables. Retain PP-18 Codex
+additions on restore: top-level `model_reasoning_effort` is a client
+preference and `model_catalog_url` stays inside the inactive provider table.
+Refuse active profile routing overrides. Switching from native uses a
+dedicated bearer table so it never needs to overwrite native login credentials.
 
 Gemini removes `GOOGLE_GEMINI_BASE_URL`, `GEMINI_BASE_URL`, `GEMINI_API_KEY`,
 `GOOGLE_API_KEY`, `GEMINI_MODEL`, sets `security.auth.selectedType` to

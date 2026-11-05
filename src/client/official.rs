@@ -49,7 +49,12 @@ fn table_shape(doc: &DocumentMut, field: &str) -> Result<()> {
 fn codex_shape(doc: &DocumentMut) -> Result<()> {
     no_profile(doc)?;
     table_shape(doc, "model_providers")?;
-    for field in ["model_provider", "model", "forced_login_method"] {
+    for field in [
+        "model_provider",
+        "model",
+        "model_reasoning_effort",
+        "forced_login_method",
+    ] {
         if doc.get(field).is_some_and(|v| v.as_str().is_none()) {
             return Err("Configured provider must be a string.".into());
         }
@@ -84,7 +89,7 @@ fn gemini_auth(text: &str) -> Result<Option<String>> {
     }
     Ok(mode)
 }
-fn render(doc: &DocumentMut, before: &str) -> String {
+pub(super) fn render(doc: &DocumentMut, before: &str) -> String {
     let next = doc.to_string();
     if before.contains("\r\n") && !before.replace("\r\n", "").contains('\n') {
         next.replace("\r\n", "\n").replace('\n', "\r\n")
@@ -364,8 +369,14 @@ impl Paths {
             route["wire_api"] = value("responses");
             route["requires_openai_auth"] = value(false);
             route["experimental_bearer_token"] = value(provider.api_key.as_str());
+            if let Some(catalog) = &provider.models.catalog_url {
+                route["model_catalog_url"] = value(catalog.as_str());
+            }
             if let Some(model) = &provider.models.model {
                 doc["model"] = value(model.as_str());
+            }
+            if let Some(effort) = &provider.models.effort {
+                doc["model_reasoning_effort"] = value(effort.as_str());
             }
         } else {
             let model = provider
