@@ -84,7 +84,7 @@ Before writing, validate every involved file. Refuse symbolic-link file destinat
 
 ### PP-10: Current status
 
-Display configuration status by reading supported user-level client files, rather than trusting a stored active-provider ID. Allow duplicate connection settings under different names; every record for the selected client matching the configured URL, key and supplied PP-18 fields displays In use and cannot be switched again. This is a file match, not verification of a running session, connection, credentials or model compatibility. Project settings, launch arguments and a separately launched client's environment can override these files. Editing identifies individual records; rows have no independent selection state. There is no bottom Current/status or global Switch area; status is represented by row badges. Setup errors are reported when switching is attempted. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration. Documentation must distinguish provider configuration from live usage and explain that retained model and effort settings must be supported by the new provider.
+Display configuration status by reading supported user-level client files, rather than trusting a stored active-provider ID. Allow duplicate connection settings under different names; every record for the selected client matching the configured URL, key and supplied PP-18 fields displays In use and cannot be switched again. This is a file match, not verification of a running session, connection, credentials or model compatibility. Project settings, launch arguments and a separately launched client's environment can override these files. Editing identifies individual records; rows have no independent selection state. There is no bottom Current/status or global Switch area; status is represented by row badges. Setup errors are reported when switching is attempted. Report incomplete/unsupported setup without silently fixing unrelated settings. Existing clients may require restart to reload configuration. Documentation must distinguish provider configuration from live usage and explain that retained model and Codex option settings must be supported by the new provider.
 
 ### PP-11: Performance budgets
 
@@ -210,13 +210,14 @@ store is read; other stored records remain readable and the store stays writable
 ### PP-18: Optional Provider models
 
 Persist an optional `models` object with `model`, Claude-only `haiku`,
-`sonnet`, `opus` overrides, and Codex-only `effort` and `catalog_url`. Old
+`sonnet`, `opus` overrides, and Codex-only `effort`, `catalog_url` and
+`summary`. Old
 records without it retain URL/key-only behavior.
 Empty editor inputs mean no explicit value, not deletion. Models are optional for
 Claude too: model-less saved records can switch URL/key directly and display In use
 when their managed fields match. Saving never applies; a separate Switch applies.
 The low-level URL/key patch contract remains available for legacy fixtures. Validate each supplied
-model or `effort` as 1–512 UTF-8 bytes with no whitespace or control
+model, `effort` or `summary` as 1–512 UTF-8 bytes with no whitespace or control
 characters, and `catalog_url` under the same HTTP(S) rules as the base URL;
 never query a model catalog or test credentials. Save/cancel/import preview do not
 modify client files. The editor explains exactly which values follow the default.
@@ -225,7 +226,7 @@ When its default is absent, Claude may use its supplied Sonnet/Opus/Haiku mappin
 (in that order); otherwise prefill from supported client files only when both
 URL and key match that Provider. Resolve Claude tier aliases through their
 configured mappings. Apply the same connection-scoped default prefill to all four
-clients, including Codex `effort` and `catalog_url`. Never copy models from a
+clients, including Codex `effort`, `catalog_url` and `summary`. Never copy models from a
 different connection. Claude editors (including
 new Providers and model-less import previews) fall back to the visible, editable
 `claude-sonnet-5` when no explicit/mapped/same-connection model exists. This is a
@@ -242,10 +243,10 @@ when setting the Haiku mapping. Preserve modelPicker, modelOverrides, context
 window, reasoning, plugins and all other settings. Do not invent `behavesAs` or
 claim an unknown-model catalog warning has been fixed.
 
-Codex changes top-level `config.toml.model` and `model_reasoning_effort`
-(minimally add each if absent), plus the selected provider table's
-`model_catalog_url` (also added if absent). A suggested catalog URL defaults
-to the Provider's base URL with a `/models` path suffix.
+Codex changes top-level `config.toml.model`, `model_reasoning_effort` and
+`model_reasoning_summary` (minimally add each if absent), plus the selected
+provider table's `model_catalog_url` (also added if absent). A suggested
+catalog URL defaults to the Provider's base URL with a `/models` path suffix.
 Gemini synchronizes `.env.GEMINI_MODEL` and `settings.json.model.name`, using
 PP-09 recovery for the two-file update. Grok changes only the selected custom
 profile's existing `model` string; PP-19 native transitions may also change `[models].default`. Apply validates model
@@ -272,8 +273,9 @@ modelPicker/modelOverrides and native credential files. Codex removes root
 `model_provider`, `model`, API-only `forced_login_method`, and
 `auth.json.OPENAI_API_KEY` plus API-only `auth_mode`; keep OAuth tokens,
 keyring/login files and inactive custom provider tables. Retain PP-18 Codex
-additions on restore: top-level `model_reasoning_effort` is a client
-preference and `model_catalog_url` stays inside the inactive provider table.
+additions on restore: top-level `model_reasoning_effort` and
+`model_reasoning_summary` are client
+preferences and `model_catalog_url` stays inside the inactive provider table.
 Refuse active profile routing overrides. Switching from native uses a
 dedicated bearer table so it never needs to overwrite native login credentials.
 

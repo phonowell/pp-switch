@@ -27,14 +27,14 @@ pp-switch 保存服务商，切换 **Base URL 与 API Key**；0.0.6 预览版还
 
 模型均为可选，包括 Claude。已保存的无模型条目直接切换 URL／Key；这些字段匹配时显示「使用中」。
 已有记录和导入预览优先保留明确模型；Claude 缺失默认值时先取已提供的 Sonnet、Opus、Haiku 映射。
-否则，四个客户端都只在 URL 和 Key 完全匹配时，从受支持的本机配置预填模型；Claude 的分级别名按已有映射解析，Codex 还会预填已配置的 `model_reasoning_effort` 和 `model_catalog_url`，不沿用其他连接的模型。
+否则，四个客户端都只在 URL 和 Key 完全匹配时，从受支持的本机配置预填模型；Claude 的分级别名按已有映射解析，Codex 还会预填已配置的 `model_reasoning_effort`、`model_reasoning_summary` 和 `model_catalog_url`，不沿用其他连接的模型。
 
 Claude 新增、编辑和导入没有具体模型时，在输入框实际预填可编辑的 `claude-sonnet-5`。
 这是产品建议，不保证所有服务商兼容；请确认支持或替换。清空可保留客户端模型。
 预填仍是未保存的草稿，需要先保存、再切换。Gemini 和 Grok 的新建模型字段保持空白；Codex 的模型目录地址会建议为服务商地址加 `/models`，可修改或清空。
 
 Claude 同步顶层 `model`、`env.ANTHROPIC_MODEL` 和 Haiku／Sonnet／Opus 映射，可展开映射分别覆盖；
-既有 `ANTHROPIC_SMALL_FAST_MODEL` 跟随 Haiku。Codex 修改根级 `config.toml.model` 和 `model_reasoning_effort`，以及所选服务商表中的 `model_catalog_url`（模型列表由 Codex 自己加载）；
+既有 `ANTHROPIC_SMALL_FAST_MODEL` 跟随 Haiku。Codex 修改根级 `config.toml.model`、`model_reasoning_effort` 和 `model_reasoning_summary`，以及所选服务商表中的 `model_catalog_url`（模型列表由 Codex 自己加载）；部分服务商要求特定的 `model_reasoning_summary`，例如 `none`；
 Gemini 同步 `.env.GEMINI_MODEL` 和 `settings.json.model.name`，两文件写入可恢复。
 Grok 修改当前自定义 profile 的模型；从原生模式建立 PPS profile 时要求明确默认模型。
 清空保存值表示以后不管理它，不删除客户端值或恢复旧设置。
@@ -75,7 +75,7 @@ Gemini 的设置还包含限定的认证选择；明确模型才修改 `settings
 不执行登录或网络请求；必要时通过客户端重新登录并重启。
 
 - Claude 删除 API URL／Key／Token、五个受管理模型环境字段和顶层模型；保留原生凭据、hooks、权限、模型目录、现有代理和上下文设置。拒绝外部 helper／云平台模式。
-- Codex 清除根级服务商／模型选择、仅 API 的强制登录及 `auth.json.OPENAI_API_KEY`／API 认证方式；保留 OAuth Token 和未启用的自定义表，包括根级 `model_reasoning_effort` 和表内的 `model_catalog_url`。
+- Codex 清除根级服务商／模型选择、仅 API 的强制登录及 `auth.json.OPENAI_API_KEY`／API 认证方式；保留 OAuth Token 和未启用的自定义表，包括根级 `model_reasoning_effort`/`model_reasoning_summary` 和表内的 `model_catalog_url`。
 - Gemini 清除受管理 URL／Key／模型环境项，选择 `oauth-personal` 并删除 `model.name`；保留 OAuth 缓存和其他设置。
 - Grok 清除默认选择及指向同一 profile 的摘要选择；保留未启用的 profile 表和原生凭据。
 

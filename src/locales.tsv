@@ -241,6 +241,7 @@ Codex forced login method is unsupported.	不支持此 Codex 登录方式限制�
 Codex authentication mode is unsupported.	不支持此 Codex 认证方式。
 Reasoning effort (optional)	推理强度（可选）
 Model catalog URL (optional)	模型目录地址（可选）
+Reasoning summary (optional)	推理摘要（可选）
 Blank keeps the client's model and Codex options.	留空则保留客户端的模型和 Codex 选项。
 Codex options are supported only for Codex.	Codex 选项仅适用于 Codex。
 Catalog URL must be a valid HTTP(S) URL.	目录地址必须是有效的 HTTP(S) 地址。
@@ -248,3 +249,4 @@ Catalog URL must use HTTP(S), with a host and no embedded credentials or fragmen
 Codex provider must be a table.	Codex Provider 必须是配置表。
 Configured reasoning effort must be a string.	配置的推理强度必须是字符串。
 Configured catalog URL must be a string.	配置的目录地址必须是字符串。
+Configured reasoning summary must be a string.	配置的推理摘要必须是字符串。

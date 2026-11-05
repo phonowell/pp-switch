@@ -53,6 +53,7 @@ fn codex_shape(doc: &DocumentMut) -> Result<()> {
         "model_provider",
         "model",
         "model_reasoning_effort",
+        "model_reasoning_summary",
         "forced_login_method",
     ] {
         if doc.get(field).is_some_and(|v| v.as_str().is_none()) {
@@ -377,6 +378,9 @@ impl Paths {
             }
             if let Some(effort) = &provider.models.effort {
                 doc["model_reasoning_effort"] = value(effort.as_str());
+            }
+            if let Some(summary) = &provider.models.summary {
+                doc["model_reasoning_summary"] = value(summary.as_str());
             }
         } else {
             let model = provider

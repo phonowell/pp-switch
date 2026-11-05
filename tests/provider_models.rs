@@ -27,7 +27,7 @@ fn claude() -> &'static str {
     "{\r\n  \"model\":\"old-selection\",\r\n  \"env\":{\"ANTHROPIC_BASE_URL\":\"https://old.example\",\"ANTHROPIC_AUTH_TOKEN\":\"old-key\",\"ANTHROPIC_MODEL\":\"old-default\",\"ANTHROPIC_DEFAULT_HAIKU_MODEL\":\"old-haiku\",\"ANTHROPIC_DEFAULT_SONNET_MODEL\":\"old-sonnet\",\"ANTHROPIC_DEFAULT_OPUS_MODEL\":\"old-opus\",\"ANTHROPIC_SMALL_FAST_MODEL\":\"old-fast\",\"CLAUDE_CODE_MAX_CONTEXT_TOKENS\":\"200000\"},\r\n  \"modelPicker\":[{\"id\":\"old-default\",\"behavesAs\":\"sonnet\"}],\r\n  \"hooks\":{\"中文\":[]}\r\n}\r\n"
 }
 fn codex() -> &'static str {
-    "# keep\r\nmodel_provider = 'chosen'\r\nmodel = 'old-model' # keep model comment\r\nmodel_reasoning_effort = 'high'\r\n[model_providers.chosen]\r\nbase_url = 'https://old.example'\r\nexperimental_bearer_token = 'old-key'\r\nwire_api = 'responses'\r\n[model_providers.other]\r\nbase_url = 'https://other.example'\r\n"
+    "# keep\r\nmodel_provider = 'chosen'\r\nmodel = 'old-model' # keep model comment\r\nmodel_reasoning_effort = 'high'\r\nmodel_reasoning_summary = 'auto'\r\n[model_providers.chosen]\r\nbase_url = 'https://old.example'\r\nexperimental_bearer_token = 'old-key'\r\nwire_api = 'responses'\r\n[model_providers.other]\r\nbase_url = 'https://other.example'\r\n"
 }
 fn grok() -> &'static str {
     "# keep\r\n[models]\r\ndefault = 'chosen'\r\n[model.chosen]\r\nmodel = 'old-model' # keep model comment\r\nbase_url = 'https://old.example'\r\napi_key = 'old-key'\r\napi_backend = 'openai-responses'\r\ncontext_window = 200000\r\n[model.other]\r\nmodel = 'other-model'\r\nbase_url = 'https://other.example'\r\napi_key = 'other-key'\r\n"
@@ -63,6 +63,7 @@ fn pp18_editor_prefill_is_connection_scoped_read_only_and_keeps_explicit_models(
         assert_eq!(suggested.model.as_deref(), Some(expected));
         if client == Client::Codex {
             assert_eq!(suggested.effort.as_deref(), Some("high"));
+            assert_eq!(suggested.summary.as_deref(), Some("auto"));
             assert_eq!(
                 suggested.catalog_url.as_deref(),
                 Some("https://old.example/models")
@@ -93,6 +94,7 @@ fn pp18_editor_prefill_is_connection_scoped_read_only_and_keeps_explicit_models(
         let mut expected = explicit.models.clone();
         if client == Client::Codex {
             expected.effort = Some("high".into());
+            expected.summary = Some("auto".into());
             expected.catalog_url = Some("https://old.example/models".into());
         }
         assert_eq!(paths.editor_models(&explicit), expected);
@@ -247,25 +249,29 @@ fn pp18_invalid_models_or_cross_client_mappings_never_write() {
         for (field, value) in [
             ("effort", "xhigh"),
             ("catalog_url", "https://catalog.example/models"),
+            ("summary", "concise"),
         ] {
             let mut p = provider(client, "valid");
             match field {
                 "effort" => p.models.effort = Some(value.into()),
+                "summary" => p.models.summary = Some(value.into()),
                 _ => p.models.catalog_url = Some(value.into()),
             }
             assert!(p.validate().is_err(), "{client:?} rejected {field}");
         }
     }
-    for (effort, catalog) in [
-        (Some("bad effort"), None),
-        (None, Some("notaurl")),
-        (None, Some("ftp://host/models")),
-        (None, Some("https://host/models#frag")),
+    for (effort, catalog, summary) in [
+        (Some("bad effort"), None, None),
+        (None, Some("notaurl"), None),
+        (None, Some("ftp://host/models"), None),
+        (None, Some("https://host/models#frag"), None),
+        (None, None, Some("bad summary")),
     ] {
         let mut p = provider(Client::Codex, "valid");
         p.models.effort = effort.map(str::to_owned);
         p.models.catalog_url = catalog.map(str::to_owned);
-        assert!(p.validate().is_err(), "{effort:?} {catalog:?}");
+        p.models.summary = summary.map(str::to_owned);
+        assert!(p.validate().is_err(), "{effort:?} {catalog:?} {summary:?}");
     }
 }
 
@@ -420,6 +426,7 @@ fn pp04_pp10_pp18_codex_switches_effort_and_catalog_with_model() {
     put(&file, codex());
     let mut p = provider(Client::Codex, "new-model");
     p.models.effort = Some("xhigh".into());
+    p.models.summary = Some("concise".into());
     p.models.catalog_url = Some("https://new.example/v1/models".into());
     paths.apply(&store, &p).unwrap();
     assert_eq!(
@@ -429,6 +436,7 @@ fn pp04_pp10_pp18_codex_switches_effort_and_catalog_with_model() {
             .replace("'old-key'", "\"new-key\"")
             .replace("'old-model'", "\"new-model\"")
             .replace("'high'", "\"xhigh\"")
+            .replace("'auto'", "\"concise\"")
             .replace(
                 "wire_api = 'responses'\r\n",
                 "wire_api = 'responses'\r\nmodel_catalog_url = \"https://new.example/v1/models\"\r\n"
@@ -437,9 +445,10 @@ fn pp04_pp10_pp18_codex_switches_effort_and_catalog_with_model() {
     // In use requires matching every managed destination.
     let state = paths.current_models(Client::Codex).unwrap();
     assert!(state.matches(Client::Codex, &p.models));
-    for (effort, catalog) in [
-        (Some("low"), None),
-        (None, Some("https://else.example/models")),
+    for (effort, catalog, summary) in [
+        (Some("low"), None, None),
+        (None, Some("https://else.example/models"), None),
+        (None, None, Some("detailed")),
     ] {
         let mut different = p.clone();
         if let Some(effort) = effort {
@@ -447,6 +456,9 @@ fn pp04_pp10_pp18_codex_switches_effort_and_catalog_with_model() {
         }
         if let Some(catalog) = catalog {
             different.models.catalog_url = Some(catalog.into());
+        }
+        if let Some(summary) = summary {
+            different.models.summary = Some(summary.into());
         }
         assert!(!state.matches(Client::Codex, &different.models));
     }
@@ -459,6 +471,7 @@ fn pp04_pp10_pp18_codex_switches_effort_and_catalog_with_model() {
     paths.apply(&store, &provider(Client::Codex, "")).unwrap();
     let after = fs::read_to_string(&file).unwrap();
     assert!(after.contains("model_reasoning_effort = 'high'"));
+    assert!(after.contains("model_reasoning_summary = 'auto'"));
     assert!(!after.contains("model_catalog_url"));
     // Missing effort is added minimally; an existing catalog is patched in place.
     let existing_catalog = codex()
@@ -622,7 +635,18 @@ fn pp06_pp18_import_models_are_reviewed_and_direct_values_win() {
     for (client, config) in [("codex", codex()), ("grokbuild", grok())] {
         let p = import_link(&format!("ppswitch://v1/import?resource=provider&app={client}&name=Fixture&configFormat=toml&config={}", general_purpose::URL_SAFE_NO_PAD.encode(config))).unwrap();
         assert_eq!(p.models.model.as_deref(), Some("old-model"));
+        if client == "codex" {
+            assert_eq!(p.models.effort.as_deref(), Some("high"));
+            assert_eq!(p.models.summary.as_deref(), Some("auto"));
+        }
     }
+    let p = import_link("ppswitch://v1/import?resource=provider&app=codex&name=Fixture&endpoint=https://new.example/v1&apiKey=new-key&effort=max&catalogUrl=https://new.example/v1/models&summary=none").unwrap();
+    assert_eq!(p.models.effort.as_deref(), Some("max"));
+    assert_eq!(p.models.summary.as_deref(), Some("none"));
+    assert_eq!(
+        p.models.catalog_url.as_deref(),
+        Some("https://new.example/v1/models")
+    );
     let p = import_link(&format!("ccswitch://v1/import?resource=provider&app=gemini&name=Fixture&config={}", general_purpose::URL_SAFE_NO_PAD.encode(r#"{"env":{"GOOGLE_GEMINI_BASE_URL":"https://gemini.example","GEMINI_API_KEY":"fake","GEMINI_MODEL":"gemini-custom"}}"#))).unwrap();
     assert_eq!(p.models.model.as_deref(), Some("gemini-custom"));
 }

@@ -70,6 +70,8 @@ pub struct Models {
     pub effort: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub catalog_url: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub summary: Option<String>,
 }
 
 impl Models {
@@ -95,6 +97,7 @@ impl Models {
             &self.opus,
             &self.effort,
             &self.catalog_url,
+            &self.summary,
         ]
         .iter()
         .all(|v| v.is_none())
@@ -124,6 +127,7 @@ impl Models {
         self.opus = self.opus.take().or(other.opus);
         self.effort = self.effort.take().or(other.effort);
         self.catalog_url = self.catalog_url.take().or(other.catalog_url);
+        self.summary = self.summary.take().or(other.summary);
     }
 
     fn validate(&self, client: Client) -> Result<()> {
@@ -135,7 +139,7 @@ impl Models {
             return Err("Model mappings are supported only for Claude Code.".into());
         }
         if client != Client::Codex
-            && [&self.effort, &self.catalog_url]
+            && [&self.effort, &self.catalog_url, &self.summary]
                 .iter()
                 .any(|v| v.is_some())
         {
@@ -147,6 +151,7 @@ impl Models {
             &self.sonnet,
             &self.opus,
             &self.effort,
+            &self.summary,
         ]
         .into_iter()
         .flatten()
@@ -299,6 +304,7 @@ pub fn import_link(text: &str) -> Result<Provider> {
     );
     models.effort = Models::optional(params.get("effort").map_or("", String::as_str));
     models.catalog_url = Models::optional(params.get("catalogUrl").map_or("", String::as_str));
+    models.summary = Models::optional(params.get("summary").map_or("", String::as_str));
 
     if let Some(raw) = params.get("config") {
         let config = decode_config(raw)?;
@@ -513,6 +519,10 @@ fn extract_codex(config: &str) -> Result<(Option<String>, Option<String>, Models
                 .and_then(toml_edit::Item::as_str)
                 .map(str::to_owned),
             catalog_url: get("model_catalog_url"),
+            summary: doc
+                .get("model_reasoning_summary")
+                .and_then(toml_edit::Item::as_str)
+                .map(str::to_owned),
             ..Models::default()
         },
     ))

@@ -80,6 +80,7 @@ impl ModelState {
         for (desired, actual) in [
             (&desired.effort, &self.values.effort),
             (&desired.catalog_url, &self.values.catalog_url),
+            (&desired.summary, &self.values.summary),
         ] {
             if desired.is_some() && desired != actual {
                 return false;
@@ -97,7 +98,9 @@ impl Paths {
         let mut models = provider.models.clone();
         let needs_status = models.model.is_none()
             || (provider.client == Client::Codex
-                && (models.effort.is_none() || models.catalog_url.is_none()));
+                && (models.effort.is_none()
+                    || models.catalog_url.is_none()
+                    || models.summary.is_none()));
         let connection_status = needs_status
             .then(|| self.status(provider.client, true).ok())
             .flatten()
@@ -133,6 +136,10 @@ impl Paths {
                     .catalog_url
                     .take()
                     .or_else(|| current.values.catalog_url.clone());
+                models.summary = models
+                    .summary
+                    .take()
+                    .or_else(|| current.values.summary.clone());
             }
             if models.catalog_url.is_none() {
                 models.catalog_url = Some(format!(
@@ -176,6 +183,8 @@ impl Paths {
                 state.values.model = string(doc.get("model"), "model")?;
                 state.values.effort =
                     string(doc.get("model_reasoning_effort"), "reasoning effort")?;
+                state.values.summary =
+                    string(doc.get("model_reasoning_summary"), "reasoning summary")?;
                 let table = doc
                     .get("model_provider")
                     .and_then(toml_edit::Item::as_str)
@@ -248,6 +257,7 @@ impl Paths {
                 for (key, value) in [
                     ("model", desired.model.as_deref()),
                     ("model_reasoning_effort", desired.effort.as_deref()),
+                    ("model_reasoning_summary", desired.summary.as_deref()),
                 ] {
                     let Some(value) = value else { continue };
                     let doc = toml_edit::Document::parse(next.as_str())

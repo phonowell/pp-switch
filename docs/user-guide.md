@@ -36,8 +36,9 @@ directly and show In use when those fields match. Existing records and imports
 keep explicit models first. Claude then uses its supplied Sonnet, Opus, then Haiku
 mapping. Otherwise all four clients prefill from supported local configuration
 only when both URL and key match; Claude tier aliases resolve through configured
-mappings and Codex also prefills its configured `model_reasoning_effort` and
-`model_catalog_url`. No model is inherited from a different connection.
+mappings and Codex also prefills its configured `model_reasoning_effort`,
+`model_reasoning_summary` and `model_catalog_url`. No model is inherited from a
+different connection.
 
 Claude Add/Edit/import fields fall back to the visible, editable `claude-sonnet-5`
 when no specific model is available. This product suggestion is not a compatibility
@@ -48,9 +49,11 @@ Provider's base URL plus `/models`; edit or clear it.
 
 Claude synchronizes root `model`, `env.ANTHROPIC_MODEL` and the Haiku/Sonnet/Opus
 mappings. Expand mappings to override each tier. An existing
-`ANTHROPIC_SMALL_FAST_MODEL` follows Haiku. Codex changes root `config.toml.model`
-and `model_reasoning_effort`, plus the selected provider's `model_catalog_url`
-that Codex itself loads its model list from. Gemini synchronizes
+`ANTHROPIC_SMALL_FAST_MODEL` follows Haiku. Codex changes root `config.toml.model`,
+`model_reasoning_effort` and `model_reasoning_summary`, plus the selected
+provider's `model_catalog_url` that Codex itself loads its model list from.
+Some providers require a specific `model_reasoning_summary` such as `none`.
+Gemini synchronizes
 `.env.GEMINI_MODEL` and `settings.json.model.name` with
 recoverable writes. Grok changes the selected custom profile’s model; creating
 a PPS profile from native mode requires an explicit model. Clearing a saved model stops managing it;
@@ -107,8 +110,8 @@ network request: sign in through the client and restart it if needed.
   existing proxy/context settings remain. External helpers/cloud modes are refused.
 - Codex clears root provider/model selection, API-only forced login and
   `auth.json.OPENAI_API_KEY`/API auth mode. OAuth tokens and inactive tables remain,
-  including top-level `model_reasoning_effort` and a `model_catalog_url` inside
-  those tables.
+  including top-level `model_reasoning_effort`/`model_reasoning_summary` and a
+  `model_catalog_url` inside those tables.
 - Gemini clears managed URL/key/model environment entries, selects
   `oauth-personal`, and removes `model.name`; OAuth cache and other settings remain.
 - Grok clears the default selector and a summary selector referencing the same

@@ -78,6 +78,7 @@ struct Controls {
     codex_group: Group,
     effort: Input,
     catalog: Input,
+    summary: Input,
     models_expanded: Rc<Cell<bool>>,
     new: Button,
     save: Button,
@@ -178,7 +179,7 @@ impl Controls {
             self.model_group.hide();
             if codex {
                 self.codex_group.show();
-                538
+                609
             } else {
                 self.codex_group.hide();
                 394
@@ -206,6 +207,8 @@ impl Controls {
             .set_value(models.effort.as_deref().unwrap_or(""));
         self.catalog
             .set_value(models.catalog_url.as_deref().unwrap_or(""));
+        self.summary
+            .set_value(models.summary.as_deref().unwrap_or(""));
         for (input, value) in
             self.model_aliases
                 .iter_mut()
@@ -524,13 +527,16 @@ fn controls(language: Language) -> Controls {
     });
     model_group.end();
     model_group.hide();
-    let mut codex_group = Group::new(24, 382, 338, 136, "");
+    let mut codex_group = Group::new(24, 382, 338, 207, "");
     labels.push(label(24, 382, 338, "Reasoning effort (optional)"));
     let mut effort = Input::new(24, 407, 338, 40, "");
     field(&mut effort);
     labels.push(label(24, 453, 338, "Model catalog URL (optional)"));
     let mut catalog = Input::new(24, 478, 338, 40, "");
     field(&mut catalog);
+    labels.push(label(24, 524, 338, "Reasoning summary (optional)"));
+    let mut summary = Input::new(24, 549, 338, 40, "");
+    field(&mut summary);
     codex_group.end();
     codex_group.hide();
     let mut delete = Button::new(24, 328, 66, 36, "Delete");
@@ -572,6 +578,7 @@ fn controls(language: Language) -> Controls {
         codex_group,
         effort,
         catalog,
+        summary,
         models_expanded: Rc::new(Cell::new(false)),
         new,
         save,
@@ -1055,6 +1062,7 @@ fn wire_with_updates(
             );
             p.models.effort = Models::optional(&view.effort.value());
             p.models.catalog_url = Models::optional(&view.catalog.value());
+            p.models.summary = Models::optional(&view.summary.value());
             p.validate()?;
             if let Some(id) = &state_save.borrow().editing {
                 p.id.clone_from(id);

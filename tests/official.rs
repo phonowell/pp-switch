@@ -136,17 +136,20 @@ fn pp19_codex_native_route_carries_codex_options_and_restore_keeps_them() {
     );
     let mut p = provider(Client::Codex);
     p.models.effort = Some("max".into());
+    p.models.summary = Some("none".into());
     p.models.catalog_url = Some("https://relay.example/v1/models".into());
     paths.apply(&store, &p).unwrap();
     let text = fs::read_to_string(&file).unwrap();
     assert!(text.contains("model_provider = \"pps\""));
     assert!(text.contains("model = \"compatible-model\""));
     assert!(text.contains("model_reasoning_effort = \"max\""));
+    assert!(text.contains("model_reasoning_summary = \"none\""));
     assert!(text.contains("model_catalog_url = \"https://relay.example/v1/models\""));
     // Restore keeps the top-level effort and the inactive table's catalog.
     paths.apply_official(&store, Client::Codex).unwrap();
     let after = fs::read_to_string(&file).unwrap();
     assert!(after.contains("model_reasoning_effort = \"max\""));
+    assert!(after.contains("model_reasoning_summary = \"none\""));
     assert!(after.contains("model_catalog_url = \"https://relay.example/v1/models\""));
     assert!(!after.contains("model_provider = "));
 }
