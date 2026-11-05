@@ -66,7 +66,13 @@ impl Update {
 }
 
 pub fn sha256(bytes: &[u8]) -> String {
-    format!("{:x}", Sha256::digest(bytes))
+    use std::fmt::Write as _;
+    Sha256::digest(bytes)
+        .iter()
+        .fold(String::with_capacity(64), |mut out, byte| {
+            let _ = write!(out, "{byte:02x}");
+            out
+        })
 }
 
 fn asset_name(version: &Version, target: &str) -> String {
@@ -164,11 +170,14 @@ fn validate_url(url: &Url) -> Result<()> {
     Ok(())
 }
 
-fn http_error(response: &ureq::Response) -> &'static str {
-    if response.status() == 429
-        || (response.status() == 403
-            && (response.header("X-RateLimit-Remaining") == Some("0")
-                || response.header("Retry-After").is_some()))
+fn http_error(status: u16, headers: &ureq::http::HeaderMap) -> &'static str {
+    if status == 429
+        || (status == 403
+            && (headers
+                .get("X-RateLimit-Remaining")
+                .and_then(|value| value.to_str().ok())
+                == Some("0")
+                || headers.contains_key("Retry-After")))
     {
         "GitHub update rate limit reached. Try again later."
     } else {
@@ -176,13 +185,15 @@ fn http_error(response: &ureq::Response) -> &'static str {
     }
 }
 
-fn response(url: &str, deadline: Instant) -> Result<ureq::Response> {
-    let agent = ureq::AgentBuilder::new()
-        .redirects(0)
-        .timeout_connect(Duration::from_secs(8))
-        .timeout_read(Duration::from_secs(8))
-        .timeout_write(Duration::from_secs(8))
-        .build();
+fn response(url: &str, deadline: Instant) -> Result<ureq::http::Response<ureq::Body>> {
+    let agent: ureq::Agent = ureq::Agent::config_builder()
+        .max_redirects(0)
+        .http_status_as_error(false)
+        .timeout_connect(Some(Duration::from_secs(8)))
+        .timeout_per_read(Some(Duration::from_secs(8)))
+        .timeout_per_write(Some(Duration::from_secs(8)))
+        .build()
+        .into();
     let mut url = Url::parse(url).map_err(|_| "Invalid update URL.")?;
     for _ in 0..=5 {
         if deadline <= Instant::now() {
@@ -191,23 +202,28 @@ fn response(url: &str, deadline: Instant) -> Result<ureq::Response> {
         validate_url(&url)?;
         let result = agent
             .get(url.as_str())
-            .timeout(deadline.saturating_duration_since(Instant::now()))
-            .set(
+            .header(
                 "User-Agent",
                 concat!("pp-switch/", env!("CARGO_PKG_VERSION")),
             )
-            .set("Accept", "application/vnd.github+json")
+            .header("Accept", "application/vnd.github+json")
+            .config()
+            .timeout_global(Some(deadline.saturating_duration_since(Instant::now())))
+            .build()
             .call();
-        let response = match result {
-            Ok(r) | Err(ureq::Error::Status(301 | 302 | 303 | 307 | 308, r)) => r,
-            Err(ureq::Error::Status(_, r)) => return Err(http_error(&r).into()),
-            _ => return Err("Cannot contact GitHub. Check your connection or try later.".into()),
-        };
-        if response.status() == 200 {
+        let response =
+            result.map_err(|_| "Cannot contact GitHub. Check your connection or try later.")?;
+        let status = response.status().as_u16();
+        if status == 200 {
             return Ok(response);
         }
+        if !matches!(status, 301 | 302 | 303 | 307 | 308) {
+            return Err(http_error(status, response.headers()).into());
+        }
         url = response
-            .header("Location")
+            .headers()
+            .get("Location")
+            .and_then(|value| value.to_str().ok())
             .and_then(|location| url.join(location).ok())
             .ok_or("Invalid update URL.")?;
     }
@@ -301,7 +317,11 @@ pub fn check() -> Result<Option<Update>> {
                 target(),
                 |page, limit| {
                     let url = format!("https://api.github.com/repos/{REPOSITORY}/releases?per_page={RELEASES_PER_PAGE}&page={page}");
-                    bounded_read(response(&url, deadline)?.into_reader(), limit, deadline)
+                    bounded_read(
+                        response(&url, deadline)?.into_body().into_reader(),
+                        limit,
+                        deadline,
+                    )
                 },
             )
         })
@@ -588,7 +608,7 @@ pub fn stage(update: &Update, language: Language) -> Result<Staged> {
         .collect::<Result<BTreeMap<_, _>>>()?;
     let deadline = Instant::now() + NETWORK_TIMEOUT;
     let bytes = bounded_read(
-        response(&update.url, deadline)?.into_reader(),
+        response(&update.url, deadline)?.into_body().into_reader(),
         ARCHIVE_LIMIT,
         deadline,
     )?;
@@ -1115,32 +1135,33 @@ mod tests {
         ] {
             assert!(validate_url(&Url::parse(url).unwrap()).is_err());
         }
-        for (code, headers, expected) in [
+        for (code, pairs, expected) in [
             (
                 403,
-                "X-RateLimit-Remaining: 0\r\n",
+                &[("X-RateLimit-Remaining", "0")][..],
                 "GitHub update rate limit reached. Try again later.",
             ),
             (
                 403,
-                "Retry-After: 60\r\n",
+                &[("Retry-After", "60")][..],
                 "GitHub update rate limit reached. Try again later.",
             ),
             (
                 429,
-                "",
+                &[][..],
                 "GitHub update rate limit reached. Try again later.",
             ),
             (
                 403,
-                "",
+                &[][..],
                 "Cannot contact GitHub. Check your connection or try later.",
             ),
         ] {
-            let response: ureq::Response = format!("HTTP/1.1 {code} Error\r\n{headers}\r\n")
-                .parse()
-                .unwrap();
-            assert_eq!(http_error(&response), expected);
+            let mut headers = ureq::http::HeaderMap::new();
+            for (name, value) in pairs {
+                headers.insert(*name, ureq::http::HeaderValue::from_str(value).unwrap());
+            }
+            assert_eq!(http_error(code, &headers), expected);
         }
     }
 

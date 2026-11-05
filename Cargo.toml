@@ -8,16 +8,16 @@ description = "Pure Provider Switch: switch API connections with optional models
 repository = "https://github.com/phonowell/pp-switch"
 
 [dependencies]
-base64 = "0.22"
-dirs = "6"
+base64 = "0.23"
+dirs = "7"
 fltk = { version = "=1.5.23", features = ["no-images", "no-pango", "single-threaded", "static-msvcrt"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1", features = ["raw_value"] }
 tempfile = "3"
-toml_edit = "0.23"
+toml_edit = "0.25"
 url = "2"
-ureq = { version = "2.12", default-features = false, features = ["tls"] }
-sha2 = "0.10"
+ureq = { version = "3", default-features = false, features = ["rustls"] }
+sha2 = "0.11"
 semver = "1"
 zip = { version = "9.0.5", default-features = false, features = ["deflate-flate2"] }
 flate2 = { version = "1", default-features = false, features = ["rust_backend"] }
