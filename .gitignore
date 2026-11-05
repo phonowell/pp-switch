@@ -2,3 +2,4 @@
 /.codegraph/
 .DS_Store
 *.dSYM/
+__pycache__/
