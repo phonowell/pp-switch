@@ -446,7 +446,11 @@ pub fn unpack(bytes: &[u8], version: &Version, target: &str) -> Result<BTreeMap<
             let mut entry = archive
                 .by_index(index)
                 .map_err(|_| "Invalid update archive.")?;
-            if entry.enclosed_name().is_none() || entry.name().contains('\\') {
+            let name = entry
+                .name()
+                .map_err(|_| "Invalid update archive.")?
+                .into_owned();
+            if entry.enclosed_name().is_none() || name.contains('\\') {
                 return Err("Unsafe update archive path.".into());
             }
             if entry
@@ -459,10 +463,9 @@ pub fn unpack(bytes: &[u8], version: &Version, target: &str) -> Result<BTreeMap<
                 if entry.size() != 0 {
                     return Err("Unsupported update package layout.".into());
                 }
-                archive_directory(entry.name(), version, target)?;
+                archive_directory(&name, version, target)?;
                 continue;
             }
-            let name = entry.name().to_owned();
             add(&name, &mut entry)?;
         }
     }
