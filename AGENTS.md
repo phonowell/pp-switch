@@ -7,8 +7,8 @@ do not discard others' edits, rewrite history or force-push.
 
 ## Default workflow
 
-1. **Locate:** run `rtk git status --short` and `rtk proxy git diff -- <target>`.
-   For code tasks, use `rtk proxy codegraph explore <target>` to inspect the target
+1. **Locate:** run `git status --short` and `git diff -- <target>`.
+   For code tasks, use `codegraph explore <target>` to inspect the target
    and direct consumers. Returned source counts as read only for visible segments.
    Reuse unchanged source/graph evidence; investigate only specific missing relations.
 2. **Change:** read only the relevant entries below. Change the PP contract first
@@ -36,10 +36,11 @@ human screenshot review is the final fallback. After each correction, run only
 checks affected by changed inputs and reuse the others' logs/hashes. Do not run
 the full smoke suite for every correction; see [verification scope](CONTRIBUTING.md#incremental-verification).
 
-Shell commands must use `rtk proxy`; filtered status is only an overview.
-Rules, source, diffs, diagnostics and acceptance evidence need raw output and exit
-codes. Empty filtered output or a success summary alone is not proof. For missing
-output or tool failures, read [tool recovery](CONTRIBUTING.md#tool-and-output-recovery).
+Run commands normally; output compression and recovery follow the global RTK
+instructions. Do not add wrappers by default. Check actual exit codes and recover
+elided output using the path stated in the result. Never repeat a mutating command
+solely to recover output. For tool failures, read
+[tool recovery](CONTRIBUTING.md#tool-and-output-recovery).
 Documentation-only tasks do not require a code graph query.
 
 ## Read by task
@@ -60,3 +61,5 @@ content branding or bottom status/Switch. Use pinned Lucide action icons and pin
 never handmade substitutes or font glyphs. Preserve native OS chrome and the PPS app logo.
 Chinese functional checks only; other locales style only. Reuse passed checks
 when inputs are unchanged; visual review is the last fallback.
+
+浏览器自动化工具统一使用全局 skill `~/.agents/skills/browser-workflow/SKILL.md`；项目原有验收禁令与业务入口继续适用。

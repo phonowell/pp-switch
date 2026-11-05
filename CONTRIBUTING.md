@@ -5,7 +5,7 @@ PP requirements and chapters here. [SPEC.md](SPEC.md) is the behavior contract:
 update the relevant requirement before changing intended behavior, then implement
 the smallest change and verify its observable result. Keep URL/key switching with explicit optional Provider models,
 scoped native restoration and Provider import, language selection and strictly manual updates as the
-entire product scope. Run the shell examples below through `rtk proxy`.
+entire product scope. Run the shell examples normally; output handling follows the global RTK instructions.
 
 ## Build
 
@@ -241,21 +241,22 @@ illustrations or current native captures; a schematic never proves GUI acceptanc
 
 ## Tool and output recovery
 
-RTK and CodeGraph are required for code tasks. Use `rtk proxy` for raw shell
-output; `rtk git status --short` is only a filtered overview. Retain actual exit
-codes, stdout and stderr for validation. A filtered success summary or empty
-output does not establish that a file is empty, a match is absent or a check passed.
+Run commands normally; output compression and recovery follow the global RTK
+instructions. CodeGraph remains required for code tasks. Retain actual exit
+codes, stdout and stderr for validation.
 
-- **Filtered read-only output:** repeat the narrow read through `rtk proxy`.
-  Proxy output can still be truncated by the outer tool; narrow the requested
-  range or capture a log and read it in bounded segments.
+- **Elided output:** follow the recovery path stated in the result.
+- **Unusable read-only output:** use `rtk bypass <command>` only when output is
+  empty despite clearly expected content, contradicts its exit code or is garbled.
+  If the outer tool still truncates output without a recovery path, narrow the
+  requested range or capture a log and read it in bounded segments.
 - **Missing mutation output:** inspect the existing log and resulting state.
   Never repeat a write, commit, push, publish or install solely to recover output.
 - **Incomplete graph:** `explore` can omit source segments and consumers.
-  Query the specific symbol or `rtk proxy codegraph node <target>` for the missing
+  Query the specific symbol or `codegraph node <target>` for the missing
   relation; use bounded `rg`, source and tests to fill a concrete evidence gap.
   Zero matches alone do not prove there are no consumers. Reuse unchanged results;
-  run `rtk proxy codegraph sync` only when the index is stale.
+  run `codegraph sync` only when the index is stale.
 - **Unavailable tool:** report the command and failure. Use bounded source/search
   evidence for what can proceed, and disclose the missing mandatory check;
   do not silently claim RTK or CodeGraph was used successfully.
