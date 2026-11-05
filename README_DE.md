@@ -7,7 +7,7 @@
 **Pure Provider Switch. Deine Konfiguration bleibt deine.**
 
 Gespeicherte API-Verbindungen wechseln, ohne ständig Client-Konfigurationsdateien zu bearbeiten.
-Fünf Harnesses in der Vorschau 0.0.6.
+Vier Harnesses.
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
@@ -32,7 +32,7 @@ Ein natives Fenster mit Lucide Bearbeiten/Wechseln je Zeile, ohne Tray oder Daue
 Updates nur nach manueller Prüfung und Bestätigung. Rust + FLTK, Systemschriften und
 Vektorpfade; kein gebündeltes WebView, keine Datenbank oder JavaScript-Laufzeit.
 
-Vorschau 0.0.6: Claude Code, Codex CLI/App, Gemini CLI, Grok Build und DSH CLI/Web.
+pp-switch unterstützt Claude Code, Codex CLI/App, Gemini CLI und Grok Build.
 Die ältere Version 0.0.4 unterstützt die ersten drei.
 [Umfang und cc-switch-Quellen](docs/verification.md#community-sources).
 
@@ -60,8 +60,8 @@ Benutzerdateien, keine laufende Sitzung oder erfolgreiche Anfrage. Namen sind pr
 Client eindeutig; Importkollisionen erhalten ` (2)`, ` (3)`. Gleiche Verbindungen
 können verschiedene Namen haben.
 
-In 0.0.6 hat jeder Harness eine **Official**-Zeile für begrenzte native Wiederherstellung.
-Codex CLI/App teilen ihre Konfiguration; DSH CLI/Web teilen initialisierte Home-Profile.
+Jeder Harness hat eine **Official**-Zeile für begrenzte native Wiederherstellung.
+Codex CLI/App teilen ihre Konfiguration.
 CCS/Sub2API-Links öffnen ungespeicherte Vorschauen; explizite Modelle haben Vorrang vor Editorvorschlägen. Prüfen Sie, ob Ihr Anbieter das vorgeschlagene Modell unterstützt.
 Externe Key-Helper, Cloud-Modi und nicht unterstützte Schlüsselquellen werden abgelehnt.
 [Einrichtung, genaue Schreibzugriffe und Fehlerhilfe](docs/user-guide.md).

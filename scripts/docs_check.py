@@ -52,7 +52,7 @@ def check(record_path=None):
         ("user-guide-ja.md", "名前は一意", "設定 → 言語", "## 公式復元"),
     ]:
         text = (ROOT / "docs" / name).read_text()
-        if official not in text or duplicate not in text or settings not in text or " (2)" not in text or "DSH_HOME" not in text or "sub2api" not in text.lower():
+        if official not in text or duplicate not in text or settings not in text or " (2)" not in text or "sub2api" not in text.lower():
             errors.append(f"Missing translated UI rules: {name}")
     for name in ["README.md", "README_ZH.md", "README_JA.md", "README_DE.md"]:
         text = (ROOT / name).read_text()
@@ -60,7 +60,7 @@ def check(record_path=None):
             errors.append(f"Missing icon/layout translation: {name}")
         if "docs/illustrations/v0.0.5/main-" not in text or "assets/screenshot" in text:
             errors.append(f"Missing versioned current schematic: {name}")
-        if not all(token in text for token in ["0.0.4", "0.0.5", "Grok", "DSH", "Sub2API", " (2)"]):
+        if not all(token in text for token in ["0.0.4", "0.0.5", "Grok", "Sub2API", " (2)"]):
             errors.append(f"Missing translated version/feature boundaries: {name}")
     active = [p for p in files if "history" not in p.parts]
     for path in active:
@@ -107,7 +107,7 @@ def check(record_path=None):
     if errors:
         raise ValueError("\n".join(errors))
     return {"markdown_files": len(files), "local_links_and_anchors": links,
-            "translation_coverage": "4 READMEs / 3 guides aligned with versions/Settings/Lucide/names/DSH/imports/Official",
+            "translation_coverage": "4 READMEs / 3 guides aligned with versions/Settings/Lucide/names/imports/Official",
             "historical_images_unchanged": len(inventory["images"]),
             "versioned_illustrations": len(illustrations["illustration_sha256"]),
             "evidence": evidence, "exit_code": 0}

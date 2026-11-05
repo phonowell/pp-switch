@@ -63,3 +63,29 @@ fn pp01_existing_duplicates_remain_readable_without_a_silent_migration() {
         text
     );
 }
+#[test]
+fn pp01_pp17_retired_client_records_are_dropped_without_blocking_the_store() {
+    let dir = tempfile::tempdir().unwrap();
+    let store = Store {
+        root: dir.path().to_owned(),
+    };
+    let keep = p(Client::Claude, "Keep");
+    let retired = serde_json::json!({
+        "id": "old-dsh",
+        "client": "dsh",
+        "name": "Legacy DSH",
+        "base_url": "https://old.example",
+        "api_key": "old-fake"
+    });
+    let text = serde_json::to_string(&vec![serde_json::to_value(&keep).unwrap(), retired]).unwrap();
+    std::fs::write(store.root.join("providers.json"), &text).unwrap();
+    assert!(store.load().unwrap() == vec![keep.clone()]);
+    store.save(p(Client::Codex, "New")).unwrap();
+    let loaded = store.load().unwrap();
+    assert_eq!(loaded.len(), 2);
+    assert!(
+        loaded
+            .iter()
+            .all(|p| p.client != keep.client || p.id == keep.id)
+    );
+}

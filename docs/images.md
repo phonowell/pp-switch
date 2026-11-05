@@ -5,23 +5,26 @@ surrounding text; a picture cannot establish behavior beyond the recorded tests.
 
 | Role | Source | Meaning |
 | --- | --- | --- |
-| Current layout, illustrated during v0.0.5 development | [English](illustrations/v0.0.5/main-en.svg) · [中文](illustrations/v0.0.5/main-zh.svg) · [日本語](illustrations/v0.0.5/main-ja.svg) | Reused for the unchanged v0.0.6 layout; paired light/dark **schematics**, not native screenshots or acceptance evidence |
+| Retained five-tab layout, illustrated during v0.0.5 development | [English](illustrations/v0.0.5/main-en.svg) · [中文](illustrations/v0.0.5/main-zh.svg) · [日本語](illustrations/v0.0.5/main-ja.svg) | Covers v0.0.5–v0.0.6 including the removed DSH tab; paired light/dark **schematics**, not native screenshots or acceptance evidence |
 | Product logo / pinned icon sources | [PPS logo](../assets/icon.svg) · [Lucide](../assets/lucide/README.md) · [Lobe brand marks](../assets/clients/README.md) | Canonical source assets; application icons and native paths are derived |
 | v0.0.6 native CI captures | [Active row](screenshots/v0.0.6/aarch64-apple-darwin/zh-active.png) · [Add](screenshots/v0.0.6/aarch64-apple-darwin/zh-add.png) · [Settings](screenshots/v0.0.6/aarch64-apple-darwin/zh-settings.png) · [Dark](screenshots/v0.0.6/aarch64-apple-darwin/dark-zh-active.png) · [Provenance](screenshots/v0.0.6/aarch64-apple-darwin/provenance.json) | Isolated fake-provider fixtures; lossless PNG conversions, no retouching. Native automated checks are separate from local physical desktop acceptance. |
 | Historical capture evidence | [Versioned captures](screenshots) · [Hash inventory](images.json) | Recorded candidates only; original paths, bytes, labels and colors retained |
 
-## Current illustrations
+## v0.0.5 illustrations
 
 [Generator](../design/render_docs.py) reads the actual theme palette and imports
 pinned SVG shapes. Run `python3 design/render_docs.py` with the existing development
 fonttools dependency; `--check` checks reproducibility. [Source/image hashes](illustrations/v0.0.5/manifest.json)
-record provenance. German README uses the English illustration, matching the
+record provenance, so the generator and its five-tab output are pinned as
+v0.0.5–v0.0.6 evidence. German README uses the English illustration, matching the
 available UI languages; Traditional Chinese remains covered by native style gates.
 
-The diagram shows five compact tabs, fixed Official row, per-row Edit/Switch and
-blue In use/使用中. Sample URLs use `.example`; no credentials are shown. Native
-OS chrome is omitted. Rendering a diagram in a headless browser is documentation
-review only; it does not certify the application, text clipping or native input.
+The diagram shows five compact tabs including the removed DSH tab, fixed
+Official row, per-row Edit/Switch and blue In use/使用中; the current interface
+has four tabs and no schematic yet. Sample URLs use `.example`; no credentials
+are shown. Native OS chrome is omitted. Rendering a diagram in a headless
+browser is documentation review only; it does not certify the application,
+text clipping or native input.
 
 ## Historical images
 

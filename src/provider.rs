@@ -18,18 +18,10 @@ pub enum Client {
         alias = "grok_build"
     )]
     Grok,
-    #[serde(rename = "dsh", alias = "deepseek-harness")]
-    Dsh,
 }
 
 impl Client {
-    pub const ALL: [Self; 5] = [
-        Self::Claude,
-        Self::Codex,
-        Self::Gemini,
-        Self::Grok,
-        Self::Dsh,
-    ];
+    pub const ALL: [Self; 4] = [Self::Claude, Self::Codex, Self::Gemini, Self::Grok];
 
     pub fn label(self) -> &'static str {
         match self {
@@ -37,7 +29,6 @@ impl Client {
             Self::Codex => "Codex",
             Self::Gemini => "Gemini CLI",
             Self::Grok => "Grok Build",
-            Self::Dsh => "DeepSeek Harness",
         }
     }
 
@@ -47,10 +38,7 @@ impl Client {
             "codex" => Ok(Self::Codex),
             "gemini" => Ok(Self::Gemini),
             "grokbuild" | "grok-build" | "grok_build" | "grok" => Ok(Self::Grok),
-            "dsh" | "deepseek-harness" => Ok(Self::Dsh),
-            _ => Err(
-                "This client is not supported. Choose Claude, Codex, Gemini, Grok or DSH.".into(),
-            ),
+            _ => Err("This client is not supported. Choose Claude, Codex, Gemini or Grok.".into()),
         }
     }
 }
@@ -325,7 +313,6 @@ pub fn import_link(text: &str) -> Result<Provider> {
                         models.fill_missing(inline_models);
                         (url, key)
                     }
-                    Client::Dsh => (text_at(&json, "/baseURL"), text_at(&json, "/apiKey")),
                 }
             }
             "toml" if matches!(client, Client::Codex | Client::Grok) => {

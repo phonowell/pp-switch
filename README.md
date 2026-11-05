@@ -7,7 +7,7 @@
 **Pure Provider Switch. Your setup stays yours.**
 
 Switch saved API connections without repeatedly editing client configuration files.
-Five harnesses in the v0.0.6 preview.
+Four harnesses.
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
@@ -31,8 +31,8 @@ One native window, per-row Lucide Edit/Switch, no tray or resident helper.
 Updates run only after a manual check and confirmation. Rust + FLTK, system fonts
 and vector paths; no bundled WebView, database or JavaScript runtime.
 
-The v0.0.6 preview supports Claude Code, Codex CLI/App, Gemini CLI, Grok Build
-and DSH CLI/Web. The older v0.0.4 release supports the first three.
+pp-switch supports Claude Code, Codex CLI/App, Gemini CLI and Grok Build.
+The older v0.0.4 release supports the first three.
 [Scope and cc-switch research](docs/verification.md#community-sources).
 
 ## Download
@@ -58,8 +58,8 @@ Save only stores a Provider. **In use** is blue and checks supported user-level
 files, not a running session or successful request. Names are unique per client;
 imports add ` (2)`, ` (3)` on collision. Identical connections may have different names.
 
-In v0.0.6 each harness has an **Official** row for scoped native restoration.
-Codex CLI/App share configuration; DSH CLI/Web share initialized home profiles.
+Each harness has an **Official** row for scoped native restoration.
+Codex CLI/App share configuration.
 CCS/Sub2API links open an unsaved preview; explicit models take priority over editor suggestions. Verify the suggested model is supported by your provider.
 External helpers/cloud modes and unsupported key sources are refused.
 [Setup, exact writes and troubleshooting](docs/user-guide.md).

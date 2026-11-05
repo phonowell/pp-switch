@@ -22,22 +22,6 @@ fn provider(client: Client) -> Provider {
     p.models = Models::from_fields("compatible-model", "", "", "");
     p
 }
-fn dsh_setup(paths: &Paths) {
-    for name in ["headless", "web"] {
-        put(
-            &paths.dsh.join("profiles").join(name).join("package.json"),
-            r#"{"dsh":{"profile":{"bundles":["@deepseek-ai/dsh-base"]}}}"#,
-        );
-        put(
-            &paths
-                .dsh
-                .join("profiles")
-                .join(name)
-                .join("cordis.patch.yml"),
-            "# profile stays intact\n[]\n",
-        );
-    }
-}
 #[test]
 fn pp19_claude_roundtrip_cleans_models_preserves_login_hooks_proxy_and_context() {
     let (_dir, paths, store) = fixture();
@@ -241,103 +225,6 @@ fn pp19_grok_roundtrip_preserves_login_inactive_profiles_and_advanced_settings()
         paths.current(Client::Grok).unwrap(),
         Some((p.base_url, p.api_key))
     );
-}
-#[test]
-fn pp19_dsh_account_api_roundtrip_keeps_account_records_and_profile_bytes() {
-    let (_dir, paths, store) = fixture();
-    dsh_setup(&paths);
-    let credential = "version: 1\nrefs:\n  DEEPSEEK_API_KEY: old-fake\nrecords:\n  account: {token: native-fake, expires: 123}\n";
-    put(&paths.dsh.join(".credentials.yaml"), credential);
-    paths.apply(&store, &provider(Client::Dsh)).unwrap();
-    let credentials = fs::read(paths.dsh.join(".credentials.yaml")).unwrap();
-    paths.apply_official(&store, Client::Dsh).unwrap();
-    assert!(paths.status(Client::Dsh, true).unwrap().official);
-    assert_eq!(
-        fs::read(paths.dsh.join(".credentials.yaml")).unwrap(),
-        credentials
-    );
-    let p = provider(Client::Dsh);
-    paths.apply(&store, &p).unwrap();
-    assert_eq!(
-        paths.current(Client::Dsh).unwrap(),
-        Some((p.base_url, p.api_key))
-    );
-    paths.apply_official(&store, Client::Dsh).unwrap();
-    for name in ["headless", "web"] {
-        assert_eq!(
-            fs::read_to_string(
-                paths
-                    .dsh
-                    .join("profiles")
-                    .join(name)
-                    .join("cordis.patch.yml")
-            )
-            .unwrap(),
-            "# profile stays intact\n[]\n"
-        );
-    }
-    assert!(
-        fs::read_to_string(paths.dsh.join(".credentials.yaml"))
-            .unwrap()
-            .contains("account: {token: native-fake, expires: 123}")
-    );
-}
-#[test]
-fn pp19_dsh_can_return_from_account_without_an_api_key_or_credential_file() {
-    let (_dir, paths, store) = fixture();
-    dsh_setup(&paths);
-    paths.apply_official(&store, Client::Dsh).unwrap();
-    assert!(!paths.dsh.join(".credentials.yaml").exists());
-    let original = fs::read(paths.settings(Client::Dsh)).unwrap();
-    let modified = fs::metadata(paths.settings(Client::Dsh))
-        .unwrap()
-        .modified()
-        .unwrap();
-    paths.apply_official(&store, Client::Dsh).unwrap();
-    assert_eq!(fs::read(paths.settings(Client::Dsh)).unwrap(), original);
-    assert_eq!(
-        fs::metadata(paths.settings(Client::Dsh))
-            .unwrap()
-            .modified()
-            .unwrap(),
-        modified
-    );
-    paths.apply(&store, &provider(Client::Dsh)).unwrap();
-    assert_eq!(paths.current(Client::Dsh).unwrap().unwrap().1, "fake-key");
-}
-#[test]
-fn pp19_dsh_inherited_account_endpoint_is_cleared_without_dropping_catalog() {
-    let (_dir, paths, store) = fixture();
-    dsh_setup(&paths);
-    let profile = "- id: llm-deepseek-account\n  config:\n    baseURL: https://custom.example/anthropic\n    models: [{id: deepseek-flash, contextWindow: 200000}]\n";
-    for name in ["headless", "web"] {
-        put(
-            &paths
-                .dsh
-                .join("profiles")
-                .join(name)
-                .join("cordis.patch.yml"),
-            profile,
-        );
-    }
-    paths.apply_official(&store, Client::Dsh).unwrap();
-    assert!(paths.is_official(Client::Dsh).unwrap());
-    let patch = fs::read_to_string(paths.settings(Client::Dsh)).unwrap();
-    assert!(!patch.contains("custom.example"));
-    assert!(patch.contains("contextWindow: 200000"));
-    for name in ["headless", "web"] {
-        assert_eq!(
-            fs::read_to_string(
-                paths
-                    .dsh
-                    .join("profiles")
-                    .join(name)
-                    .join("cordis.patch.yml")
-            )
-            .unwrap(),
-            profile
-        );
-    }
 }
 #[test]
 fn pp19_missing_native_setup_for_first_four_is_initialized_minimally() {

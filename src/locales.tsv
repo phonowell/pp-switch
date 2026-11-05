@@ -228,27 +228,14 @@ Codex profile overrides must be cleared before switching official mode.	请先�
 Configured model selector must be a string.	模型选择项必须是字符串。	模型選擇項必須是字串。	モデル選択値は文字列である必要があります。
 Configured provider must be a string.	Provider 选择项必须是字符串。	Provider 選擇項必須是字串。	プロバイダー選択値は文字列である必要があります。
 Custom openai table overrides the native route; remove it in Codex first.	自定义 openai 表覆盖了原生路由；请先在 Codex 中移除。	自訂 openai 表覆寫了原生路由；請先在 Codex 中移除。	カスタム openai テーブルが標準接続を上書きしています。Codex で先に削除してください。
-DSH CLI and Web have different route settings. Configure a common home-level route first; PPS preserves both profiles.	DSH 的 CLI 和 Web 路由不同；请先配置共同的 home 层路由。	DSH 的 CLI 和 Web 路由不同；請先設定共同的 home 層路由。	DSH の CLI と Web の接続設定が異なります。先に共通のホーム設定を指定してください。
-DSH YAML must be a single valid document without duplicate keys, aliases, anchors or tags.	DSH YAML 须为单个有效文档，不能含重复键、别名、锚点或标签。	DSH YAML 須為單個有效文件，不能含重複鍵、別名、錨點或標籤。	DSH YAML は重複キー・エイリアス・アンカー・タグのない単一文書である必要があります。
-DSH credentials must use version 1.	DSH 凭据格式必须为 version 1。	DSH 憑證格式必須為 version 1。	DSH 資格情報形式は version 1 である必要があります。
-DSH has an inherited URL/key environment override. Clear it before switching.	DSH 存在环境变量覆盖；请先清除再切换。	DSH 存在環境變數覆寫；請先清除再切換。	DSH の接続を環境変数が上書きしています。切替前に解除してください。
-DSH patch contains duplicate entry IDs.	DSH patch 存在重复条目 ID。	DSH patch 存在重複項目 ID。	DSH patch に重複した項目 ID があります。
-DSH patch operations outside id/config overrides are unsupported.	仅支持 DSH patch 的 id/config 覆盖。	僅支援 DSH patch 的 id/config 覆寫。	DSH patch は id/config の上書きのみ対応しています。
-DSH routes with custom headers are unsupported; use an explicit API-key reference.	DSH 不支持自定义认证头；请使用明确的 API Key 引用。	DSH 不支援自訂認證標頭；請使用明確的 API Key 參照。	DSH のカスタム認証ヘッダーには非対応です。明示的な API キー参照を使用してください。
-DSH shared patches must use a block-style list when adding an inherited override.	新增继承覆盖时，DSH 共同 patch 必须使用块式列表。	新增繼承覆寫時，DSH 共同 patch 必須使用區塊式清單。	継承設定を追加する際は DSH 共通 patch をブロック形式のリストにしてください。
-DSH uses an external credential store; only the default home store is supported.	DSH 仅支持默认 home 目录内的凭据存储。	DSH 僅支援預設 home 目錄內的憑證儲存。	DSH は標準ホーム内の資格情報ストアのみ対応しています。
-DSH uses native account authentication.	DSH 当前使用原生账号认证。	DSH 目前使用原生帳號認證。	DSH は現在、標準アカウント認証を使用しています。
 Gemini alternate URL/key sources must be cleared before switching.	请先清除 Gemini 的其他地址或 Key 来源，再切换。	請先清除 Gemini 的其他位址或 Key 來源，再切換。	切替前に Gemini の別の URL・キー設定を解除してください。
 Gemini cloud/external authentication is outside official switching scope.	不支持切换 Gemini 的云端或外部认证模式。	不支援切換 Gemini 的雲端或外部認證模式。	Gemini のクラウド・外部認証方式の切替には非対応です。
 Gemini model/environment overrides must be cleared before restoring official mode.	请先清除 Gemini 的模型环境覆盖，再切回官方。	請先清除 Gemini 的模型環境覆寫，再切回官方。	公式へ戻す前に Gemini のモデル環境変数の上書きを解除してください。
 Grok models must be a table.	Grok models 必须是配置表。	Grok models 必須是設定表。	Grok の models はテーブルである必要があります。
-Initialize DSH headless and web profiles with the base bundle first.	请先初始化含 base bundle 的 DSH headless 和 web profile。	請先初始化含 base bundle 的 DSH headless 和 web profile。	先に base bundle を含む DSH headless と web profile を初期化してください。
 Managed PPS route has an incompatible protocol or auth mode.	PPS 路由的协议或认证方式不兼容。	PPS 路由的協定或認證方式不相容。	PPS 接続のプロトコルまたは認証方式に互換性がありません。
 Managed PPS route uses an external credential source; restore its API-key setup first.	PPS 路由使用了外部凭据；请先恢复 API Key 配置。	PPS 路由使用了外部憑證；請先還原 API Key 設定。	PPS 接続が外部資格情報を使用しています。先に API キー設定へ戻してください。
 Provider catalog must be a table.	Provider 目录必须是配置表。	Provider 目錄必須是設定表。	プロバイダーカタログはテーブルである必要があります。
 Set a default model before switching Grok from official mode.	从官方切换 Grok 前，请先填写默认模型。	從官方切換 Grok 前，請先填寫預設模型。	Grok を公式から切り替える前に既定モデルを指定してください。
-Store a DSH API key first; PPS does not initialize credentials.	请先保存 DSH API Key；普通路由切换不初始化凭据。	請先儲存 DSH API Key；一般路由切換不初始化憑證。	先に DSH API キーを保存してください。通常接続の切替では資格情報を初期化しません。
-Store the selected DSH API-key reference first; PPS preserves account records.	请先保存所选 DSH API Key 引用；账号记录会保留。	請先儲存所選 DSH API Key 參照；帳號紀錄會保留。	先に選択した DSH API キー参照を保存してください。アカウント記録は維持します。
 Grok Build selected profile is missing.	Grok Build 所选 profile 不存在。	Grok Build 所選 profile 不存在。	Grok Build の選択したプロファイルがありません。
 Codex forced login method is unsupported.	不支持此 Codex 登录方式限制。	不支援此 Codex 登入方式限制。	この Codex ログイン方式の制限は非対応です。
 Codex authentication mode is unsupported.	不支持此 Codex 认证方式。	不支援此 Codex 認證方式。	この Codex 認証方式は非対応です。

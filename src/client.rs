@@ -5,7 +5,6 @@ use crate::{
 };
 use std::path::PathBuf;
 
-mod dsh;
 mod models;
 mod official;
 pub use models::{CLAUDE_EDITOR_DEFAULT, ModelState};
@@ -24,7 +23,6 @@ pub struct Paths {
     pub codex: PathBuf,
     pub gemini: PathBuf,
     pub grok: PathBuf,
-    pub dsh: PathBuf,
 }
 
 impl Paths {
@@ -34,7 +32,6 @@ impl Paths {
             codex: home.join(".codex"),
             gemini: home.join(".gemini"),
             grok: home.join(".grok"),
-            dsh: home.join(".dsh"),
         }
     }
 
@@ -45,9 +42,6 @@ impl Paths {
         }
         if let Some(dir) = std::env::var_os("CODEX_HOME").filter(|s| !s.is_empty()) {
             paths.codex = PathBuf::from(dir);
-        }
-        if let Some(dir) = std::env::var_os("DSH_HOME").filter(|s| !s.is_empty()) {
-            paths.dsh = PathBuf::from(dir);
         }
         Ok(paths)
     }
@@ -66,14 +60,10 @@ impl Paths {
             Client::Codex => self.codex.join("config.toml"),
             Client::Gemini => self.gemini.join(".env"),
             Client::Grok => self.grok.join("config.toml"),
-            Client::Dsh => self.dsh.join("cordis.patch.yml"),
         }
     }
 
     pub fn status(&self, client: Client, include_models: bool) -> Result<ConfigStatus> {
-        if client == Client::Dsh {
-            return self.dsh_status(include_models);
-        }
         if client == Client::Claude {
             let Some(text) = storage::read(&self.settings(client))? else {
                 return Ok(ConfigStatus {
@@ -104,9 +94,6 @@ impl Paths {
     }
 
     pub fn current(&self, client: Client) -> Result<Option<(String, String)>> {
-        if client == Client::Dsh {
-            return self.dsh_current();
-        }
         let Some(text) = storage::read(&self.settings(client))? else {
             return Ok(None);
         };
@@ -142,7 +129,6 @@ impl Paths {
                     config::dotenv_value(&text, "GEMINI_API_KEY")?,
                 )
             }
-            Client::Dsh => unreachable!("DSH uses its shared configuration reader"),
             Client::Grok => {
                 let doc = toml_edit::Document::parse(text.as_str())
                     .map_err(|_| "Grok Build config is not valid TOML.")?;
@@ -187,9 +173,6 @@ impl Paths {
         }
         if provider.client == Client::Gemini {
             return self.apply_gemini(store, provider);
-        }
-        if provider.client == Client::Dsh {
-            return self.apply_dsh(store, provider);
         }
         let path = self.settings(provider.client);
         let before = storage::read(&path)?;
@@ -249,7 +232,6 @@ impl Paths {
                     config::patch_dotenv(text, "GOOGLE_GEMINI_BASE_URL", &provider.base_url)?;
                 config::patch_dotenv(&next, "GEMINI_API_KEY", &provider.api_key)?
             }
-            Client::Dsh => unreachable!("DSH uses a recoverable shared configuration write"),
             Client::Grok => {
                 let doc = toml_edit::Document::parse(text)
                     .map_err(|_| "Grok Build config is not valid TOML.")?;
@@ -438,7 +420,7 @@ pub fn environment_conflict(client: Client) -> Result<()> {
         ],
         // Grok's env_key is rejected at profile validation. Do not assume that
         // an unrelated XAI_API_KEY overrides an explicit inline api_key.
-        Client::Grok | Client::Dsh => &[],
+        Client::Grok => &[],
     };
     if let Some(name) = names
         .iter()

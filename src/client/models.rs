@@ -31,15 +31,6 @@ impl ModelState {
             model
         }
     }
-    pub(super) fn model(model: Option<String>) -> Self {
-        Self {
-            values: Models {
-                model,
-                ..Models::default()
-            },
-            ..Self::default()
-        }
-    }
     pub(super) fn claude(root: &config::JsonObject<'_>, env: &config::JsonObject<'_>) -> Self {
         let legacy = env.string("ANTHROPIC_SMALL_FAST_MODEL");
         Self {
@@ -128,15 +119,6 @@ impl Paths {
     }
 
     pub fn current_models(&self, client: Client) -> Result<ModelState> {
-        if client == Client::Dsh {
-            return self.dsh_model().map(|model| ModelState {
-                values: Models {
-                    model,
-                    ..Models::default()
-                },
-                ..ModelState::default()
-            });
-        }
         let Some(text) = storage::read(&self.settings(client))? else {
             return Ok(ModelState::default());
         };
@@ -163,7 +145,6 @@ impl Paths {
                     })
                     .transpose()?;
             }
-            Client::Dsh => unreachable!("DSH handles models in the shared patch"),
             Client::Gemini => {
                 self.gemini_mode()?;
                 state.values.model = config::dotenv_value(&text, "GEMINI_MODEL")?;
@@ -225,7 +206,6 @@ impl Paths {
                     };
                 }
             }
-            Client::Dsh => unreachable!("DSH handles models in the shared patch"),
             Client::Gemini => {
                 if let Some(model) = &desired.model {
                     let path = self.gemini.join("settings.json");

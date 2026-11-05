@@ -15,7 +15,7 @@ macOS window title bars show the title without an application icon. Windows/Linu
 icons and all platforms' installed application icons retain the PPS logo.
 
 A small desktop application that saves API providers and switches a
-client's base URL and API key, plus explicitly configured optional models. Supported clients: Claude Code, Codex, Gemini CLI, Grok Build and DeepSeek Harness (CLI/Web).
+client's base URL and API key, plus explicitly configured optional models. Supported clients: Claude Code, Codex, Gemini CLI and Grok Build.
 Supported desktop platforms: macOS (Apple Silicon / Intel), Windows x64, Linux x64.
 
 ## Product boundaries
@@ -150,7 +150,7 @@ Settings replaces the list within the same window and contains language, import-
 manual updates, with a Back action and no redundant Settings page heading. No hover tooltips anywhere. Initial activation
 focuses no control; later keyboard navigation retains visible focus. Preserve
 pressed/disabled states, contrast, masked credentials and unsaved drafts. Closing
-or cancelling an editor discards its draft without writing. Client tabs pair compact brand labels (Claude, Codex, Gemini, Grok, DSH) with
+or cancelling an editor discards its draft without writing. Client tabs pair compact brand labels (Claude, Codex, Gemini, Grok) with
 pinned brand SVG shapes, rendered in the current text color. Use the pinned Lobe Icons
 brand marks for clients and Lucide for actions. Use system fonts and
 bounded vector icons, without new UI dependencies or background rendering.
@@ -200,31 +200,12 @@ Accept the cc-switch client identifier `grokbuild` and its `grok-build`,
 wrapping a TOML `config` extract URL/key and the optional upstream model from the selected profile; a single
 unselected profile may be imported, but ambiguous multiple profiles are refused.
 
-### PP-17: DeepSeek Harness CLI/Web
+### PP-17: Removed
 
-One DSH tab and Provider list controls both CLI and Web through the common
-`$DSH_HOME/cordis.patch.yml` (default `~/.dsh`), loaded after their profile patches.
-Do not create profiles or modify their manifests, bundles or individual patches.
-Require initialized `headless` and `web` profiles with the base bundle. Support
-an explicit, unambiguous shared API-key route or the PP-19 native account route, with matching effective
-provider and credential reference in both profiles. An untouched native
-`deepseek-official` route may inherit the base bundle's API-key defaults; PPS
-may add minimal common connection overrides for that existing route.
-
-For `llm-deepseek` or `llm-pi-ai`, change only the route's `baseURL` and its
-existing `refs.<apiKeyEnv>` in `$DSH_HOME/.credentials.yaml`. Common overrides
-may be minimally added for supported values inherited from a profile. Preserve
-provider selection except for PP-19 transitions, wire protocol, catalogs, account/OAuth records, unrelated
-patches and credentials. Optional models follow PP-18. Refuse external credential
-stores, conflicting selections/references, disabled/replaced target entries,
-unsupported patch operations, malformed YAML, duplicate keys/entry IDs, aliases,
-anchors, tags and unsupported destination scalars. Never execute YAML expressions.
-Refuse relevant inherited environment overrides visible to PPS. Separately
-launched environment, custom bundle overrides, `--patch` and session-specific
-model selections remain outside file-match status. Shared changes affect every
-profile inheriting this home layer; CLI/Web are not separate PPS Providers.
-Use PP-09 recovery for the common-patch/credential update. Reload may require
-restarting dsh when its HMR is disabled.
+DeepSeek Harness CLI/Web support was removed. The identifier is retired and
+must not be reused; historical requirements remain in version control. Saved
+providers referencing `dsh` or `deepseek-harness` are dropped when the provider
+store is read; other stored records remain readable and the store stays writable.
 
 ### PP-18: Optional Provider models
 
@@ -241,7 +222,7 @@ For existing records and import previews, keep explicit Provider/link values.
 When its default is absent, Claude may use its supplied Sonnet/Opus/Haiku mapping
 (in that order); otherwise prefill from supported client files only when both
 URL and key match that Provider. Resolve Claude tier aliases through their
-configured mappings. Apply the same connection-scoped default prefill to all five
+configured mappings. Apply the same connection-scoped default prefill to all four
 clients. Never copy models from a different connection. Claude editors (including
 new Providers and model-less import previews) fall back to the visible, editable
 `claude-sonnet-5` when no explicit/mapped/same-connection model exists. This is a
@@ -261,7 +242,7 @@ claim an unknown-model catalog warning has been fixed.
 Codex changes only top-level `config.toml.model` (minimally add it if absent).
 Gemini synchronizes `.env.GEMINI_MODEL` and `settings.json.model.name`, using
 PP-09 recovery for the two-file update. Grok changes only the selected custom
-profile's existing `model` string; PP-19 native transitions may also change `[models].default`. DSH changes the common `agent-default-model.config.model`; preserve its selected provider except for PP-19 native transitions, and preserve all model catalogs. Apply validates model
+profile's existing `model` string; PP-19 native transitions may also change `[models].default`. Apply validates model
 destinations before any writes; malformed or ambiguous destinations are refused.
 
 In use badges must match URL/key and every model destination this Provider
@@ -273,7 +254,7 @@ only when applying optional model settings; never change shell configuration.
 
 ### PP-19: Fixed Official items
 
-Claude, Codex, Gemini, Grok and DSH each have a fixed first Official row, with Switch
+Claude, Codex, Gemini and Grok each have a fixed first Official row, with Switch
 only, no editing/deletion and no fake Provider record or credential. Official restores
 native connection/login mode, not a historical whole-file backup or a login.
 The user may need to sign in and restart the client. No network request is made.
@@ -302,15 +283,7 @@ native config does not prove login but may be initialized minimally. Official
 badges derive from native file routing/auth state, never a saved active ID. An
 ordinary native model selection does not imply a third-party connection. Status
 cannot certify credentials or override precedence in separately launched clients.
-DSH Official selects `deepseek-account` / `deepseek-flash` in the common
-`agent-default-model` patch, clears only the account adapter's inherited `baseURL`
-into a common complete config, and preserves account records, API-key references,
-catalogs and both profile patches. Require initialized base-bundle CLI/Web
-profiles. From account mode, a Provider selects `deepseek-official` with the
-explicit default (or the native `deepseek-flash` default when blank), changes
-`llm-deepseek.baseURL` and its existing local API-key reference (default `DEEPSEEK_API_KEY`), initializing
-only a missing version-1 `refs` API-key container while preserving account data.
-Normal API-key routes keep existing selectors/references. No login credential
+No login credential
 stash, account manager or permanent additional PPS state.
 
 ## Implementation decisions
@@ -350,6 +323,4 @@ Record release size, actual process RSS and startup measurements in
 [CONTRIBUTING.md](CONTRIBUTING.md). Update this contract before changing behavior.
 
 Grok Build compatibility and brand assets reference cc-switch commit
-`d9a62313c8a276216ed40245c638753606831e95`. DeepSeek Harness is absent from
-that revision; the shared CLI/Web integration separately references deepseek-harness
-`d743267388641bc76f17c45ce8b4c231aed1d32c`.
+`d9a62313c8a276216ed40245c638753606831e95`.

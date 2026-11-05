@@ -49,7 +49,7 @@ struct OfficialRow {
 #[derive(Clone)]
 struct Controls {
     window: Window,
-    clients: [Button; 5],
+    clients: [Button; 4],
     client: Rc<Cell<Client>>,
     language: Rc<Cell<Language>>,
     main_page: Group,
@@ -342,8 +342,8 @@ fn controls(language: Language) -> Controls {
             .iter()
             .position(|client| *client == kind)
             .unwrap();
-        let left = 24 + index as i32 * 348 / 5;
-        let right = 24 + (index as i32 + 1) * 348 / 5;
+        let left = 24 + index as i32 * 348 / 4;
+        let right = 24 + (index as i32 + 1) * 348 / 4;
         // Only our clipped short caption is drawn. A native full-name label can
         // be painted separately by the toolkit and overflow the compact tab.
         let mut b = Button::new(left, 24, right - left, 38, "");
@@ -373,7 +373,7 @@ fn controls(language: Language) -> Controls {
             } else {
                 theme::muted()
             });
-            let text = ["Claude", "Codex", "Gemini", "Grok", "DSH"][index];
+            let text = ["Claude", "Codex", "Gemini", "Grok"][index];
             let width = draw::measure(text, false).0;
             let left = b.x() + (b.w() - width - 19) / 2;
             client_icons::draw(kind, left, b.y() + (b.h() - 14) / 2, 14);

@@ -7,7 +7,7 @@
 **Pure Provider Switch. 設定は、あなたのまま。**
 
 保存した API 接続を切り替え、クライアント設定ファイルの繰り返し編集を省きます。
-0.0.6 プレビューは五つの harness に対応。
+四つの harness に対応。
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
@@ -31,7 +31,7 @@
 ありません。更新は手動確認と承認後だけ。Rust + FLTK、システムフォント、ベクター描画。
 WebView・データベース・JavaScript ランタイムは同梱しません。
 
-0.0.6 プレビューは Claude Code、Codex CLI/App、Gemini CLI、Grok Build、DSH CLI/Web に対応。
+pp-switch は Claude Code、Codex CLI/App、Gemini CLI、Grok Build に対応。
 旧版 0.0.4 は最初の三つのみ対応。
 [範囲と cc-switch 調査](docs/verification.md#community-sources)。
 
@@ -58,8 +58,8 @@ Rust / Node.js のインストールは不要。macOS は 11+ を宣言してい
 示し、実行中のセッションやリクエスト成功を保証しません。名前はクライアントごとに
 一意。重複インポートは ` (2)`、` (3)` を付け、同じ接続も別名で保存できます。
 
-0.0.6 の五つの harness に「公式」行があり、限定的にネイティブ経路を復元します。
-Codex CLI/App は設定を共有し、DSH CLI/Web は初期化済みの home profile を共有。
+各 harness には「公式」行があり、限定的にネイティブ経路を復元します。
+Codex CLI/App は設定を共有します。
 CCS/Sub2API リンクは未保存プレビューを開き、明示したモデルは編集画面の候補より優先します。候補がプロバイダーに対応しているか確認してください。
 外部キーヘルパー・クラウド認証・非対応キーソースは拒否。
 [初期設定・書き込み対象・問題対処](docs/user-guide-ja.md)。

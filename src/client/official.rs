@@ -101,9 +101,6 @@ fn edited(path: std::path::PathBuf, before: Option<String>, after: String) -> Ch
 }
 impl Paths {
     pub fn is_official(&self, client: Client) -> Result<bool> {
-        if client == Client::Dsh {
-            return self.dsh_is_official();
-        }
         let text = storage::read(&self.settings(client))?;
         match client {
             Client::Claude => {
@@ -165,16 +162,12 @@ impl Paths {
                     }
                 }
             }
-            Client::Dsh => unreachable!(),
         }
     }
 
     pub fn apply_official(&self, store: &Store, client: Client) -> Result<()> {
         store.recover()?;
         environment_conflict(client)?;
-        if client == Client::Dsh {
-            return self.apply_dsh_official(store);
-        }
         let path = self.settings(client);
         let before = storage::read(&path)?;
         let mut changes = Vec::new();
@@ -279,7 +272,6 @@ impl Paths {
                 }
                 render(&doc, before.as_deref().unwrap_or(""))
             }
-            Client::Dsh => unreachable!(),
         };
         if before.is_some() || !after.is_empty() {
             changes.push(edited(path, before, after));

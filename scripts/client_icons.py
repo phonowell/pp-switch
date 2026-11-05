@@ -12,7 +12,7 @@ from fontTools.pens.recordingPen import RecordingPen
 from fontTools.pens.boundsPen import BoundsPen
 
 ROOT = Path(__file__).resolve().parents[1]
-ICONS = {"Claude": "claude", "Codex": "openai", "Gemini": "gemini", "Grok": "grok", "Dsh": "deepseek"}
+ICONS = {"Claude": "claude", "Codex": "openai", "Gemini": "gemini", "Grok": "grok"}
 
 
 def point(p):

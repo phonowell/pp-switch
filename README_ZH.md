@@ -7,7 +7,7 @@
 **Pure Provider Switch. 明确切换连接，配置始终归你。**
 
 保存 API 连接并一键切换，省去反复手动编辑客户端配置。
-0.0.6 预览版支持五个 harness。
+支持四个 harness。
 
 [![CI](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml/badge.svg)](https://github.com/phonowell/pp-switch/actions/workflows/ci.yml)
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
@@ -30,7 +30,7 @@
 更新只在手动检查并确认后执行。Rust + FLTK、系统字体和矢量路径，
 不捆绑 WebView、数据库或 JavaScript 运行时。
 
-0.0.6 预览版支持 Claude Code、Codex CLI/App、Gemini CLI、Grok Build 和 DSH CLI/Web。
+pp-switch 支持 Claude Code、Codex CLI/App、Gemini CLI 和 Grok Build。
 较早的 0.0.4 版本仅支持前三者。
 [产品边界与 cc-switch 调研](docs/verification.md#community-sources)。
 
@@ -57,8 +57,8 @@
 不证明运行中的会话或请求成功。名称在每个客户端内唯一，导入同名时自动追加
 ` (2)`、` (3)`。相同连接可以用不同名称保存。
 
-0.0.6 的五个 harness 均有「官方」条目，用于限定范围的原生配置还原。
-Codex CLI/App 共用配置；DSH CLI/Web 共用已初始化的 home profile。
+每个 harness 均有「官方」条目，用于限定范围的原生配置还原。
+Codex CLI/App 共用配置。
 CCS/Sub2API 链接打开未保存的预览；明确导入的模型优先于编辑器建议。请确认服务商支持建议的模型。
 外部密钥助手、云认证模式和不支持的密钥来源会被拒绝。
 [初始化、精确写入与排错](docs/user-guide-zh.md)。

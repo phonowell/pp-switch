@@ -25,17 +25,17 @@ pp-switch はプロバイダーを保存し、**Base URL と API キー**を切�
 
 Claude もモデルは任意です。保存済みのモデルなし項目は URL／キーを直接切り替え、一致すれば「使用中」と表示します。
 既存項目とインポートでは明示したモデルを優先します。Claude の既定値がない場合、指定済みの Sonnet、Opus、Haiku 割り当てを順に使用します。
-それ以外は五つのクライアントとも URL とキーが完全に一致する場合のみ、対応するローカル設定からモデルを事前入力します。Claude の別名は既存の割り当てで解決し、他の接続のモデルを引き継ぎません。
+それ以外は四つのクライアントとも URL とキーが完全に一致する場合のみ、対応するローカル設定からモデルを事前入力します。Claude の別名は既存の割り当てで解決し、他の接続のモデルを引き継ぎません。
 
 Claude の追加・編集・インポートで具体的なモデルがない場合、編集可能な `claude-sonnet-5` を実際に入力します。
 これは製品の候補であり、すべてのプロバイダーでの互換性は保証しません。対応を確認するか変更してください。空欄にするとクライアントのモデルを維持します。
-事前入力は未保存の下書きです。保存してから切り替えを押してください。他のクライアントの新規モデル欄は空欄です。DSH のネイティブアカウントから API への移行は `deepseek-flash` を既定にします。
+事前入力は未保存の下書きです。保存してから切り替えを押してください。他のクライアントの新規モデル欄は空欄です。
 
 Claude はルート `model`、`env.ANTHROPIC_MODEL` と Haiku／Sonnet／Opus を同期し、割り当てを展開して個別に上書きできます。
 既存 `ANTHROPIC_SMALL_FAST_MODEL` は Haiku に従います。Codex はルート `config.toml.model`、
 Gemini は `.env.GEMINI_MODEL` と `settings.json.model.name` を復旧可能な書き込みで同期します。
 Grok は選択したカスタム profile のモデルを変更し、ネイティブから PPS profile を作る際は明示した既定モデルが必要です。
-DSH は共通 `agent-default-model` のモデルを変更します。保存値を消すと管理を止めますが、クライアントの値を削除・復元しません。
+保存値を消すと管理を止めますが、クライアントの値を削除・復元しません。
 モデルカタログ、互換性やコンテキスト情報は推測しないため、未知モデル警告が残る場合があります。
 旧モデルなし項目も直接切り替えできます。0.0.4 配布版には含まれません。
 
@@ -47,9 +47,8 @@ DSH は共通 `agent-default-model` のモデルを変更します。保存値�
 | Codex | `~/.codex/config.toml` と必要に応じて `~/.codex/auth.json` | 選択中のカスタムプロバイダーの `base_url`、既存 `experimental_bearer_token` または `OPENAI_API_KEY` |
 | Gemini CLI | `~/.gemini/.env` | `GOOGLE_GEMINI_BASE_URL` と `GEMINI_API_KEY` |
 | Grok Build | `~/.grok/config.toml` | 選択済みカスタム profile の `base_url` とインライン `api_key` |
-| DeepSeek Harness CLI／Web | `$DSH_HOME/cordis.patch.yml` と `.credentials.yaml`（既定 `~/.dsh`） | 共有ルートの `baseURL` と既存 `refs.<apiKeyEnv>` |
 
-`~` は各 OS のユーザーホーム。Claude は `CLAUDE_CONFIG_DIR`、Codex は `CODEX_HOME` に対応。DSH は `DSH_HOME` に対応。Gemini 設定は限定した認証選択と明示モデルも含みます。
+`~` は各 OS のユーザーホーム。Claude は `CLAUDE_CONFIG_DIR`、Codex は `CODEX_HOME` に対応。Gemini 設定は限定した認証選択と明示モデルも含みます。
 
 **Claude：** キーフィールドが両方なければ `ANTHROPIC_AUTH_TOKEN` を使用します。両方存在する場合、`apiKeyHelper`、有効な Bedrock / Vertex / Foundry モードは拒否します。OAuth ログインの管理やクラウド認証の変換はしません。
 
@@ -65,23 +64,15 @@ PPS 以外の同名テーブル、活動中 profile、強制ログイン設定�
 **Grok：** 既存インラインキー profile は選択とプロトコルを維持します。ネイティブからは明示した既定モデルで
 専用 `pps` Responses profile を選択します。他の profile と `auth.json` は維持します。
 
-**DSH：** `@deepseek-ai/dsh-base` を含む `headless`／`web` profile を初期設定してください。
-ホーム patch は profile patch の後に読み込み、CLI／Web で共有します。対応 API 経路は既存キー参照を維持します。
-ネイティブアカウントからは `deepseek-official` と既存参照（既定 `DEEPSEEK_API_KEY`）を選択し、
-欠落した version-1 API キーコンテナーだけを作ります。共通上書きのない競合経路と外部資格情報を拒否します。
-アカウント記録、manifest、profile patch、継承カタログ全体を維持します。HMR 無効時は再起動してください。
-起動 patch・独自 bundle・別プロセス環境が優先される場合があります。
-
 ## 公式復元（0.0.6 プレビュー）
 
-五つのクライアントの先頭には切り替えのみの固定「公式」行があります。ネイティブ経路に戻し、履歴ファイルの復元はしません。
+四つのクライアントの先頭には切り替えのみの固定「公式」行があります。ネイティブ経路に戻し、履歴ファイルの復元はしません。
 ログイン・ネットワーク要求は行いません。必要ならクライアントで再ログイン・再起動してください。
 
 - Claude は API URL／キー／token、五つの管理モデル環境項目、ルートモデルを削除します。資格情報、hooks、権限、モデルカタログ、既存 proxy／コンテキストは維持し、外部 helper／クラウドは拒否します。
 - Codex はルートのプロバイダー／モデル、API 専用強制ログイン、`auth.json.OPENAI_API_KEY`／API 認証方式を削除し、OAuth token と非活動テーブルは維持します。
 - Gemini は管理 URL／キー／モデル環境項目を消し、`oauth-personal` を選び、`model.name` を削除します。OAuth キャッシュと他の設定は維持します。
 - Grok は既定選択と同じ profile を参照する要約選択を消し、非活動 profile とネイティブ資格情報は維持します。
-- DSH は `deepseek-account`／`deepseek-flash` を選び、共通の完全な上書きでアカウントアダプターの独自 URL を消します。API／アカウント資格情報、モデルカタログ、両 profile patch は維持します。
 
 「公式」はファイルのネイティブ経路／認証だけを確認し、ログイン済みとは保証しません。非対応設定は書き込み前に拒否します。
 複数ファイルはプロバイダー切り替えと同じ復旧可能なトランザクションを使います。

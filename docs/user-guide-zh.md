@@ -27,17 +27,17 @@ pp-switch 保存服务商，切换 **Base URL 与 API Key**；0.0.6 预览版还
 
 模型均为可选，包括 Claude。已保存的无模型条目直接切换 URL／Key；这些字段匹配时显示「使用中」。
 已有记录和导入预览优先保留明确模型；Claude 缺失默认值时先取已提供的 Sonnet、Opus、Haiku 映射。
-否则，五个客户端都只在 URL 和 Key 完全匹配时，从受支持的本机配置预填模型；Claude 的分级别名按已有映射解析，不沿用其他连接的模型。
+否则，四个客户端都只在 URL 和 Key 完全匹配时，从受支持的本机配置预填模型；Claude 的分级别名按已有映射解析，不沿用其他连接的模型。
 
 Claude 新增、编辑和导入没有具体模型时，在输入框实际预填可编辑的 `claude-sonnet-5`。
 这是产品建议，不保证所有服务商兼容；请确认支持或替换。清空可保留客户端模型。
-预填仍是未保存的草稿，需要先保存、再切换。其他客户端的新建模型字段保持空白；DSH 从原生账号切到 API 时默认使用 `deepseek-flash`。
+预填仍是未保存的草稿，需要先保存、再切换。其他客户端的新建模型字段保持空白。
 
 Claude 同步顶层 `model`、`env.ANTHROPIC_MODEL` 和 Haiku／Sonnet／Opus 映射，可展开映射分别覆盖；
 既有 `ANTHROPIC_SMALL_FAST_MODEL` 跟随 Haiku。Codex 修改根级 `config.toml.model`；
 Gemini 同步 `.env.GEMINI_MODEL` 和 `settings.json.model.name`，两文件写入可恢复。
 Grok 修改当前自定义 profile 的模型；从原生模式建立 PPS profile 时要求明确默认模型。
-DSH 修改共同 `agent-default-model` 的模型。清空保存值表示以后不管理它，不删除客户端值或恢复旧设置。
+清空保存值表示以后不管理它，不删除客户端值或恢复旧设置。
 不查询模型目录、不探测兼容性，不编造上下文窗口或 `behavesAs`；未知模型警告可能仍然存在。
 旧的无模型记录仍可直接切换。0.0.4 下载版不含这些功能。
 
@@ -49,7 +49,6 @@ DSH 修改共同 `agent-default-model` 的模型。清空保存值表示以后�
 | Codex | `~/.codex/config.toml`，必要时加 `~/.codex/auth.json` | 当前自定义服务商的 `base_url`；既有 `experimental_bearer_token` 或 `OPENAI_API_KEY` |
 | Gemini CLI | `~/.gemini/.env` | `GOOGLE_GEMINI_BASE_URL` 与 `GEMINI_API_KEY` |
 | Grok Build | `~/.grok/config.toml` | 当前自定义 profile 的 `base_url` 和内联 `api_key` |
-| DeepSeek Harness CLI／Web | `$DSH_HOME/cordis.patch.yml` 和 `.credentials.yaml`（默认 `~/.dsh`） | 共享路由的 `baseURL` 和已有 `refs.<apiKeyEnv>` |
 
 `~` 是各系统的用户主目录。Claude 支持 `CLAUDE_CONFIG_DIR`，Codex 支持 `CODEX_HOME`。
 Gemini 的设置还包含限定的认证选择；明确模型才修改 `settings.json.model.name`。
@@ -70,22 +69,15 @@ Gemini 的设置还包含限定的认证选择；明确模型才修改 `settings
 **Grok：** 既有内联 Key 自定义 profile 保留选择和协议；从原生模式切换时选择专属 `pps` Responses profile，并要求明确默认模型。
 其他 profile 和 `auth.json` 保持原样。
 
-**DSH：** 先初始化含 `@deepseek-ai/dsh-base` 的 `headless`／`web` profile。
-home patch 在 profile patch 后加载，CLI／Web 共用。支持的 API 路由保留原 Key 引用；
-从原生账号切换时选择 `deepseek-official`，使用既有引用（默认 `DEEPSEEK_API_KEY`），仅在缺失时建立 version-1 API Key 容器。
-拒绝没有共同覆盖的 profile 路由冲突和外部凭据；保留账号记录、manifest、profile patch 和完整继承目录。
-禁用 HMR 时重启 dsh；命令行 patch、自定义 bundle、其他进程环境仍可能覆盖文件匹配状态。
-
 ## 官方还原（0.0.6 预览版）
 
-五个客户端列表第一行固定为「官方」，只有切换按钮。它恢复原生路由，不是历史配置备份。
+四个客户端列表第一行固定为「官方」，只有切换按钮。它恢复原生路由，不是历史配置备份。
 不执行登录或网络请求；必要时通过客户端重新登录并重启。
 
 - Claude 删除 API URL／Key／Token、五个受管理模型环境字段和顶层模型；保留原生凭据、hooks、权限、模型目录、现有代理和上下文设置。拒绝外部 helper／云平台模式。
 - Codex 清除根级服务商／模型选择、仅 API 的强制登录及 `auth.json.OPENAI_API_KEY`／API 认证方式；保留 OAuth Token 和未启用的自定义表。
 - Gemini 清除受管理 URL／Key／模型环境项，选择 `oauth-personal` 并删除 `model.name`；保留 OAuth 缓存和其他设置。
 - Grok 清除默认选择及指向同一 profile 的摘要选择；保留未启用的 profile 表和原生凭据。
-- DSH 选择 `deepseek-account`／`deepseek-flash`，通过完整共同覆盖清除账号适配器的自定义地址；保留 API／账号凭据、模型目录和两份 profile patch。
 
 「官方」状态只检查文件中的原生路由／认证，不证明账号已登录。不支持的配置在写入前拒绝。
 多文件修改采用与服务商切换相同的可恢复事务。

@@ -34,7 +34,7 @@ changing appearance preserves unsaved edits, text selection and focus.
 Models are optional, including for Claude. Model-less saved rows switch URL/key
 directly and show In use when those fields match. Existing records and imports
 keep explicit models first. Claude then uses its supplied Sonnet, Opus, then Haiku
-mapping. Otherwise all five clients prefill from supported local configuration
+mapping. Otherwise all four clients prefill from supported local configuration
 only when both URL and key match; Claude tier aliases resolve through configured
 mappings. No model is inherited from a different connection.
 
@@ -42,15 +42,14 @@ Claude Add/Edit/import fields fall back to the visible, editable `claude-sonnet-
 when no specific model is available. This product suggestion is not a compatibility
 guarantee; check that your provider supports it or replace it. Clearing it preserves
 client models. Prefill is an unsaved draft: Save, then Switch to apply. Other clients'
-new fields stay blank; DSH’s native-to-API transition uses `deepseek-flash` when blank.
+new fields stay blank.
 
 Claude synchronizes root `model`, `env.ANTHROPIC_MODEL` and the Haiku/Sonnet/Opus
 mappings. Expand mappings to override each tier. An existing
 `ANTHROPIC_SMALL_FAST_MODEL` follows Haiku. Codex changes root `config.toml.model`;
 Gemini synchronizes `.env.GEMINI_MODEL` and `settings.json.model.name` with
 recoverable writes. Grok changes the selected custom profile’s model; creating
-a PPS profile from native mode requires an explicit model. DSH changes the
-common `agent-default-model` model. Clearing a saved model stops managing it;
+a PPS profile from native mode requires an explicit model. Clearing a saved model stops managing it;
 it does not erase client values or restore previous settings.
 
 No model catalogs, compatibility probes or context metadata are guessed.
@@ -66,10 +65,9 @@ from the 0.0.4 download.
 | Codex | `~/.codex/config.toml` plus, where applicable, `~/.codex/auth.json` | Selected custom provider's `base_url`; existing `experimental_bearer_token` or `OPENAI_API_KEY` |
 | Gemini CLI | `~/.gemini/.env` | `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` |
 | Grok Build | `~/.grok/config.toml` | Selected custom profile `base_url` and inline `api_key` |
-| DeepSeek Harness CLI/Web | `$DSH_HOME/cordis.patch.yml` and `.credentials.yaml` (default `~/.dsh`) | Shared route `baseURL` and existing `refs.<apiKeyEnv>` |
 
 `~` is the user's home directory on each OS. Claude respects `CLAUDE_CONFIG_DIR`;
-Codex respects `CODEX_HOME`; DSH respects `DSH_HOME`. Gemini settings also contain
+Codex respects `CODEX_HOME`. Gemini settings also contain
 the scoped auth selector and explicit model value.
 
 **Claude:** if neither key field exists, use `ANTHROPIC_AUTH_TOKEN`. Both fields
@@ -93,16 +91,6 @@ change `settings.json.model.name`; OAuth caches remain untouched.
 From native mode, PPS selects a reserved `pps` Responses profile with an explicit
 default model. Other profiles and `auth.json` stay intact.
 
-**DSH:** initialize both `headless` and `web` profiles with `@deepseek-ai/dsh-base`.
-The home patch applies after profile patches and is shared by CLI/Web. Supported
-API routes preserve the existing key reference; from native account mode, PPS
-selects `deepseek-official` and uses its existing reference (default
-`DEEPSEEK_API_KEY`), creating only a missing version-1 API-key container. Conflicting
-profile routes without a shared override and external credentials are refused.
-Account records, manifests, profile patches and complete inherited catalogs
-remain intact. Restart dsh if HMR is disabled. Launch patches, custom bundles and
-separate process environments can override file-match status.
-
 ## Official restoration (0.0.6 preview)
 
 Every client list begins with a fixed **Official** row, with Switch only. It
@@ -118,9 +106,6 @@ network request: sign in through the client and restart it if needed.
   `oauth-personal`, and removes `model.name`; OAuth cache and other settings remain.
 - Grok clears the default selector and a summary selector referencing the same
   profile. Inactive profile tables and native credentials remain.
-- DSH selects `deepseek-account` / `deepseek-flash`, removes an account adapter’s
-  custom endpoint through a complete common override, and preserves API/account
-  credentials, model catalogs and both profile patches.
 
 The Official badge checks native file routing/auth state only; it does not prove
 that an account is logged in. Unsupported configuration is refused before writes.

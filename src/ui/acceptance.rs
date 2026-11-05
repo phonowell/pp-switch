@@ -667,23 +667,7 @@ pub fn interaction_regression(
     .map_err(|_| "Cannot write fixture.")?;
     std::fs::create_dir_all(&paths.grok).map_err(|_| "Cannot initialize Grok fixture.")?;
     std::fs::write(paths.grok.join("config.toml"), "[models]\ndefault='fixture'\n[model.fixture]\nmodel='old-model'\nbase_url='https://old.example'\napi_key='old-fake'\napi_backend='openai-responses'\n").map_err(|_| "Cannot write fixture.")?;
-    for name in ["headless", "web"] {
-        let profile = paths.dsh.join("profiles").join(name);
-        std::fs::create_dir_all(&profile).map_err(|_| "Cannot initialize DSH fixture.")?;
-        std::fs::write(
-            profile.join("package.json"),
-            r#"{"dsh":{"profile":{"bundles":["@deepseek-ai/dsh-base"]}}}"#,
-        )
-        .map_err(|_| "Cannot write DSH fixture.")?;
-        std::fs::write(profile.join("cordis.patch.yml"), "# preserve\n[]\n")
-            .map_err(|_| "Cannot write DSH fixture.")?;
-    }
-    std::fs::write(
-        paths.dsh.join(".credentials.yaml"),
-        "version: 1\nrefs:\n  DEEPSEEK_API_KEY: old-fake\n",
-    )
-    .map_err(|_| "Cannot write DSH fixture.")?;
-    for index in [1, 2, 3, 4] {
+    for index in 1..Client::ALL.len() {
         let mut provider = Provider::new(
             Client::ALL[index],
             "Fixture",
@@ -708,7 +692,7 @@ pub fn interaction_regression(
             "Client row Switch failed.",
         )?;
     }
-    for index in 0..5 {
+    for index in 0..Client::ALL.len() {
         click(driver.as_ref(), &c.window, &c.clients[index]);
         let restore = c
             .official
@@ -738,7 +722,7 @@ pub fn interaction_regression(
             "Provider Switch did not work after restoring Official.",
         )?;
     }
-    println!("INPUT zh: all five Official/Provider round trips and native status passed");
+    println!("INPUT zh: all four Official/Provider round trips and native status passed");
     click(driver.as_ref(), &c.window, &c.clients[0]);
     for index in 0..7 {
         store.save(Provider::new(
@@ -778,7 +762,7 @@ pub fn interaction_regression(
     click(driver.as_ref(), &c.editor, &c.cancel);
     c.list.scroll_to(0, 0);
     println!(
-        "INPUT zh: validation, unique names, model save/cancel/switch, delete confirm/cancel, five clients and overflow actions passed"
+        "INPUT zh: validation, unique names, model save/cancel/switch, delete confirm/cancel, four clients and overflow actions passed"
     );
     click(driver.as_ref(), &c.window, &c.settings);
     // Actual Choice popup navigation, rather than callback invocation.
