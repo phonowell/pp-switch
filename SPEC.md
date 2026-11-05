@@ -132,7 +132,7 @@ Publishing must not use partial or stale artifacts or replace an existing releas
 
 ### PP-13: Languages
 
-Match cc-switch's interface languages: English, Simplified Chinese, Traditional Chinese and Japanese. Detect the system language on first launch; unsupported locales fall back to English. A compact language selector updates labels, dialogs, status and user-facing errors immediately, preserving unsaved edits and keyboard focus. Persist only the selected language in a private local UI preference file. Invalid preferences are reported and never silently overwritten. README versions cover English, Simplified Chinese, Japanese and German; user guides cover English, Simplified Chinese and Japanese, with the same compatibility and measured-performance caveats. SPEC remains the single English behavior contract.
+Interface languages: English and Simplified Chinese. Detect the system language on first launch; unsupported locales fall back to English. A compact language selector updates labels, dialogs, status and user-facing errors immediately, preserving unsaved edits and keyboard focus. Persist only the selected language in a private local UI preference file. Invalid preferences are reported and never silently overwritten. README versions cover English, Simplified Chinese and German; user guides cover English and Simplified Chinese, with the same compatibility and measured-performance caveats. SPEC remains the single English behavior contract.
 
 ### PP-14: Minimal interface
 
@@ -159,7 +159,7 @@ window titles omit it, while other platforms retain their window icons.
 
 Follow system light/dark appearance without a theme selector or saved preference.
 Recolor existing widgets without losing drafts, text selection or focus. Chinese native
-functional acceptance and all four languages' light/dark style checks must cover
+functional acceptance and both languages' light/dark style checks must cover
 row actions, settings, localized badge visibility and keyboard navigation.
 UI changes remain subject to the current PP-11 budgets.
 

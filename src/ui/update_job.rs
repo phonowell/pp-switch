@@ -122,14 +122,14 @@ mod tests {
     fn launch(staged: update::Staged) -> Result<()> {
         assert!(staged.directory.path().exists());
         // Language can change while a worker is running.
-        assert_eq!(staged.plan.language, Language::Ja);
+        assert_eq!(staged.plan.language, Language::En);
         Ok(())
     }
 
     fn await_progress(job: &mut Job) -> Progress {
         let deadline = Instant::now() + Duration::from_secs(3);
         loop {
-            let progress = job.poll(Instant::now(), Language::Ja);
+            let progress = job.poll(Instant::now(), Language::En);
             if !matches!(progress, Progress::Waiting) {
                 return progress;
             }

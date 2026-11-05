@@ -1,6 +1,6 @@
 # Pure Provider Switch (pp-switch) 使用指南
 
-[English](user-guide.md) · 简体中文 · [日本語](user-guide-ja.md)
+[English](user-guide.md) · 简体中文
 
 pp-switch 保存服务商，切换 **Base URL 与 API Key**；0.0.6 预览版还可同步你明确填写的可选模型。
 0.0.6 还支持限定的原生／API 路由切换；不管理账号、不转换协议。服务商需要兼容所选模型和协议。[下载](https://github.com/phonowell/pp-switch/releases)。
@@ -103,7 +103,7 @@ sub2api 当前生成的 Claude 链接不含模型。如果受支持的 Claude �
 
 Linux 请安装 Noto Sans CJK（Debian/Ubuntu：`sudo apt install fonts-noto-cjk`）或 WenQuanYi Zen Hei。Xft 不会自动为缺失字形回退，必须有已安装的中日韩字体。应用不分发字体文件。
 
-界面支持英文、简体中文、繁体中文、日语。首次跟随系统语言，不支持的语言回退英文。
+界面支持英文、简体中文。首次跟随系统语言，不支持的语言回退英文。
 「设置 → 语言」可即时更换标签、对话框和状态语言，保留草稿与当前编辑记录。
 
 | 系统 | pp-switch 数据目录 |

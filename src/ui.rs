@@ -419,7 +419,7 @@ fn controls(language: Language) -> Controls {
     text_icon_button(&mut back, Icon::Back);
     labels.push(label(24, 94, 180, "Language"));
     let mut languages = Choice::new(196, 84, 220, 36, "");
-    languages.add_choice("English|简体中文|繁體中文|日本語");
+    languages.add_choice("English|简体中文");
     languages.set_frame(FrameType::FlatBox);
     languages.set_menu_frame(theme::menu_frame());
     languages.set_down_frame(FrameType::RFlatBox);
@@ -438,7 +438,7 @@ fn controls(language: Language) -> Controls {
             .get(choice.value() as usize)
             .copied()
             .unwrap_or(Language::En);
-        let text = ["English", "简体中文", "繁體中文", "日本語"][value.index()];
+        let text = ["English", "简体中文"][value.index()];
         draw::draw_text2(
             text,
             choice.x() + 12,

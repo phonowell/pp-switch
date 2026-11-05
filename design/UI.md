@@ -117,7 +117,7 @@ four clients, optional model draft/save/cancel/switch and model-specific badges,
 native scrolling/reachable actions, language preference, responsive
 update worker/error recovery, confirmation/cancel/staging/helper-launch/quit
 callbacks, tooltips, modal and main close. The update confirmation's release-notes
-action receives four-language style captures. All files are fixtures.
+action receives style captures in both languages. All files are fixtures.
 Only Chinese runs functional flows. Other locales prepare style states.
 
 [Pixel checks](../scripts/visual_check.py) compare Settings icon pixels across
@@ -127,7 +127,7 @@ badge silhouettes against a same-run reference, including overflow/scroll.
 icons, footer ink and covered badges. [Generator](../scripts/lucide.py) `--check`
 requires parity with pinned SVGs. Palette tests require ≥4.5:1 text contrast.
 Native appearance transitions preserve existing drafts/cursor/focus/edited record.
-Four-language light and dark captures cover main, settings, fields and row states.
+Light and dark captures in both languages cover main, settings, fields and row states.
 
 Reuse unchanged successful checks. For only icon/style changes use `--style-only`;
 for the new navigation/actions use `--interaction-only`; for live appearance and
@@ -137,7 +137,7 @@ use bounded watchdogs and normal error returns; visual review is the final fallb
 
 ## Review matrix
 
-Chinese functional acceptance only. All four UI languages: empty/client/rows/
+Chinese functional acceptance only. Both UI languages: empty/client/rows/
 active/overflow/scroll, Add/Edit, Settings, update busy/error; both light and dark.
 Record current results and limitations in [smoke acceptance](../docs/smoke.md).
 Historical More/footer/import captures are evidence of prior candidates, not the

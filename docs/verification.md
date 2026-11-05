@@ -182,7 +182,7 @@ new interpretation separately.
 CI uses separate VMs, with Xvfb on Linux; results are not controlled cross-platform
 comparisons. Minimum OS declarations do not prove every version was tested.
 Local Windows/Linux/Intel physical desktops remain untested. Chinese GUI flows
-cover functionality; four languages cover styles. Fixture tests do not certify
+cover functionality; both languages cover styles. Fixture tests do not certify
 live model/protocol compatibility. The separately authorized [Claude live diagnosis](measurements/v0.0.5/claude-live-20261013/report.json)
 is a bounded exception, not a provider availability benchmark.
 

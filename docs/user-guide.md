@@ -1,6 +1,6 @@
 # Pure Provider Switch (pp-switch) user guide
 
-English · [简体中文](user-guide-zh.md) · [日本語](user-guide-ja.md)
+English · [简体中文](user-guide-zh.md)
 
 pp-switch saves providers and switches **the configured base URL and API key**.
 0.0.6 preview also manages explicit models and scoped native/API routing.
@@ -140,7 +140,7 @@ On Linux install Noto Sans CJK (Debian/Ubuntu: `sudo apt install fonts-noto-cjk`
 or WenQuanYi Zen Hei. Xft needs an installed face covering CJK; it does not
 automatically fall back for missing glyphs. No font files ship with the app.
 
-UI: English, Simplified Chinese, Traditional Chinese, Japanese. The first launch
+UI: English, Simplified Chinese. The first launch
 uses the system language (unsupported → English). **Settings → Language** updates
 labels, dialogs and status immediately, preserving drafts and the edited record.
 

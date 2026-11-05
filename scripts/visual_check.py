@@ -68,9 +68,9 @@ def badge_mask(image, bounds=None):
 
 def validate(directory):
     results = json.loads((directory / "results.json").read_text())
-    assert len(results) == 4 and all(item.get("captured") for item in results), "Incomplete language style evidence"
+    assert len(results) == 2 and all(item.get("captured") for item in results), "Incomplete language style evidence"
     baseline = None
-    for locale in ("zh", "en", "zh-TW", "ja"):
+    for locale in ("zh", "en"):
         empty = ppm(directory / f"{locale}-empty.ppm")
         background = pixel(empty, 0, 0)
         gear = icon(empty, 388, 31, 24, 24)

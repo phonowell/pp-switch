@@ -891,7 +891,7 @@ pub fn callback_smoke(
     row_action(&c, 0, true).do_callback();
     c.name.set_value("Draft");
     let editing = state.borrow().editing.clone();
-    c.languages.set_value(Language::Ja.index() as i32);
+    c.languages.set_value(Language::En.index() as i32);
     c.languages.do_callback();
     require(
         c.name.value() == "Draft"
@@ -899,7 +899,7 @@ pub fn callback_smoke(
             && c.model_aliases[0].value() == "fixture-fast"
             && c.model_group.visible()
             && state.borrow().editing == editing
-            && store.language()? == Language::Ja,
+            && store.language()? == Language::En,
         "Language lost draft or edited record.",
     )?;
     c.languages.set_value(Language::Zh.index() as i32);

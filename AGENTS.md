@@ -30,7 +30,7 @@ authorizes an idle period. Never pass `--allow-desktop-input` or set `CI=true` t
 bypass this preference. Reuse existing valid captures when inputs are unchanged;
 report skipped desktop checks as unverified rather than passed.
 
-Full GUI functionality is tested in **Simplified Chinese only**; all four interface
+Full GUI functionality is tested in **Simplified Chinese only**; both interface
 languages receive style/property/pixel checks. Automate regressions first;
 human screenshot review is the final fallback. After each correction, run only
 checks affected by changed inputs and reuse the others' logs/hashes. Do not run

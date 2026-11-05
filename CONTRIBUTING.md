@@ -68,7 +68,7 @@ shipped callbacks in Simplified Chinese; it does not establish pointer hit testi
 On macOS run `python3 scripts/gui_smoke.py --timeout 180
 target/release/examples/input_smoke target/input-smoke` for Cocoa mouse/key
 events through the shipped widgets in Simplified Chinese, including per-row
-actions and in-window Settings navigation. English, Traditional Chinese and Japanese use prepared
+actions and in-window Settings navigation. English uses prepared
 display states for screenshot/style review, without repeating functional flows.
 Run `python3 scripts/visual_check.py target/input-smoke` on those captures to
 check locale-invariant Lucide icons, row-action ink and complete active badges.
@@ -135,7 +135,7 @@ python3 scripts/gui_smoke.py --timeout 60 target/release/examples/input_smoke ta
 python3 scripts/visual_check.py target/style-review
 ```
 
-This prepares all four languages' display states without repeating functional
+This prepares both languages' display states without repeating functional
 flows. Full input acceptance includes Chinese overflow/scroll badge checks;
 style-only capture checks the visible active badge in each language. Remeasure
 performance when changed inputs can affect the measured scenario or when making
@@ -143,7 +143,7 @@ a new performance claim, not after a documentation or pixel-checker correction.
 
 For navigation, row actions or focus, use `input_smoke OUTPUT --interaction-only`
 through the bounded GUI wrapper. It runs the affected Chinese native flow and
-four-language style captures. For icon-only changes use `--style-only`.
+style captures in both languages. For icon-only changes use `--style-only`.
 For live appearance and both-theme styles use `--themes-only` (90-second wrapper),
 then `visual_check.py` on `OUTPUT/light` and `OUTPUT/dark`. These change only the
 fixture process appearance, never system settings. Reuse unaffected core/update
@@ -215,8 +215,8 @@ when their inputs are unchanged.
 
 | Document | Owns |
 | --- | --- |
-| `README*.md` | Product introduction, differences, downloads, short usage and current performance summary; English / 简体中文 / 日本語 / Deutsch stay aligned. |
-| `docs/user-guide*.md` | Setup, exact write locations, provider entry, language, local storage, manual updates and troubleshooting; English / 简体中文 / 日本語 stay aligned. |
+| `README*.md` | Product introduction, differences, downloads, short usage and current performance summary; English / 简体中文 / Deutsch stay aligned. |
+| `docs/user-guide*.md` | Setup, exact write locations, provider entry, language, local storage, manual updates and troubleshooting; English / 简体中文 stay aligned. |
 | `SPEC.md` | The single English behavior contract and budget definitions. |
 | `AGENTS.md` | Short agent workflow and task reading routes. |
 | `CONTRIBUTING.md` | Build, validation, packaging, documentation maintenance and tool recovery. |
@@ -235,7 +235,7 @@ For documentation-only changes, check local links and heading anchors, Markdown
 structure, translation coverage and numerical claims against raw measurements.
 Do not rebuild the app solely for wording changes. Update affected translations
 together, keep sample credentials fake and distinguish document languages from
-the four interface languages. Keep superseded narratives in `docs/history/` or at immutable Git tags. Keep raw
+both interface languages. Keep superseded narratives in `docs/history/` or at immutable Git tags. Keep raw
 evidence paths stable. Replace stale README images with explicitly versioned
 illustrations or current native captures; a schematic never proves GUI acceptance.
 

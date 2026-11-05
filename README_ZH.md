@@ -13,7 +13,7 @@
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%20%7C%20Windows%20%7C%20Linux-native-465bab)
 
-**[English](README.md) · 简体中文 · [日本語](README_JA.md) · [Deutsch](README_DE.md)**
+**[English](README.md) · 简体中文 · [Deutsch](README_DE.md)**
 
 [下载](https://github.com/phonowell/pp-switch/releases) · [使用指南](docs/user-guide-zh.md) · [性能实测](docs/verification.md) · [行为规范](SPEC.md)
 
@@ -63,8 +63,8 @@ CCS/Sub2API 链接打开未保存的预览；明确导入的模型优先于编�
 外部密钥助手、云认证模式和不支持的密钥来源会被拒绝。
 [初始化、精确写入与排错](docs/user-guide-zh.md)。
 
-设置提供语言、手动链接注册和检查更新。界面支持 English、简体中文、繁體中文、
-日本語，跟随系统浅色/深色。密钥保存在仅当前用户可访问的本地文件，遮罩不等于加密。
+设置提供语言、手动链接注册和检查更新。界面支持 English、简体中文，
+跟随系统浅色/深色。密钥保存在仅当前用户可访问的本地文件，遮罩不等于加密。
 不自动请求服务商；更新校验本仓库包的 SHA-256，只替换应用文件。[行为规范](SPEC.md)。
 
 ## 性能：预算与实测分开

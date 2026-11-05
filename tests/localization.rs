@@ -10,10 +10,10 @@ fn pp13_system_locale_mapping_and_catalog_coverage() {
         ("en-US", Language::En),
         ("zh_CN.UTF-8", Language::Zh),
         ("zh-Hans-CN", Language::Zh),
-        ("zh-Hant", Language::ZhTw),
-        ("zh_HK", Language::ZhTw),
-        ("zh-TW", Language::ZhTw),
-        ("ja_JP.UTF-8", Language::Ja),
+        ("zh-Hant", Language::Zh),
+        ("zh_HK", Language::Zh),
+        ("zh-TW", Language::Zh),
+        ("ja_JP.UTF-8", Language::En),
         ("de_DE", Language::En),
         ("C", Language::En),
     ] {
@@ -22,7 +22,7 @@ fn pp13_system_locale_mapping_and_catalog_coverage() {
     let mut keys = HashSet::new();
     for line in i18n::CATALOG.lines() {
         let fields: Vec<_> = line.split('\t').collect();
-        assert_eq!(fields.len(), 4, "{line}");
+        assert_eq!(fields.len(), 2, "{line}");
         assert!(keys.insert(fields[0]), "Duplicate key: {}", fields[0]);
         assert!(fields.iter().all(|f| !f.trim().is_empty()));
         for translated in &fields[1..] {
@@ -78,6 +78,12 @@ fn pp13_preferences_are_private_and_do_not_touch_provider_data() {
             0o600
         );
     }
+    fs::write(store.root.join("ui.json"), b"{\"language\":\"ja\"}").unwrap();
+    assert_eq!(store.language().unwrap(), Language::En);
+    fs::write(store.root.join("ui.json"), b"{\"language\":\"zh-TW\"}").unwrap();
+    assert_eq!(store.language().unwrap(), Language::Zh);
+    store.save_language(Language::Zh).unwrap();
+    assert_eq!(store.language().unwrap(), Language::Zh);
     let invalid = b"{\"language\":\"unknown\"}";
     fs::write(store.root.join("ui.json"), invalid).unwrap();
     assert!(store.language().is_err());

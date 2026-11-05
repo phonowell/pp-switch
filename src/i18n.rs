@@ -3,29 +3,25 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub enum Language {
-    #[serde(rename = "en")]
+    // Legacy "ja" preferences parse as the unsupported-locale fallback.
+    #[serde(rename = "en", alias = "ja")]
     En,
-    #[serde(rename = "zh")]
+    // Legacy "zh-TW" preferences follow the same zh fallback as its locale.
+    #[serde(rename = "zh", alias = "zh-TW")]
     Zh,
-    #[serde(rename = "zh-TW")]
-    ZhTw,
-    #[serde(rename = "ja")]
-    Ja,
 }
 
 impl Language {
-    pub const ALL: [Self; 4] = [Self::En, Self::Zh, Self::ZhTw, Self::Ja];
+    pub const ALL: [Self; 2] = [Self::En, Self::Zh];
 
     pub fn code(self) -> &'static str {
-        ["en", "zh", "zh-TW", "ja"][self.index()]
+        ["en", "zh"][self.index()]
     }
 
     pub fn index(self) -> usize {
         match self {
             Self::En => 0,
             Self::Zh => 1,
-            Self::ZhTw => 2,
-            Self::Ja => 3,
         }
     }
 
@@ -33,15 +29,7 @@ impl Language {
         let locale = locale.to_ascii_lowercase().replace('_', "-");
         let language = locale.split(['-', '.', '@']).next().unwrap_or("");
         match language {
-            "zh" if locale.contains("hant")
-                || locale.starts_with("zh-tw")
-                || locale.starts_with("zh-hk")
-                || locale.starts_with("zh-mo") =>
-            {
-                Self::ZhTw
-            }
             "zh" => Self::Zh,
-            "ja" => Self::Ja,
             _ => Self::En,
         }
     }

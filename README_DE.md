@@ -13,7 +13,7 @@ Vier Harnesses.
 [![MIT](https://img.shields.io/badge/license-MIT-465bab.svg)](LICENSE)
 ![Platforms](https://img.shields.io/badge/macOS%20%7C%20Windows%20%7C%20Linux-native-465bab)
 
-**[English](README.md) · [简体中文](README_ZH.md) · [日本語](README_JA.md) · Deutsch**
+**[English](README.md) · [简体中文](README_ZH.md) · Deutsch**
 
 [Download](https://github.com/phonowell/pp-switch/releases) · [Anleitung (Englisch)](docs/user-guide.md) · [Messwerte](docs/verification.md) · [Spezifikation](SPEC.md)
 
@@ -67,7 +67,7 @@ Externe Key-Helper, Cloud-Modi und nicht unterstützte Schlüsselquellen werden 
 [Einrichtung, genaue Schreibzugriffe und Fehlerhilfe](docs/user-guide.md).
 
 Settings enthält Sprache, explizite Linkregistrierung und manuelle Updates. Oberfläche:
-English, 简体中文, 繁體中文, 日本語; System-Hell/Dunkel. Schlüssel liegen in lokalen,
+English, 简体中文; System-Hell/Dunkel. Schlüssel liegen in lokalen,
 benutzerbeschränkten Dateien; Maskierung ist keine Verschlüsselung. Keine automatischen
 Anbieteranfragen. Updates prüfen SHA-256 dieses Repositorys und ersetzen nur App-Dateien.
 [Verhaltensvertrag](SPEC.md).

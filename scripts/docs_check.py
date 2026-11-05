@@ -49,12 +49,11 @@ def check(record_path=None):
     for name, duplicate, settings, official in [
         ("user-guide.md", "Names must be unique", "Settings → Language", "## Official restoration"),
         ("user-guide-zh.md", "名称不能重复", "设置 → 语言", "## 官方还原"),
-        ("user-guide-ja.md", "名前は一意", "設定 → 言語", "## 公式復元"),
     ]:
         text = (ROOT / "docs" / name).read_text()
         if official not in text or duplicate not in text or settings not in text or " (2)" not in text or "sub2api" not in text.lower():
             errors.append(f"Missing translated UI rules: {name}")
-    for name in ["README.md", "README_ZH.md", "README_JA.md", "README_DE.md"]:
+    for name in ["README.md", "README_ZH.md", "README_DE.md"]:
         text = (ROOT / name).read_text()
         if "Lucide" not in text:
             errors.append(f"Missing icon/layout translation: {name}")
@@ -107,7 +106,7 @@ def check(record_path=None):
     if errors:
         raise ValueError("\n".join(errors))
     return {"markdown_files": len(files), "local_links_and_anchors": links,
-            "translation_coverage": "4 READMEs / 3 guides aligned with versions/Settings/Lucide/names/imports/Official",
+            "translation_coverage": "3 READMEs / 2 guides aligned with versions/Settings/Lucide/names/imports/Official",
             "historical_images_unchanged": len(inventory["images"]),
             "versioned_illustrations": len(illustrations["illustration_sha256"]),
             "evidence": evidence, "exit_code": 0}
